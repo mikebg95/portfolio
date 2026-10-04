@@ -63,7 +63,7 @@ queue.
   - Spec: SPEC §4.2; design/screens/html/experience-default-light-1440.html; design/components.md TimelineRuler/TimelineBar
   - Out of scope: scroll motion (PR-43).
 
-- [ ] **PR-20 Experience detail blocks**
+- [x] **PR-20 Experience detail blocks**
   - Done when: detail blocks 02.1 OptieCon, 02.2 DJI, 02.3 LinkPizza (+ small hatched sabbatical block between 02.1 and 02.2) exactly as drawn, newest first, with ids, DJI revision note, stack lines, Conspect employer line; stacks to one column on phone; e2e asserts each block's title and dates.
   - Spec: SPEC §4.2; design/copy.md Sheet 02; design/components.md ExperienceDetail
   - Out of scope: motion.
