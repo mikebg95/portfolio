@@ -137,4 +137,16 @@ const rows = [...parts].sort((a, b) => b.item - a.item);
     text-align: left;
     cursor: pointer;
   }
+
+  /* Phone: the button fills its cell, at least 44 px tall to tap (PR-62e). */
+  @media (max-width: 767px) {
+    .parts-list__select {
+      display: block;
+      width: calc(100% + 12px);
+      min-height: 44px;
+      margin: -8px -6px;
+      padding: 8px 6px;
+      hyphens: auto;
+    }
+  }
 </style>

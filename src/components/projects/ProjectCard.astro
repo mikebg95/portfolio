@@ -215,4 +215,32 @@ const inProgress = project.status === 'in-progress';
   .project-card__strip dd {
     margin: 0;
   }
+
+  /* Phone: the label line becomes the card's title strip, ruled off above the drawing as the phone
+     drawings' cards are (PR-62e); the facts strip already closes the card below. */
+  @media (max-width: 767px) {
+    .project-card__head {
+      align-items: baseline;
+      padding: 10px 16px;
+      border-bottom: var(--border-thin);
+    }
+
+    /* WebKit draws no dashed sides at 1.5 px on a 3× screen (it snaps to 1.33 px): a whole pixel. */
+    .project-card--in-progress {
+      border-width: 1px;
+    }
+
+    .project-card--in-progress .project-card__head {
+      border-bottom-style: dashed;
+    }
+
+    .project-card__diagram,
+    .project-card--flagship .project-card__diagram {
+      padding: 22px 18px;
+    }
+
+    .project-card__body {
+      padding: 0 18px 20px;
+    }
+  }
 </style>

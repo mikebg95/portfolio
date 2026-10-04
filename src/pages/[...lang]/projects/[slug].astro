@@ -296,4 +296,39 @@ const pending = data.status === 'in-progress' ? text.status['in-progress'] : und
       transition: none;
     }
   }
+
+  /* Phone (PR-62e): the back link is a 44 px target, and the pager two full-width cards in the
+     phone drawings' language — the direction a title strip ruled off over the project's name. */
+  @media (max-width: 767px) {
+    .detail-head__text :global(.detail-head__back) {
+      align-self: flex-start;
+      margin-block: -12px -6px;
+      padding-block: 12px;
+      line-height: 20px;
+    }
+
+    .detail-pager {
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .detail-pager__link,
+    .detail-pager__link--next {
+      align-items: stretch;
+      gap: 0;
+      margin-left: 0;
+      border: var(--border-normal);
+      background: var(--color-paper-raised);
+    }
+
+    .detail-pager__direction {
+      padding: 10px 16px;
+      border-bottom: var(--border-thin);
+      line-height: 1.4;
+    }
+
+    .detail-pager__project {
+      padding: 14px 16px;
+    }
+  }
 </style>

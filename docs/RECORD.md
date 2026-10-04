@@ -641,3 +641,19 @@ the label and intro stay, no `TAP A PART →` hint (the intro already says to se
 balloon labels stay beside the balloons. New strings `ui.education.sheet` (close, previous, next;
 copy.md) — additive, as `ui.tabBar` was. Instead of: a hand-rolled fixed `div` with its own
 focus trap and z-index; hiding the parts list behind the sheet.
+
+## 2026-10-04 — Phone Projects, Certifications and details in the card language (PR-62e)
+Who: agent (PR-62e, the choices). No drawing exists for these sheets on a phone, so they borrow
+the phone drawings' two moves: a card opens on a ruled mono title strip (FIG. 0's), and closes on
+a ruled strip. Project cards: the label line becomes the strip. Certification cards: code | issuer ·
+date in the strip, the name across the full width (the floated stamp split names into "SPRING
+CERTIFIED … PROFESSIONAL" with a gap), and the stamp moves to a ruled foot beside the verify link —
+it signs the record at the bottom, as a stamp on a real inspection record does. Detail sheets: a
+framed Figure's caption is its strip (in Figure itself, so every framed figure agrees); the pager is
+two full-width cards, direction strip over the project name. 44 px targets: title-block contact
+links, the detail back link, the Journal ADR links, the verify links and the parts list buttons
+grew on phone; the assembly's plates and balloons stay drawn to scale (the parts list is the 44 px
+equivalent, WCAG 2.5.8). Dashed cards (pending cert, in-progress project) are 1 px on phone because
+WebKit at 3× drops dashed sides at 1.5 px; the same defect on the revision notes and the sabbatical
+card is queued (QA-63), not fixed here. Instead of: shrinking the stamp to keep the float (names
+still split); new phone drawings (the task forbids them).

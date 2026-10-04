@@ -310,6 +310,19 @@ const layout = `${slug}-${n}`;
     font-weight: 600;
   }
 
+  /* Phone: each record is a 44 px row to tap (PR-62e). */
+  @media (max-width: 767px) {
+    .adr-list li {
+      padding-bottom: 0;
+    }
+
+    .adr-list :global(.link) {
+      display: block;
+      min-height: 44px;
+      padding-block: var(--space-2);
+    }
+  }
+
   .demo {
     display: flex;
     flex-direction: column;

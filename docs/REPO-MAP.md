@@ -101,6 +101,8 @@ line.
 - `tests/e2e/header.spec.ts` — tabs per language, language switch, CV, tablet one-row; skipped below 768 px.
 - `tests/e2e/tab-bar.spec.ts` — phone header row + tab bar: cells per language, fixed while scrolling, page clears it, 320 px no clipping, no-JS; skipped at ≥ 768 px.
 - `src/components/TitleBlock.astro` — the footer (rendered by SheetLayout, sheet number from its `sheet` prop); captions from `ui.titleBlock`, contact from `profile.contact`, REV/SHEET formatters in `src/title-block.ts`; cells draw only left+top rules so 2 and 4 columns both stay ruled.
+- `tests/e2e/phone-pages.spec.ts` — every route < 768 px: 44 px targets (assembly drawing exempt: the parts list is the equivalent) + no sideways scroll at 320, full-page shots both themes in `.e2e/phone-pages/`; card strips on Projects, Certifications, details.
+- TRAP: WebKit on a 3× screen draws no dashed SIDES on a 1.5 px dashed border (snaps to 1.33 px; top/bottom still drawn) — use a whole pixel for dashed borders on phone.
 - `tests/e2e/sheet.spec.ts` — skip link, frame widths/grid, zone strip per viewport, stored theme applied.
 - `tests/e2e/theme.spec.ts` — toggle + reload, dark system, storage blocked.
 - `tests/e2e/accessibility.spec.ts` — every route × language (+ both 404s) × both themes: axe + one h1; keyboard walk (Tab order = DOM order of rendered tabbables, 2 px ring on each, Chromium only); phone tab bar by keyboard. `tests/unit/contrast.test.ts` — muted/redline vs paper from tokens.json.
@@ -153,6 +155,7 @@ line.
 - `src/components/certifications/CertCard.astro` — card id = entry id (`#ckad` is the Overview's target); the Stamp floats in the head with `shape-outside: circle()` so code/name/issuer wrap round it.
 - TRAP: card names need `overflow-wrap: normal` — with DisplayHeading's `break-word` a word too long to sit beside a float is split ("PROFESSIO NAL") instead of dropping below it.
 - `tests/e2e/certifications.spec.ts` — four cards, ids, stamps, three verify links (exact cv.md URLs), CKAD none; `brokenWords` helper catches mid-word heading breaks at 320/390 px.
+- CertCard < 768 px: `.cert-card__head` is `display: contents` and its parts join the card's grid (strip: code | issuer; name; learned; chips; foot: verify | stamp, rule = the card's `::after`); the h2 is its own fit container again there (no float).
 
 ## Sheet 05 — Education
 

@@ -43,9 +43,18 @@ const { label, bare = false, class: className, ...rest } = Astro.props;
     text-transform: var(--size-label-transform);
   }
 
+  /* Phone: a framed figure's caption is its title strip, ruled off across the frame as the phone
+     drawings' FIG. 0 card is (PR-62e). */
   @media (max-width: 767px) {
     .figure:not(.figure--bare) {
-      padding: var(--space-4);
+      padding: 0 var(--space-4) var(--space-4);
+    }
+
+    .figure:not(.figure--bare) > .figure__label {
+      margin-inline: calc(-1 * var(--space-4));
+      padding: 10px var(--space-4);
+      border-bottom: var(--border-thin);
+      line-height: 1.4;
     }
   }
 </style>
