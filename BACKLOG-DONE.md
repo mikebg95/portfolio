@@ -567,3 +567,28 @@ History, not a queue.
   - Done when: S-01 BACKEND `Java 17 / 21 / 25+ · Spring Framework · Spring Boot 3 & 4 · Spring MVC · Jakarta EE · JAX-RS · WildFly · REST · OpenAPI · Maven`; S-02 SECURITY unchanged; S-03 DATA `PostgreSQL · SQL · JPA / Hibernate · Spring Data JPA · JDBC / JdbcTemplate · Flyway · MongoDB`; S-04 TESTING `TDD · JUnit · Mockito · Testcontainers · ArchUnit · Unit & integration tests`; S-05 FRONTEND `Angular · Vue · TypeScript · JSF / PrimeFaces · HTML / CSS`; S-06 DEVOPS `Docker · Docker Compose · GitHub Actions · CI/CD · Git · GitLab · Bitbucket` + the redline `Kubernetes — CKAD in progress`; S-07 DESIGN `Layered & hexagonal architecture · DDD · Clean code · C4 models · ADRs · Design-first APIs`; only if it fits the existing table without a layout change at 390 and 1440, add S-08 WAY OF WORKING `Scrum (PSM I) · Agile DevOps teams · Code review · Knowledge sessions` — otherwise skip S-08 and say so in the commit; every item traceable to `cv.md`, `briefing.md` or a repo; NL twin; tests green.
   - Spec: design/copy.md Sheet 01 Specification; docs/source/cv.md TECHNICAL SKILLS; docs/source/briefing.md
   - Out of scope: General notes and In progress (they are fine).
+
+
+## Pruned from the queue
+
+3 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### Hardening
+
+- [x] **PR-63 Content pass: Experience texts — accurate claims, more substance**
+  - Michael, 2026-10-04: the DJI revision note is false (read the private briefing); "I own its security end to end" overstates OptieCon; the LinkPizza Media Kit bullet hides the backend work, and LinkPizza is where his code went through a real CI/CD pipeline to production — the strongest honest production proof he has.
+  - Done when: **OptieCon** context ends `I built its sign-in and security layer.` (not "own its security end to end"); stack says `Microsoft Entra ID`. **DJI** note `REV. NOTE △ The only developer on a new application inside a running system — from first design to knowledge sessions and a thorough handover.`; nothing on the DJI block says production, go-live, empty repository or greenfield, and no detail goes beyond `cv.md`. **LinkPizza** context `Influencer-marketing platform, team of 3–4 developers. A JSF monolith on WildFly being migrated to Quarkus microservices on Kubernetes; every change went from Bitbucket through Jenkins pipelines to WildFly test and production servers.`; Media Kit bullet uses the CV wording `…Developed the Angular frontend and much of the backend: business logic, data access and REST endpoints (JAX-RS). When the company stayed on JSF, rebuilt the frontend in JSF/PrimeFaces; it is still in use. Also shaped its concept and design.`; stack adds `Jenkins`; never imply he built the pipeline or the Quarkus services. NL twins; Sheet 02 screenshots at 390 and 1440 show no overflow; tests green.
+  - Spec: design/copy.md Sheet 02; docs/source/cv.md; docs/source/briefing.md; docs/source/private/briefing-private.md
+  - Out of scope: the timeline drawing, dates and durations.
+
+- [x] **PR-64 Content pass: project sheets — honest labels and finished-vs-planned in the right tense**
+  - Michael, 2026-10-04: Jamigos' "Capacitor builds for iOS and Android" presents AI-generated work as his (his README says so); Journal's card says it has an AI step that is only planned; Scentify was not built at the end of the minor; "FLAGSHIP" oversells a deliberately minimal practice app.
+  - Done when: **Jamigos** — kind `FULL-STACK` (NL `FULL-STACK`) instead of FLAGSHIP; card summary `A full-stack app built to practise security and delivery: Keycloak sign-in, roles, ownership checks and audit logging, tested on Testcontainers and shipped by its own GitHub Actions pipeline.`; FRONTEND row `Vue 3, Pinia, Vite and keycloak-js, signing in with OIDC + PKCE. The mobile build, the frontend unit tests and a later UI restyle were AI-generated and are labelled that way in the README.`; DELIVERY row `GitHub Actions builds and tests only what changed, pushes Docker images to GHCR and deployed three services — frontend, backend and Keycloak — to Render. Local, dev, test and prod profiles; Docker Compose for local work.`. **Journal** — card summary `Hexagonal architecture, a rich domain model and 7 written design decisions. The AI step that summarises each entry is designed and comes next.`; detail summary in a tense that matches its status (`…designed so that one AI call turns each entry into…`). **Scentify** — card summary `My first real app: an Android fragrance recommender in Java, built during a year of self-study before my first developer job.`. NL twins; no project text presents AI-generated work as his or planned work as built; screenshots of Sheet 03 and detail sheets 03.1, 03.4, 03.5 at 390 and 1440 show no overflow; tests green.
+  - Spec: design/copy.md Sheet 03; docs/source/research-repos.md; docs/source/briefing.md; the repos' READMEs
+  - Out of scope: figures and diagrams; Subscription Tracker and Recipe Book (accurate as they are).
+
+- [x] **PR-65 Content pass: Education closes the gap between the minor and the first job**
+  - Michael, 2026-10-04: a recruiter reading 2018 minor → 2019 BSc → 2021 first job sees an unexplained gap; the self-study year that produced Scentify fills it.
+  - Done when: the Minor Programming detail body (part 3) ends with `In 2020 I spent a year teaching myself Java and Android — Scentify (P-05) is from then — and in 2021 I started at LinkPizza.` (or the same facts, tighter); NL twin; the Sheet 05 detail panel at 390 and 1440 shows no overflow; tests green.
+  - Spec: design/copy.md Sheet 05; docs/source/briefing.md
+  - Out of scope: the exploded view, the parts list, adding a new part.
