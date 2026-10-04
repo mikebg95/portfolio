@@ -493,3 +493,15 @@ module script including lazily imported chunks (stricter than what loads at firs
 Overview 3.7 KB, project detail 3.5 KB, Experience 49.8 KB, Education 49.9 KB (GSAP) — budget 60 KB.
 The 404 sheets preloaded IBM Plex Sans 400 but render no body text; they now preload Archivo only.
 Reports are written to `.lighthouseci/` on disk, never uploaded to temporary public storage.
+
+## 2026-10-04 — Responsive pass (PR-53)
+Who: agent (PR-53). The sweep (`tests/e2e/responsive.spec.ts`) runs under reduced motion, so it
+judges the drawn final state, not a plotting frame. Besides heading/label overlap it checks that no
+text runs sideways out of its own box: the overlap check alone missed Dutch "Programmeertheorie"
+running into the 12 EC column at 320 px. Exempt by design: the desktop timeline's employer note,
+which runs left of a dimension line shorter than it. Fixes: the parts list sits in a scrolling
+frame (`.parts-list-frame`, carrying the border); detail-panel rows on phones use 32 px / auto side
+columns, 16 px panel padding and hyphenate; the detail title is `min(display-s, 9cqi)`, as card
+titles are, so PROGRAMMEREN never breaks mid-word; the phone timeline legend wraps; portrait callout
+text is `min-width: min-content` so Dutch "gecertificeerd" stays inside its 10ch box. Instead of:
+headings-only overlap checks; hyphenating the detail title.

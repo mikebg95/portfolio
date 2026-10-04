@@ -166,6 +166,8 @@ const lines = ascii.split('\n');
   .portrait__callout-text {
     /* Breaks each callout onto two lines as drawn ("Spring / certified"). */
     max-width: 10ch;
+    /* …but never narrower than its longest word (Dutch "gecertificeerd" is 14 characters). */
+    min-width: min-content;
   }
 
   .portrait__callout-link {

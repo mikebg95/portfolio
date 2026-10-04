@@ -14,50 +14,57 @@ const { parts, selected, headers } = Astro.props;
 const rows = [...parts].sort((a, b) => b.item - a.item);
 ---
 
-<table class="parts-list">
-  <caption class="sr-only">{headers.caption}</caption>
-  <thead>
-    <tr>
-      <th scope="col">{headers.item}</th>
-      <th scope="col">{headers.part}</th>
-      <th scope="col">{headers.supplier}</th>
-      <th scope="col">{headers.year}</th>
-    </tr>
-  </thead>
-  <tbody>
-    {rows.map((part, i) => (
-      <tr
-        data-reveal="ink"
-        data-reveal-delay={i * 80}
-        class:list={[
-          'parts-list__row',
-          part.item === selected && 'parts-list__row--selected',
-          part.pending && 'parts-list__row--pending',
-        ]}
-        data-part={part.item}
-      >
-        <td>{part.item}</td>
-        <td>
-          <button
-            type="button"
-            class="parts-list__select"
-            aria-pressed={part.item === selected ? 'true' : 'false'}
-            data-part={part.item}
-          >
-            {part.part}
-          </button>
-        </td>
-        <td>{part.supplier}</td>
-        <td>{part.years}</td>
+<div class="parts-list-frame">
+  <table class="parts-list">
+    <caption class="sr-only">{headers.caption}</caption>
+    <thead>
+      <tr>
+        <th scope="col">{headers.item}</th>
+        <th scope="col">{headers.part}</th>
+        <th scope="col">{headers.supplier}</th>
+        <th scope="col">{headers.year}</th>
       </tr>
-    ))}
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      {rows.map((part, i) => (
+        <tr
+          data-reveal="ink"
+          data-reveal-delay={i * 80}
+          class:list={[
+            'parts-list__row',
+            part.item === selected && 'parts-list__row--selected',
+            part.pending && 'parts-list__row--pending',
+          ]}
+          data-part={part.item}
+        >
+          <td>{part.item}</td>
+          <td>
+            <button
+              type="button"
+              class="parts-list__select"
+              aria-pressed={part.item === selected ? 'true' : 'false'}
+              data-part={part.item}
+            >
+              {part.part}
+            </button>
+          </td>
+          <td>{part.supplier}</td>
+          <td>{part.years}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
 
 <style>
+  /* The framed box: if the four columns ever outgrow the sheet, they scroll here, not the page. */
+  .parts-list-frame {
+    overflow-x: auto;
+    border: var(--border-normal);
+  }
+
   .parts-list {
     width: 100%;
-    border: var(--border-normal);
     border-collapse: collapse;
     background: var(--color-paper-raised);
     font-family: var(--font-mono);
@@ -107,7 +114,7 @@ const rows = [...parts].sort((a, b) => b.item - a.item);
   }
 
   /* A phone keeps all four columns: tighter cells, the year may break after its dash, and long
-     words (Dutch LEVERANCIER, Politicologie) hyphenate so the table stays inside a 320 px sheet. */
+     words (Dutch LEVERANCIER, Politicologie) hyphenate so the table fits a 320 px sheet without scrolling its frame. */
   @media (max-width: 767px) {
     .parts-list {
       font-size: 11px;

@@ -532,6 +532,11 @@ const name = (entry: (typeof entries)[number]) => entry.client ?? entry.employer
       position: static;
     }
 
+    /* Beside a 24 px segment the legend has a narrow column: it wraps rather than run past it. */
+    .timeline__legend {
+      white-space: normal;
+    }
+
     .timeline__duration .timeline__rule {
       display: none;
     }

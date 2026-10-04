@@ -41,7 +41,7 @@ const fill = (pattern: string, n: number) => pattern.replace('{n}', String(n));
       {detail.rows.map((row) => (
         <li class="detail-panel__row">
           <span class="detail-panel__code">{row.code}</span>
-          <span>{row.text}</span>
+          <span class="detail-panel__text">{row.text}</span>
           <span class="detail-panel__ec">{fill(strings.ec, row.ec)}</span>
         </li>
       ))}
@@ -71,6 +71,7 @@ const fill = (pattern: string, n: number) => pattern.replace('{n}', String(n));
     padding: var(--space-5);
     border: var(--border-normal);
     background: var(--color-paper-raised);
+    container-type: inline-size;
   }
 
   /* With scripts, only the selected part's panel shows; without, all five stack (SPEC §4.6). */
@@ -105,7 +106,10 @@ const fill = (pattern: string, n: number) => pattern.replace('{n}', String(n));
     font-size: 11px;
   }
 
+  /* A title word never breaks: in a narrow panel (Dutch PROGRAMMEREN at 320 px) it shrinks to fit,
+     as the project card titles do. */
   .detail-panel :global(.detail-panel__title) {
+    font-size: min(var(--size-display-s), 9cqi);
     overflow-wrap: normal;
   }
 
@@ -151,6 +155,24 @@ const fill = (pattern: string, n: number) => pattern.replace('{n}', String(n));
 
   .detail-panel__ec {
     text-align: right;
+  }
+
+  /* A phone leaves the course text a narrow column: tighter padding and side columns, and a long
+     word (Dutch Programmeertheorie) hyphenates instead of running into the EC column. */
+  @media (max-width: 767px) {
+    .detail-panel {
+      padding: var(--space-4);
+    }
+
+    .detail-panel__row {
+      grid-template-columns: 32px minmax(0, 1fr) auto;
+      gap: 8px;
+    }
+
+    .detail-panel__text {
+      hyphens: auto;
+      overflow-wrap: anywhere;
+    }
   }
 
   .detail-panel__note {
