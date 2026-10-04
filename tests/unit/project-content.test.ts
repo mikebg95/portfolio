@@ -139,8 +139,8 @@ describe('detail sheets (EN) against design/copy.md', () => {
     ]);
   });
 
-  // PR-27…29 add their titles here as they write their sheets.
-  it.each(['Jamigos', 'Subscription Tracker'])('holds %s verbatim', (title) => {
+  // PR-28, PR-29 add their titles here as they write their sheets.
+  it.each(['Jamigos', 'Subscription Tracker', 'Recipe Book'])('holds %s verbatim', (title) => {
     const line = detailLine(title);
     const entry = entries.find((e) => e.title === title);
 

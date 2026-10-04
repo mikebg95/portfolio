@@ -6,7 +6,7 @@ import PipelineRoute from '../drawing/PipelineRoute.astro';
 // The drawing inside a detail sheet's FIG. 1 or FIG. 2 (SPEC §4.4), one layout per project and
 // figure. Words come from the entry's `figures[n - 1].labels`, in drawing order; LABELS says how
 // many each layout reads. A box label's first line is its title; a test pyramid level's is its name,
-// the second its test count. A project without a layout here draws nothing yet (PR-27…29 add theirs).
+// the second its test count. A project without a layout here draws nothing yet (PR-28, PR-29 add theirs).
 interface Props {
   slug: string;
   n: 1 | 2;
@@ -16,6 +16,15 @@ interface Props {
 const LABELS: Record<string, readonly [number, number]> = {
   jamigos: [6, 4],
   'subscription-tracker': [7, 4],
+  'recipe-book': [9, 4],
+};
+
+// Figures that are one row of boxes joined by labelled arrows (box, arrow, box, …): the index of
+// the `main` box, the one the project is about. Each arrow stays with the box it points at, so a
+// row that wraps starts its next line with an arrow.
+const CHAINS: Record<string, number> = {
+  'subscription-tracker-1': 4,
+  'recipe-book-1': 0,
 };
 
 const { slug, n, labels } = Astro.props;
@@ -31,8 +40,8 @@ const box = (label = '') => {
   const [title = '', ...lines] = label.split('\n');
   return { title, lines };
 };
-const [a = '', b = '', , d = '', e = '', f = ''] = labels;
-const api = box(labels[2]);
+const [a = '', b = '', c = '', d = '', e = '', f = ''] = labels;
+const api = box(c);
 const layout = `${slug}-${n}`;
 ---
 
@@ -61,17 +70,21 @@ const layout = `${slug}-${n}`;
   </div>
 )}
 {layout === 'jamigos-2' && <PipelineRoute stations={labels} />}
-{layout === 'subscription-tracker-1' && (
+{CHAINS[layout] !== undefined && (
   <div class="detail-figure">
     <div class="detail-figure__row">
-      {labels.map((label, i) =>
-        i % 2 === 1 ? (
-          <Arrow label={label} turns />
-        ) : (
-          <Box title={box(label).title} main={i === 4}>
-            {box(label).lines[0]}
-          </Box>
-        ),
+      <Box title={box(a).title} main={CHAINS[layout] === 0}>
+        {box(a).lines[0]}
+      </Box>
+      {labels.slice(1).map((label, i) =>
+        i % 2 === 0 ? (
+          <span class="detail-figure__link">
+            <Arrow label={label} turns />
+            <Box title={box(labels[i + 2]).title} main={i + 2 === CHAINS[layout]}>
+              {box(labels[i + 2]).lines[0]}
+            </Box>
+          </span>
+        ) : null,
       )}
     </div>
   </div>
@@ -85,6 +98,18 @@ const layout = `${slug}-${n}`;
       </li>
     ))}
   </ol>
+)}
+{layout === 'recipe-book-2' && (
+  <div class="detail-figure detail-figure--tight">
+    <Box title={box(a).title} main>
+      {box(a).lines[0]}
+    </Box>
+    <Arrow direction="down" label={b} />
+    <div class="detail-figure__parts">
+      <Box title={box(c).title}>{box(c).lines[0]}</Box>
+      <Box title={box(d).title}>{box(d).lines[0]}</Box>
+    </div>
+  </div>
 )}
 
 <style>
@@ -101,6 +126,27 @@ const layout = `${slug}-${n}`;
     align-items: center;
     justify-content: center;
     gap: 18px;
+  }
+
+  .detail-figure--tight {
+    gap: 10px;
+  }
+
+  .detail-figure__link {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  /* An aggregate's parts sit side by side at every width: stacked, they would read as a chain. */
+  .detail-figure__parts {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-4);
+  }
+
+  .detail-figure__parts > :global(*) {
+    flex: 0 1 180px;
   }
 
   .detail-figure__stack {
@@ -141,7 +187,8 @@ const layout = `${slug}-${n}`;
 
   /* Phone: the row becomes a column; its arrows turn down (Arrow `turns`). */
   @media (max-width: 767px) {
-    .detail-figure__row {
+    .detail-figure__row,
+    .detail-figure__link {
       flex-direction: column;
       gap: var(--space-3);
     }

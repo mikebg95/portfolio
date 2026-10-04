@@ -1,5 +1,5 @@
-# Register fields from design/copy.md Sheet 03 (PR-21); summary, figures and note are the detail
-# sheet's — PR-27 replaces those placeholders.
+# design/copy.md Sheet 03: the register row (PR-21) and detail sheet 03.3 (PR-27). Spec rows and
+# figure words from github.com/mikebg95/recipe-book.
 slug: recipe-book
 code: P-03
 kind: 'JPA · DESIGN-FIRST'
@@ -8,7 +8,7 @@ title: Recipe Book
 diagram: ['OPENAPI 3.1', 'generates', 'RECIPE ⟶ STEPS']
 series: true
 cardSummary: 'API contract first, code generated from it; architecture rules enforced by tests.'
-summary: 'Placeholder (PR-27)'
+summary: 'Recipes with ordered steps and ingredients. Part 2 of the series: JPA done deliberately, with the API contract written before any code.'
 period: 'JUL 2026'
 status: done
 repo: https://github.com/mikebg95/recipe-book
@@ -17,9 +17,39 @@ facts:
   - { label: TESTS, value: '109' }
   - { label: API, value: 'Design-first' }
   - { label: STATUS, value: 'Backend done' }
+spec:
+  - label: AGGREGATE
+    text: 'Recipe is the aggregate root: steps and ingredients are reached, saved and deleted only through it — cascade ALL and orphanRemoval in JPA, ON DELETE CASCADE in the schema.'
+  - label: PERSISTENCE
+    text: 'JPA/Hibernate through a hand-written EntityManager repository, no Spring Data. SEQUENCE ids with allocationSize 50, id-based equals, open-in-view off.'
+  - label: CONCURRENCY
+    text: '@Version optimistic locking: a concurrent edit gets 409 Conflict as RFC 9457 problem details.'
+  - label: QUERIES
+    text: 'The list reads a RecipeSummary projection — name, description and counts — instead of loading whole aggregates.'
+  - label: INTEGRITY
+    text: 'CHECK constraints, case-insensitive unique names and deferrable unique step order, across 5 Flyway migrations on PostgreSQL 18.'
+  - label: API
+    text: 'Design-first OpenAPI 3.1: openapi-generator builds the DTOs and API interfaces from docs/api/openapi.yaml; the mappers are hand-written.'
+  - label: TESTING
+    text: '109 tests, written test-first: unit, web slice, repository and end-to-end on Testcontainers, plus ArchUnit rules that enforce the layering.'
 figures:
-  - { title: 'Placeholder (PR-27)' }
-  - { title: 'Placeholder (PR-27)' }
-note: 'Placeholder (PR-27)'
+  - title: DESIGN-FIRST FLOW
+    labels:
+      - "openapi.yaml\nOpenAPI 3.1"
+      - generates
+      - "API interfaces & DTOs\ngenerated at build"
+      - DTOs
+      - "Controllers\nproblem+json errors"
+      - mapper
+      - "Recipe aggregate\nJPA · Hibernate"
+      - JPA
+      - "PostgreSQL 18\n5 Flyway migrations"
+  - title: AGGREGATE
+    labels:
+      - "Recipe\naggregate root · @Version"
+      - cascade ALL · orphanRemoval
+      - "Step\nordered · deferrable unique"
+      - "Ingredient\nquantity > 0 · unique name"
+note: 'REV. NOTE △ Re-ordering steps saves in one transaction thanks to deferrable unique constraints.'
 lang: en
 translated: true

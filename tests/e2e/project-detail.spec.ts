@@ -199,3 +199,52 @@ test('Subscription Tracker: layers and a test pyramid of 63 (copy.md 03.2)', asy
   const row = await fig1.locator('.detail-figure__row').boundingBox();
   expect(row!.x + row!.width).toBeLessThanOrEqual(box!.x + box!.width + 1);
 });
+
+test('Recipe Book: design-first flow, the aggregate and 109 tests (copy.md 03.3)', async ({
+  page,
+}) => {
+  await page.goto('/projects/recipe-book');
+  const fig1 = page.locator('[data-figure="1"]');
+  await expect(fig1.locator('figcaption')).toHaveText('FIG. 1 — DESIGN-FIRST FLOW');
+  await expect(fig1.locator('.box__title')).toHaveText([
+    'openapi.yaml',
+    'API interfaces & DTOs',
+    'Controllers',
+    'Recipe aggregate',
+    'PostgreSQL 18',
+  ]);
+  await expect(fig1.locator('.box--main')).toContainText('openapi.yaml');
+  await expect(fig1.locator('.arrow__label')).toHaveText(['generates', 'DTOs', 'mapper', 'JPA']);
+
+  const fig2 = page.locator('[data-figure="2"]');
+  await expect(fig2.locator('figcaption')).toHaveText('FIG. 2 — AGGREGATE');
+  await expect(fig2.locator('.box--main')).toContainText('@Version');
+  await expect(fig2.locator('.box__title')).toHaveText(['Recipe', 'Step', 'Ingredient']);
+  await expect(fig2.locator('.arrow__label')).toHaveText('cascade ALL · orphanRemoval');
+  // The root sits above the two parts it owns, which sit side by side (not a chain) at every width.
+  const root = await fig2.locator('.box--main').boundingBox();
+  const [step, ingredient] = await fig2
+    .locator('.detail-figure__parts > *')
+    .evaluateAll((ps) => ps.map((p) => p.getBoundingClientRect()));
+  expect(step!.y).toBeGreaterThan(root!.y + root!.height);
+  expect(ingredient!.y).toBe(step!.y);
+  expect(ingredient!.x).toBeGreaterThan(step!.x + step!.width);
+
+  await expect(page.locator('.detail-body .spec-row dt')).toHaveText([
+    'AGGREGATE',
+    'PERSISTENCE',
+    'CONCURRENCY',
+    'QUERIES',
+    'INTEGRITY',
+    'API',
+    'TESTING',
+  ]);
+  await expect(page.locator('.detail-body .spec-row dd').last()).toContainText('109 tests');
+  await expect(page.locator('.detail-body .revision-note')).toContainText(
+    'deferrable unique constraints',
+  );
+
+  const box = await fig1.boundingBox();
+  const row = await fig1.locator('.detail-figure__row').boundingBox();
+  expect(row!.x + row!.width).toBeLessThanOrEqual(box!.x + box!.width + 1);
+});

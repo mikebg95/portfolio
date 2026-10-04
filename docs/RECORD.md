@@ -221,3 +221,14 @@ Testcontainers, so the top level rather than DAO integration). Sum 63. A level's
 "name\ncount". The pyramid is drawn as stepped bands widening downwards (shape, not proportional to
 the counts — 25 web slice tests outnumber 14 unit ones); FIG. 1 is a row of boxes with labelled
 arrows (DTOs, entity, SQL), the DAO the `main` box because hand-written SQL is the project's point.
+
+## 2026-10-04 — Recipe Book sheet: spec rows, a chain that wraps by arrow, a side-by-side aggregate
+Who: agent (PR-27). copy.md 03.3 gives no spec rows; seven were written from research-repos.md P-03
+and the repo's backend README (AGGREGATE, PERSISTENCE, CONCURRENCY, QUERIES, INTEGRITY, API,
+TESTING); 109 re-counted from the repo at dacaf8d. The controllers use the generated DTOs but do not
+implement the generated interfaces, so FIG. 1's arrow into them says "DTOs", not "implements". Box →
+arrow → box rows (`CHAINS` in DetailFigure, Subscription Tracker and Recipe Book FIG. 1) keep each
+arrow with the box it points at: between 768 and ~1300 px a five-box row wraps, and its second line
+starts with an arrow instead of one dangling at the end of the first. FIG. 2's Step and Ingredient
+stay side by side at every width under one "cascade ALL · orphanRemoval" arrow — stacked, they read
+as Recipe → Step → Ingredient, which the model is not.
