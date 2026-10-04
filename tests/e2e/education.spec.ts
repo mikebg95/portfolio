@@ -65,12 +65,14 @@ test('plates sit on one axis, top to bottom, never overlapping the next one', as
 });
 
 for (const width of [320, 390, 768]) {
-  test(`the assembly scales to fit ${width} px without scrolling sideways`, async ({ page }) => {
+  test(`the assembly scales and the sheet fits ${width} px without scrolling sideways`, async ({
+    page,
+  }) => {
     await page.setViewportSize({ width, height: 900 });
     await page.goto('/education');
     const panel = await page.locator('.education').boundingBox();
     const right = await page
-      .locator('.assembly__drawing, .plate, .assembly__callout')
+      .locator('.assembly__drawing, .plate, .assembly__callout, .detail-panel, .parts-list')
       .evaluateAll((els) => Math.max(...els.map((el) => el.getBoundingClientRect().right)));
     expect(right).toBeLessThanOrEqual(panel!.x + panel!.width);
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(width);
@@ -81,4 +83,59 @@ test('/nl/education renders the five parts too', async ({ page }) => {
   await page.goto('/nl/education');
   await expect(page.locator('.assembly .plate')).toHaveCount(5);
   await expect(page.locator('.assembly .balloon__mark')).toHaveCount(5);
+});
+
+test('the detail panel shows part 3 by default', async ({ page }) => {
+  await page.goto('/education');
+  const panel = page.locator('.detail-panel:visible');
+  await expect(panel).toHaveCount(1);
+  await expect(panel).toHaveId('part-3');
+  await expect(panel.locator('.detail-panel__label')).toHaveText('DETAIL 3 · SCALE 2:1');
+  await expect(panel.getByRole('heading', { level: 2 })).toHaveText('Minor Programming');
+  await expect(panel.locator('.detail-panel__meta')).toHaveText(
+    'University of Amsterdam · 2018 · 30 EC',
+  );
+  await expect(panel.locator('.detail-panel__row')).toHaveText([
+    '3.1CS50 — C, memory, algorithms, Python, SQL6 EC',
+    '3.2Android app development in Java12 EC',
+    '3.3Programming theory — heuristics12 EC',
+  ]);
+  await expect(panel.locator('.detail-panel__note')).toHaveCount(0);
+});
+
+test('the parts list has five rows, 5 → 1, part 3 selected and CKAD pending', async ({ page }) => {
+  await page.goto('/education');
+  const table = page.getByRole('table', { name: 'Parts list' });
+  await expect(table.getByRole('columnheader')).toHaveText(['ITEM', 'PART', 'SUPPLIER', 'YEAR']);
+  const rows = table.locator('tbody tr');
+  await expect(rows).toHaveText([
+    '5CKAD (in progress)Linux Foundation—',
+    '4CS50 Intro to CSHarvard / UvA2018',
+    '3Minor ProgrammingUvA2018',
+    '2BSc Political ScienceUvA2016–19',
+    '1VWOAmsterdams Lyceum2007–13',
+  ]);
+  const buttons = table.getByRole('button');
+  await expect(buttons).toHaveCount(5);
+  await expect(table.getByRole('button', { pressed: false })).toHaveCount(4);
+  await expect(table.getByRole('button', { pressed: true })).toHaveText('Minor Programming');
+  await expect(rows.nth(2)).toHaveClass(/parts-list__row--selected/);
+  await expect(rows.nth(0)).toHaveClass(/parts-list__row--pending/);
+  await expectNoAxeViolations(page);
+});
+
+test('the panel and parts list sit beside the assembly on desktop, below it otherwise', async ({
+  page,
+}) => {
+  await page.goto('/education');
+  const width = page.viewportSize()?.width ?? 0;
+  const assembly = (await page.locator('.assembly').boundingBox())!;
+  const panel = (await page.locator('.detail-panel:visible').boundingBox())!;
+  const table = (await page.locator('.parts-list').boundingBox())!;
+  if (width >= 1024) {
+    expect(panel.x).toBeGreaterThanOrEqual(assembly.x + assembly.width);
+  } else {
+    expect(panel.y).toBeGreaterThanOrEqual(assembly.y + assembly.height);
+  }
+  expect(table.y).toBeGreaterThanOrEqual(panel.y + panel.height);
 });

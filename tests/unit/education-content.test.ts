@@ -122,4 +122,14 @@ describe('education (EN) against design/copy.md', () => {
       strings,
     );
   });
+
+  it('holds the parts-list headers and the detail label in ui', () => {
+    const ui = uiSchema.parse(readCollection('ui').find((f) => f.path === 'en/ui')?.data);
+    const headers = /headers `([^`]+)`/.exec(
+      sheet05.find((l) => l.startsWith('- Parts list')) ?? '',
+    );
+    const { item, part, supplier, year } = ui.education.parts;
+    expect([item, part, supplier, year].join(' · ')).toBe(headers?.[1]);
+    expect(sheet05.join('\n')).toContain(`(label \`${ui.education.detail.replace('{n}', 'n')}\`)`);
+  });
 });

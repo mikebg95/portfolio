@@ -325,6 +325,12 @@ export const uiSchema = z.strictObject({
     intro: text,
     assembly: text,
     part: text.includes('{n}').includes('{name}'),
+    /** The detail panel's label (`{n}` the item), EC suffix of its sub-rows and note lead. */
+    detail: text.includes('{n}'),
+    ec: text.includes('{n}'),
+    note: text,
+    /** The parts list's caption (screen readers) and column headers. */
+    parts: z.strictObject({ caption: text, item: text, part: text, supplier: text, year: text }),
   }),
   lang,
   translated,

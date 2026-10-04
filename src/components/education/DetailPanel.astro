@@ -1,0 +1,151 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import type { CollectionEntry } from 'astro:content';
+
+import { localize, type Lang } from '../../i18n/paths';
+import DisplayHeading from '../drawing/DisplayHeading.astro';
+import Link from '../drawing/Link.astro';
+import SheetLabel from '../drawing/SheetLabel.astro';
+
+// components.md DetailPanel (SPEC §4.6): one education part at "scale 2:1" — label, title, meta,
+// body, optional sub-rows (code · text · EC), NOTE and link. Its id is `part-n`. Internal link
+// hrefs are localized; an http(s) link opens in a new tab.
+type Props = Omit<HTMLAttributes<'article'>, 'part' | 'lang'> & {
+  part: CollectionEntry<'education'>['data'];
+  lang: Lang;
+  strings: { detail: string; ec: string; note: string };
+};
+
+const { part, lang, strings, class: className, ...rest } = Astro.props;
+const { detail } = part;
+const external = detail.link ? /^https?:\/\//.test(detail.link.href) : false;
+const fill = (pattern: string, n: number) => pattern.replace('{n}', String(n));
+---
+
+<article
+  id={`part-${part.item}`}
+  class:list={['detail-panel', className]}
+  data-part={part.item}
+  {...rest}
+>
+  <SheetLabel as="span" class="detail-panel__label">
+    {fill(strings.detail, part.item)}
+  </SheetLabel>
+  <DisplayHeading size="s" class="detail-panel__title">
+    {detail.title}
+  </DisplayHeading>
+  <p class="detail-panel__meta">{detail.meta}</p>
+  <p class="detail-panel__body">{detail.body}</p>
+  {detail.rows.length > 0 && (
+    <ul class="detail-panel__rows">
+      {detail.rows.map((row) => (
+        <li class="detail-panel__row">
+          <span class="detail-panel__code">{row.code}</span>
+          <span>{row.text}</span>
+          <span class="detail-panel__ec">{fill(strings.ec, row.ec)}</span>
+        </li>
+      ))}
+    </ul>
+  )}
+  {detail.note && (
+    <p class="detail-panel__note">
+      {strings.note} {detail.note}
+    </p>
+  )}
+  {detail.link && (
+    <Link
+      class="detail-panel__link"
+      href={external ? detail.link.href : localize(lang, detail.link.href)}
+      external={external}
+    >
+      {detail.link.label}
+    </Link>
+  )}
+</article>
+
+<style>
+  .detail-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: var(--space-5);
+    border: var(--border-normal);
+    background: var(--color-paper-raised);
+  }
+
+  .detail-panel[hidden] {
+    display: none;
+  }
+
+  .detail-panel :global(.detail-panel__label) {
+    font-size: 11px;
+  }
+
+  .detail-panel :global(.detail-panel__title) {
+    overflow-wrap: normal;
+  }
+
+  .detail-panel__meta {
+    margin: 0;
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+
+  .detail-panel__body {
+    margin: 0;
+    color: var(--color-text-2);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .detail-panel__rows {
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid var(--color-rule);
+    font-size: 14px;
+    list-style: none;
+  }
+
+  .detail-panel__row {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) 60px;
+    gap: 10px;
+    padding: 9px 0;
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .detail-panel__code,
+  .detail-panel__ec {
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+
+  .detail-panel__code {
+    color: var(--color-muted);
+  }
+
+  .detail-panel__ec {
+    text-align: right;
+  }
+
+  .detail-panel__note {
+    align-self: flex-start;
+    max-width: 380px;
+    margin: 0;
+    padding: 10px 14px;
+    border: var(--border-dashed-note);
+    color: var(--color-redline);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.5;
+    transform: rotate(-1deg);
+  }
+
+  .detail-panel :global(.detail-panel__link) {
+    align-self: flex-start;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+  }
+</style>

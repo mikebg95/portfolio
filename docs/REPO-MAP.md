@@ -121,4 +121,7 @@ line.
 - `src/assembly.ts` — plate geometry in drawing units (`layout`, `diamond`, `DEFAULT_PART`); pure, unit-tested.
 - `src/components/education/ExplodedAssembly.astro` — plates (`.plate[data-part]`) and Balloon buttons (`.balloon__mark[data-part]`), both `aria-pressed`; sizes are `calc(n * var(--u))`, `--u` = min(1 px, column minus `--labels` over the drawing width).
 - TRAP: `--u` uses `cqi`, so it must be declared below the `container-type` element (`.assembly__drawing`, not `.assembly`); on the container itself `cqi` resolves against the next container up.
-- `tests/e2e/education.spec.ts` — sheet strings, five plates + balloons with names and pressed state, one axis without overlap, fits 320/390/768 px.
+- `src/components/education/DetailPanel.astro` — one `<article id="part-n">` per part, all five rendered, the unselected `hidden` (its `display: flex` needs the `[hidden]` rule).
+- `src/components/education/PartsList.astro` — a real `<table>`, 5 → 1; each row's PART cell is the `aria-pressed` button (`.parts-list__select[data-part]`); a click on the rest of the row is PR-35's JS.
+- TRAP: at 320 px the four columns fit only with 11 px type and 6 px cell padding (≤ 767 px); a `nowrap` year or wider padding pushes the table past the frame.
+- `tests/e2e/education.spec.ts` — sheet strings, five plates + balloons with names and pressed state, one axis without overlap, default detail, parts rows, layout per viewport, fits 320/390/768 px.

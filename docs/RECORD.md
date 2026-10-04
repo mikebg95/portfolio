@@ -271,3 +271,13 @@ components.md). Plates and balloons are both buttons in the tab order with the s
 the keyboard. Part 3 renders pressed (balloon filled, label bold); dimming the others is PR-35's.
 On a phone the plates scale (`--u`, px per drawing unit) to the width left after a 112 px label
 column; labels wrap there instead of shrinking.
+
+## 2026-10-04 — Education detail panel and parts list
+Who: agent (PR-34). All five detail panels are rendered (`id="part-n"`, the target PR-35's hash
+needs) and all but part 3 carry `hidden`; PR-35 decides how no-JS shows them stacked. The panel
+title is DisplayHeading `s`, not components.md's `m`: the drawing sets it at 30 px on one line,
+and `m` (34 px at 1440) wraps MINOR PROGRAMMING in the 460 px column. Parts-list rows stay table
+rows; the button selecting a part is the PART cell's text (its name = the visible part name), so
+the table keeps its semantics. ITEM/PART/SUPPLIER/YEAR, `DETAIL {n} · SCALE 2:1`, `{n} EC` and
+`NOTE:` are `ui.education` (additive). Side by side from 1024 px: assembly `1fr`, panel column
+≤ 460 px.

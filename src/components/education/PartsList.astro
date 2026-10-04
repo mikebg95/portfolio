@@ -1,0 +1,129 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+// components.md PartsList (SPEC §4.6): ITEM · PART · SUPPLIER · YEAR, highest item first as drawn.
+// Each row's part is a button selecting it (`aria-pressed`, `data-part`); the selected row is
+// filled, a pending row is redline.
+interface Props {
+  parts: CollectionEntry<'education'>['data'][];
+  selected: number;
+  headers: { caption: string; item: string; part: string; supplier: string; year: string };
+}
+
+const { parts, selected, headers } = Astro.props;
+const rows = [...parts].sort((a, b) => b.item - a.item);
+---
+
+<table class="parts-list">
+  <caption class="sr-only">{headers.caption}</caption>
+  <thead>
+    <tr>
+      <th scope="col">{headers.item}</th>
+      <th scope="col">{headers.part}</th>
+      <th scope="col">{headers.supplier}</th>
+      <th scope="col">{headers.year}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {rows.map((part) => (
+      <tr
+        class:list={[
+          'parts-list__row',
+          part.item === selected && 'parts-list__row--selected',
+          part.pending && 'parts-list__row--pending',
+        ]}
+        data-part={part.item}
+      >
+        <td>{part.item}</td>
+        <td>
+          <button
+            type="button"
+            class="parts-list__select"
+            aria-pressed={part.item === selected ? 'true' : 'false'}
+            data-part={part.item}
+          >
+            {part.part}
+          </button>
+        </td>
+        <td>{part.supplier}</td>
+        <td>{part.years}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+<style>
+  .parts-list {
+    width: 100%;
+    border: var(--border-normal);
+    border-collapse: collapse;
+    background: var(--color-paper-raised);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-align: left;
+  }
+
+  th,
+  td {
+    padding: 8px 10px;
+    border-right: var(--border-thin);
+    vertical-align: top;
+  }
+
+  th:last-child,
+  td:last-child {
+    border-right: 0;
+  }
+
+  th {
+    border-bottom: var(--border-normal);
+    color: var(--color-muted);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+  }
+
+  th:first-child {
+    width: 44px;
+  }
+
+  .parts-list__row + .parts-list__row {
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .parts-list__row:hover {
+    background: color-mix(in srgb, var(--color-fill-1) 50%, transparent);
+  }
+
+  .parts-list__row--selected,
+  .parts-list__row--selected:hover {
+    background: var(--color-fill-1);
+  }
+
+  .parts-list__row--pending {
+    color: var(--color-redline);
+  }
+
+  /* A phone keeps all four columns: tighter cells, and the year may break after its dash. */
+  @media (max-width: 767px) {
+    .parts-list {
+      font-size: 11px;
+    }
+
+    th,
+    td {
+      padding: 8px 6px;
+    }
+  }
+
+  /* The part name is the row's button: it reads as table text. */
+  .parts-list__select {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+</style>

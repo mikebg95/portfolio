@@ -88,4 +88,8 @@ education:
   intro: 'Not a straight line from a computer-science degree. Each layer below carries load in the final build — select a part to open its detail.'
   assembly: Exploded assembly of the education parts
   part: 'Part {n}: {name}'
+  detail: 'DETAIL {n} · SCALE 2:1'
+  ec: '{n} EC'
+  note: 'NOTE:'
+  parts: { caption: Parts list, item: ITEM, part: PART, supplier: SUPPLIER, year: YEAR }
 lang: en

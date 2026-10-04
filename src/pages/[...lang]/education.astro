@@ -2,7 +2,9 @@
 import { DEFAULT_PART } from '../../assembly';
 import DisplayHeading from '../../components/drawing/DisplayHeading.astro';
 import SheetLabel from '../../components/drawing/SheetLabel.astro';
+import DetailPanel from '../../components/education/DetailPanel.astro';
 import ExplodedAssembly from '../../components/education/ExplodedAssembly.astro';
+import PartsList from '../../components/education/PartsList.astro';
 import { getAllLocalized, t } from '../../i18n/content';
 import { langPaths, type Lang } from '../../i18n/paths';
 import SheetLayout from '../../layouts/SheetLayout.astro';
@@ -40,6 +42,19 @@ const partName = (part: (typeof parts)[number]) =>
         name={partName}
         label={ui.education.assembly}
       />
+      <div class="education__side">
+        <div class="education__details">
+          {parts.map((part) => (
+            <DetailPanel
+              part={part}
+              lang={lang}
+              strings={ui.education}
+              hidden={part.item !== DEFAULT_PART}
+            />
+          ))}
+        </div>
+        <PartsList parts={parts} selected={DEFAULT_PART} headers={ui.education.parts} />
+      </div>
     </div>
   </section>
 </SheetLayout>
@@ -76,9 +91,23 @@ const partName = (part: (typeof parts)[number]) =>
     line-height: 1.6;
   }
 
+  /* Assembly beside the detail panel and parts list on desktop; stacked below it otherwise. */
   .education__body {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     gap: var(--space-5);
+  }
+
+  .education__side {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  @media (min-width: 1024px) {
+    .education__body {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 460px);
+      align-items: start;
+    }
   }
 </style>
