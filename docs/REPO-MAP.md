@@ -43,6 +43,7 @@ line.
 - `scripts/tokens.ts` — tokens.json → `src/styles/tokens.css`; one parse rule per token group, throws on a description it cannot read (fix the rule or the token, never the CSS).
 - `src/styles/base.css` — imports tokens.css + fonts.css; body, focus ring, `.sr-only`.
 - `src/styles/fonts.ts` — `PRELOAD_FONTS`, used by `src/components/FontPreload.astro`; `fonts.css` must declare the same URLs (tests/unit/tokens.test.ts).
+- TRAP: WebKit fetches same-origin fonts `no-cors`, so a `crossorigin` preload is never used there (double download + "preloaded but not used"); `FontPreload.astro` gates a plain preload on `WEBKIT_MEDIA` and adds the `crossorigin` one by script elsewhere.
 - `src/components/drawing/` — the shared drawing primitives (components.md); `src/revision-note.ts` splits a note's "REV. NOTE △" lead off.
 - `src/display-fit.ts` — `displayFit(text)`: a heading's longest word in em (fontkit, display axes + tracking), used by `DisplayHeading.astro`; `tests/e2e/display-headings.spec.ts` sweeps every route 280–1440 px. `src/tokens-file.ts` — `token()`/`tokenNumber()` read tokens.css at build time (og.ts, display-fit.ts).
 - TRAP: a DisplayHeading's text sits in `.display-heading__fit`, not directly in the h1/h2; a Range over the heading's contents also returns that span's whole box as a rect. Symptom: a test sees "(no text node)" or one extra full-width "line".

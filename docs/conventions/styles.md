@@ -20,6 +20,8 @@
 - Preload only a font the page renders above the fold: SheetLayout preloads `PRELOAD_FONTS`
   (display + body, `src/styles/fonts.ts`); a page without one of them passes `preloadFonts` (the
   404 sheets: `[DISPLAY_FONT]`). `tests/e2e/performance.spec.ts` fails on a preload the page never uses.
+  Never write a font `<link rel=preload>` by hand: `FontPreload.astro` gives WebKit (`no-cors` font
+  requests) and Blink/Gecko (`cors`) each a preload of their own mode, or one engine fetches twice.
 - Page content inside `<main>` is a stack of `<section class="sheet-panel">` (base.css): content
   padding 56 px / 24 px on phone, and a full-width 1 px ink rule between consecutive panels — the
   sheet is divided into panels, never by empty space alone. Override the padding per page when a

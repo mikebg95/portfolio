@@ -751,3 +751,22 @@ to a side branch, is denied to agents in this loop (permission prompt refused), 
 deploy step is what pushes main. That check is PR-56b (`- [!]`), re-checked after the deploy.
 Not done: running the workflow locally (`act` and actionlint are not installed; installing them
 was refused) — the YAML was parsed with js-yaml and passes Prettier.
+
+## 2026-10-05 — Font preloads split by engine: WebKit in markup, Blink/Gecko by script (QA-67)
+Who: agent (QA-67). WebKit (Playwright webkit 26.6) fetches same-origin `@font-face` files and
+`FontFace()` loads in `no-cors` mode, Chromium 153 in `cors`; a preload is used only by a request of
+the same mode, so `<link rel=preload crossorigin>` made Safari download Archivo and Plex Sans 400
+twice and warn "preloaded … but not used", and dropping `crossorigin` does the same to Chromium.
+No single `<link>` serves both, and a pure-markup split needs a media query true in Blink and false
+in WebKit — Blink evaluates `not (<unknown feature>)` as false, and the features only Blink knows
+(`device-posture`, viewport segments) are not shipped in Gecko. Chosen: per face a preload without
+`crossorigin` and `media="(-webkit-transform-2d)"` (a legacy feature only WebKit matches), plus an
+inline head script that adds the `crossorigin` preloads when that query does not match
+(`src/components/FontPreload.astro`, `WEBKIT_MEDIA` in `src/styles/fonts.ts`). Without JS, Safari
+keeps its preload; Chromium fetches each face once from the `@font-face`, just later. Measured,
+Lighthouse 12.6.1 mobile, simulated (the budget's method), 3 runs: with `crossorigin` preloads
+`/` 0.98, `/experience` 0.96–0.97; no preloads at all `/` 0.96–0.97, `/experience` 0.92–0.93
+(below the 0.95 budget, CLS 0.081) — refused; the split `/` 0.98, `/experience` 0.96, CLS 0.
+After a router sheet change neither engine fetches a font again or warns. If WebKit ever drops
+`-webkit-transform-2d` it gets the `cors` preload and double-fetches again;
+`tests/e2e/performance.spec.ts` ("fetches each preloaded font once") fails on webkit-iphone then.

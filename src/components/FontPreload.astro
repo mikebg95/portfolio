@@ -1,5 +1,5 @@
 ---
-import { PRELOAD_FONTS } from '../styles/fonts';
+import { PRELOAD_FONTS, WEBKIT_MEDIA } from '../styles/fonts';
 
 interface Props {
   /** Only fonts the page renders above the fold: a preload the page never uses is wasted bytes. */
@@ -9,6 +9,19 @@ interface Props {
 const { fonts = PRELOAD_FONTS } = Astro.props;
 ---
 
+<!-- QA-67: a preload is used only by a font request of the same CORS mode. WebKit's is `no-cors`:
+     the links below, no JS needed. Blink and Gecko ask in `cors`: the script adds those links, so
+     without JS they fetch each face once, just later (docs/RECORD.md 2026-10-05 QA-67). -->
 {fonts.map((href) => (
-  <link rel="preload" href={href} as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href={href} as="font" type="font/woff2" media={WEBKIT_MEDIA} />
 ))}
+<script is:inline define:vars={{ fonts, media: WEBKIT_MEDIA }}>
+  if (!matchMedia(media).matches) {
+    for (const href of fonts) {
+      const link = document.createElement('link');
+      Object.assign(link, { rel: 'preload', href, as: 'font', type: 'font/woff2' });
+      link.crossOrigin = 'anonymous';
+      document.head.append(link);
+    }
+  }
+</script>

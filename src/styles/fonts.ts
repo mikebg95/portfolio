@@ -13,3 +13,9 @@ export const BODY_FONT = `${FONT_DIR}/ibm-plex-sans-latin-400-normal.woff2`;
 /** The two above-the-fold faces, preloaded by default (SheetLayout's `preloadFonts`). A font is
  * preloaded only where the page renders it (tests/e2e/performance.spec.ts). */
 export const PRELOAD_FONTS = [DISPLAY_FONT, BODY_FONT] as const;
+
+/** True only in WebKit (Safari, every iOS browser): a legacy media feature Blink and Gecko dropped.
+ * WebKit fetches same-origin `@font-face` files in `no-cors` mode, Blink and Gecko in `cors`, and a
+ * preload is used only by a request of the same mode — so WebKit gets a preload without
+ * `crossorigin` and every other engine one with it (FontPreload.astro, docs/RECORD.md QA-67). */
+export const WEBKIT_MEDIA = '(-webkit-transform-2d)';

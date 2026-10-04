@@ -4,6 +4,7 @@ import { gzipSync } from 'node:zlib';
 import { expect, test } from '@playwright/test';
 
 import { PRIMITIVES_PATH } from '../../src/config';
+import { FONT_DIR, PRELOAD_FONTS } from '../../src/styles/fonts';
 import { ROUTES } from './helpers/routes';
 
 // PR-52, SPEC §7: the size half of the performance budget (Lighthouse CI, `lighthouserc.json`,
@@ -106,6 +107,40 @@ test.describe('font preloads', () => {
         expect(loaded, `${href} is preloaded, so the page renders it`).toContain(
           `${face!.family} ${face!.weight}`,
         );
+      }
+    });
+  }
+
+  // QA-67: WebKit fetches same-origin fonts in `no-cors` mode, Blink in `cors`; a preload of the
+  // other mode is never used, so the face downloads twice and the console warns. Each engine must
+  // get a preload it uses (src/components/FontPreload.astro), with and without JS.
+  for (const javaScriptEnabled of [true, false]) {
+    test.describe(javaScriptEnabled ? 'with JS' : 'without JS', () => {
+      test.use({ javaScriptEnabled });
+
+      for (const path of ['/', '/experience']) {
+        test(`${path} fetches each preloaded font once and uses the preload`, async ({ page }) => {
+          const fetched: string[] = [];
+          const warnings: string[] = [];
+          page.on('request', (request) => {
+            const { pathname } = new URL(request.url());
+            if (pathname.startsWith(FONT_DIR)) fetched.push(pathname);
+          });
+          page.on('console', (message) => {
+            if (/preload/i.test(message.text())) warnings.push(message.text());
+          });
+          await page.goto(path);
+          await page.evaluate(() => document.fonts.ready);
+          // The browser reports an unused preload "within a few seconds from the window's load event".
+          await page.waitForTimeout(4000);
+          for (const href of PRELOAD_FONTS) {
+            expect(
+              fetched.filter((font) => font === href),
+              href,
+            ).toHaveLength(1);
+          }
+          expect(warnings).toEqual([]);
+        });
       }
     });
   }
