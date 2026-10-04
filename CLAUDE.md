@@ -80,3 +80,4 @@ that genuinely needs something new adds it here in the same commit. -->
 ## Conventions index
 
 - Content (collections, EN/NL twins, YAML) → docs/conventions/content.md
+- Styles (tokens → CSS, fonts, base, breakpoints) → docs/conventions/styles.md

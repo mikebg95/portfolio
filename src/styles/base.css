@@ -1,0 +1,41 @@
+/* Global base: tokens, faces, body type and colour, focus ring, utilities. Every page imports this. */
+@import './tokens.css';
+@import './fonts.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-desk);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: var(--size-body);
+  line-height: var(--size-body-line-height);
+}
+
+/* SPEC §7: ink outline 2 px + 2 px offset, keyboard focus only. */
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

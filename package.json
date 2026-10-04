@@ -7,8 +7,9 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev": "astro dev --port 4321",
-    "build": "astro build",
+    "tokens": "node scripts/tokens.ts",
+    "dev": "npm run tokens && astro dev --port 4321",
+    "build": "npm run tokens && astro build",
     "preview": "astro preview --port 4321",
     "astro": "astro",
     "typecheck": "astro check && tsc --noEmit",

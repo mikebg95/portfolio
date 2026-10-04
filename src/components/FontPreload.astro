@@ -1,0 +1,7 @@
+---
+import { PRELOAD_FONTS } from '../styles/fonts';
+---
+
+{PRELOAD_FONTS.map((href) => (
+  <link rel="preload" href={href} as="font" type="font/woff2" crossorigin />
+))}
