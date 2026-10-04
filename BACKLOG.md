@@ -68,7 +68,7 @@ queue.
 
 ### Motion
 
-- [ ] **PR-40 Crosshair**
+- [x] **PR-40 Crosshair**
   - Done when: the drafting crosshair per design/motion.md §M6 on every sheet: dashed redline hairlines + "X 0000 · Y 0000" readout in sheet coordinates, rAF-throttled, `pointer-events: none`, `aria-hidden`, only for `(hover: hover) and (pointer: fine)`, off under reduced motion; ported from the preview's script; e2e asserts it appears on mouse move (desktop) and is absent on phone.
   - Spec: design/motion.md §M6; design/screens/html/motion-preview.dc.html
   - Out of scope: —
