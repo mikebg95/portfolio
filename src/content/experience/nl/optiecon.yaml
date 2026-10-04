@@ -1,0 +1,16 @@
+# Placeholder so the build passes — PR-17 replaces it with the copy from design/copy.md.
+id: optiecon
+order: 1
+role: 'Placeholder (PR-17)'
+employer: Conspect
+client: OptieCon
+place: 'Placeholder (PR-17)'
+start: '2026-06'
+end: null
+context: 'Placeholder (PR-17)'
+bullets:
+  - 'Placeholder (PR-17)'
+stack:
+  - 'Placeholder (PR-17)'
+lang: nl
+translated: false

@@ -1,0 +1,38 @@
+# Placeholder so the build passes — PR-12 replaces it with the copy from design/copy.md.
+hero:
+  label: 'Placeholder (PR-12)'
+  name: ['Placeholder (PR-12)', 'Placeholder (PR-12)']
+  role: 'Placeholder (PR-12)'
+  intro: 'Placeholder (PR-12)'
+  revisionNote: 'Placeholder (PR-12)'
+  buttons: { projects: 'Placeholder (PR-12)', cv: 'Placeholder (PR-12)' }
+  dimensions: { horizontal: 'Placeholder (PR-12)', vertical: 'Placeholder (PR-12)' }
+  balloons:
+    - { text: 'Placeholder (PR-12)' }
+    - { text: 'Placeholder (PR-12)' }
+    - { text: 'Placeholder (PR-12)' }
+  portraitAlt: 'Placeholder (PR-12)'
+howIWork:
+  - { title: 'Placeholder (PR-12)', body: 'Placeholder (PR-12)' }
+  - { title: 'Placeholder (PR-12)', body: 'Placeholder (PR-12)' }
+  - { title: 'Placeholder (PR-12)', body: 'Placeholder (PR-12)' }
+  - { title: 'Placeholder (PR-12)', body: 'Placeholder (PR-12)' }
+aiNote: 'Placeholder (PR-12)'
+specs:
+  - { code: S-01, label: 'Placeholder (PR-12)', items: ['Placeholder (PR-12)'] }
+  - { code: S-02, label: 'Placeholder (PR-12)', items: ['Placeholder (PR-12)'] }
+  - { code: S-03, label: 'Placeholder (PR-12)', items: ['Placeholder (PR-12)'] }
+  - { code: S-04, label: 'Placeholder (PR-12)', items: ['Placeholder (PR-12)'] }
+  - { code: S-05, label: 'Placeholder (PR-12)', items: ['Placeholder (PR-12)'] }
+  - { code: S-06, label: 'Placeholder (PR-12)', items: ['Placeholder (PR-12)'] }
+  - { code: S-07, label: 'Placeholder (PR-12)', items: ['Placeholder (PR-12)'] }
+generalNotes:
+  - 'Placeholder (PR-12)'
+current:
+  - { text: 'Placeholder (PR-12)', href: / }
+contact:
+  email: mikebgoldman95@gmail.com
+  linkedin: https://linkedin.com/in/mikebg95
+  github: https://github.com/mikebg95
+lang: nl
+translated: false

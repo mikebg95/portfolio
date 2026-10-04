@@ -11,6 +11,26 @@ Who: … Why: … Instead of: … -->
 Who: agent (PR-1). Why: `@astrojs/check` 0.9.10 peers `typescript ^5 || ^6` and typescript-eslint
 8.71 peers `<6.1`; TS 7.0.2 (latest) breaks both. Instead of: TS 7. Revisit when both accept it.
 
+## 2026-10-04 — Content config at `src/content.config.ts`, schemas in `src/content/schemas.ts`
+Who: agent (PR-3). Why: Astro 6+ refuses `src/content/config.ts` (LegacyContentConfigError) and
+needs a loader per collection; schemas sit in their own module so Vitest checks the files without
+Astro. Instead of: the path SPEC §5 named (SPEC, CLAUDE.md updated).
+
+## 2026-10-04 — Content is YAML, one file per entry per language
+Who: agent (PR-3). Why: long copy reads best in YAML; the unit test parses with `js-yaml`, the
+parser Astro's loader uses, so test and build agree. `src/content/<collection>/<lang>/<id>.yaml`.
+Instead of: JSON (quote-heavy) or Markdown bodies (no structure).
+
+## 2026-10-04 — Schema details SPEC §5 left open
+Who: agent (PR-3). `profile.specs` has 7 rows, not SPEC's 6: copy.md, PR-12 and PR-15 all name
+S-01…S-07. Added beyond SPEC, all from copy.md: experience `kind` (role | break, for the sabbatical,
+which has no employer); projects `kind` (card code suffix), `cardSummary` (card ≠ detail summary),
+`figures` as two {title, caption?}; certifications `stamp` (3 lines), `verifyLabel`; education
+`balloon`, `pending`, `detail.note`, `detail.link`, plate size full | small, style solid | dashed;
+profile hero/howIWork/aiNote shapes. Page-level labels (sheet labels, headings) are not modelled
+yet — the page tasks decide where they live. EN/NL twins must have identical shape (same optional
+fields, same list lengths), not just both exist.
+
 ## 2026-10-04 — Prettier skips Markdown, `design/` and `docs/`
 Who: agent (PR-1). Why: they are authored specification and sources; reformatting them churns
 every task's diff (the task check runs `prettier --check` on every changed file). Instead of:

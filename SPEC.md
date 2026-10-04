@@ -168,7 +168,7 @@ Not drawn. Built from the sheet frame, header, a display heading "SHEET NOT FOUN
 and the five sheet links as a sheet index list.
 
 ## 5. Data
-Content collections (§3.6), schema per collection in `src/content/config.ts`:
+Content collections (§3.6), schema per collection in `src/content/schemas.ts`, wired up in `src/content.config.ts`:
 - `experience`: id, order, role, employer, client?, place, start (YYYY-MM), end (YYYY-MM | null =
   now), context, bullets[], stack[], note?, lang.
 - `projects`: slug, code (P-01…), order, title, summary, period, status (done | in-progress |

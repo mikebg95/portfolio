@@ -62,7 +62,8 @@ that genuinely needs something new adds it here in the same commit. -->
 - If it looks like a generic portfolio template, it is wrong (design/README.md).
 
 ## Contracts later tasks build on
-- Content collection schemas (`src/content/config.ts`, SPEC §5) — changing one is its own task.
+- Content collection schemas (`src/content/schemas.ts`, wired in `src/content.config.ts`, SPEC §5) —
+  changing one is its own task.
 - Design tokens → CSS custom properties (generated from `design/tokens.json`); never hard-code a colour.
 - `SheetLayout` (frame + header + footer + theme + view-transition names) — every page uses it.
 - The motion helpers (`data-reveal`, plotting sequence, reduced-motion/no-JS guards) defined by the
@@ -78,4 +79,4 @@ that genuinely needs something new adds it here in the same commit. -->
 
 ## Conventions index
 
-<!-- - Area name → docs/conventions/area.md -->
+- Content (collections, EN/NL twins, YAML) → docs/conventions/content.md

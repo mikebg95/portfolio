@@ -1,0 +1,13 @@
+# Placeholder so the build passes — PR-32 replaces it with the copy from design/copy.md.
+item: 1
+part: 'Placeholder (PR-32)'
+balloon: 'Placeholder (PR-32)'
+supplier: 'Placeholder (PR-32)'
+years: 'Placeholder (PR-32)'
+plate: { size: full, style: solid }
+detail:
+  title: 'Placeholder (PR-32)'
+  meta: 'Placeholder (PR-32)'
+  body: 'Placeholder (PR-32)'
+lang: en
+translated: true
