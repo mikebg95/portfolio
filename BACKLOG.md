@@ -74,7 +74,7 @@ queue.
   - Spec: SPEC §4.6; design/components.md PartsList, DetailPanel
   - Out of scope: interaction (PR-35).
 
-- [ ] **PR-35 Part selection**
+- [x] **PR-35 Part selection**
   - Done when: clicking/Enter/Space on a plate, balloon or row selects that part: plate lifts 12 px and fills, others dim to 60%, row highlights, panel content swaps (clip-path wipe 250 ms; instant under reduced motion), URL hash `#part-n` updates and is honoured on load; without JS all five details render stacked (progressive enhancement); hover on a row previews the lift; e2e covers mouse, keyboard and hash.
   - Spec: SPEC §4.6; design/motion.md §M5
   - Out of scope: scroll-scrubbed explode (PR-44).
