@@ -68,8 +68,8 @@ SWEEP_LITERALS="${SWEEP_LITERALS:-npm run verify|vitest|astro dev|astro preview|
 # regressions; every other stage runs once. Nothing edits the app after
 # verification. Stages: simplify, qa, ui, verify (gate-<stage>.md each).
 PREDEPLOY_GATE="${PREDEPLOY_GATE:-1}"
-GATE_SEQUENCE="${GATE_SEQUENCE:-simplify qa verify simplify}"
-VERIFY_MAX_ROUNDS="${VERIFY_MAX_ROUNDS:-3}"
+GATE_SEQUENCE="${GATE_SEQUENCE:-qa verify}"  # Michael 2026-10-04: static site — click-through + one verify, no clean-up passes
+VERIFY_MAX_ROUNDS="${VERIFY_MAX_ROUNDS:-1}"
 GATE_MAX_ROUNDS="${GATE_MAX_ROUNDS:-10}"   # then ship anyway, with WHAT-TO-CHECK.md
 GATE_TIMEOUT="${GATE_TIMEOUT:-6h}"         # per attempt; walks resume from their progress file
 GATE_STUCK_ATTEMPTS="${GATE_STUCK_ATTEMPTS:-3}"
