@@ -66,7 +66,7 @@ queue.
   - Out of scope: other projects.
   - Note (PR-25): figure words go in `figures[n].labels`, layouts in `src/components/projects/DetailFigure.astro`; add the title to the `detail sheets` test in tests/unit/project-content.test.ts (docs/RECORD.md 2026-10-04).
 
-- [ ] **PR-27 Recipe Book detail sheet**
+- [x] **PR-27 Recipe Book detail sheet**
   - Done when: content from copy.md 03.3 plus spec rows from research-repos.md P-03 (aggregate, SEQUENCE ids, @Version + 409, open-in-view off, summary projection, deferrable constraints, ArchUnit, 109 tests); FIG. 1 design-first flow, FIG. 2 aggregate drawing; e2e asserts 109.
   - Spec: design/copy.md 03.3; github.com/mikebg95/recipe-book
   - Out of scope: other projects.
