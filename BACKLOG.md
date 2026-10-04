@@ -66,7 +66,7 @@ queue.
   - Spec: SPEC §4.1; design/screens/overview-default-light-1440.png
   - Out of scope: motion.
 
-- [ ] **PR-16 Overview "In progress" strip**
+- [x] **PR-16 Overview "In progress" strip**
   - Done when: a panel labelled `IN PROGRESS` lists the three current items as rows (redline ◐ marker, text, → link to the target anchor/page), above the title block; links resolve (anchors exist or are added as ids by their page tasks — if a target page is still a stub, the id is added there now); e2e follows each link.
   - Spec: SPEC §4.1; design/copy.md "Current work"
   - Out of scope: —
