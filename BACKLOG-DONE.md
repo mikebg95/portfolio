@@ -711,3 +711,16 @@ History, not a queue.
   - Seen by PR-62c's agent, 2026-10-04: `npx playwright test tests/e2e/theme-reveal.spec.ts` fails on `chromium-phone` (both tests, 30 s timeout) waiting for the button "Open sheet index" (`themeButton`, tests/e2e/theme-reveal.spec.ts:60), which PR-62a removed — the theme switch now sits in the phone header itself. Fails on main without PR-62c's change.
   - Done when: the spec finds the phone header's theme switch directly and passes on all three projects; nothing else in tests/e2e still looks for the sheet index (`grep -rn "sheet index" tests/`).
   - Out of scope: changing the theme switch.
+
+
+## Pruned from the queue
+
+1 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### Hardening
+
+- [x] **PR-62d Phone Education: assembly + bottom sheet** (rest of PR-62, item 5)
+  - Drawing: `design/screens/education-part3-sheet-light-390.png` (+ html).
+  - Done when, below 768 px: the exploded assembly scaled to the screen; tapping a part opens a **bottom sheet** (drag handle, swipe down to close, ‹ › to step parts, focus-trapped, Escape closes) with the detail; parts list below; without JS the detail degrades to inline details; reduced motion; screenshots both themes; e2e for bottom sheet open/step/close. Note: the tab bar (z-index 4, fixed) must sit under the sheet's backdrop.
+  - Spec: design/screens education 390, design/components.md, design/motion.md
+  - Out of scope: desktop layout.
