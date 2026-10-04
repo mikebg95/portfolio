@@ -64,7 +64,7 @@ queue.
 
 ### Sheet 05 — Education
 
-- [ ] **PR-32 Education content (EN)**
+- [x] **PR-32 Education content (EN)**
   - Done when: `education` EN entries for parts 1–5 with every field and detail panel text from copy.md; Vitest asserts ordering and that part 3 has three sub-rows totalling 30 EC.
   - Spec: design/copy.md Sheet 05
   - Out of scope: NL.
