@@ -406,3 +406,21 @@ History, not a queue.
   - Done when: the full §M1 timeline on `/` ported from `design/screens/html/motion-preview.dc.html` (frame draw, grid, header stagger, active tab fill, headline plotter wipe, rule/role/intro, portrait line scan, dimension lines, leaders + balloons, revision note stamp) with identical durations/delays/easings; plays only on the session's first page view; text readable within 1.3 s (e2e measures); reduced motion → final state.
   - Spec: design/motion.md §M1
   - Out of scope: other sheets (PR-42).
+
+
+## Pruned from the queue
+
+2 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### Motion
+
+- [x] **PR-42a First-load plotting — other sheets**
+  - Done when: the short first-load variant on sheets 02–05, project details and 404 (frame, grid, header, heading wipe ≤ 1.2 s).
+  - Spec: design/motion.md §M1 (other sheets)
+  - Out of scope: timeline, exploded view, stamps, theme switch.
+
+- [x] **PR-42b Scroll reveals everywhere + count-ups**
+  - Done when: §M3 reveals applied across all pages (spec/table rows ink in with rule draw, section labels wipe, below-fold headings wipe, revision notes stamp, figures' boxes then arrows draw in data-flow order, cards rise staggered); counts (tests, durations) count up once; e2e: after scrolling to the bottom every element is in its final state.
+  - Learned (PR-42a): no component carries `data-reveal` yet — add it at call sites (SheetLabel, DisplayHeading, RevisionNote, SpecTable, Figure spread their props). Hero elements are `data-plot` (plotting.css) and Sheet 01's `.hero` is plotting-overview.css: never give those a `data-reveal` too. Other-sheet content right under the hero (timeline, cards, FIG. 1, assembly) is visible at load, so its reveal plays at load.
+  - Spec: design/motion.md §M3, §M6 numbers
+  - Out of scope: timeline, exploded view, stamps, theme switch.
