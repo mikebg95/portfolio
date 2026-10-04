@@ -68,16 +68,6 @@ queue.
 
 ### Motion
 
-- [x] **PR-45 Sheet-to-sheet View Transitions**
-  - Done when: §M2: cross-document view transitions enabled; frame, header and title block keep shared names and stay put; the active-tab fill slides between tabs; content leaves up/fades (180 ms) and enters from below (320 ms); project card title + mini diagram morph into the detail heading + FIG. 1 (per-slug names, unique per page); no transition under reduced motion; graceful in browsers without support; e2e (chromium) navigates between sheets without console errors and with `document.startViewTransition`/`@view-transition` present.
-  - Spec: design/motion.md §M2
-  - Out of scope: theme switch.
-
-- [x] **PR-46 Theme switch reveal**
-  - Done when: §M7 circular clip-path reveal from the theme button via `document.startViewTransition` (500 ms, ease-plot); instant fallback; reduced motion instant; e2e toggles twice without errors.
-  - Spec: design/motion.md §M7
-  - Out of scope: —
-
 - [ ] **PR-47 Micro-interactions**
   - Done when: §M6 small interactions: button ink-wipe hover, tab underline draw, card lift + mini-diagram arrow redraw, stamps slam in sequence with ink bleed on Sheet 04, CKAD dashed stamp ring rotating (the only infinite animation, paused under reduced motion), balloon hover scale, PipelineRoute travelling dot on Jamigos; all focus-visible equivalents for keyboard users; no layout-affecting properties animated (lint rule or test grepping CSS for animated width/height/top/left).
   - Spec: design/motion.md §M6; design/components.md
