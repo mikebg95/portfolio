@@ -62,7 +62,7 @@ queue.
 
 ### Sheet 04 — Certifications
 
-- [ ] **PR-30 Certification content (EN)**
+- [x] **PR-30 Certification content (EN)**
   - Done when: `certifications` EN entries C-01…C-04 from copy.md with exact verify URLs from docs/source/cv.md (CKAD none); Vitest asserts URLs and statuses.
   - Spec: design/copy.md Sheet 04; docs/source/cv.md
   - Out of scope: NL.
