@@ -34,6 +34,8 @@ line.
 - `src/styles/base.css` — imports tokens.css + fonts.css; body, focus ring, `.sr-only`.
 - `src/styles/fonts.ts` — `PRELOAD_FONTS`, used by `src/components/FontPreload.astro`; `fonts.css` must declare the same URLs (tests/unit/tokens.test.ts).
 - `src/components/drawing/` — the shared drawing primitives (components.md); `src/revision-note.ts` splits a note's "REV. NOTE △" lead off.
+- `src/display-fit.ts` — `displayFit(text)`: a heading's longest word in em (fontkit, display axes + tracking), used by `DisplayHeading.astro`; `tests/e2e/display-headings.spec.ts` sweeps every route 280–1440 px. `src/tokens-file.ts` — `token()`/`tokenNumber()` read tokens.css at build time (og.ts, display-fit.ts).
+- TRAP: a DisplayHeading's text sits in `.display-heading__fit`, not directly in the h1/h2; a Range over the heading's contents also returns that span's whole box as a rect. Symptom: a test sees "(no text node)" or one extra full-width "line".
 - `src/dev/primitives.astro` — the `/_primitives` specimen page; `astro.config.ts` injects it only in dev or when `BUILD_PRIMITIVES=1` (Playwright's webServer sets it), so production builds never have it.
 - TRAP: a token like `--border-normal: 1.5px solid var(--color-ink)` resolves where it is declared; in a nested `[data-theme]` it would keep the outer ink unless re-declared there (tokens.css does it for every `[data-theme]`). Symptom: borders in the page theme's colour inside the other theme's section.
 - `public/fonts/` — vendored woff2 + OFL licences (docs/RECORD.md 2026-10-04).

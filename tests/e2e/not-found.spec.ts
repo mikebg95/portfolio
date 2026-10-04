@@ -68,7 +68,7 @@ test('the not-found sheet fits a 320 px phone without breaking a word', async ({
   expect(overflow).toBe(0);
   // Each word of the heading sits on one line: SHEET NOT / FOUND, never NO / T.
   const broken = await page.getByRole('heading', { level: 1 }).evaluate((el) => {
-    const text = el.firstChild;
+    const text = el.querySelector('.display-heading__fit')?.firstChild;
     if (text?.nodeType !== Node.TEXT_NODE) return ['(no text node)'];
     const words: string[] = [];
     for (const m of (text.textContent ?? '').matchAll(/\S+/g)) {

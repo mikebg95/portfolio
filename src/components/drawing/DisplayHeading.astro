@@ -1,18 +1,38 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
 
+import { displayFit, htmlText } from '../../display-fit';
+
 // components.md DisplayHeading: Archivo 850 at 118 % width, uppercase. xl is the Sheet 01 name,
 // l every other sheet's, m and s section and detail titles.
 type Props = HTMLAttributes<'h1'> & {
   size: 'xl' | 'l' | 'm' | 's';
   as?: 'h1' | 'h2' | 'h3';
+  /** What the longest word must fit: the heading's own width, or — where the heading flows
+   * around a float, which its own container would stop — the nearest container around it. */
+  fitTo?: 'self' | 'container';
 };
 
-const { size, as: Tag = 'h2', class: className, ...rest } = Astro.props;
+const { size, as: Tag = 'h2', fitTo = 'self', class: className, ...rest } = Astro.props;
+
+// PR-61: no word ever breaks. The text's size is capped so its longest word, measured from the
+// font at build time (src/display-fit.ts), fits the heading's width; lines break between words.
+const html = await Astro.slots.render('default');
+const fit = await displayFit(htmlText(html));
 ---
 
-<Tag class:list={['display-heading', `display-heading--${size}`, className]} {...rest}>
-  <slot />
+<Tag
+  class:list={[
+    'display-heading',
+    `display-heading--${size}`,
+    { 'display-heading--fit-container': fitTo === 'container' },
+    className,
+  ]}
+  {...rest}
+>
+  <span class="display-heading__fit" style={fit > 0 ? `--display-fit: ${fit}` : undefined}>
+    <Fragment set:html={html} />
+  </span>
 </Tag>
 
 <style>
@@ -24,7 +44,34 @@ const { size, as: Tag = 'h2', class: className, ...rest } = Astro.props;
     letter-spacing: var(--font-display-letter-spacing);
     text-transform: var(--font-display-transform);
     line-height: 0.92;
-    overflow-wrap: break-word;
+    overflow-wrap: normal;
+    word-break: keep-all;
+    hyphens: none;
+    /* The fit below measures the heading's own width. */
+    container-type: inline-size;
+  }
+
+  /* A container is its own formatting context: text no longer wraps around a float beside it. */
+  .display-heading--fit-container {
+    container-type: normal;
+  }
+
+  /* `1em` is the heading's size (its token, or a page's cap on it); `100cqi / fit` the size at
+     which the longest word fills the width. The heading holds no text of its own, so its line
+     boxes are this block's, at this size. */
+  .display-heading__fit {
+    display: block;
+    font-size: min(1em, calc(100cqi / var(--display-fit, 1)));
+    /* letter-spacing in em resolves where declared: again, at the fitted size. */
+    letter-spacing: var(--font-display-letter-spacing);
+  }
+
+  /* Without container units: the phone column (viewport minus desk, frame and panel padding),
+     the narrowest a heading sits in. */
+  @supports not (width: 1cqi) {
+    .display-heading__fit {
+      font-size: min(1em, calc((100vw - 90px) / var(--display-fit, 1)));
+    }
   }
 
   .display-heading--xl {

@@ -1,12 +1,10 @@
-import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
-
 import { Resvg } from '@resvg/resvg-js';
 import type { Font } from 'fontkit';
 
 import { OG_IMAGE_DIR } from './config';
 import { openWoff2, run } from './glyphs';
 import type { Lang } from './i18n/paths';
+import { token, tokenNumber } from './tokens-file';
 
 // SPEC §3.8, design/README.md "Not drawn": the Open Graph image of a page, rendered at build time
 // as a mini sheet — desk, paper + grid, double frame, zone strip, the sheet label, the page's
@@ -35,22 +33,9 @@ export interface OgCard {
   site: string;
 }
 
-/** The paper theme's custom properties, read from the generated tokens.css `:root` block. */
-function paperTokens(css: string): (name: string) => string {
-  const root = /:root\s*\{([^}]*)\}/.exec(css)?.[1] ?? '';
-  const values = new Map([...root.matchAll(/--([\w-]+):\s*([^;]+);/g)].map((m) => [m[1]!, m[2]!]));
-  return (name) => {
-    const value = values.get(name);
-    if (value === undefined) throw new Error(`tokens.css has no --${name}`);
-    return value.trim();
-  };
-}
-
-// Read from disk, like the fonts below: Vitest hands `?raw` CSS imports over empty.
-const token = paperTokens(readFileSync(join(process.cwd(), 'src/styles/tokens.css'), 'utf8'));
-const px = (name: string) => parseFloat(token(name));
+const px = tokenNumber;
 /** `0.12em` → 0.12. */
-const em = (name: string) => parseFloat(token(name));
+const em = tokenNumber;
 
 const COLOR = {
   desk: token('color-desk'),

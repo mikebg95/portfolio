@@ -162,7 +162,8 @@ test('cards lay out 2 × 2 from tablet up and in 1 column on phone', async ({ pa
     for (const part of ['h2', '.cert-card__issuer']) {
       const lines = await page.locator(`#${id} ${part}`).evaluate((el) => {
         const range = document.createRange();
-        range.selectNodeContents(el);
+        // The heading's text sits in its fit span, whose own box would count as a line.
+        range.selectNodeContents(el.querySelector('.display-heading__fit') ?? el);
         return [...range.getClientRects()].map((r) => ({
           right: r.right,
           top: r.top,

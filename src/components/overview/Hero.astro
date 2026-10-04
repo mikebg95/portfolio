@@ -120,12 +120,6 @@ const { hero } = (await getLocalized('profile', 'profile', lang)).data;
       gap: var(--space-5);
     }
 
-    /* GOLDMAN is 6.3 em wide and must never break: below ~420 px the token's 56 px floor is too
-       wide for the column (viewport − 90 px: desk, frame and panel padding). */
-    .hero .hero__name {
-      font-size: min(var(--size-display-xl), calc((100vw - 90px) / 6.4));
-    }
-
     .hero__role {
       gap: var(--space-3);
       font-size: 20px;

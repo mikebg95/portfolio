@@ -32,3 +32,10 @@
   pages compose them and never restyle their insides. They take text as props/slots (from content)
   and pass `class` and other attributes through to their root (Balloon: to the circle). A new
   variant goes into the component and onto the `/_primitives` page (src/dev/Specimens.astro).
+- Display headings never break inside a word (PR-61): DisplayHeading sets `overflow-wrap: normal;
+  word-break: keep-all; hyphens: none` and wraps its slot in `.display-heading__fit`, sized
+  `min(1em, 100cqi / --display-fit)` from the longest word's em-width measured at build time
+  (`src/display-fit.ts`). Cap a heading's size on the heading itself (`min(token, Ncqi)`), never on
+  the span; never set `overflow-wrap`/`hyphens` on one. A heading that must flow around a float
+  passes `fitTo="container"` (CertCard) and needs an inline-size container around it. A new display
+  title that is not a DisplayHeading is wrong — use the component.

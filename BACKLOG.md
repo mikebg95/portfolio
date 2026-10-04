@@ -90,6 +90,12 @@ queue.
   - Spec: design/motion.md §M2 (transitions now via ClientRouter); SPEC §7
   - Out of scope: push notifications, install prompts.
 
+- [ ] **PR-67 Header sheet tabs never break a word**
+  - Seen by PR-61's agent, 2026-10-04: at 1280 px the desktop header's SHEET 04 tab reads "Certification / s" (mono tab name broken mid-word); NL "Certificeringen" is longer still. Reproduce: `npm run preview`, 1280 × 900, `/` and `/nl/`, look at the tab row.
+  - Done when: no header tab name (EN + NL) breaks inside a word at any width from 768 to 1440 px in 10 px steps (same per-word range check as `tests/e2e/display-headings.spec.ts`), by shrinking/fitting the tab text or the tab layout per the drawing, not by abbreviating copy; no tab text overflows its cell.
+  - Spec: design/components.md SheetHeader; design/screens overview-default-light-1440
+  - Out of scope: the phone header (PR-62).
+
 ### Delivery
 
 - [ ] **PR-55 Dockerfile**

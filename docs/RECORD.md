@@ -113,7 +113,7 @@ until PR-59, below).
 ## 2026-10-04 — Overview hero: choices the drawing left open
 Who: agent (PR-13). (1) Below ~420 px the name is capped at `(100vw − 90px) / 6.4` instead of the
 display-xl token's 56 px floor, which broke GOLDMAN mid-word in a 230 px column; the token is
-unchanged. (2) Callout 1 is one link around balloon + text ("Spring certified"); the balloon is
+unchanged (superseded by PR-61's fit for every display heading, below). (2) Callout 1 is one link around balloon + text ("Spring certified"); the balloon is
 decorative inside it, so the link is read once and the whole callout is clickable. (3) The portrait
 drops the source file's blank lead lines (a `<pre>` would show them as empty space; the drawing has
 none). (4) The vertical dimension stretches with the hero's height, as the drawing's HTML does.
@@ -563,3 +563,19 @@ the Conspect years. The heading reads `Java Consultant — Conspect` (role first
 an employer); assignments keep `client — role` as h3s. The timeline keeps its drawn dimension line
 (copy.md `CONSPECT · NOV 2023 – NOW`), now a link to `#conspect` with extension lines down to the
 bars, so the three sub-bars read as one assembly.
+
+## 2026-10-04 — Display headings fit their longest word (PR-61)
+Who: agent (PR-61), from Michael's "MICHAE / L / GOLDMA / N" report the same day. Every
+DisplayHeading caps its text at `min(1em, 100cqi / fit)`: `1em` is the size token (or a page's
+existing cap), `fit` the em-width of the heading's longest word, measured at build time with
+fontkit from `public/fonts/` at the token weight, stretch and tracking (`src/display-fit.ts`), plus
+2 % for rendering differences; the heading is its own inline-size container. Words split at spaces
+and after `-` or `/` (a browser may break there: FULL- / STACK is allowed). No JS; browsers without
+container units use `(100vw − 90px) / fit`. Replaces PR-13's hero-only `(100vw − 90px) / 6.4`
+rule above, which also missed desktop: the old code broke GOLDMAN at 1220–1350 px and NL
+"ontwerpen," at 1030–1110 px. Exception: the certification name flows around the floated stamp, and
+a container is its own formatting context (it would sit beside the float, not around it), so it
+passes `fitTo="container"` and measures against `.cert-card__head`. Instead of: a per-character
+width table measured in a browser (fontkit already reads the font for the OG cards, with kerning);
+JS fit-text (flashes, nothing without JS). Seen while walking it, out of this task's scope (other
+typography): the desktop header tab breaks "Certification / s" at 1280 px — queued as PR-67.

@@ -42,7 +42,7 @@ const nameId = `${id}-name`;
     <SheetLabel as="span" class="cert-card__code">
       {cert.code}
     </SheetLabel>
-    <DisplayHeading as="h2" size="s" id={nameId}>
+    <DisplayHeading as="h2" size="s" id={nameId} fitTo="container">
       {cert.name}
     </DisplayHeading>
     <p class="cert-card__issuer">
@@ -109,11 +109,10 @@ const nameId = `${id}-name`;
     shape-margin: 8px;
   }
 
-  /* overflow-wrap normal: a word too long to sit beside the stamp drops below it instead of
-     breaking (the size cap keeps every word inside the card). */
+  /* A word too long to sit beside the stamp drops below it instead of breaking (the size cap and
+     DisplayHeading's fit, against this head's width, keep every word inside the card). */
   .cert-card__head :global(h2) {
     font-size: min(var(--size-display-s), 10cqi);
-    overflow-wrap: normal;
   }
 
   .cert-card__issuer {
