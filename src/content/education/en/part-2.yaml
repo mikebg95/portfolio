@@ -1,0 +1,14 @@
+item: 2
+part: BSc Political Science
+balloon: BSc Political Science
+supplier: UvA
+years: 2016–19
+ec: 180
+plate: { size: full, style: solid }
+detail:
+  title: BSc Political Science
+  meta: University of Amsterdam · 2016–2019 · 180 EC
+  body: "Three years of studying how institutions and people actually make decisions: analysing complex systems, doing research and writing it down clearly. It's why I'm at ease with stakeholders and requirements, and why I write decisions down."
+  note: part 2 is load-bearing.
+lang: en
+translated: true

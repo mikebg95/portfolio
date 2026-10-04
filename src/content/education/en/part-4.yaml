@@ -1,0 +1,15 @@
+item: 4
+part: CS50 Intro to CS
+balloon: Harvard CS50
+supplier: Harvard / UvA
+years: '2018'
+ec: 6
+plate: { size: small, style: solid }
+detail:
+  title: Harvard CS50
+  meta: Introduction to Computer Science · within the minor · 6 EC
+  body: "Harvard's introduction to computer science: C and memory, algorithms and data structures, then Python, SQL and the web. My problem sets are on GitHub."
+  # The external link draws its own ↗, so the label is stored without it.
+  link: { label: CS50 PROBLEM SETS ON GITHUB, href: 'https://github.com/mikebg95/CS50-Psets' }
+lang: en
+translated: true

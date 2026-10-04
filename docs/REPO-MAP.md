@@ -48,6 +48,7 @@ line.
 - `tests/unit/experience-content.test.ts` — the same for Sheet 02 (`### … (id `…`)` blocks) plus ordering/overlap and the Conspect line in `profile.employers`.
 - `tests/unit/project-content.test.ts` — Sheet 03 register table in copy.md vs EN `projects`; 251-test sum; scans `src/` and `public/` for any jamigos domain link.
 - `tests/unit/certification-content.test.ts` — Sheet 04 `- C-0n …` lines in copy.md vs EN `certifications` (ids `spring` `psm` `oca` `ckad`); verify URLs must equal cv.md's link list; `verifyLabel` is stored without the ↗ (Link/Button draw it).
+- `tests/unit/education-content.test.ts` — Sheet 05 balloons, parts-list rows and `n. **Title** — meta — `body`` panels in copy.md vs EN `education` (`part-1`…`part-5`); `part`/`supplier`/`years` are the parts-list cells, `detail.title`/`meta` the panel; part 3 rows sum to 30 EC.
 - `src/timeline.ts` — Sheet 02 timeline geometry (`ruler`, `place`, `layout`, `formatDuration`); pure, build date passed in; the Conspect dimension line uses `place`.
 
 ## Routes and languages

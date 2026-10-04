@@ -1,0 +1,17 @@
+item: 3
+part: Minor Programming
+balloon: Minor Programming
+supplier: UvA
+years: '2018'
+ec: 30
+plate: { size: full, style: solid }
+detail:
+  title: Minor Programming
+  meta: University of Amsterdam · 2018 · 30 EC
+  body: "Halfway through political science I took a full semester of programming, and found what I wanted to do every day. It's where I learned to think in algorithms and trade-offs, and to learn a language by shipping something with it."
+  rows:
+    - { code: '3.1', text: 'CS50 — C, memory, algorithms, Python, SQL', ec: 6 }
+    - { code: '3.2', text: Android app development in Java, ec: 12 }
+    - { code: '3.3', text: Programming theory — heuristics, ec: 12 }
+lang: nl
+translated: false

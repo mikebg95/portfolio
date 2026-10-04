@@ -1,13 +1,12 @@
-# Placeholder so the build passes — PR-32 replaces it with the copy from design/copy.md.
 item: 1
-part: 'Placeholder (PR-32)'
-balloon: 'Placeholder (PR-32)'
-supplier: 'Placeholder (PR-32)'
-years: 'Placeholder (PR-32)'
+part: VWO
+balloon: VWO — base
+supplier: Amsterdams Lyceum
+years: 2007–13
 plate: { size: full, style: solid }
 detail:
-  title: 'Placeholder (PR-32)'
-  meta: 'Placeholder (PR-32)'
-  body: 'Placeholder (PR-32)'
+  title: VWO
+  meta: Het Amsterdams Lyceum · 2007–2013
+  body: 'Pre-university secondary education in Amsterdam: the base plate everything else is mounted on.'
 lang: en
 translated: true

@@ -1,0 +1,14 @@
+item: 5
+part: CKAD (in progress)
+balloon: CKAD — to be fitted
+supplier: Linux Foundation
+years: —
+pending: true
+plate: { size: full, style: dashed }
+detail:
+  title: CKAD (to be fitted)
+  meta: The Linux Foundation · in progress
+  body: 'The next part going on: Kubernetes, for building and running applications the way the teams I want to join do.'
+  link: { label: SEE SHEET 04 →, href: /certifications#ckad }
+lang: nl
+translated: false
