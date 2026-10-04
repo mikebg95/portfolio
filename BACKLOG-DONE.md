@@ -465,3 +465,15 @@ History, not a queue.
   - Done when: §M7 circular clip-path reveal from the theme button via `document.startViewTransition` (500 ms, ease-plot); instant fallback; reduced motion instant; e2e toggles twice without errors.
   - Spec: design/motion.md §M7
   - Out of scope: —
+
+
+## Pruned from the queue
+
+1 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### Motion
+
+- [x] **PR-47 Micro-interactions**
+  - Done when: §M6 small interactions: button ink-wipe hover, tab underline draw, card lift + mini-diagram arrow redraw, stamps slam in sequence with ink bleed on Sheet 04, CKAD dashed stamp ring rotating (the only infinite animation, paused under reduced motion), balloon hover scale, PipelineRoute travelling dot on Jamigos; all focus-visible equivalents for keyboard users; no layout-affecting properties animated (lint rule or test grepping CSS for animated width/height/top/left).
+  - Spec: design/motion.md §M6; design/components.md
+  - Out of scope: —
