@@ -237,3 +237,20 @@ History, not a queue.
   - Done when: `/projects` shows label, heading, intro, row 1 (Jamigos wide + Scentify), the series assembly line with `251 TESTS · ALL TEST-FIRST`, row 2 (P-02, P-03, P-04) exactly as drawn; 1 column on phone, 2 on tablet; every card links to `/projects/<slug>`; e2e asserts five cards and their links.
   - Spec: SPEC §4.3; design/screens/projects-default-light-1440.png
   - Out of scope: detail pages.
+
+
+## Pruned from the queue
+
+2 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### Sheet 03 — Projects
+
+- [x] **PR-24 Project detail template**
+  - Done when: `/projects/[slug]` (static paths from the collection, both languages) renders back link, label `DETAIL SHEET 03.n — P-0n`, title, summary, repo button, meta line, a FIG. 1 slot, specification rows, a FIG. 2 slot, revision note, previous/next links (wrapping), header tab 03 active, footer SHEET 03 / 05; matches `project-detail-jamigos-default-light-1440.png` structure; e2e visits all five slugs.
+  - Spec: SPEC §4.4; design/screens/html/project-detail-jamigos-default-light-1440.html
+  - Out of scope: per-project figures (PR-25…29).
+
+- [x] **PR-25 Jamigos detail sheet**
+  - Done when: Jamigos detail content (summary, meta, spec rows, note) from copy.md; FIG. 1 container view and FIG. 2 PipelineRoute exactly as drawn; no live link; e2e asserts figures and repo link `https://github.com/mikebg95/jamigos`.
+  - Spec: design/copy.md 03.1; docs/source/research-repos.md P-01
+  - Out of scope: other projects.

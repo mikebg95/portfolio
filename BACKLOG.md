@@ -60,16 +60,6 @@ queue.
 
 ### Sheet 03 — Projects
 
-- [x] **PR-24 Project detail template**
-  - Done when: `/projects/[slug]` (static paths from the collection, both languages) renders back link, label `DETAIL SHEET 03.n — P-0n`, title, summary, repo button, meta line, a FIG. 1 slot, specification rows, a FIG. 2 slot, revision note, previous/next links (wrapping), header tab 03 active, footer SHEET 03 / 05; matches `project-detail-jamigos-default-light-1440.png` structure; e2e visits all five slugs.
-  - Spec: SPEC §4.4; design/screens/html/project-detail-jamigos-default-light-1440.html
-  - Out of scope: per-project figures (PR-25…29).
-
-- [x] **PR-25 Jamigos detail sheet**
-  - Done when: Jamigos detail content (summary, meta, spec rows, note) from copy.md; FIG. 1 container view and FIG. 2 PipelineRoute exactly as drawn; no live link; e2e asserts figures and repo link `https://github.com/mikebg95/jamigos`.
-  - Spec: design/copy.md 03.1; docs/source/research-repos.md P-01
-  - Out of scope: other projects.
-
 - [ ] **PR-26 Subscription Tracker detail sheet**
   - Done when: content from copy.md 03.2 plus 5–6 spec rows written from research-repos.md P-02 and the repo (layering, JDBC/JdbcTemplate, Flyway incl. the case-insensitive index, code-first OpenAPI, RFC 9457 errors, tests); FIG. 1 layers, FIG. 2 test pyramid with the real per-level counts read from the repo (sum 63); e2e asserts 63.
   - Spec: design/copy.md 03.2; github.com/mikebg95/subscription-tracker
