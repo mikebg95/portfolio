@@ -11,3 +11,10 @@ line.
 - `.orchestrator/config.sh` — every loop setting; run.sh holds none.
 - `.orchestrator/progress.md` — plain-English log for a human; untracked.
 - `.orchestrator/logs/latest/` — this run's transcripts, one per agent.
+
+## Tooling
+
+- `src/config.ts` — `SITE_URL`, the one place the origin is written; `astro.config.ts` imports it.
+- `package.json` `verify` — the full chain; `test:e2e` passes with no specs until PR-2 adds them.
+- `.prettierignore` — `*.md`, `design/`, `docs/` excluded on purpose (docs/RECORD.md 2026-10-04).
+- `vitest.config.ts` — includes `src/**/*.test.ts` and `tests/unit/**`; e2e specs live in `tests/e2e/` only, or Vitest would try to run them.

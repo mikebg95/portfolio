@@ -2,3 +2,9 @@
 node_modules/
 .DS_Store
 docs/source/private/
+
+# build output and tooling caches
+dist/
+.astro/
+test-results/
+playwright-report/

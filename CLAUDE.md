@@ -31,9 +31,23 @@ template) and make people say "wow" with drafting-themed motion — while every 
 - **Full check:** `.orchestrator/verify.sh` — runs the project's verify script
   (never type the underlying command; see `.orchestrator/verify.sh`). Runs
   once, before each deploy.
-- **Start the app for walking it:** filled in by PR-1 (expected: `npm run dev` → http://localhost:4321).
+- **Start the app for walking it:** `npm run dev` → http://localhost:4321 (`npm run preview` serves the
+  built `dist/` on the same port).
 
 ## Stack
+Installed versions as of PR-1; "(chosen)" = picked by NOTES.md, installed by a later task.
+- Node 22 (`.nvmrc`; Astro needs ≥ 22.12), npm.
+- Astro 7.3.5, `output: 'static'`, `site` from `SITE_URL` in `src/config.ts`; Astro i18n routing
+  `/` en, `/nl/` nl (chosen, PR-5).
+- TypeScript 6.0.3 strict + `noUncheckedIndexedAccess` (`astro/tsconfigs/strict`); `@astrojs/check`
+  0.9.10. Not TS 7: `@astrojs/check` and typescript-eslint do not accept it yet.
+- Plain CSS with custom properties generated from `design/tokens.json` (chosen, PR-4). No Tailwind.
+- GSAP + ScrollTrigger, lazy-loaded on Experience and Education only (chosen, PR-43/PR-44).
+- Vitest 5.0.3 (unit, `getViteConfig`); Playwright 1.63.0 (e2e, `tests/e2e`, output `.e2e/`);
+  @axe-core/playwright (chosen, PR-2); Lighthouse CI budgets (chosen).
+- ESLint 10.12.0 flat config (typescript-eslint 8.71.0, eslint-plugin-astro 3.2.1); Prettier 3.9.9
+  with prettier-plugin-astro 1.1.0. Markdown, `design/` and `docs/` are not formatted.
+- Dockerfile multi-stage node → nginx-unprivileged (chosen); GitHub Actions CI, no deploy (chosen).
 
 <!-- Filled in by the first task that chooses it. Do not contradict it; a task
 that genuinely needs something new adds it here in the same commit. -->
