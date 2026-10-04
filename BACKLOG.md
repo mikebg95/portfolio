@@ -67,7 +67,7 @@ queue.
   - Spec: design/copy.md Sheet 04; docs/source/cv.md
   - Out of scope: NL.
 
-- [ ] **PR-31 Certifications page**
+- [x] **PR-31 Certifications page**
   - Done when: `/certifications` as drawn: label, heading, intro, 2×2 CertCards with Stamp (verified/pending), skill chips, verify links (external ↗); 1 column on phone; ids `spring`, `psm`, `oca`, `ckad`; e2e asserts four cards and three verify links.
   - Spec: SPEC §4.5; design/screens/html/certifications-default-light-1440.html
   - Out of scope: stamp motion (PR-47).
