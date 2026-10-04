@@ -1,37 +1,50 @@
 import { expect, test } from '@playwright/test';
 
 import { expectNoAxeViolations } from './helpers/axe';
+import { ui } from './helpers/content';
 
 // The 404 sheet (SPEC §3.9 / §4.7; copy.md 404): label, heading, redline note and the five sheets
 // as a sheet index list. `astro preview` answers an unknown URL with `dist/404.html`, as the
-// static host does (docs/REPO-MAP.md "Routes and languages").
-const SHEETS = [
-  ['01', 'Overview', '/'],
-  ['02', 'Experience', '/experience'],
-  ['03', 'Projects', '/projects'],
-  ['04', 'Certifications', '/certifications'],
-  ['05', 'Education', '/education'],
-];
+// static host does (docs/REPO-MAP.md "Routes and languages"). English is copy.md verbatim; Dutch is
+// its translation in the NL content.
+const PATHS = ['/', '/experience', '/projects', '/certifications', '/education'];
+const nl = ui('nl');
 
-for (const { url, lang, prefix } of [
-  { url: '/no-such-sheet', lang: 'en', prefix: '' },
-  { url: '/nl/404', lang: 'nl', prefix: '/nl' },
+for (const { url, lang, prefix, title, label, heading, note, names } of [
+  {
+    url: '/no-such-sheet',
+    lang: 'en',
+    prefix: '',
+    title: 'Sheet not found — Michael Goldman',
+    label: 'SHEET ?? — NOT IN SET',
+    heading: 'SHEET NOT FOUND',
+    note: "REV. NOTE △ This sheet isn't in the set. Try one of these:",
+    names: ['Overview', 'Experience', 'Projects', 'Certifications', 'Education'],
+  },
+  {
+    url: '/nl/404',
+    lang: 'nl',
+    prefix: '/nl',
+    title: nl.seo.notFound.title,
+    label: nl.notFound.label,
+    heading: nl.notFound.heading,
+    note: nl.notFound.note,
+    names: Object.values(nl.sheets),
+  },
 ]) {
   test(`${url} is the not-found sheet with links to the five sheets`, async ({ page }) => {
     const response = await page.goto(url);
     if (lang === 'en') expect(response?.status()).toBe(404);
     await expect(page.locator('html')).toHaveAttribute('lang', lang);
-    await expect(page).toHaveTitle('Sheet not found — Michael Goldman');
-    await expect(page.locator('.not-found .sheet-label')).toHaveText('SHEET ?? — NOT IN SET');
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText('SHEET NOT FOUND');
-    await expect(page.locator('.not-found .revision-note')).toHaveText(
-      "REV. NOTE △ This sheet isn't in the set. Try one of these:",
-    );
+    await expect(page).toHaveTitle(title);
+    await expect(page.locator('.not-found .sheet-label')).toHaveText(label);
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(heading);
+    await expect(page.locator('.not-found .revision-note')).toHaveText(note);
 
     const links = page.locator('[data-sheet-list] a');
-    await expect(links).toHaveText(SHEETS.map(([n, name]) => `${n}${name}→`));
+    await expect(links).toHaveText(names.map((name, i) => `0${i + 1}${name}→`));
     expect(await links.evaluateAll((els) => els.map((el) => el.getAttribute('href')))).toEqual(
-      SHEETS.map(([, , path]) => (prefix && path === '/' ? `${prefix}/` : `${prefix}${path}`)),
+      PATHS.map((path) => (prefix && path === '/' ? `${prefix}/` : `${prefix}${path}`)),
     );
     // No tab is current: the 404 sheet belongs to no sheet.
     await expect(page.locator('.sheet-header [aria-current="page"]')).toHaveCount(0);

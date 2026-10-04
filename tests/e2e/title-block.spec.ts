@@ -1,6 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 
 import { expectNoAxeViolations } from './helpers/axe';
+import { ui } from './helpers/content';
 
 // TitleBlock footer (SPEC §3.2; components.md TitleBlock; copy.md Global).
 
@@ -23,13 +24,14 @@ const cell = (page: Page, caption: string) =>
 for (const { path, sheet } of SHEETS) {
   test(`${path} has the title block with SHEET ${sheet}`, async ({ page }) => {
     await page.goto(path);
+    const { titleBlock: caption } = ui(path.startsWith('/nl/') ? 'nl' : 'en');
     await expect(page.getByRole('contentinfo')).toBeVisible();
-    await expect(cell(page, 'PROJECT')).toHaveText('MICHAEL GOLDMAN');
-    await expect(cell(page, 'SCALE')).toHaveText('1 : 1');
-    await expect(cell(page, 'SHEET')).toHaveText(sheet);
-    await expect(cell(page, 'DRAWN')).toHaveText('M. GOLDMAN');
-    await expect(cell(page, 'CHECKED')).toHaveText('251 TESTS');
-    await expect(cell(page, 'REV')).toHaveText(/^\d{4}\.(0[1-9]|1[0-2])$/);
+    await expect(cell(page, caption.project)).toHaveText('MICHAEL GOLDMAN');
+    await expect(cell(page, caption.scale)).toHaveText('1 : 1');
+    await expect(cell(page, caption.sheet)).toHaveText(sheet);
+    await expect(cell(page, caption.drawn)).toHaveText('M. GOLDMAN');
+    await expect(cell(page, caption.checked)).toHaveText('251 TESTS');
+    await expect(cell(page, caption.rev)).toHaveText(/^\d{4}\.(0[1-9]|1[0-2])$/);
   });
 }
 

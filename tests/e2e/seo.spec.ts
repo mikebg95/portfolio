@@ -152,10 +152,13 @@ test('the JSON-LD Person on / gives name, job title and profiles, and no phone o
   expect(text).not.toMatch(/telephone|streetAddress|postalCode|\+31|06[- ]?\d/);
 });
 
-for (const path of ['/no-such-sheet', '/nl/404']) {
+for (const [path, title] of [
+  ['/no-such-sheet', copyTable.get('/404')!.title],
+  ['/nl/404', yaml<{ seo: Seo }>('src/content/ui/nl/ui.yaml').seo.notFound!.title],
+] as const) {
   test(`${path} is not indexed and claims no canonical`, async ({ page }) => {
     await page.goto(path);
-    await expect(page).toHaveTitle(copyTable.get('/404')!.title);
+    await expect(page).toHaveTitle(title);
     await expect(page.locator('head meta[name="robots"]')).toHaveAttribute('content', 'noindex');
     await expect(page.locator('head link[rel="canonical"]')).toHaveCount(0);
     await expect(page.locator('head link[rel="alternate"]')).toHaveCount(0);

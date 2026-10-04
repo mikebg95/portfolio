@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { expect, test } from '@playwright/test';
 
 import { expectNoAxeViolations } from './helpers/axe';
+import { profile } from './helpers/content';
 import { settleAnimations } from './helpers/motion';
 
 // Sheet 01 hero and portrait (SPEC §4.1; copy.md Sheet 01; design/README.md "Responsive").
@@ -45,15 +46,32 @@ test('the buttons go to the projects sheet and the CV', async ({ page }) => {
 });
 
 test('the Dutch sheet links stay in Dutch', async ({ page }) => {
+  const { hero } = profile('nl');
   await page.goto('/nl/');
-  await expect(page.getByRole('link', { name: 'VIEW PROJECTS →' })).toHaveAttribute(
+  await expect(page.getByRole('link', { name: hero.buttons.projects })).toHaveAttribute(
     'href',
     '/nl/projects',
   );
-  await expect(page.getByRole('link', { name: 'Spring certified' })).toHaveAttribute(
+  await expect(page.getByRole('link', { name: hero.balloons[0]!.text })).toHaveAttribute(
     'href',
     '/nl/certifications',
   );
+});
+
+test('the Dutch sheet is written in Dutch', async ({ page }) => {
+  await page.goto('/nl/');
+  await expect(page.locator('html')).toHaveAttribute('lang', 'nl');
+  await expect(page.locator('#main')).toContainText(
+    'Java software engineer — full-stack, op weg naar DevOps.',
+  );
+  await expect(page.locator('#main')).toContainText('Ik teken het systeem voordat ik het bouw');
+  await expect(page.getByRole('link', { name: 'BEKIJK PROJECTEN →' })).toBeVisible();
+  await expect(page).toHaveTitle('Michael Goldman — Java software engineer, Amsterdam');
+  await expect(page.locator('head meta[name="description"]')).toHaveAttribute(
+    'content',
+    /Op weg naar Kubernetes en DevOps\.$/,
+  );
+  await expect(page.getByRole('link', { name: 'Ga naar de inhoud van het blad' })).toBeAttached();
 });
 
 test('the portrait is real text, hidden from assistive tech, with a text alternative', async ({
@@ -238,11 +256,14 @@ test('specification S-01…S-07 and general notes 1–6, side by side on desktop
 test('in progress: three redline rows above the title block, each link lands on its target', async ({
   page,
 }) => {
-  const items = [
-    ['OptieCon — security and sign-in, at Conspect', '/experience#optiecon', '#optiecon'],
-    ['CKAD — Certified Kubernetes Application Developer', '/certifications#ckad', '#ckad'],
-    ['Journal — hexagonal architecture, part 3 of the series', '/projects/journal', 'h1'],
-  ] as const;
+  const targets = ['#optiecon', '#ckad', 'h1'];
+  const items = (lang: string) =>
+    profile(lang).current.map(({ text, href }, i) => [text, href, targets[i]!] as const);
+  expect(items('en').map(([text, href]) => [text, href])).toEqual([
+    ['OptieCon — security and sign-in, at Conspect', '/experience#optiecon'],
+    ['CKAD — Certified Kubernetes Application Developer', '/certifications#ckad'],
+    ['Journal — hexagonal architecture, part 3 of the series', '/projects/journal'],
+  ]);
   await page.goto('/');
   const panel = page.locator('section.in-progress');
   await expect(panel.getByRole('heading', { level: 2 })).toHaveText('IN PROGRESS');
@@ -260,7 +281,7 @@ test('in progress: three redline rows above the title block, each link lands on 
     ['en', ''],
     ['nl', '/nl'],
   ] as const) {
-    for (const [text, href, target] of items) {
+    for (const [text, href, target] of items(lang)) {
       await page.goto(lang === 'en' ? '/' : '/nl/');
       const link = page.locator('section.in-progress').getByRole('link', { name: text });
       await expect(link).toHaveAttribute('href', prefix + href);

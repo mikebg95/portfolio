@@ -433,3 +433,17 @@ in card order. The PipelineRoute dot is redline, like the crosshair (markup over
 linearly so it meets each station as it ticks; it starts 400 ms in, after the figure's fade. The
 tab underline moved from an animated `background-size` to a `scaleX` pseudo. Instead of: animating
 `box-shadow`; rotating a dashed-border pseudo with `transform`.
+
+## 2026-10-04 — Dutch vocabulary for the drawing set
+Who: agent (PR-48). The NL `ui` and `profile` entries are translated whole (every sheet's label and
+heading in `ui` too, so PR-49/50 only translate their own collections). Drawing terms, to reuse:
+sheet → BLAD, drawing set → TEKENINGENSET, general arrangement → OVERZICHTSTEKENING, elevation →
+AANZICHT, drawing register → TEKENINGENREGISTER, inspection record → KEURINGSRAPPORT, assembly →
+SAMENSTELLING, exploded view → EXPLOSIETEKENING, detail sheet → DETAILBLAD, parts list → Stuklijst
+(ITEM → POS., SUPPLIER → LEVERANCIER), scale → SCHAAL, drawn/checked → GETEKEND/GECONTROLEERD,
+REV. NOTE △ → REV. NOTITIE △, NOTE: → OPMERKING:, in progress → IN UITVOERING (a CKAD-style pending
+certificate: "in voorbereiding"), paper/blueprint → PAPIER/BLAUWDRUK. Dates lowercase (`jun 2026`,
+`mrt`, `mei`, `okt`; NOW → `nu`). Kept English, as Dutch developers say them: "Java software
+engineer", "full-stack", "test-first", "Test first" and "Secure by design" titles, SECURITY,
+BACKEND, DATA, FRONTEND, DEVOPS, "Clean code", every product name. Hero and SEO titles keep the
+English job title. Instead of: Dutch coinages for the technical terms (beveiliging, testen vooraf).

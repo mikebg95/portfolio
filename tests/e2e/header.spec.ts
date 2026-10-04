@@ -2,6 +2,7 @@ import { expect, test, type Page } from '@playwright/test';
 
 import { CV_PATH } from '../../src/config';
 import { expectNoAxeViolations } from './helpers/axe';
+import { ui } from './helpers/content';
 
 // SheetHeader (SPEC §3.2, §3.5; components.md SheetHeader/SheetTab) on desktop and tablet.
 // Phone gets the sheet index panel (PR-8) instead of the tab row.
@@ -38,7 +39,7 @@ for (const { lang, prefix } of LANGS) {
       await expectCurrentTab(page, i);
     }
     await expect(tabs(page).locator('.sheet-tab__number')).toHaveText(
-      SHEET_PATHS.map((_, i) => `SHEET 0${i + 1}`),
+      SHEET_PATHS.map((_, i) => `${ui(lang).sheet} 0${i + 1}`),
     );
   });
 
@@ -57,7 +58,7 @@ test('the monogram links to the overview in the page language', async ({ page })
   await page.goto('/nl/experience');
   const mark = page.locator('.sheet-header__mark');
   await expect(mark).toContainText('MG');
-  await expect(mark).toContainText('DRAWING SET');
+  await expect(mark).toContainText(ui('nl').monogram.set);
   await expect(mark).toContainText('michaelgoldman.dev');
   await mark.click();
   await expect(page).toHaveURL(/\/nl\/$/);

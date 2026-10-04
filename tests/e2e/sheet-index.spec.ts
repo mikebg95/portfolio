@@ -1,6 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 
 import { expectNoAxeViolations } from './helpers/axe';
+import { ui } from './helpers/content';
 
 // SheetIndexPanel (SPEC §3.2; components.md SheetIndexPanel): the phone header below 768 px.
 test.beforeEach(({ page }) => {
@@ -9,6 +10,7 @@ test.beforeEach(({ page }) => {
 
 const toggle = (page: Page) => page.locator('.sheet-index button[aria-controls]');
 const panel = (page: Page) => page.locator('#sheet-index-panel');
+const nl = ui('nl');
 
 test('the phone header shows monogram, current sheet and the SHEETS button', async ({ page }) => {
   await page.goto('/projects/jamigos');
@@ -30,21 +32,21 @@ test('opening lists the five sheets, language, theme and CV; a sheet navigates',
   await page.goto('/nl/certifications');
   await toggle(page).click();
   await expect(toggle(page)).toHaveAttribute('aria-expanded', 'true');
-  await expect(toggle(page)).toHaveText('CLOSE');
+  await expect(toggle(page)).toHaveText(nl.sheetIndex.close);
   const sheets = panel(page).locator('.sheet-index__sheet');
   await expect(sheets).toHaveCount(5);
   await expect(sheets.nth(3)).toHaveAttribute('aria-current', 'page');
   await expect(panel(page).getByRole('link', { name: 'EN', exact: true })).toBeVisible();
-  await expect(
-    panel(page).getByRole('button', { name: 'Switch to blueprint theme' }),
-  ).toBeVisible();
+  await expect(panel(page).getByRole('button', { name: nl.theme.toBlueprint })).toBeVisible();
   await expect(panel(page).getByRole('link', { name: 'CV', exact: true })).toBeVisible();
   await expect(panel(page)).toHaveCSS('clip-path', /inset\(0(px)?\)|none/);
   await expectNoAxeViolations(page);
 
   await sheets.nth(1).click();
   await expect(page).toHaveURL(/\/nl\/experience\/?$/);
-  await expect(page.locator('.sheet-header__current')).toHaveText(/SHEET 02\s*Experience/);
+  await expect(page.locator('.sheet-header__current')).toHaveText(
+    new RegExp(`${nl.sheet} 02\\s*${nl.sheets.experience}`),
+  );
   await expect(panel(page)).toBeHidden();
 });
 

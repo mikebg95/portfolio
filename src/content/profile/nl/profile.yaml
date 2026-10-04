@@ -1,32 +1,32 @@
-# English text until PR-48 translates it (docs/conventions/content.md). Twin of ../en/profile.yaml.
+# Dutch twin of ../en/profile.yaml — design/copy.md "Sheet 01 — Overview" translated per SPEC §3.6.
 hero:
-  label: SHEET 01 — GENERAL ARRANGEMENT
+  label: BLAD 01 — OVERZICHTSTEKENING
   name: [MICHAEL, GOLDMAN]
-  role: Java software engineer — full-stack, building towards DevOps.
-  intro: 'Five years of Spring Boot applications with Angular and Vue frontends: for a government agency, a scale-up and a consultancy. I draw the system before I build it, write the test before the code, and stay until it runs in production.'
-  revisionNote: 'REV. NOTE △ Every project on these sheets started as a drawing: a C4 model, a database schema and an API contract. Then the tests. Then the code.'
-  buttons: { projects: VIEW PROJECTS →, cv: DOWNLOAD CV (PDF) }
-  dimensions: { horizontal: 5+ YRS FULL-STACK, vertical: JAVA · SPRING }
+  role: Java software engineer — full-stack, op weg naar DevOps.
+  intro: 'Vijf jaar Spring Boot-applicaties met Angular- en Vue-frontends: voor een overheidsorganisatie, een scale-up en een consultancy. Ik teken het systeem voordat ik het bouw, schrijf de test vóór de code en blijf tot het in productie draait.'
+  revisionNote: 'REV. NOTITIE △ Elk project op deze bladen begon als een tekening: een C4-model, een databaseschema en een API-contract. Daarna de tests. Daarna de code.'
+  buttons: { projects: BEKIJK PROJECTEN →, cv: DOWNLOAD CV (PDF) }
+  dimensions: { horizontal: 5+ JR FULL-STACK, vertical: JAVA · SPRING }
   balloons:
-    - { text: Spring certified, href: /certifications }
-    - { text: Speaks 7 languages }
-    - { text: Trains Muay Thai }
-  portraitAlt: Portrait of Michael Goldman, drawn in ASCII characters.
+    - { text: Spring-gecertificeerd, href: /certifications }
+    - { text: Spreekt 7 talen }
+    - { text: Traint Muay Thai }
+  portraitAlt: Portret van Michael Goldman, getekend in ASCII-tekens.
 labels:
-  howIWork: HOW I WORK
-  specification: SPECIFICATION
-  generalNotes: GENERAL NOTES
-  current: IN PROGRESS
+  howIWork: ZO WERK IK
+  specification: SPECIFICATIE
+  generalNotes: ALGEMENE NOTITIES
+  current: IN UITVOERING
 howIWork:
-  - title: Design before build
-    body: Requirements, a C4 model, a database schema and an API contract come first, and I write down the trade-offs I make. Then the code follows the drawing.
+  - title: Eerst ontwerpen, dan bouwen
+    body: Requirements, een C4-model, een databaseschema en een API-contract komen eerst, en ik leg de afwegingen vast die ik maak. Daarna volgt de code de tekening.
   - title: Test first
-    body: 'The test comes before the code: unit, slice, integration against real databases with Testcontainers, and architecture rules with ArchUnit. 251 hand-written tests across my portfolio series.'
+    body: 'De test komt vóór de code: unit, slice, integratie tegen echte databases met Testcontainers, en architectuurregels met ArchUnit. 251 handgeschreven tests in mijn portfolioserie.'
   - title: Secure by design
-    body: 'Sign-in and permissions are where I go deepest: single sign-on with Microsoft Entra ID and Keycloak, OAuth2 / OIDC, JWT, method security — and tests that prove it.'
-  - title: Own it to production
-    body: At DJI I was the only developer on a new application, from the first design to deployment with operations and a full handover. Docker and CI/CD are part of the job, not someone else's.
-aiNote: ON AI — I build with AI coding agents every day, with tests, architecture rules and review as the guardrails, and I label what was AI-built. The portfolio series and its tests are written by hand.
+    body: 'Inloggen en rechten zijn waar ik het diepst op inga: single sign-on met Microsoft Entra ID en Keycloak, OAuth2 / OIDC, JWT, method security — en tests die het bewijzen.'
+  - title: Eigenaar tot in productie
+    body: Bij DJI was ik de enige developer van een nieuwe applicatie, van het eerste ontwerp tot de uitrol met operations en een volledige overdracht. Docker en CI/CD horen bij het werk, niet bij dat van een ander.
+aiNote: OVER AI — Ik bouw elke dag met AI-coding-agents, met tests, architectuurregels en review als vangrails, en ik vermeld wat door AI is gebouwd. De portfolioserie en de tests ervan schrijf ik met de hand.
 specs:
   - code: S-01
     label: BACKEND
@@ -38,7 +38,7 @@ specs:
     label: DATA
     items: [PostgreSQL, JPA / Hibernate, Spring Data JPA, JDBC, Flyway]
   - code: S-04
-    label: TESTING
+    label: TESTEN
     items: [Test-first, JUnit, Mockito, Testcontainers, ArchUnit]
   - code: S-05
     label: FRONTEND
@@ -46,29 +46,29 @@ specs:
   - code: S-06
     label: DEVOPS
     items: [Docker, Docker Compose, GitHub Actions, CI/CD, GitLab]
-    pending: Kubernetes — CKAD in progress
+    pending: Kubernetes — CKAD in voorbereiding
   - code: S-07
-    label: DESIGN
-    items: [Layered & hexagonal architecture, DDD, Clean code, ADRs]
+    label: ONTWERP
+    items: [Gelaagde & hexagonale architectuur, DDD, Clean code, ADR's]
 generalNotes:
-  - Dutch and American, based in Amsterdam.
-  - Native Dutch and English. Italian C1, Portuguese B2, Spanish, French and German B1.
-  - 'Off-sheet: kickboxing, surfing, guitar, chess, reading.'
-  - Studied political science first — I read stakeholders as carefully as stack traces.
-  - Spent the first months of 2026 at a Muay Thai camp, backpacking and surfing in South-East Asia.
-  - All dimensions in years unless stated otherwise.
+  - Nederlands en Amerikaans, woont in Amsterdam.
+  - Moedertaal Nederlands en Engels. Italiaans C1, Portugees B2, Spaans, Frans en Duits B1.
+  - 'Buiten het blad: kickboksen, surfen, gitaar, schaken, lezen.'
+  - Studeerde eerst politicologie — ik lees stakeholders even zorgvuldig als stacktraces.
+  - Bracht de eerste maanden van 2026 door in een Muay Thai-kamp, met backpacken en surfen in Zuidoost-Azië.
+  - Alle maten in jaren, tenzij anders vermeld.
 current:
-  - { text: 'OptieCon — security and sign-in, at Conspect', href: /experience#optiecon }
+  - { text: 'OptieCon — security en inloggen, bij Conspect', href: /experience#optiecon }
   - { text: CKAD — Certified Kubernetes Application Developer, href: /certifications#ckad }
-  - { text: 'Journal — hexagonal architecture, part 3 of the series', href: /projects/journal }
+  - { text: 'Journal — hexagonale architectuur, deel 3 van de serie', href: /projects/journal }
 employers:
   - name: Conspect
     start: '2023-11'
     end: null
-    description: IT consultancy in agile software development and data analytics.
+    description: IT-consultancy in agile softwareontwikkeling en data-analyse.
 contact:
   email: mikebgoldman95@gmail.com
   linkedin: https://linkedin.com/in/mikebg95
   github: https://github.com/mikebg95
 lang: nl
-translated: false
+translated: true

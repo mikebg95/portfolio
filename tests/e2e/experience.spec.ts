@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 import { expectNoAxeViolations } from './helpers/axe';
+import { ui } from './helpers/content';
 import { settleAnimations } from './helpers/motion';
 
 // Sheet 02 timeline (SPEC §4.2; copy.md Sheet 02; drawing experience-default-light-1440):
@@ -87,11 +88,14 @@ test('a bar leads to its detail block', async ({ page }) => {
 });
 
 test('the Dutch sheet draws the same timeline', async ({ page }) => {
+  const { dates } = ui('nl');
   await page.goto('/nl/experience');
   await expect(page.locator('.timeline__bar')).toHaveCount(4);
   await expect(page.locator('.timeline__bar').first()).toHaveAttribute('href', '#linkpizza');
   await expect(
-    page.getByRole('link', { name: 'OptieCon · Full-Stack Java Engineer · JUN 2026 – NOW' }),
+    page.getByRole('link', {
+      name: `OptieCon · Full-Stack Java Engineer · ${dates.months[5]} 2026 – ${dates.now}`,
+    }),
   ).toHaveAttribute('href', '#optiecon');
 });
 

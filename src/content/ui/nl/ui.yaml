@@ -1,96 +1,95 @@
-# English until PR-48 translates it (docs/conventions/content.md).
-monogram: { initials: MG, set: DRAWING SET }
-sheet: SHEET
+# Dutch twin of ../en/ui.yaml — design/copy.md Global, SEO and 404 translated per SPEC §3.6.
+monogram: { initials: MG, set: TEKENINGENSET }
+sheet: BLAD
 sheets:
-  overview: Overview
-  experience: Experience
-  projects: Projects
-  certifications: Certifications
-  education: Education
+  overview: Overzicht
+  experience: Ervaring
+  projects: Projecten
+  certifications: Certificeringen
+  education: Opleiding
 languages: { en: EN, nl: NL }
 theme:
-  paper: PAPER
-  blueprint: BLUEPRINT
-  toPaper: Switch to paper theme
-  toBlueprint: Switch to blueprint theme
+  paper: PAPIER
+  blueprint: BLAUWDRUK
+  toPaper: Schakel naar het papierthema
+  toBlueprint: Schakel naar het blauwdrukthema
 cv: CV
-sheetIndex: { open: SHEETS, openLabel: Open sheet index, close: CLOSE }
-skipLink: Skip to sheet content
+sheetIndex: { open: BLADEN, openLabel: Open de bladindex, close: SLUITEN }
+skipLink: Ga naar de inhoud van het blad
 titleBlock:
   project: PROJECT
   projectValue: MICHAEL GOLDMAN
-  scale: SCALE
+  scale: SCHAAL
   scaleValue: '1 : 1'
-  sheet: SHEET
-  drawn: DRAWN
+  sheet: BLAD
+  drawn: GETEKEND
   drawnValue: M. GOLDMAN
-  checked: CHECKED
+  checked: GECONTROLEERD
   checkedValue: 251 TESTS
   rev: REV
   contact: CONTACT
-  email: Email
+  email: E-mail
   linkedin: LinkedIn
   github: GitHub
 seo:
   overview:
     title: Michael Goldman — Java software engineer, Amsterdam
-    description: 'Full-stack Java engineer: Spring Boot, secure by design, test-first, shipped through CI/CD. Moving into Kubernetes and DevOps.'
+    description: 'Full-stack Java-engineer: Spring Boot, secure by design, test-first, uitgerold via CI/CD. Op weg naar Kubernetes en DevOps.'
   experience:
-    title: Experience — Michael Goldman
-    description: Five years of full-stack Java at DJI, Conspect and LinkPizza, drawn to scale.
+    title: Ervaring — Michael Goldman
+    description: Vijf jaar full-stack Java bij DJI, Conspect en LinkPizza, op schaal getekend.
   projects:
-    title: Projects — Michael Goldman
-    description: 'Jamigos and the Spring Persistence & Architecture series: designed first, then built and tested.'
+    title: Projecten — Michael Goldman
+    description: 'Jamigos en de serie Spring Persistence & Architecture: eerst ontworpen, dan gebouwd en getest.'
   certifications:
-    title: Certifications — Michael Goldman
-    description: Spring Certified Professional, PSM I, Oracle Certified Associate Java SE 8 — CKAD in progress. Every one verifiable.
+    title: Certificeringen — Michael Goldman
+    description: Spring Certified Professional, PSM I, Oracle Certified Associate Java SE 8 — CKAD in voorbereiding. Allemaal te controleren.
   education:
-    title: Education — Michael Goldman
-    description: Political science, a programming minor with Harvard CS50, and how they assembled into a software engineer.
-  project: { title: '{title} — Projects — Michael Goldman' }
-  notFound: { title: Sheet not found — Michael Goldman }
+    title: Opleiding — Michael Goldman
+    description: Politicologie, een programmeerminor met Harvard CS50, en hoe dat samen een software engineer opleverde.
+  project: { title: '{title} — Projecten — Michael Goldman' }
+  notFound: { title: Blad niet gevonden — Michael Goldman }
 notFound:
-  label: SHEET ?? — NOT IN SET
-  heading: SHEET NOT FOUND
-  note: "REV. NOTE △ This sheet isn't in the set. Try one of these:"
+  label: BLAD ?? — NIET IN DE SET
+  heading: BLAD NIET GEVONDEN
+  note: 'REV. NOTITIE △ Dit blad zit niet in de set. Probeer een van deze:'
 dates:
-  months: [JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC]
-  now: NOW
+  months: [jan, feb, mrt, apr, mei, jun, jul, aug, sep, okt, nov, dec]
+  now: nu
 experience:
-  label: SHEET 02 — EXPERIENCE · ELEVATION
-  heading: ['FIVE YEARS,', DRAWN TO SCALE]
-  legend: ['HATCHED: SABBATICAL', MUAY THAI · SURFING]
+  label: BLAD 02 — ERVARING · AANZICHT
+  heading: ['VIJF JAAR,', OP SCHAAL GETEKEND]
+  legend: ['GEARCEERD: SABBATICAL', MUAY THAI · SURFEN]
 projects:
-  label: SHEET 03 — PROJECTS · DRAWING REGISTER
-  heading: [DESIGNED FIRST., THEN BUILT.]
-  intro: 'Each project has its own detail sheet: the architecture, the decisions, the tests and the repository.'
+  label: BLAD 03 — PROJECTEN · TEKENINGENREGISTER
+  heading: [EERST ONTWORPEN., DAN GEBOUWD.]
+  intro: 'Elk project heeft een eigen detailblad: de architectuur, de beslissingen, de tests en de repository.'
   series:
-    label: ASSEMBLY · SPRING PERSISTENCE & ARCHITECTURE SERIES
-    tests: '{count} TESTS · ALL TEST-FIRST'
+    label: SAMENSTELLING · SERIE SPRING PERSISTENCE & ARCHITECTURE
+    tests: '{count} TESTS · ALLEMAAL TEST-FIRST'
   detail:
-    back: SHEET 03 · DRAWING REGISTER
-    label: 'DETAIL SHEET {sheet}.{n} — {code}'
-    repo: REPOSITORY ON GITHUB
+    back: BLAD 03 · TEKENINGENREGISTER
+    label: 'DETAILBLAD {sheet}.{n} — {code}'
+    repo: REPOSITORY OP GITHUB
     figure: 'FIG. {n} — {title}'
-    specification: SPECIFICATION
-    previous: PREVIOUS SHEET
-    next: NEXT SHEET
-    seriesPart: SERIES PART {n}
-    status: { in-progress: IN PROGRESS, retired-hosting: HOSTING RETIRED }
+    specification: SPECIFICATIE
+    previous: VORIG BLAD
+    next: VOLGEND BLAD
+    seriesPart: DEEL {n} VAN DE SERIE
+    status: { in-progress: IN UITVOERING, retired-hosting: HOSTING GESTOPT }
 certifications:
-  label: SHEET 04 — CERTIFICATIONS · INSPECTION RECORD
-  heading: [INSPECTED, AND SIGNED OFF]
-  intro: "Every stamp links to the issuer's own record, so you can check it yourself."
-  pending: in progress
+  label: BLAD 04 — CERTIFICERINGEN · KEURINGSRAPPORT
+  heading: [GEKEURD, EN AFGETEKEND]
+  intro: 'Elke stempel linkt naar het eigen register van de uitgever, zodat je het zelf kunt controleren.'
+  pending: in voorbereiding
 education:
-  label: SHEET 05 — ASSEMBLY, EXPLODED VIEW
-  heading: [HOW THIS ENGINEER, WAS ASSEMBLED]
-  intro: 'Not a straight line from a computer-science degree. Each layer below carries load in the final build — select a part to open its detail.'
-  assembly: Exploded assembly of the education parts
-  part: 'Part {n}: {name}'
-  detail: 'DETAIL {n} · SCALE 2:1'
+  label: BLAD 05 — SAMENSTELLING, EXPLOSIETEKENING
+  heading: [HOE DEZE ENGINEER, IN ELKAAR IS GEZET]
+  intro: 'Geen rechte lijn vanaf een informaticadiploma. Elke laag hieronder draagt mee in het eindresultaat — kies een onderdeel om het detail te openen.'
+  assembly: Explosietekening van de opleidingsonderdelen
+  part: 'Onderdeel {n}: {name}'
+  detail: 'DETAIL {n} · SCHAAL 2:1'
   ec: '{n} EC'
-  note: 'NOTE:'
-  parts: { caption: Parts list, item: ITEM, part: PART, supplier: SUPPLIER, year: YEAR }
+  note: 'OPMERKING:'
+  parts: { caption: Stuklijst, item: POS., part: ONDERDEEL, supplier: LEVERANCIER, year: JAAR }
 lang: nl
-translated: false
