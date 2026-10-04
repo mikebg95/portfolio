@@ -56,7 +56,7 @@ queue.
 
 ### Sheet 01 — Overview
 
-- [ ] **PR-12 Profile content (EN)**
+- [x] **PR-12 Profile content (EN)**
   - Done when: the `profile` EN entry holds every Sheet 01 string from design/copy.md (hero, buttons, dimensions, balloons, how I work + AI note, S-01…S-07, general notes, in-progress items, contact) verbatim; the ASCII portrait is loaded from `docs/source/ascii-portrait.txt` at build time (single source); Vitest asserts the content matches copy.md for the hero and spec rows.
   - Spec: design/copy.md Sheet 01; SPEC §3.6, §3.7
   - Out of scope: NL (PR-60).
