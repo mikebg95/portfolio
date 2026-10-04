@@ -32,6 +32,8 @@ line.
 - TRAP: the worker's `cache.match` must pass `ignoreVary` — module scripts send `Origin`, the install's requests do not. Symptom: offline pages open but every `_astro/*.js` fails ERR_FAILED.
 - TRAP: Playwright `scrollIntoViewIfNeeded()` waits for the element to be stable, so on a revealing element it returns after the reveal ended; to inspect a running animation scroll with `el.scrollIntoView()` in `evaluate` (tests/e2e/motion.spec.ts stamps). Symptom: `getAnimations()` is `[]` on chromium-desktop.
 - `astro.config.ts` `prefetch` — every link prefetched on viewport; project cards/pager `data-astro-prefetch="hover"`, CV links `"false"`; `tests/e2e/navigation.spec.ts`.
+- `Dockerfile` + `docker/nginx.conf` + `.dockerignore` — node:22 build → nginx-unprivileged on 8080; a middle stage compiles the brotli_static module; `.gz`/`.br` twins from `scripts/precompress.ts` (image only). `scripts/docker-smoke.sh` builds, runs and curls it (404s, cache headers, encodings, non-root).
+- TRAP: `.dockerignore` must keep `docs/source/private` out, but the build reads `design/` and `docs/source/` (tokens, portrait) — excluding all of `docs/` breaks `docker build`.
 
 ## Styles
 

@@ -1,0 +1,18 @@
+# Only what `npm ci && npm run build` reads goes into the build context.
+.git
+.github
+.claude
+.orchestrator
+.astro
+.e2e
+.lighthouseci
+node_modules
+dist
+test-results
+playwright-report
+tests
+.DS_Store
+# Local only, never in an image (CLAUDE.md).
+docs/source/private
+Dockerfile
+.dockerignore

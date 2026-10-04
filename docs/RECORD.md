@@ -725,3 +725,15 @@ columns. Fix: below 360 px the cells' side padding is 4 px (11 px type fits from
 and NL: the table fills its frame exactly. Instead of: `overflow-wrap: anywhere` (Chromium then
 re-balances the columns and splits "progres s)" with no hyphen); soft hyphens in the content
 (changes the buttons' text and accessible names); 10.5 px or 3 px padding (fits by under 2 px).
+
+## 2026-10-05 — Docker image: brotli_static built from source, no-cache by default (PR-55)
+Who: agent (PR-55). nginx.org ships no brotli module for the `nginx-unprivileged` image (checked the
+1.31.6 alpine package index), and Alpine's `nginx-mod-http-brotli` is built for Alpine's own nginx,
+so the Dockerfile's `brotli` stage compiles only ngx_brotli's *static* module (no libbrotli at
+runtime) against the runtime image's `$NGINX_VERSION` with `--with-compat`. The `.gz`/`.br` twins
+are written by `scripts/precompress.ts` with Node's zlib in the build stage only — GitHub Pages
+compresses on its own, so `npm run build` is untouched. Cache policy: `/_astro/` (hashed) is
+`immutable` for a year; everything else, fonts and icons included, is `no-cache` (revalidated by
+ETag) because their names are fixed and the service worker caches them anyway. Unknown URLs under
+`/nl/` get the Dutch 404 sheet, the rest the English one. Smoke test `scripts/docker-smoke.sh`
+passed against Docker 2026-10-05.
