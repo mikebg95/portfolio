@@ -5,6 +5,7 @@ code: P-03
 kind: 'JPA · DESIGN-FIRST'
 order: 3
 title: Recipe Book
+diagram: ['OPENAPI 3.1', 'generates', 'RECIPE ⟶ STEPS']
 cardSummary: 'API contract first, code generated from it; architecture rules enforced by tests.'
 summary: 'Placeholder (PR-27)'
 period: 'JUL 2026'

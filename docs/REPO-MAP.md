@@ -88,3 +88,9 @@ line.
 - `src/components/experience/Timeline.astro` — ruler, employer dimension (`profile.employers`), bars, durations, legend; positions as `--start`/`--span` %, left/width ≥ 1024 px and top/height (8 px a month) below — one markup.
 - `src/dates.ts` — `formatMonth` / `formatSpan` with `ui.dates` words; the only place a `YYYY-MM` becomes `NOV 2023`.
 - `tests/e2e/experience.spec.ts` — timeline text, bar order/hrefs, scale (month positions) per orientation, bar click → block; detail block titles/dates/order, one column on phone.
+
+## Sheet 03 — Projects
+
+- `src/components/projects/ProjectCard.astro` — one register card (whole card one link, `data-project` = slug); flagship = `order: 1` spans 2 grid columns from 768 px; `in-progress` dashed with a redline label.
+- `src/components/projects/MiniDiagram.astro` — per-slug layouts fed by the entry's `diagram` labels (`LABELS` = count per slug); a new project needs a layout here or the build throws.
+- `src/components/drawing/Box.astro` `mini`/`main`, `Arrow.astro` `mini` — the card-sized variants; `/_primitives` shows all five cards (`tests/e2e/primitives.spec.ts`).

@@ -1,0 +1,169 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+import DisplayHeading from '../drawing/DisplayHeading.astro';
+import SheetLabel from '../drawing/SheetLabel.astro';
+import MiniDiagram from './MiniDiagram.astro';
+
+// components.md ProjectCard: one register card, the whole card one link to its detail sheet.
+// Label (P-0n · KIND, the in-progress one in redline), mini diagram, title, summary, then a
+// title-block strip of the three facts. The flagship spans two grid columns from tablet up; the
+// in-progress card is dashed. Hover/focus lifts it with the hard ink shadow.
+interface Props {
+  project: CollectionEntry<'projects'>['data'];
+  href: string;
+  headingLevel?: 'h2' | 'h3';
+}
+
+const { project, href, headingLevel = 'h2' } = Astro.props;
+// The register's first card is its flagship (copy.md `P-01 · FLAGSHIP`).
+const flagship = project.order === 1;
+const inProgress = project.status === 'in-progress';
+---
+
+<a
+  class:list={[
+    'project-card',
+    flagship && 'project-card--flagship',
+    inProgress && 'project-card--in-progress',
+  ]}
+  href={href}
+  data-project={project.slug}
+>
+  <div class="project-card__head">
+    <SheetLabel as="span" class="project-card__label">
+      {project.code} · {project.kind}
+    </SheetLabel>
+    {project.tag && <span class="project-card__tag">{project.tag}</span>}
+  </div>
+  <div class="project-card__diagram">
+    <MiniDiagram slug={project.slug} labels={project.diagram} />
+  </div>
+  <div class="project-card__body">
+    <DisplayHeading as={headingLevel} size={flagship ? 'm' : 's'} class="project-card__title">
+      {project.title}
+    </DisplayHeading>
+    <p class="project-card__summary">{project.cardSummary}</p>
+  </div>
+  <dl class="project-card__strip">
+    {project.facts.map((fact) => (
+      <div>
+        <dt>{fact.label}</dt>
+        <dd>{fact.value}</dd>
+      </div>
+    ))}
+  </dl>
+</a>
+
+<style>
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    border: var(--border-normal);
+    background: var(--color-paper-raised);
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+
+  .project-card:hover,
+  .project-card:focus-visible {
+    box-shadow: var(--shadow-lift);
+  }
+
+  @media (min-width: 768px) {
+    .project-card--flagship {
+      grid-column: span 2;
+    }
+  }
+
+  .project-card--in-progress {
+    border-style: dashed;
+  }
+
+  .project-card--in-progress :global(.project-card__label) {
+    color: var(--color-redline);
+  }
+
+  .project-card__head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: 20px 22px 0;
+  }
+
+  .project-card__tag {
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+
+  .project-card__diagram {
+    padding: 22px;
+  }
+
+  .project-card--flagship .project-card__diagram {
+    padding-block: 28px;
+  }
+
+  /* The display size, capped by the card's width so a long title (SUBSCRIPTION) never breaks
+     mid-word in a narrow column. */
+  .project-card__body {
+    container-type: inline-size;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: 0 22px 20px;
+  }
+
+  .project-card__body :global(.project-card__title) {
+    font-size: min(var(--size-display-s), 10cqi);
+  }
+
+  .project-card--flagship .project-card__body :global(.project-card__title) {
+    font-size: var(--size-display-m);
+  }
+
+  .project-card__summary {
+    margin: 0;
+    color: var(--color-text-2);
+    font-size: var(--size-small);
+    line-height: 1.6;
+  }
+
+  .project-card--flagship .project-card__summary {
+    font-size: 15px;
+  }
+
+  .project-card__strip {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 0;
+    border-top: var(--border-normal);
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+
+  .project-card__strip > div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: var(--space-2) 10px;
+    border-left: var(--border-thin);
+  }
+
+  .project-card__strip > div:first-child {
+    border-left: none;
+  }
+
+  .project-card__strip dt {
+    color: var(--color-muted);
+    font-size: 9px;
+    letter-spacing: var(--size-micro-letter-spacing);
+  }
+
+  .project-card__strip dd {
+    margin: 0;
+  }
+</style>

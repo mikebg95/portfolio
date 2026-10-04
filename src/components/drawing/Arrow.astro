@@ -2,20 +2,23 @@
 import type { HTMLAttributes } from 'astro/types';
 
 // components.md Arrow: the flow between two Boxes, a mono arrow with an optional label above
-// ("JWT"). The arrow itself is decoration; a label is read.
+// ("JWT"). The arrow itself is decoration; a label is read. `mini` is the register card's: a short
+// arrow at text size, and a vertical one leads its label ("↓ generates").
 type Props = HTMLAttributes<'span'> & {
   direction?: 'right' | 'down' | 'left' | 'up';
   label?: string;
+  mini?: boolean;
 };
 
 const GLYPHS = { right: '⟶', down: '↓', left: '⟵', up: '↑' } as const;
+const MINI_GLYPHS = { right: '→', down: '↓', left: '←', up: '↑' } as const;
 
-const { direction = 'right', label, class: className, ...rest } = Astro.props;
+const { direction = 'right', label, mini = false, class: className, ...rest } = Astro.props;
 ---
 
-<span class:list={['arrow', `arrow--${direction}`, className]} {...rest}>
+<span class:list={['arrow', `arrow--${direction}`, mini && 'arrow--mini', className]} {...rest}>
   {label && <span class="arrow__label">{label}</span>}
-  <span aria-hidden="true">{GLYPHS[direction]}</span>
+  <span aria-hidden="true">{(mini ? MINI_GLYPHS : GLYPHS)[direction]}</span>
 </span>
 
 <style>
@@ -34,5 +37,16 @@ const { direction = 'right', label, class: className, ...rest } = Astro.props;
   .arrow--up {
     flex-direction: row;
     gap: var(--space-2);
+  }
+
+  .arrow--mini.arrow--right,
+  .arrow--mini.arrow--left {
+    font-size: var(--size-body);
+  }
+
+  .arrow--mini.arrow--down,
+  .arrow--mini.arrow--up {
+    flex-direction: row-reverse;
+    gap: var(--space-1);
   }
 </style>

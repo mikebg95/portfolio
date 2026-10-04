@@ -169,3 +169,14 @@ Jamigos and Scentify have no count in the sources. `summary`, `figures` and `not
 and stay `Placeholder (PR-2n)` for the detail-sheet task named in each file. The Jamigos card's
 right-hand tag `SECURITY · CI/CD` is drawn but absent from copy.md and from the schema — left to
 PR-22, which needs a field (schema change) or a decision to drop it.
+
+## 2026-10-04 — Project cards: `tag` and `diagram` fields, flagship by order, no lift motion yet
+Who: agent (PR-22). Two additive `projects` fields, as PR-14/PR-17 added theirs: optional `tag` (the
+Jamigos card's drawn `SECURITY · CI/CD`, kept — both are facts in research-repos.md P-01 and the
+drawing is the only wording) and required `diagram`, the mini diagram's labels in drawing order, so
+Dutch can translate `4 QUESTIONS` / `generates`. The layout per slug lives in
+`src/components/projects/MiniDiagram.astro`, which throws at build if a slug's label count is wrong.
+The flagship is the entry with `order: 1`. Hover/focus shows the 6 px shadow without a transition
+and arrows do not redraw: motion is PR-47's (§M6). Card titles are `min(display-s, 10cqi)` so
+SUBSCRIPTION never breaks mid-word in a narrow column. The diagram is `aria-hidden`; the link's
+name is the card's text. Instead of: dropping the tag; diagram labels hard-coded in the component.

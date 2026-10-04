@@ -5,6 +5,7 @@ code: P-04
 kind: 'HEXAGONAL · IN PROGRESS'
 order: 4
 title: Journal
+diagram: ['DOMAIN']
 cardSummary: 'Rich domain model, 7 written design decisions, and an AI step that summarises each entry.'
 summary: 'Placeholder (PR-28)'
 period: 'JUL 2026 – NOW'

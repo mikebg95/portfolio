@@ -14,14 +14,16 @@ import SheetLabel from '../components/drawing/SheetLabel.astro';
 import SpecRow from '../components/drawing/SpecRow.astro';
 import SpecTable from '../components/drawing/SpecTable.astro';
 import Stamp from '../components/drawing/Stamp.astro';
-import { getLocalized } from '../i18n/content';
-import { DEFAULT_LANG } from '../i18n/paths';
-import { SHEETS } from '../i18n/routes';
+import ProjectCard from '../components/projects/ProjectCard.astro';
+import { getAllLocalized, getLocalized } from '../i18n/content';
+import { DEFAULT_LANG, localize } from '../i18n/paths';
+import { projectPath, SHEETS } from '../i18n/routes';
 
 // Every primitive in every variant, once per theme on the dev-only primitives page. Sample text is
 // copied from design/copy.md; this page is a fixture, never built for production.
 const { contact } = (await getLocalized('profile', 'profile', DEFAULT_LANG)).data;
 const path = (key: string) => SHEETS.find((sheet) => sheet.key === key)?.path ?? '/';
+const projects = await getAllLocalized('projects', DEFAULT_LANG);
 ---
 
 <div class="specimens">
@@ -159,6 +161,21 @@ const path = (key: string) => SHEETS.find((sheet) => sheet.key === key)?.path ??
     </Figure>
   </section>
 
+  <section class="specimen" data-specimen="project-card">
+    <h3>
+      <SheetLabel as="span">ProjectCard + mini diagrams</SheetLabel>
+    </h3>
+    <div class="specimen__cards">
+      {projects.map(({ data }) => (
+        <ProjectCard
+          project={data}
+          href={localize(DEFAULT_LANG, projectPath(data.slug))}
+          headingLevel="h3"
+        />
+      ))}
+    </div>
+  </section>
+
   <section class="specimen" data-specimen="stamp">
     <h3>
       <SheetLabel as="span">Stamp verified / pending</SheetLabel>
@@ -197,6 +214,17 @@ const path = (key: string) => SHEETS.find((sheet) => sheet.key === key)?.path ??
 
   h3 {
     margin: 0;
+  }
+
+  .specimen__cards {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  @media (min-width: 768px) {
+    .specimen__cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 
   .specimen__row {

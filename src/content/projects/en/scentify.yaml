@@ -5,6 +5,7 @@ code: P-05
 kind: 'ORIGIN'
 order: 5
 title: Scentify
+diagram: ['4 QUESTIONS', '52 SCENTS']
 cardSummary: 'My first real app: an Android fragrance recommender in Java, built at the end of the programming minor.'
 summary: 'Placeholder (PR-29)'
 period: 'NOV 2020 – JAN 2021'

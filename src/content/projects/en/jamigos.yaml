@@ -5,6 +5,13 @@ code: P-01
 kind: 'FLAGSHIP'
 order: 1
 title: Jamigos
+tag: 'SECURITY · CI/CD'
+diagram:
+  - 'VUE 3 SPA'
+  - "KEYCLOAK\nOIDC + PKCE"
+  - "SPRING BOOT API\n3 SECURITY CHAINS"
+  - 'POSTGRESQL'
+  - 'MONGODB'
 cardSummary: 'A full-stack app built to practise production-grade security and delivery — sign-in, roles, ownership checks and audit logging, shipped by its own GitHub Actions pipeline.'
 summary: 'Placeholder (PR-25)'
 period: 'AUG 2025 – NOV 2025'

@@ -1,0 +1,150 @@
+---
+import Arrow from '../drawing/Arrow.astro';
+import Box from '../drawing/Box.astro';
+
+// The register card's line-art mini diagram (SPEC §4.3), one layout per project as drawn in
+// projects-default-light-1440. Labels come from the entry's `diagram`, in drawing order; LABELS says
+// how many each layout reads. Decoration: the card's own text carries the meaning.
+interface Props {
+  slug: string;
+  labels: string[];
+}
+
+const LABELS: Record<string, number> = {
+  jamigos: 5,
+  scentify: 2,
+  'subscription-tracker': 3,
+  'recipe-book': 3,
+  journal: 1,
+};
+
+const { slug, labels } = Astro.props;
+if (LABELS[slug] === undefined) throw new Error(`no mini diagram for project ${slug}`);
+if (labels.length !== LABELS[slug]) {
+  throw new Error(`mini diagram ${slug} draws ${LABELS[slug]} labels, got ${labels.length}`);
+}
+const [a = '', b = '', c = '', d = '', e = ''] = labels;
+---
+
+<div class:list={['mini-diagram', `mini-diagram--${slug}`]} aria-hidden="true">
+  {slug === 'jamigos' && (
+    <>
+      <Box mini>{a}</Box>
+      <div class="mini-diagram__step">
+        <Arrow mini />
+        <Box mini external>
+          {b}
+        </Box>
+      </div>
+      <div class="mini-diagram__step">
+        <Arrow mini />
+        <Box mini main>
+          {c}
+        </Box>
+      </div>
+      <div class="mini-diagram__step">
+        <Arrow mini />
+        <div class="mini-diagram__stack">
+          <Box mini>{d}</Box>
+          <Box mini>{e}</Box>
+        </div>
+      </div>
+    </>
+  )}
+  {slug === 'scentify' && (
+    <>
+      <Box mini>{a}</Box>
+      <div class="mini-diagram__step">
+        <Arrow mini />
+        <Box mini>{b}</Box>
+      </div>
+    </>
+  )}
+  {slug === 'subscription-tracker' && (
+    <div class="mini-diagram__column">
+      <Box mini>{a}</Box>
+      <Box mini>{b}</Box>
+      <Box mini>{c}</Box>
+    </div>
+  )}
+  {slug === 'recipe-book' && (
+    <div class="mini-diagram__column">
+      <Box mini>{a}</Box>
+      <Arrow mini direction="down" label={b} />
+      <Box mini>{c}</Box>
+    </div>
+  )}
+  {slug === 'journal' && (
+    <div class="mini-diagram__hexagon">
+      <span>{a}</span>
+    </div>
+  )}
+</div>
+
+<style>
+  .mini-diagram {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .mini-diagram--jamigos {
+    gap: 14px;
+  }
+
+  /* An arrow wraps with the box it points to, never alone at the end of a line. */
+  .mini-diagram__step {
+    display: flex;
+    align-items: center;
+    gap: inherit;
+  }
+
+  .mini-diagram__stack {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .mini-diagram__column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .mini-diagram__column > :global(.box) {
+    width: 130px;
+  }
+
+  /* A clip-path cuts a border off the slanted sides, so the outline is the outer hexagon in line
+     colour and the fill an inset copy of it. */
+  .mini-diagram__hexagon {
+    --hexagon: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
+
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    height: 86px;
+    background: var(--color-line);
+    clip-path: var(--hexagon);
+    color: var(--color-line);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+  }
+
+  .mini-diagram__hexagon::before {
+    position: absolute;
+    inset: 1.5px 2px;
+    background: var(--color-fill-1);
+    clip-path: var(--hexagon);
+    content: '';
+  }
+
+  .mini-diagram__hexagon > span {
+    position: relative;
+  }
+</style>

@@ -5,6 +5,7 @@ code: P-02
 kind: 'LAYERED · JDBC'
 order: 2
 title: Subscription Tracker
+diagram: ['CONTROLLER', 'SERVICE', 'DAO · SQL']
 cardSummary: 'Hand-written SQL, clean error responses, C4 model and schema designed up front.'
 summary: 'Placeholder (PR-26)'
 period: 'JUN 2026'

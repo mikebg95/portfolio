@@ -55,6 +55,13 @@ export const projectSchema = z.strictObject({
   kind: text,
   order: z.number().int().nonnegative(),
   title: text,
+  /** The register card's right-hand tag, drawn on Jamigos only (`SECURITY · CI/CD`). */
+  tag: text.optional(),
+  /**
+   * The register card's mini diagram labels, in drawing order; the layout is per slug
+   * (`src/components/projects/MiniDiagram.astro`, which says how many each needs). A `\n` breaks a box.
+   */
+  diagram: z.array(text).min(1),
   /** Register card text; `summary` is the detail sheet's. */
   cardSummary: text,
   summary: text,

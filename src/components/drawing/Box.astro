@@ -3,15 +3,35 @@ import type { HTMLAttributes } from 'astro/types';
 
 // components.md Box: a system in a figure or mini diagram — 1.5 px line border, mono, the title on
 // its own line in ink, details in the slot. `external` (dashed) is a system outside the project.
+// `mini` is the register card's smaller box (10.5 px, a `\n` in the slot breaks the line); `main`
+// is the system a mini diagram centres on (2.5 px border, 600 weight).
 type Props = HTMLAttributes<'div'> & {
   title?: string;
   external?: boolean;
+  mini?: boolean;
+  main?: boolean;
 };
 
-const { title, external = false, class: className, ...rest } = Astro.props;
+const {
+  title,
+  external = false,
+  mini = false,
+  main = false,
+  class: className,
+  ...rest
+} = Astro.props;
 ---
 
-<div class:list={['box', external && 'box--external', className]} {...rest}>
+<div
+  class:list={[
+    'box',
+    external && 'box--external',
+    mini && 'box--mini',
+    main && 'box--main',
+    className,
+  ]}
+  {...rest}
+>
   {title && <strong class="box__title">{title}</strong>}
   <slot />
 </div>
@@ -30,6 +50,22 @@ const { title, external = false, class: className, ...rest } = Astro.props;
 
   .box--external {
     border-style: dashed;
+  }
+
+  .box--mini {
+    padding: 6px 8px;
+    font-size: 10.5px;
+    line-height: 1.3;
+    white-space: pre-line;
+  }
+
+  .box--main {
+    border-width: 2.5px;
+    font-weight: 600;
+  }
+
+  .box--mini.box--main {
+    padding: 10px 14px;
   }
 
   .box__title {

@@ -28,6 +28,7 @@ const SPECIMENS = [
   'revision-note',
   'spec-row',
   'figure',
+  'project-card',
   'stamp',
   'chip',
 ];
@@ -43,7 +44,9 @@ test('shows every primitive in both themes, each drawn in its own colours', asyn
     for (const name of SPECIMENS) {
       await expect(column.locator(`[data-specimen="${name}"]`), `${theme} ${name}`).toBeVisible();
     }
-    await expect(column.locator('.display-heading')).toHaveCount(4);
+    await expect(column.locator('[data-specimen="display-heading"] .display-heading')).toHaveCount(
+      4,
+    );
     // Borders come from tokens built on a colour: they must follow the column's theme too.
     await expect(column.locator('.box').first()).toHaveCSS('border-top-color', rgb('line', theme));
     await expect(column.locator('.figure')).toHaveCSS('border-top-color', rgb('ink', theme));
@@ -78,6 +81,80 @@ test('keeps decoration out of the accessibility tree and names what is interacti
   );
   await expect(column.locator('.revision-note__lead').first()).toHaveText('REV. NOTE △');
   await expectNoAxeViolations(page);
+});
+
+// PR-22: the five register cards, each one link with its own mini diagram.
+const DIAGRAMS: Record<string, string[]> = {
+  jamigos: [
+    'VUE 3 SPA',
+    'KEYCLOAK\nOIDC + PKCE',
+    'SPRING BOOT API\n3 SECURITY CHAINS',
+    'POSTGRESQL',
+    'MONGODB',
+  ],
+  'subscription-tracker': ['CONTROLLER', 'SERVICE', 'DAO · SQL'],
+  'recipe-book': ['OPENAPI 3.1', 'RECIPE ⟶ STEPS'],
+  journal: [],
+  scentify: ['4 QUESTIONS', '52 SCENTS'],
+};
+
+test('shows the five project cards, each one link with its mini diagram', async ({ page }) => {
+  for (const theme of THEMES) {
+    const cards = page.locator(`[data-primitives-theme="${theme}"] .project-card`);
+    await expect(cards).toHaveCount(5);
+    for (const [slug, boxes] of Object.entries(DIAGRAMS)) {
+      const card = cards.and(page.locator(`[data-project="${slug}"]`));
+      await expect(card).toHaveAttribute('href', `/projects/${slug}`);
+      await expect(card.locator('.project-card__strip > div')).toHaveCount(3);
+      const diagram = card.locator('.mini-diagram');
+      await expect(diagram).toHaveAttribute('aria-hidden', 'true');
+      const texts = await diagram
+        .locator('.box')
+        .evaluateAll((els) => els.map((el) => (el as HTMLElement).innerText));
+      expect(texts, slug).toEqual(boxes);
+    }
+    const label = (slug: string) =>
+      page.locator(`[data-primitives-theme="${theme}"] [data-project="${slug}"] .sheet-label`);
+    await expect(label('jamigos')).toHaveText('P-01 · FLAGSHIP');
+    await expect(cards.and(page.locator('[data-project="jamigos"]'))).toContainText(
+      'SECURITY · CI/CD',
+    );
+    // "↓ generates": the glyph is drawn left of its label.
+    const arrow = cards.and(page.locator('[data-project="recipe-book"]')).locator('.arrow');
+    await expect(arrow).toHaveText('generates↓');
+    const glyph = await arrow.locator('[aria-hidden="true"]').boundingBox();
+    const word = await arrow.locator('.arrow__label').boundingBox();
+    expect(glyph!.x).toBeLessThan(word!.x);
+    await expect(
+      cards.and(page.locator('[data-project="journal"]')).locator('.mini-diagram__hexagon'),
+    ).toHaveText('DOMAIN');
+    // In progress: dashed card, redline label; the others solid, line-colour label.
+    const journal = cards.and(page.locator('[data-project="journal"]'));
+    await expect(journal).toHaveCSS('border-top-style', 'dashed');
+    await expect(label('journal')).toHaveCSS('color', rgb('redline', theme));
+    await expect(cards.first()).toHaveCSS('border-top-style', 'solid');
+    await expect(label('scentify')).toHaveCSS('color', rgb('line', theme));
+  }
+});
+
+test('the flagship card spans two columns and a card lifts on hover and focus', async ({
+  page,
+}) => {
+  const cards = page.locator('[data-primitives-theme="paper"] .project-card');
+  const flagship = await cards.first().boundingBox();
+  const other = await cards.nth(1).boundingBox();
+  const wide = (page.viewportSize()?.width ?? 0) >= 768;
+  expect(flagship!.width / other!.width).toBeCloseTo(wide ? 2 : 1, 0);
+
+  await expect(cards.nth(1)).toHaveCSS('box-shadow', 'none');
+  await cards.nth(1).hover();
+  await expect(cards.nth(1)).toHaveCSS('box-shadow', /6px 6px 0px/);
+  await page.mouse.move(0, 0);
+  // After a key press, focus counts as keyboard focus (:focus-visible) — WebKit does not Tab to
+  // links by default, so the card is focused directly.
+  await page.keyboard.press('Tab');
+  await cards.nth(2).focus();
+  await expect(cards.nth(2)).toHaveCSS('box-shadow', /6px 6px 0px/);
 });
 
 test('every interactive primitive has a 44 px hit area', async ({ page }) => {
