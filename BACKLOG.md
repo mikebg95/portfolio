@@ -72,13 +72,6 @@ queue.
 
 ### Hardening
 
-- [x] **PR-63b App-like navigation: ClientRouter**
-  - Michael, 2026-10-04: *"when i click to other parts of the app it seems to do a refresh"*. Split from PR-63: PR-63a shipped prefetch (astro.config.ts `prefetch`) and the offline service worker (src/precache.ts, src/service-worker.js, tests/e2e/offline.spec.ts) — keep both working.
-  - Done when: Astro's `<ClientRouter />` (view transitions router) on every page so sheet changes swap content without a full reload, keeping the header/tab bar/title block persistent (`transition:persist`), the motion system's per-page init re-runs on `astro:page-load` (no double-binding; the first-load plotting still runs once per session), scroll restores correctly, focus moves to the new `<main>` h1 and the route change is announced; Playwright navigates between sheets and asserts no full document reload (a window marker survives); offline navigation (offline.spec.ts) still passes through the router; reduced motion and no-JS still work; Lighthouse budgets still pass (`npm run lhci`).
-  - Learned in PR-63a: §M2 today is cross-document View Transitions (the inline `@view-transition` opt-in in SheetLayout, `pageswap`/`pageshow` in `markScrolledSwaps`, src/view-transitions.ts; docs/RECORD.md 2026-10-04 "Sheet transitions") — under ClientRouter those events no longer fire, so the scrolled-swap mark and the opt-in must move to the router's events (`astro:before-preparation`/`astro:before-swap`). Every component `<script>` (crosshair, header, timeline, assembly, education sheet, theme switch, `reveal()`) runs once per document today and must be re-run per page. Playwright blocks service workers outside offline.spec.ts (playwright.config.ts).
-  - Spec: design/motion.md §M2 (transitions now via ClientRouter); SPEC §7
-  - Out of scope: push notifications, install prompts.
-
 - [ ] **PR-67 Header sheet tabs never break a word**
   - Seen by PR-61's agent, 2026-10-04: at 1280 px the desktop header's SHEET 04 tab reads "Certification / s" (mono tab name broken mid-word); NL "Certificeringen" is longer still. Reproduce: `npm run preview`, 1280 × 900, `/` and `/nl/`, look at the tab row.
   - Done when: no header tab name (EN + NL) breaks inside a word at any width from 768 to 1440 px in 10 px steps (same per-word range check as `tests/e2e/display-headings.spec.ts`), by shrinking/fitting the tab text or the tab layout per the drawing, not by abbreviating copy; no tab text overflows its cell.
