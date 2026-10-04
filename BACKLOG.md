@@ -60,28 +60,6 @@ queue.
 
 ### Sheet 03 — Projects
 
-- [x] **PR-26 Subscription Tracker detail sheet**
-  - Done when: content from copy.md 03.2 plus 5–6 spec rows written from research-repos.md P-02 and the repo (layering, JDBC/JdbcTemplate, Flyway incl. the case-insensitive index, code-first OpenAPI, RFC 9457 errors, tests); FIG. 1 layers, FIG. 2 test pyramid with the real per-level counts read from the repo (sum 63); e2e asserts 63.
-  - Spec: design/copy.md 03.2; github.com/mikebg95/subscription-tracker
-  - Out of scope: other projects.
-  - Note (PR-25): figure words go in `figures[n].labels`, layouts in `src/components/projects/DetailFigure.astro`; add the title to the `detail sheets` test in tests/unit/project-content.test.ts (docs/RECORD.md 2026-10-04).
-
-- [x] **PR-27 Recipe Book detail sheet**
-  - Done when: content from copy.md 03.3 plus spec rows from research-repos.md P-03 (aggregate, SEQUENCE ids, @Version + 409, open-in-view off, summary projection, deferrable constraints, ArchUnit, 109 tests); FIG. 1 design-first flow, FIG. 2 aggregate drawing; e2e asserts 109.
-  - Spec: design/copy.md 03.3; github.com/mikebg95/recipe-book
-  - Out of scope: other projects.
-
-- [x] **PR-28 Journal detail sheet**
-  - Done when: content from copy.md 03.4 plus spec rows from research-repos.md P-04 (hexagonal packages, rich domain model, Spring AI with graceful degradation, MapStruct, optimistic locking, ArchUnit, 79 tests); FIG. 1 ports & adapters hexagon (CSS clip-path hexagon + boxes), FIG. 2 the 7 ADR titles read from the repo's `docs/architecture/adr/`, each linking to the ADR on GitHub; status "in progress" styling (redline); e2e asserts 7 ADR links.
-  - Spec: design/copy.md 03.4; github.com/mikebg95/journal
-  - Out of scope: other projects.
-
-- [x] **PR-29 Scentify detail sheet**
-  - Done when: content from copy.md 03.5 plus spec rows (Android, Java, Activities, custom ArrayAdapter, catalogue of 52, limitations noted honestly); FIG. 1 question flow; FIG. 2 the demo GIF copied from the repo into `public/projects/scentify/` (optimised; `loading="lazy"`, width/height set, alt text, caption, source credited) — paused (static first frame) under reduced motion; e2e asserts the image and caption.
-  - Spec: design/copy.md 03.5; github.com/mikebg95/Scentify
-  - Out of scope: other projects.
-  - Note (PR-24): the meta line is composed by `detailMeta` (src/project-detail.ts) and cannot produce copy.md's `· ANDROID`; add it without hard-coding the slug (docs/RECORD.md 2026-10-04).
-
 ### Sheet 04 — Certifications
 
 - [ ] **PR-30 Certification content (EN)**
