@@ -72,7 +72,7 @@ queue.
 
 ### Hardening
 
-- [ ] **PR-62d Phone Education: assembly + bottom sheet** (rest of PR-62, item 5)
+- [x] **PR-62d Phone Education: assembly + bottom sheet** (rest of PR-62, item 5)
   - Drawing: `design/screens/education-part3-sheet-light-390.png` (+ html).
   - Done when, below 768 px: the exploded assembly scaled to the screen; tapping a part opens a **bottom sheet** (drag handle, swipe down to close, ‹ › to step parts, focus-trapped, Escape closes) with the detail; parts list below; without JS the detail degrades to inline details; reduced motion; screenshots both themes; e2e for bottom sheet open/step/close. Note: the tab bar (z-index 4, fixed) must sit under the sheet's backdrop.
   - Spec: design/screens education 390, design/components.md, design/motion.md
