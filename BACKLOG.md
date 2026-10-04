@@ -72,7 +72,7 @@ queue.
 
 ### Hardening
 
-- [ ] **PR-51 Accessibility pass**
+- [x] **PR-51 Accessibility pass**
   - Done when: axe passes (0 violations) on every route × both languages × both themes × desktop and phone; keyboard walk e2e: tab order logical on each page, every interactive element reachable and visibly focused, phone panel trap works; one h1 per page; contrast of muted/redline on paper and blueprint ≥ 4.5:1 (unit test computing it from tokens).
   - Spec: SPEC §7
   - Out of scope: new features.
