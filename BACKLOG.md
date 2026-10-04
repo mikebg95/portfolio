@@ -70,7 +70,7 @@ queue.
 
 ### Dutch
 
-- [ ] **PR-49 Dutch translation — experience and certifications**
+- [x] **PR-49 Dutch translation — experience and certifications**
   - Done when: NL entries for every experience and certification entry; dates as "jun 2026"; `/nl/experience` and `/nl/certifications` fully Dutch; pairing test passes.
   - Spec: SPEC §3.6
   - Out of scope: —
