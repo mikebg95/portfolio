@@ -206,13 +206,6 @@ export const profileSchema = z.strictObject({
   specs: z.array(specRow).length(7),
   generalNotes: z.array(text).min(1),
   current: z.array(z.strictObject({ text, href: text })).min(1),
-  /**
-   * Employers that span several experience entries (Conspect: OptieCon and DJI) — the timeline's
-   * employer dimension (`CONSPECT · NOV 2023 – NOW`) and its description line.
-   */
-  employers: z
-    .array(z.strictObject({ name: text, start: month, end: month.nullable(), description: text }))
-    .min(1),
   contact: z.strictObject({
     email: z.email(),
     linkedin: z.url({ protocol: /^https$/ }),
