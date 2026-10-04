@@ -489,3 +489,20 @@ History, not a queue.
   - Done when: NL `profile` entry and all global/header/footer/SEO strings translated per SPEC §3.6 (natural Dutch, "je", English tech terms); `/nl/` renders fully in Dutch; the language switch on every page goes to the same page; e2e asserts `/nl/` hero text is Dutch and `<html lang="nl">`.
   - Spec: SPEC §1.4, §3.6; design/copy.md Sheet 01, Global, SEO
   - Out of scope: other collections.
+
+
+## Pruned from the queue
+
+2 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### Dutch
+
+- [x] **PR-49 Dutch translation — experience and certifications**
+  - Done when: NL entries for every experience and certification entry; dates as "jun 2026"; `/nl/experience` and `/nl/certifications` fully Dutch; pairing test passes.
+  - Spec: SPEC §3.6
+  - Out of scope: —
+
+- [x] **PR-50 Dutch translation — projects and education**
+  - Done when: NL entries for all five projects (register + detail fields) and five education parts; `/nl/projects/*` and `/nl/education` fully Dutch; pairing test passes; a test greps the built `dist/nl/**` for a list of English UI words from copy.md Global (e.g. "Skip to sheet content", "Overview") and finds none; a test asserts no content entry has `translated: false`.
+  - Spec: SPEC §3.6
+  - Out of scope: —
