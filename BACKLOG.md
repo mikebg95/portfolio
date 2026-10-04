@@ -56,7 +56,7 @@ queue.
 
 ### Sheet 01 — Overview
 
-- [ ] **PR-14 Overview "How I work" panel**
+- [x] **PR-14 Overview "How I work" panel**
   - Done when: a panel below the hero (split by 1 px ink rule, label `HOW I WORK`) shows the four numbered principles as a 4-column drawing grid (2 on tablet, 1 on phone) in the drawing language (numbers as mono `01`–`04` in line colour, display-s titles, body text), plus the mono AI note beneath; no rounded corners, no icons; e2e asserts the four titles.
   - Spec: SPEC §4.1; design/copy.md "How I work"; design/README.md
   - Out of scope: other panels.
