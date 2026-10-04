@@ -52,7 +52,7 @@ queue.
 
 ### Foundation
 
-- [ ] **PR-4 Design tokens to CSS and self-hosted fonts**
+- [x] **PR-4 Design tokens to CSS and self-hosted fonts**
   - Done when: a script (`npm run tokens`, run by `build` and `dev`) generates `src/styles/tokens.css` from `design/tokens.json` with `:root` (paper) and `[data-theme="blueprint"]` values plus `@media (prefers-color-scheme: dark) :root:not([data-theme="paper"])`; Archivo (variable, wdth+wght), IBM Plex Sans and Mono (400/500/600) are self-hosted woff2 latin subsets with `font-display: swap` and preload for the two above-the-fold faces; `src/styles/base.css` sets body font, colours, focus ring and the `.sr-only` utility; a Vitest test asserts every token in tokens.json appears in tokens.css; no request leaves the site for fonts.
   - Spec: design/tokens.json, design/README.md rules 1–4, SPEC §6
   - Out of scope: components.
