@@ -44,7 +44,9 @@ export async function settleAnimations(page: Page): Promise<void> {
 
 /**
  * design/motion.md "Testing motion": every element under `scope` that is not in its final state —
- * opacity below 1, or a clip-path — described as `tag.class` for the failure message.
+ * opacity below 1, or a clip-path — described as `tag.class` for the failure message. Elements
+ * not rendered (`display: none`, e.g. a folded phone Experience card's bullets) have no visible
+ * state; their reveal plays when they are shown.
  */
 export async function notInFinalState(page: Page, scope = 'body'): Promise<string[]> {
   await settleAnimations(page);
@@ -52,6 +54,7 @@ export async function notInFinalState(page: Page, scope = 'body'): Promise<strin
     ({ scope, exceptions }) =>
       [...document.querySelectorAll(`${scope}, ${scope} *`)]
         .filter((element) => !element.matches(exceptions))
+        .filter((element) => element.checkVisibility())
         .filter((element) => {
           const style = getComputedStyle(element);
           return Number(style.opacity) < 1 || style.clipPath !== 'none';

@@ -70,6 +70,7 @@ itself, in the same voice: first person, short sentences, concrete nouns, no hyp
 ## Sheet 02 — Experience
 - Label `SHEET 02 — EXPERIENCE · ELEVATION` · Heading `FIVE YEARS, DRAWN TO SCALE`
 - Timeline labels: `LINKPIZZA · FULL-STACK JAVA DEVELOPER` · `DJI · FULL-STACK JAVA ENGINEER` · `OPTIECON →` · `CONSPECT · NOV 2023 – NOW` · durations `2 Y 8 M`, `2 Y 0 M` · `HATCHED: SABBATICAL` / `MUAY THAI · SURFING`
+- Phone card toggle (experience-default-light-390): `READ MORE ↓` / `SHOW LESS ↑` (NL `LEES MEER ↓` / `TOON MINDER ↑`)
 
 ### 02.1 Java Consultant — Conspect (id `conspect`, employer: its assignments nest inside)
 NOV 2023 — NOW · CONSPECT · ALMERE

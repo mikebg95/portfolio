@@ -1,13 +1,17 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 
 import { expectNoAxeViolations } from './helpers/axe';
 import { ui } from './helpers/content';
 import { settleAnimations } from './helpers/motion';
 
 // Sheet 02 timeline (SPEC §4.2; copy.md Sheet 02; drawing experience-default-light-1440):
-// horizontal from 1024 px, vertical below.
+// horizontal from 1024 px, vertical below; on a phone (< 768 px) the cards are the timeline
+// instead (experience-phone.spec.ts).
+const PHONE = 'phone draws cards beside a ruler, not bars';
+const phone = (page: Page) => (page.viewportSize()?.width ?? 0) < 768;
 
 test('the sheet shows its label, heading and the drawn timeline', async ({ page }) => {
+  test.skip(phone(page), PHONE);
   await page.goto('/experience');
   await expect(page.locator('.sheet-label').first()).toHaveText(
     'SHEET 02 — EXPERIENCE · ELEVATION',
@@ -58,6 +62,7 @@ test('the sheet shows its label, heading and the drawn timeline', async ({ page 
 });
 
 test('bars are drawn to scale along the ruler', async ({ page }) => {
+  test.skip(phone(page), PHONE);
   await page.goto('/experience');
   await settleAnimations(page);
   const width = page.viewportSize()?.width ?? 0;
@@ -83,6 +88,7 @@ test('bars are drawn to scale along the ruler', async ({ page }) => {
 });
 
 test('a bar leads to its detail block', async ({ page }) => {
+  test.skip(phone(page), PHONE);
   await page.goto('/experience');
   await page
     .getByRole('link', { name: 'DJI · Full-Stack Java Engineer · JAN 2024 – JAN 2026' })
@@ -93,6 +99,7 @@ test('a bar leads to its detail block', async ({ page }) => {
 });
 
 test('the Dutch sheet draws the same timeline', async ({ page }) => {
+  test.skip(phone(page), PHONE);
   const { dates } = ui('nl');
   await page.goto('/nl/experience');
   await expect(page.locator('.timeline__bar')).toHaveCount(4);

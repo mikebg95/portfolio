@@ -6,7 +6,8 @@ import { formatSpan, type DateWords } from '../../dates';
 // The small hatched block between two detail blocks (copy.md Sheet 02 "Sabbatical"; not drawn):
 // the detail block's two columns, a dashed hatched swatch — the timeline's sabbatical bar — in
 // place of the number, and one line of context. Inside an employer's years (Conspect) it is one of
-// its assignments: numbered (`02.1b`) and titled h3, under the employer's h2.
+// its assignments: numbered (`02.1b`) and titled h3, under the employer's h2. Below 768 px it is
+// a dashed, hatched card among ExperienceDetail's.
 interface Props {
   entry: CollectionEntry<'experience'>['data'];
   /** `02.1b`, when the break is an assignment */
@@ -98,9 +99,56 @@ const Title = entry.parent === undefined ? 'h2' : 'h3';
     line-height: 1.6;
   }
 
+  /* Phone (experience-default-light-390): a dashed, hatched card among the others — the card is
+     the swatch. */
   @media (max-width: 767px) {
     .experience-break {
-      padding: var(--space-5) var(--sheet-content-padding-phone);
+      flex-direction: column;
+      gap: 6px;
+      padding: 14px 14px 12px;
+      border: 1.5px dashed var(--color-ink);
+      background-color: var(--color-paper-raised);
+      background-image: repeating-linear-gradient(
+        -45deg,
+        color-mix(in srgb, var(--color-ink) 12%, transparent) 0 1px,
+        transparent 1px 7px
+      );
+    }
+
+    .experience-break__meta {
+      flex: none;
+      flex-flow: row wrap;
+      gap: 0 0.6ch;
+      font-size: 10.5px;
+      letter-spacing: 0.08em;
+      line-height: 1.6;
+    }
+
+    .experience-break__meta
+      > :not(.experience-break__swatch)
+      ~ :not(.experience-break__swatch)::before {
+      content: '· ';
+      content: '· ' / '';
+    }
+
+    .experience-break__number {
+      color: inherit;
+      font-size: inherit;
+      font-weight: inherit;
+    }
+
+    .experience-break__swatch {
+      display: none;
+    }
+
+    .experience-break__body {
+      flex: none;
+    }
+
+    .experience-break__context {
+      color: var(--color-ink);
+      font-size: 14px;
+      line-height: 1.5;
     }
   }
 </style>

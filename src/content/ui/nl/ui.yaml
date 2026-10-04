@@ -67,6 +67,7 @@ experience:
   label: BLAD 02 — ERVARING · AANZICHT
   heading: ['VIJF JAAR,', OP SCHAAL GETEKEND]
   legend: ['GEARCEERD: SABBATICAL', MUAY THAI · SURFEN]
+  toggle: { more: LEES MEER, less: TOON MINDER }
 projects:
   label: BLAD 03 — PROJECTEN · TEKENINGENREGISTER
   heading: [EERST ONTWORPEN., DAN GEBOUWD.]

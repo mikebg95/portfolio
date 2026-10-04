@@ -55,6 +55,7 @@ test('GSAP is fetched on the experience sheet only, and never under reduced moti
 });
 
 test('in view at load, the bars extrude on their own and end drawn to scale', async ({ page }) => {
+  test.skip((page.viewportSize()?.width ?? 0) < 768, 'phone draws cards, not bars');
   await page.addInitScript(() => {
     const seen = { scales: [] as number[], durations: [] as string[], arrow: [] as string[] };
     Object.assign(window, { seen });
@@ -162,8 +163,10 @@ test('desktop pins the timeline over the details, its cursor on the role being r
   await expect(timeline).not.toHaveClass(/timeline--pinned/);
 });
 
-test('below desktop the timeline never sticks', async ({ page }) => {
-  test.skip((page.viewportSize()?.width ?? 0) >= 1024, 'phone and tablet only');
+test('on a tablet the timeline never sticks', async ({ page }) => {
+  // No tablet project: the desktop one, narrowed (a phone draws cards, not bars).
+  test.skip((page.viewportSize()?.width ?? 0) < 1024, 'desktop project, narrowed');
+  await page.setViewportSize({ width: 800, height: 900 });
   await page.goto('/experience');
   await settleAnimations(page);
   await page.locator('.timeline__bar[href="#dji"]').click();

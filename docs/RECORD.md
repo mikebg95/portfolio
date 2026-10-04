@@ -609,3 +609,20 @@ scrollbar is kept instead; the rail is a tab stop only while it overflows. Coded
 value under the label, beside a 44 px code column, on every phone table (SpecRow/SpecTable).
 The facts allowlist gained `1:1` and PR-62a's tab-bar `Certs`, which was failing it.
 Instead of: a grid hero rebuilt for DOM order; abbreviating the button copy.
+
+## 2026-10-04 — Phone Experience: the cards are the timeline (PR-62c)
+Who: agent (PR-62c, the choices). Below 768 px the bars timeline is hidden (`display: none`) and the
+detail blocks become the drawing's cards beside a year ruler; 768–1023 keeps the vertical bars.
+The ruler is to scale but stretched over the column of cards (`yearMarks`, % from the top, at least
+14 px a month) — like the drawing, it does not align card to month: cards grow when opened. The
+Conspect bracket wraps the employer's own block (header card + assignments), so it always spans
+its assignments, open or folded, rather than reaching to NOV 2023 on the ruler. What folds is the
+bullets and the stack only; context and the revision note stay (the drawing shows DJI's note
+folded), so Conspect and the sabbatical have no toggle. The toggle is a `<button>` whose `::after`
+spans the card (tap anywhere), shown only under `.js`; without JS everything is open. Toggle words
+are content (`ui.experience.toggle`, additive, as `ui.tabBar` was); the arrows are `aria-hidden`
+and the card title is sr-only in the button's name. A `#id` link (the Overview's `#optiecon`)
+arrives with its card open. Copy wins over the drawing's shorter label/heading and card meta
+(`INTERNAL PRODUCT`): the full strings wrap.
+Instead of: `<details>` (it would hide the detail on desktop too, where the same markup must
+show everything); a second phone-only markup of the cards.

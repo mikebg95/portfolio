@@ -83,6 +83,21 @@ export const layout = <T extends Span>(entries: readonly T[], now: Date) => {
   return { ruler: range, bars };
 };
 
+/**
+ * The phone's vertical ruler (experience-default-light-390): the build date at the top, then each
+ * year's January down to the first one, as % from the top over `months` (now − first January).
+ */
+export const yearMarks = (spans: readonly Span[], now: Date) => {
+  const { start, years } = ruler(spans, now);
+  const top = nowIndex(now);
+  const months = top - start;
+  const marks = years
+    .filter((year) => year * 12 <= top)
+    .reverse()
+    .map((year) => ({ year, at: ((top - year * 12) / months) * 100 }));
+  return { months, marks };
+};
+
 /** `32` → `2 Y 8 M`. */
 export const formatDuration = (months: number) => `${Math.floor(months / 12)} Y ${months % 12} M`;
 

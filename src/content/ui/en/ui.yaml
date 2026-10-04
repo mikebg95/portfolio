@@ -67,6 +67,7 @@ experience:
   label: SHEET 02 — EXPERIENCE · ELEVATION
   heading: ['FIVE YEARS,', DRAWN TO SCALE]
   legend: ['HATCHED: SABBATICAL', MUAY THAI · SURFING]
+  toggle: { more: READ MORE, less: SHOW LESS }
 projects:
   label: SHEET 03 — PROJECTS · DRAWING REGISTER
   heading: [DESIGNED FIRST., THEN BUILT.]

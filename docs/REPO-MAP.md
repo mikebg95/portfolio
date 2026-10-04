@@ -126,6 +126,8 @@ line.
 - `src/timeline-motion.ts` — §M4 (lazy, GSAP): one sweep drives every bar, intro vs scrub, pin + scale cursor ≥ 1024×640; `src/scrub.ts` — `startScrub`, `data-scrub` states, `tokenEase`; `tests/e2e/experience-motion.spec.ts`.
 - TRAP: GSAP's pin wraps `.timeline` in a `.pin-spacer` div; select the timeline by class, never as a direct child of `.experience-head`. Detail blocks get `scroll-margin-top: var(--timeline-pinned)` so a bar link lands clear of the pinned strip.
 - `tests/e2e/experience.spec.ts` — timeline text, bar order/hrefs, scale (month positions) per orientation, bar click → block; detail block titles/dates/order, one column on phone.
+- Phone (< 768 px): `src/components/experience/ExperienceRuler.astro` (years from `yearMarks`, src/timeline.ts) + the page's `--experience-ruler`/`--experience-cards` columns; blocks restyle as cards in ExperienceDetail/ExperienceBreak; READ MORE folds `.experience-detail__fold`; `tests/e2e/experience-phone.spec.ts` (screenshots to `.e2e/experience-phone/`).
+- TRAP: an employer block nests its assignments, so phone rules on `.experience-detail` must be child-scoped (`> .experience-detail__body > …`) or they leak into the nested cards.
 
 ## Sheet 03 — Projects
 

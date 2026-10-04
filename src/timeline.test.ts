@@ -9,6 +9,7 @@ import {
   nowIndex,
   place,
   ruler,
+  yearMarks,
 } from './timeline';
 
 // The four experience entries as in src/content/experience/en (PR-17).
@@ -42,6 +43,27 @@ describe('ruler', () => {
 
   it('covers an end later than the build year', () => {
     expect(ruler([{ start: '2025-03', end: '2028-02' }], BUILD).end).toBe(monthIndex('2029-01'));
+  });
+});
+
+describe('yearMarks — the phone ruler (experience-default-light-390)', () => {
+  it('puts the build date at the top and each January below it, newest first', () => {
+    const { months, marks } = yearMarks(ENTRIES, BUILD);
+    expect(months).toBeCloseTo(nowIndex(BUILD) - monthIndex('2021-01'), 6);
+    expect(marks.map((m) => m.year)).toEqual([2026, 2025, 2024, 2023, 2022, 2021]);
+    expect(marks.at(-1)?.at).toBeCloseTo(100, 6);
+    // Twelve months apart everywhere: to scale.
+    const step = (marks[1]?.at ?? 0) - (marks[0]?.at ?? 0);
+    expect(step).toBeCloseTo((12 / months) * 100, 6);
+    expect((marks[0]?.at ?? 0) / step).toBeCloseTo(
+      (nowIndex(BUILD) - monthIndex('2026-01')) / 12,
+      6,
+    );
+  });
+
+  it('leaves out a January that is still to come', () => {
+    const marks = yearMarks([{ start: '2025-03', end: '2028-02' }], BUILD).marks;
+    expect(marks.map((m) => m.year)).toEqual([2026, 2025]);
   });
 });
 

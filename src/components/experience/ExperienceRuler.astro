@@ -1,0 +1,58 @@
+---
+// The phone's year ruler (experience-default-light-390, below 768 px only): one ink line down the
+// left of the cards, NOW at the top and each January below it to scale (`yearMarks`,
+// src/timeline.ts), stretched over the whole column of cards. Decoration: the cards carry the dates.
+interface Props {
+  marks: readonly { year: number; at: number }[];
+  now: string;
+}
+
+const { marks, now } = Astro.props;
+---
+
+<div class="experience-ruler" aria-hidden="true">
+  <ol class="experience-ruler__marks">
+    <li style="--at: 0">{now}</li>
+    {marks.map((mark) => (
+      <li style={`--at: ${mark.at}`}>{mark.year}</li>
+    ))}
+  </ol>
+</div>
+
+<style>
+  .experience-ruler {
+    display: none;
+  }
+
+  @media (max-width: 767px) {
+    /* Inset by the panel's padding; the bottom leaves room for the last year's label. */
+    .experience-ruler {
+      display: block;
+      position: absolute;
+      top: var(--space-2);
+      bottom: calc(var(--sheet-content-padding-phone) + 18px);
+      left: var(--sheet-content-padding-phone);
+      width: var(--experience-ruler, 40px);
+      border-right: 1.5px solid var(--color-ink);
+    }
+
+    .experience-ruler__marks {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .experience-ruler__marks li {
+      position: absolute;
+      top: calc(var(--at) * 1%);
+      left: 0;
+      width: calc(100% - 6px);
+      padding-top: 3px;
+      border-top: 1.5px solid var(--color-ink);
+      color: var(--color-muted);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      line-height: 1;
+    }
+  }
+</style>

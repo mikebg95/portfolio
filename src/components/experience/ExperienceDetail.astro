@@ -10,24 +10,36 @@ import RevisionNote from '../drawing/RevisionNote.astro';
 // line). Its id is the entry's, the target of the timeline bar and the Overview's links.
 // An employer (Conspect) titles itself `role — employer` and nests its assignments, passed as the
 // slot, under a bracket; an assignment's h3 meta names its engagement instead of the employer.
+// Below 768 px (experience-default-light-390) each block is a card — the employer's a dark header
+// card, its bracket down the left of it and its assignments — and with JS the bullets and stack
+// fold away behind a READ MORE toggle; the whole card is its tap target. Without JS all is shown.
 interface Props {
   entry: CollectionEntry<'experience'>['data'];
   /** `02.1`, `02.1a` */
   number: string;
   dates: DateWords;
+  /** The phone card's toggle words (`ui.experience.toggle`). */
+  toggle: { more: string; less: string };
 }
 
-const { entry, number, dates } = Astro.props;
+const { entry, number, dates, toggle } = Astro.props;
 const assignment = entry.parent !== undefined;
 const title =
   entry.kind === 'employer'
     ? `${entry.role} — ${entry.employer}`
     : `${entry.client ?? entry.employer} — ${entry.role}`;
 const assignments = Astro.slots.has('default');
+const folds = [
+  entry.bullets.length > 0 && `${entry.id}-bullets`,
+  entry.stack.length > 0 && `${entry.id}-stack`,
+].filter((id) => id !== false);
 ---
 
 <article
-  class:list={['experience-detail', { 'experience-detail--assignment': assignment }]}
+  class:list={[
+    'experience-detail',
+    { 'experience-detail--assignment': assignment, 'experience-detail--employer': assignments },
+  ]}
   id={entry.id}
 >
   <div class="experience-detail__meta" data-reveal="ink">
@@ -61,7 +73,7 @@ const assignments = Astro.slots.has('default');
       {entry.context}
     </p>
     {entry.bullets.length > 0 && (
-      <ul class="experience-detail__bullets">
+      <ul class="experience-detail__bullets experience-detail__fold" id={`${entry.id}-bullets`}>
         {entry.bullets.map((bullet, i) => (
           <li data-reveal="ink" data-reveal-delay={i * 80}>
             {bullet}
@@ -71,7 +83,11 @@ const assignments = Astro.slots.has('default');
     )}
     {entry.note && <RevisionNote text={entry.note} data-reveal="stamp" />}
     {entry.stack.length > 0 && (
-      <p class="experience-detail__stack" data-reveal="ink">
+      <p
+        class="experience-detail__stack experience-detail__fold"
+        id={`${entry.id}-stack`}
+        data-reveal="ink"
+      >
         {entry.stack.map((item, i) => (
           <>
             {i > 0 && ' · '}
@@ -80,11 +96,30 @@ const assignments = Astro.slots.has('default');
         ))}
       </p>
     )}
+    {folds.length > 0 && (
+      <button
+        type="button"
+        class="experience-detail__toggle"
+        aria-expanded="false"
+        aria-controls={folds.join(' ')}
+      >
+        <span class="experience-detail__toggle-more">
+          {toggle.more} <span aria-hidden="true">↓</span>
+        </span>
+        <span class="experience-detail__toggle-less">
+          {toggle.less} <span aria-hidden="true">↑</span>
+        </span>
+        <span class="sr-only">· {title}</span>
+      </button>
+    )}
   </div>
   {assignments && (
     <div class="experience-detail__assignments">
       <span class="experience-detail__bracket" aria-hidden="true">
-        <span class="experience-detail__bracket-label">{entry.employer}</span>
+        <span class="experience-detail__bracket-label">
+          {entry.employer}
+          <span class="experience-detail__bracket-dates">{` · ${formatSpan(entry, dates)}`}</span>
+        </span>
       </span>
       <slot />
     </div>
@@ -217,18 +252,207 @@ const assignments = Astro.slots.has('default');
     padding-bottom: 0;
   }
 
+  .experience-detail__toggle,
+  .experience-detail__bracket-dates {
+    display: none;
+  }
+
+  /* Phone (experience-default-light-390): cards beside the page's ruler. */
   @media (max-width: 767px) {
-    .experience-detail__assignments {
-      padding-left: var(--space-5);
+    .experience-detail {
+      position: relative;
+      flex-direction: column;
+      gap: 6px;
+      padding: 14px 14px 12px;
+      border: 1.5px solid var(--color-ink);
+      background: var(--color-paper-raised);
     }
 
-    .experience-detail {
-      gap: var(--space-4);
-      padding: var(--space-6) var(--sheet-content-padding-phone);
+    /* One mono line, wrapping between its parts: 02.1a · JUN 2026 — NOW · ENGAGEMENT · PLACE. */
+    .experience-detail__meta {
+      flex: none;
+      flex-flow: row wrap;
+      gap: 0 0.6ch;
+      color: var(--color-line);
+      font-size: 10.5px;
+      letter-spacing: 0.08em;
+      line-height: 1.6;
+    }
+
+    .experience-detail__meta > * + *::before {
+      content: '· ';
+      content: '· ' / '';
     }
 
     .experience-detail__number {
-      font-size: 28px;
+      font-size: inherit;
+    }
+
+    .experience-detail__body {
+      flex: none;
+      gap: 8px;
+    }
+
+    .experience-detail .experience-detail__title,
+    .experience-detail--assignment .experience-detail__title {
+      font-size: 18px;
+    }
+
+    .experience-detail__context {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .experience-detail__bullets {
+      padding-left: 16px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .experience-detail__body :global(.revision-note) {
+      padding: 8px 10px;
+      font-size: 11.5px;
+      line-height: 1.5;
+    }
+
+    /* The employer is a dark header card; its assignments follow as cards of their own, the
+       bracket down their left in the column between the ruler and the cards. */
+    .experience-detail--employer {
+      gap: 0;
+      padding: 0;
+      border: 0;
+      background: none;
+    }
+
+    .experience-detail--employer > .experience-detail__meta,
+    .experience-detail--employer > .experience-detail__body {
+      background: var(--color-ink);
+      color: var(--color-ink-on-fill);
+    }
+
+    .experience-detail--employer > .experience-detail__meta {
+      padding: 14px 14px 6px;
+    }
+
+    .experience-detail--employer > .experience-detail__body {
+      padding: 0 14px 14px;
+    }
+
+    .experience-detail--employer > .experience-detail__meta > .experience-detail__number {
+      color: inherit;
+    }
+
+    .experience-detail--employer > .experience-detail__body > .experience-detail__title {
+      font-size: 20px;
+    }
+
+    .experience-detail--employer > .experience-detail__body > .experience-detail__context {
+      color: color-mix(in srgb, var(--color-ink-on-fill) 80%, transparent);
+    }
+
+    .experience-detail__assignments {
+      position: static;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+      padding-left: 0;
+    }
+
+    .experience-detail__assignments > :global(article),
+    .experience-detail__assignments > :global(article:last-child) {
+      padding: 14px 14px 12px;
+    }
+
+    .experience-detail__assignments > :global(article + article) {
+      border-top: 1.5px solid var(--color-ink);
+    }
+
+    .experience-detail__assignments > :global(article + article.experience-break) {
+      border-top-style: dashed;
+    }
+
+    .experience-detail__bracket {
+      left: calc(var(--experience-ruler, 40px) + 4px - var(--experience-cards, 70px));
+      width: 18px;
+      border-width: 1.5px 1.5px 1.5px 0;
+    }
+
+    .experience-detail__bracket-label {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 9.5px;
+      letter-spacing: 0.14em;
+    }
+
+    .experience-detail__bracket-dates {
+      display: inline;
+    }
+
+    /* With JS the bullets and stack fold away behind the toggle; its ::after spans the card, so
+       a tap anywhere on it opens or closes the card in place. */
+    :global(.js) .experience-detail__toggle {
+      display: flex;
+      align-items: center;
+      align-self: flex-start;
+      min-height: 44px;
+      margin: -6px 0 -10px;
+      padding: 0;
+      border: 0;
+      background: none;
+      color: var(--color-line);
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+    }
+
+    .experience-detail__toggle::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+    }
+
+    .experience-detail__toggle[aria-expanded='true'] .experience-detail__toggle-more,
+    .experience-detail__toggle[aria-expanded='false'] .experience-detail__toggle-less {
+      display: none;
+    }
+
+    :global(.js)
+      .experience-detail:not(.experience-detail--open)
+      > .experience-detail__body
+      > .experience-detail__fold {
+      display: none;
     }
   }
 </style>
+
+<script>
+  // The phone cards' READ MORE: opens or closes its card in place; a link to a card (the
+  // Overview's `#optiecon`) arrives with it open.
+  const OPEN = 'experience-detail--open';
+
+  const setOpen = (button: HTMLButtonElement, open: boolean) => {
+    button.setAttribute('aria-expanded', String(open));
+    button.closest('.experience-detail')?.classList.toggle(OPEN, open);
+  };
+
+  const toggles = document.querySelectorAll<HTMLButtonElement>('.experience-detail__toggle');
+  for (const button of toggles) {
+    button.addEventListener('click', () =>
+      setOpen(button, button.getAttribute('aria-expanded') !== 'true'),
+    );
+  }
+
+  const openTarget = () => {
+    const id = decodeURIComponent(location.hash.slice(1));
+    const target = id ? document.getElementById(id) : null;
+    const button = target?.querySelector<HTMLButtonElement>(
+      ':scope > .experience-detail__body > .experience-detail__toggle',
+    );
+    if (button) setOpen(button, true);
+  };
+  openTarget();
+  window.addEventListener('hashchange', openTarget);
+</script>

@@ -17,6 +17,7 @@ interface Ui {
   seo: { notFound: { title: string } };
   notFound: { label: string; heading: string; note: string };
   dates: { months: string[]; now: string };
+  experience: { toggle: { more: string; less: string } };
 }
 
 interface Profile {

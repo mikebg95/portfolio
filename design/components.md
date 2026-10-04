@@ -82,6 +82,9 @@ Two columns: left 220 px (number "02.n" mono 34 px line colour, dates, employer 
 Separated by 1 px rules. An employer (Conspect, PR-60) titles itself "role — employer" and nests
 its assignments ("02.na", h3, title 20–26 px) under a line-colour bracket with its name along it,
 dashed rules between them; an assignment's left column reads dates, engagement (line colour), place.
+Phone (< 768, PR-62c): a card each (1.5 px ink border, meta on one mono line), the employer a dark
+ink header card, the bracket between the year ruler and the cards; bullets and stack fold behind
+`READ MORE ↓` (whole card is the tap target), shown open without JS; the sabbatical a dashed hatched card.
 
 ## ProjectCard
 1.5 px ink border, paper-raised, square. Top: label (P-0n · KIND). Middle: mini diagram of `.box`

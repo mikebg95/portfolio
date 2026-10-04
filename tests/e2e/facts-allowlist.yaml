@@ -52,7 +52,7 @@ urls:
     - 'https://github.com/mikebg95/journal/blob/main/docs/architecture/adr/0007-optimistic-locking.md'
 
 names:
-  "Sheet chrome: drawing titles, title block, register, parts list, inspection record, figure and note labels, the MG monogram, the theme and language switches, the phone tab bar's short sheet names":
+  "Sheet chrome: drawing titles, title block, register, parts list, inspection record, figure and note labels, the MG monogram, the theme and language switches, the phone tab bar's short sheet names, the phone Experience cards' toggle":
     - ARRANGEMENT
     - ASSEMBLED
     - ASSEMBLY
@@ -78,6 +78,7 @@ names:
     - ITEM
     - LANG
     - LAYERS
+    - LESS
     - MG
     - NEXT
     - NOTE
@@ -107,6 +108,7 @@ names:
     - SEE
     - SET
     - SHEETS
+    - SHOW
     - SIGNED
     - SPECIFICATION
     - SUPPLIER

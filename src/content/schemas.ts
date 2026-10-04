@@ -291,12 +291,14 @@ export const uiSchema = z.strictObject({
   dates: z.strictObject({ months: z.array(text).length(12), now: text }),
   /**
    * Sheet 02's own strings (copy.md Sheet 02): label, the heading's two drawn lines and the
-   * sabbatical legend's two lines. Role names and dates come from the `experience` entries.
+   * sabbatical legend's two lines; the phone card's toggle (`READ MORE` / `SHOW LESS`). Role names
+   * and dates come from the `experience` entries.
    */
   experience: z.strictObject({
     label: text,
     heading: z.tuple([text, text]),
     legend: z.tuple([text, text]),
+    toggle: z.strictObject({ more: text, less: text }),
   }),
   /**
    * Sheet 03's own strings (copy.md Sheet 03): label, the heading's two drawn lines, intro and the
