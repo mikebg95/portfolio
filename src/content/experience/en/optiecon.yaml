@@ -1,16 +1,15 @@
-# Placeholder so the build passes — PR-17 replaces it with the copy from design/copy.md.
 id: optiecon
 order: 1
-role: 'Placeholder (PR-17)'
+role: Full-Stack Java Engineer
 employer: Conspect
 client: OptieCon
-place: 'Placeholder (PR-17)'
+place: Almere
 start: '2026-06'
 end: null
-context: 'Placeholder (PR-17)'
+context: "Conspect's internal product for employee share schemes: an Angular single-page app on a Spring Boot API. I own its security end to end."
 bullets:
-  - 'Placeholder (PR-17)'
-stack:
-  - 'Placeholder (PR-17)'
+  - 'Built single sign-on with Microsoft Entra ID (OAuth2 / OIDC with PKCE): MSAL in Angular, Spring Security as resource server.'
+  - Wrote ~30 security tests covering tokens, authorisation and CORS.
+stack: [Java 21, Spring Boot 3.5, Spring Security, Entra ID, Angular 20, PostgreSQL, Docker]
 lang: en
 translated: true

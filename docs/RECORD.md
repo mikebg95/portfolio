@@ -126,3 +126,15 @@ as `hero.label` does. An additive field, so PR-14–16 share it without a separa
 "How I work" is not drawn: a ruled grid (cells draw left+top, the grid right+bottom, as the title
 block does), 4 / 2 / 1 columns at ≥ 1024 / ≥ 768 / phone. Panel labels are `<h2>`s wrapping a
 SheetLabel span, so each panel is a landmark section with a heading under the h1.
+
+## 2026-10-04 — Experience content: shape of the four entries and the Conspect line
+Who: agent (PR-17). `order` is newest first (optiecon 1, sabbatical 2, dji 3, linkpizza 4), the
+detail-block order; the timeline sorts by `start`. Heading name = `client ?? employer` (OptieCon,
+DJI, LinkPizza). Places and employers in natural case (`Almere`, `Conspect`); copy.md's caps meta
+lines are a display style. DJI's note keeps the `REV. NOTE △` prefix, as `hero.revisionNote` does.
+The Conspect line lives in `profile.employers` (name, start `2023-11`, end null, description — the
+text after `Conspect — `), not on the experience entries: it spans two of them and carries a start
+(NOV 2023) that neither has. An additive schema field, sanctioned by the PR-17 line itself.
+Not modelled yet (PR-19 decides): sheet label/heading, timeline labels, `HATCHED: SABBATICAL` /
+`MUAY THAI · SURFING`. DJI ends 2026-01, the month the sabbatical starts: both read JAN 2026 in
+copy.md and cv.md; the test allows the shared month.

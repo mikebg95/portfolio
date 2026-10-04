@@ -1,0 +1,27 @@
+id: linkpizza
+order: 4
+role: Full-Stack Java Developer
+employer: LinkPizza
+place: Amsterdam
+start: '2021-02'
+end: '2023-10'
+context: Influencer-marketing platform, team of 3–4 developers. A JSF monolith on WildFly, being migrated to Quarkus microservices on Kubernetes.
+bullets:
+  - Built the Media Kit — a public influencer profile page designed to turn visitors into sign-ups, and the pilot for moving from JSF to Angular. Developed the Angular frontend and much of the backend. When the company stayed on JSF, rebuilt the frontend in JSF/PrimeFaces; it is still in use. Also shaped its concept and design.
+  - 'Backend development in Jakarta EE: business logic in services; data access with JPA/Hibernate and hand-written JDBC, DTOs per use case.'
+  - Full-stack features and bug fixes end to end, from JSF/PrimeFaces UI and backing beans to services and persistence.
+stack:
+  - Java 11 & 17
+  - Jakarta EE
+  - WildFly
+  - JAX-RS
+  - JSF/PrimeFaces
+  - Ajax
+  - Angular 14
+  - PostgreSQL
+  - JPA/Hibernate
+  - JDBC
+  - Maven
+  - Git/Bitbucket
+lang: en
+translated: true

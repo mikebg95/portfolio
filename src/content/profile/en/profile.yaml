@@ -62,6 +62,11 @@ current:
   - { text: 'OptieCon — security and sign-in, at Conspect', href: /experience#optiecon }
   - { text: CKAD — Certified Kubernetes Application Developer, href: /certifications#ckad }
   - { text: 'Journal — hexagonal architecture, part 3 of the series', href: /projects/journal }
+employers:
+  - name: Conspect
+    start: '2023-11'
+    end: null
+    description: IT consultancy in agile software development and data analytics.
 contact:
   email: mikebgoldman95@gmail.com
   linkedin: https://linkedin.com/in/mikebg95

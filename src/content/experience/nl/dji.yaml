@@ -1,0 +1,27 @@
+id: dji
+order: 3
+role: Full-Stack Java Engineer
+employer: Conspect
+client: DJI
+place: Veenhuizen
+start: '2024-01'
+end: '2026-01'
+context: The Dutch Custodial Institutions Agency (Dienst Justitiële Inrichtingen). An Agile DevOps team moving a modular Spring monolith to Spring Boot microservices on OpenShift.
+bullets:
+  - Sole developer of a new application replacing part of the legacy JSF system — designed and built its JWT authentication and authorisation and its Vue.js frontend from scratch, plus much of its REST API on the existing Spring backend.
+  - "Day-to-day full-stack work, mostly backend: features, bug fixes, TDD with JUnit and Mockito, code reviews; worked with operations on the application's deployment."
+  - Gave knowledge sessions on the app's authentication and on client-side rendering; thorough handover.
+stack:
+  - Java
+  - Spring
+  - PostgreSQL
+  - JPA/Hibernate
+  - JUnit
+  - Mockito
+  - Vue.js 3
+  - JSF
+  - Maven
+  - Git/GitLab
+note: REV. NOTE △ From an empty repository to a handed-over production app — as the only developer on it.
+lang: nl
+translated: false
