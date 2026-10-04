@@ -54,7 +54,7 @@ queue.
 
 ### Sheet chrome
 
-- [ ] **PR-7 SheetHeader with tabs (desktop/tablet)**
+- [x] **PR-7 SheetHeader with tabs (desktop/tablet)**
   - Done when: monogram cell + five tabs exactly as drawn, active tab ink-filled with `aria-current="page"` (project detail pages mark tab 03), hover underline, utilities cluster (EN/NL links via `alternate()`, theme button placeholder, CV link to `/michael-goldman-cv.pdf` with the PDF copied from `docs/source/cv.pdf` into `public/`); e2e: every tab navigates to its route in both languages and the correct tab is current.
   - Spec: SPEC §3.2, §3.5; design/components.md SheetHeader/SheetTab; design/copy.md Global
   - Out of scope: phone panel (PR-8), theme behaviour (PR-10).
