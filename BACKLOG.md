@@ -68,7 +68,7 @@ queue.
 
 ### Motion
 
-- [ ] **PR-41 First-load plotting — Sheet 01**
+- [x] **PR-41 First-load plotting — Sheet 01**
   - Done when: the full §M1 timeline on `/` ported from `design/screens/html/motion-preview.dc.html` (frame draw, grid, header stagger, active tab fill, headline plotter wipe, rule/role/intro, portrait line scan, dimension lines, leaders + balloons, revision note stamp) with identical durations/delays/easings; plays only on the session's first page view; text readable within 1.3 s (e2e measures); reduced motion → final state.
   - Spec: design/motion.md §M1
   - Out of scope: other sheets (PR-42).
