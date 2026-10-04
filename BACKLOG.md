@@ -72,7 +72,7 @@ queue.
 
 ### Hardening
 
-- [ ] **PR-61 The name never breaks inside a word, at any width**
+- [x] **PR-61 The name never breaks inside a word, at any width**
   - Michael, 2026-10-04: on small screens the hero showed "MICHAE / L / GOLDMA / N" — *"this should NEVER HAPPEN. as soon as it doesnt fit on the same lines then the font should be smaller."*
   - Done when: every display heading (DisplayHeading xl/l/m/s and any uppercase Archivo title) never breaks inside a word: `overflow-wrap: normal; word-break: keep-all; hyphens: none`, and the hero name is sized from its container so the longest word ("GOLDMAN", also NL) always fits on one line — `font-size: min(<token clamp>, <container-width>/<measured em-width of the longest word>)` via container query units (`cqi`) with the ratio measured once from the font, plus a JS-free fallback; long section/project titles may wrap only between words; a Playwright test at every width from 280 to 1440 px in 10 px steps (both languages) asserts each heading word sits on one line (bounding-box check per word span) and no heading overflows its box.
   - Spec: design/tokens.json size; design/README.md Responsive
