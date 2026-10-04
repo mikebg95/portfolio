@@ -56,11 +56,6 @@ queue.
 
 ### Sheet 01 — Overview
 
-- [x] **PR-12 Profile content (EN)**
-  - Done when: the `profile` EN entry holds every Sheet 01 string from design/copy.md (hero, buttons, dimensions, balloons, how I work + AI note, S-01…S-07, general notes, in-progress items, contact) verbatim; the ASCII portrait is loaded from `docs/source/ascii-portrait.txt` at build time (single source); Vitest asserts the content matches copy.md for the hero and spec rows.
-  - Spec: design/copy.md Sheet 01; SPEC §3.6, §3.7
-  - Out of scope: NL (PR-60).
-
 - [ ] **PR-13 Overview hero and portrait**
   - Done when: `/` renders the hero exactly as `design/screens/overview-default-light-1440.png` (label, MICHAEL/GOLDMAN display-xl, rule + role line, intro, revision note, VIEW PROJECTS and DOWNLOAD CV buttons) and the portrait block (`<pre aria-hidden>` portrait + sr-only text, horizontal and vertical dimension lines, balloons 1–3 with leaders; balloon 1 links to /certifications); phone layout per design/README.md "Responsive" (balloons become a numbered list under the portrait); e2e checks text, links and no horizontal scroll at 320 px.
   - Spec: SPEC §4.1; design/screens/html/overview-default-light-1440.html
