@@ -58,7 +58,7 @@ queue.
 
 ### Sheet 02 — Experience
 
-- [ ] **PR-17 Experience content (EN)**
+- [x] **PR-17 Experience content (EN)**
   - Done when: `experience` EN entries for OptieCon, sabbatical, DJI, LinkPizza with every field from design/copy.md verbatim (ids optiecon, sabbatical, dji, linkpizza; start/end YYYY-MM); Conspect employer line in profile or a small `employers` field; Vitest checks dates and ordering.
   - Spec: design/copy.md Sheet 02; SPEC §5
   - Out of scope: NL.
