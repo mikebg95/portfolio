@@ -60,7 +60,7 @@ queue.
 
 ### Sheet 03 — Projects
 
-- [ ] **PR-22 ProjectCard and mini diagrams**
+- [x] **PR-22 ProjectCard and mini diagrams**
   - Done when: `ProjectCard` per design/components.md (flagship spanning 2 columns, in-progress dashed variant, title-block strip, whole card one link, hover/focus lift) with a per-project mini diagram component (Jamigos container chain, Scentify 4 questions → 52 scents, Subscription Tracker 3 stacked layers, Recipe Book OpenAPI ↓ generates → Recipe ⟶ Steps, Journal hexagon) built from `.box` HTML; `/_primitives` shows all five.
   - Spec: SPEC §4.3; design/screens/html/projects-default-light-1440.html
   - Out of scope: page layout (PR-23).
