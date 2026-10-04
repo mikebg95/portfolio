@@ -72,7 +72,7 @@ queue.
 
 ### Hardening
 
-- [ ] **PR-62e Phone Projects and Certifications card language** (rest of PR-62, items 6–7)
+- [x] **PR-62e Phone Projects and Certifications card language** (rest of PR-62, items 6–7)
   - Done when, below 768 px: Projects and Certifications (and project details) use the same card language as the new phone drawings (full-width cards, title-block strips) without new drawings; 44 px+ targets everywhere, no horizontal page scroll at 320 px; Playwright phone screenshots of EVERY page in both themes saved to `.e2e/` and compared by eye against the drawings.
   - Spec: design/screens (390 drawings), design/components.md
   - Out of scope: desktop layout.
