@@ -74,7 +74,7 @@ queue.
 
 ### Delivery
 
-- [ ] **PR-55 Dockerfile**
+- [x] **PR-55 Dockerfile**
   - Done when: multi-stage Dockerfile (node:22 build → nginxinc/nginx-unprivileged serving `dist/` on 8080) with gzip/brotli-static, long cache headers for hashed assets, no-cache for HTML, 404 page wired, `.dockerignore`; `docker build` + `docker run` smoke test script `scripts/docker-smoke.sh` curls `/`, `/nl/`, an unknown URL (404) — run it if Docker is available, otherwise document; docs/REPO-MAP.md notes it.
   - Spec: NOTES.md "Stack preferences", SPEC §7
   - Out of scope: deploying anywhere.
