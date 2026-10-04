@@ -4,6 +4,7 @@ import DisplayHeading from '../../components/drawing/DisplayHeading.astro';
 import SheetLabel from '../../components/drawing/SheetLabel.astro';
 import DetailPanel from '../../components/education/DetailPanel.astro';
 import ExplodedAssembly from '../../components/education/ExplodedAssembly.astro';
+import PartSheet from '../../components/education/PartSheet.astro';
 import PartsList from '../../components/education/PartsList.astro';
 import { getAllLocalized, t } from '../../i18n/content';
 import { langPaths, type Lang } from '../../i18n/paths';
@@ -63,15 +64,18 @@ const partName = (part: (typeof parts)[number]) =>
         <PartsList parts={parts} selected={DEFAULT_PART} headers={ui.education.parts} />
       </div>
     </div>
+    <PartSheet strings={ui.education.sheet} />
   </section>
 </SheetLayout>
 
 <script>
   import { partFromHash, partHash } from '../../assembly';
+  import { PHONE_QUERY, partSheet } from '../../part-sheet';
 
   // SPEC §4.6 / motion.md §M5: a plate, balloon or parts-list row selects its part. Every control
   // carrying `data-part` follows the selection; the URL hash `#part-n` records it and is read on
-  // load. Until the first selection the sheet stays as drawn (part 3, nothing dimmed).
+  // load. Until the first selection the sheet stays as drawn (part 3, nothing dimmed). On a phone
+  // a selection (or a #part-n link) also opens the detail in the bottom sheet (PR-62d).
   const root = document.querySelector<HTMLElement>('[data-education]');
   if (root) {
     const assembly = root.querySelector<HTMLElement>('.assembly');
@@ -105,14 +109,40 @@ const partName = (part: (typeof parts)[number]) =>
       }
     };
 
+    const choose = (item: number) => {
+      select(item, true);
+      history.replaceState(history.state, '', partHash(item));
+    };
+
+    const phone = matchMedia(PHONE_QUERY);
+    const dialog = root.querySelector<HTMLDialogElement>('[data-part-sheet]');
+    const details = root.querySelector<HTMLElement>('.education__details');
+    const names = new Map(
+      [...root.querySelectorAll<HTMLElement>('.plate[data-part]')].map((plate) => [
+        Number(plate.dataset.part),
+        plate.getAttribute('aria-label') ?? '',
+      ]),
+    );
+    const sheet =
+      dialog && details
+        ? partSheet({
+            dialog,
+            content: details,
+            step: choose,
+            name: (item) => names.get(item) ?? '',
+            items,
+            keep: (item) => root.querySelector(`.plate[data-part="${item}"]`),
+          })
+        : undefined;
+
     root.addEventListener('click', (event) => {
       const target = (event.target as Element).closest<HTMLElement>(
         'button[data-part], tr[data-part]',
       );
       if (!target) return;
       const item = Number(target.dataset.part);
-      select(item, true);
-      history.replaceState(history.state, '', partHash(item));
+      choose(item);
+      if (phone.matches) sheet?.open(item, target);
     });
 
     root.addEventListener('animationend', (event) => {
@@ -128,7 +158,9 @@ const partName = (part: (typeof parts)[number]) =>
 
     const fromHash = () => {
       const item = partFromHash(location.hash, items);
-      if (item !== undefined) select(item, false);
+      if (item === undefined) return;
+      select(item, false);
+      if (phone.matches) sheet?.open(item, root.querySelector(`.plate[data-part="${item}"]`));
     };
     fromHash();
     addEventListener('hashchange', fromHash);
@@ -179,6 +211,13 @@ const partName = (part: (typeof parts)[number]) =>
     display: flex;
     flex-direction: column;
     gap: var(--space-5);
+  }
+
+  /* With scripts, a phone shows a part's detail in the bottom sheet only (PartSheet). */
+  @media (max-width: 767px) and (scripting: enabled) {
+    .education__side > .education__details {
+      display: none;
+    }
   }
 
   @media (min-width: 1024px) {

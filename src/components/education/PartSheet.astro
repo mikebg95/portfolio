@@ -1,0 +1,182 @@
+---
+// The phone bottom sheet for a part's detail (PR-62d, drawing education-part3-sheet-light-390):
+// a drag handle (also the close button), ‹ n · n › steps to the neighbouring parts, and the body
+// the page's details move into while it is open (src/part-sheet.ts drives it). Closed — and so
+// never shown — without JS or at ≥ 768 px, where the details stay inline.
+interface Props {
+  strings: { close: string; previous: string; next: string };
+}
+
+const { strings } = Astro.props;
+---
+
+<dialog class="part-sheet" data-part-sheet tabindex="-1">
+  <div class="part-sheet__inner">
+    <div class="part-sheet__head" data-sheet-head>
+      <button type="button" class="part-sheet__grip" data-sheet-close aria-label={strings.close}>
+        <span class="part-sheet__handle" aria-hidden="true"></span>
+      </button>
+      <div class="part-sheet__steps">
+        <button type="button" class="part-sheet__step" data-sheet-step="previous">
+          <span aria-hidden="true">‹</span>
+          <span class="sr-only">{strings.previous}</span>
+          <span data-sheet-n></span>
+        </button>
+        <span class="part-sheet__dot" aria-hidden="true">
+          ·
+        </span>
+        <button type="button" class="part-sheet__step" data-sheet-step="next">
+          <span class="sr-only">{strings.next}</span>
+          <span data-sheet-n></span>
+          <span aria-hidden="true">›</span>
+        </button>
+      </div>
+    </div>
+    <!-- A tab stop, so a keyboard can scroll a detail taller than the sheet. -->
+    <div class="part-sheet__body" data-sheet-body tabindex="0"></div>
+  </div>
+</dialog>
+
+<style>
+  /* Above the tab bar's cells, as drawn; its backdrop (top layer) covers the tab bar too. */
+  .part-sheet {
+    position: fixed;
+    inset: auto 0 calc(var(--sheet-tab-bar-height) + env(safe-area-inset-bottom, 0px));
+    width: 100%;
+    max-width: none;
+    max-height: min(56dvh, 520px);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-top: var(--border-strong);
+    /* Over the tab bar's own top rule, so the rule still reads above the dimmed bar. */
+    border-bottom: var(--border-strong);
+    background: var(--color-paper);
+    box-shadow: 0 -10px 0 color-mix(in srgb, var(--color-ink) 6%, transparent);
+    color: var(--color-ink);
+    transition: translate var(--motion-normal) var(--motion-ease-out);
+  }
+
+  /* Focused on open only to be announced; not a control, so no ring. */
+  .part-sheet:focus {
+    outline: none;
+  }
+
+  .part-sheet::backdrop {
+    background: color-mix(in srgb, var(--color-ink) 16%, transparent);
+  }
+
+  /* motion.md §M6 scale: the sheet slides up on open, down on close; a drag follows the finger. */
+  .part-sheet[open] {
+    animation: part-sheet-in var(--motion-normal) var(--motion-ease-out);
+  }
+
+  .part-sheet--closing {
+    translate: 0 100%;
+  }
+
+  .part-sheet--dragging {
+    transition: none;
+  }
+
+  @keyframes part-sheet-in {
+    from {
+      translate: 0 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .part-sheet {
+      transition: none;
+    }
+  }
+
+  .part-sheet__inner {
+    display: flex;
+    flex-direction: column;
+    max-height: inherit;
+  }
+
+  /* The handle row: the grip centred, the steps at the right, every target 44 px. */
+  .part-sheet__head {
+    display: grid;
+    flex: none;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding-inline: 8px;
+    touch-action: none;
+  }
+
+  .part-sheet__grip {
+    grid-column: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 88px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: grab;
+  }
+
+  .part-sheet__handle {
+    width: 40px;
+    height: 4px;
+    background: color-mix(in srgb, var(--color-ink) 30%, transparent);
+  }
+
+  .part-sheet__steps {
+    display: flex;
+    align-items: stretch;
+    grid-column: 3;
+    justify-self: end;
+  }
+
+  .part-sheet__step {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 44px;
+    height: 44px;
+    padding: 0 6px;
+    border: 0;
+    background: transparent;
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    cursor: pointer;
+  }
+
+  .part-sheet__step[hidden],
+  .part-sheet[data-ends] .part-sheet__dot {
+    display: none;
+  }
+
+  .part-sheet__dot {
+    align-self: center;
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+
+  .part-sheet__step:is(:hover, :focus-visible) {
+    color: var(--color-ink);
+  }
+
+  .part-sheet__body {
+    flex: 1 1 auto;
+    min-height: 0;
+    padding: 0 20px 20px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  /* In the sheet the panel is the sheet: no frame of its own. */
+  .part-sheet__body :global(.detail-panel) {
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+</style>

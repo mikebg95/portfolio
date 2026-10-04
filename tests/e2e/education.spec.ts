@@ -20,6 +20,17 @@ async function open(page: Page, url: string) {
   await settleAnimations(page);
 }
 
+/** Below 768 px a selection opens the detail in a bottom sheet (education-sheet.spec.ts). */
+const isPhone = (page: Page) => (page.viewportSize()?.width ?? 0) < 768;
+
+/** Closes the phone's bottom sheet, if open, so the assembly can be tapped again. */
+async function closeSheet(page: Page) {
+  const sheet = page.locator('dialog.part-sheet');
+  if (!(await sheet.isVisible())) return;
+  await page.keyboard.press('Escape');
+  await expect(sheet).toBeHidden();
+}
+
 test('the sheet shows its label, heading and intro', async ({ page }) => {
   await open(page, '/education');
   await expect(page.locator('.education__head .sheet-label')).toHaveText(
@@ -102,6 +113,11 @@ test('/nl/education renders the five parts too', async ({ page }) => {
 
 test('the detail panel shows part 3 by default', async ({ page }) => {
   await open(page, '/education');
+  if (isPhone(page)) {
+    // A phone shows a detail only once its part is tapped.
+    await expect(page.locator('.detail-panel:visible')).toHaveCount(0);
+    await page.locator('.balloon__mark[data-part="3"]').click();
+  }
   const panel = page.locator('.detail-panel:visible');
   await expect(panel).toHaveCount(1);
   await expect(panel).toHaveId('part-3');
@@ -142,6 +158,7 @@ test('the parts list has five rows, 5 → 1, part 3 selected and CKAD pending', 
 test('the panel and parts list sit beside the assembly on desktop, below it otherwise', async ({
   page,
 }) => {
+  test.skip(isPhone(page), 'a phone shows the panel in the bottom sheet');
   await open(page, '/education');
   const width = page.viewportSize()?.width ?? 0;
   const assembly = (await page.locator('.assembly').boundingBox())!;
@@ -183,12 +200,14 @@ test('clicking a plate, a balloon or a row selects that part', async ({ page }) 
   await expect(plate(page, 1)).toHaveCSS('opacity', '0.6');
   await expect(plate(page, 5)).toHaveCSS('opacity', '1');
 
+  await closeSheet(page);
   await page.locator('.balloon__mark[data-part="2"]').click();
   await expectSelected(page, 2);
   await expect(page.locator('#part-2 .detail-panel__note')).toHaveText(
     'NOTE: part 2 is load-bearing.',
   );
 
+  await closeSheet(page);
   // Anywhere on a row, not only its part name.
   await page.locator('tr[data-part="4"] td').last().click();
   await expectSelected(page, 4);
@@ -204,14 +223,18 @@ test('Enter and Space on a balloon, plate or row select its part', async ({ page
   await page.locator('.balloon__mark[data-part="1"]').focus();
   await page.keyboard.press('Enter');
   await expectSelected(page, 1);
+  await closeSheet(page);
 
   await plate(page, 4).focus();
   await page.keyboard.press('Space');
   await expectSelected(page, 4);
+  await closeSheet(page);
 
   await page.getByRole('button', { name: 'BSc Political Science', exact: true }).focus();
   await page.keyboard.press('Enter');
   await expectSelected(page, 2);
+  // On a phone focus is in the sheet until it closes, then back on the row's button.
+  await closeSheet(page);
   await expect(page.locator('.parts-list__select[data-part="2"]')).toBeFocused();
 });
 
@@ -220,9 +243,10 @@ test('a #part-n hash is honoured on load and on change', async ({ page }) => {
   await expectSelected(page, 5);
   await page.evaluate(() => (location.hash = '#part-1'));
   await expectSelected(page, 1);
-  // An unknown part leaves the default.
+  // An unknown part leaves the default (and opens no sheet on a phone).
   await open(page, '/nl/education#part-9');
-  await expect(page.locator('.detail-panel:visible')).toHaveId('part-3');
+  await expect(page.locator('.detail-panel[data-selected="true"]')).toHaveId('part-3');
+  await expect(page.locator('dialog.part-sheet')).toBeHidden();
 });
 
 test('hovering a parts-list row previews the lift on its plate', async ({ page }) => {
@@ -244,6 +268,7 @@ test('the panel wipes in on selection, instantly under reduced motion', async ({
       .evaluate((el) => el.getAnimations().map((a) => (a as CSSAnimation).animationName)),
   ).toEqual(['detail-panel-wipe']);
 
+  await closeSheet(page);
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.locator('.balloon__mark[data-part="1"]').click();
   await expectSelected(page, 1);

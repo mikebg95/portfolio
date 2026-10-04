@@ -100,4 +100,5 @@ education:
   ec: '{n} EC'
   note: 'OPMERKING:'
   parts: { caption: Stuklijst, item: POS., part: ONDERDEEL, supplier: LEVERANCIER, year: JAAR }
+  sheet: { close: Detail sluiten, previous: Vorig onderdeel, next: Volgend onderdeel }
 lang: nl

@@ -100,4 +100,5 @@ education:
   ec: '{n} EC'
   note: 'NOTE:'
   parts: { caption: Parts list, item: ITEM, part: PART, supplier: SUPPLIER, year: YEAR }
+  sheet: { close: Close detail, previous: Previous part, next: Next part }
 lang: en

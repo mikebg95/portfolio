@@ -18,6 +18,7 @@ interface Ui {
   notFound: { label: string; heading: string; note: string };
   dates: { months: string[]; now: string };
   experience: { toggle: { more: string; less: string } };
+  education: { sheet: { close: string; previous: string; next: string } };
 }
 
 interface Profile {

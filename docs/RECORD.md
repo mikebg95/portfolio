@@ -626,3 +626,18 @@ arrives with its card open. Copy wins over the drawing's shorter label/heading a
 (`INTERNAL PRODUCT`): the full strings wrap.
 Instead of: `<details>` (it would hide the detail on desktop too, where the same markup must
 show everything); a second phone-only markup of the cards.
+
+## 2026-10-04 — Phone Education: the detail in a bottom sheet (PR-62d)
+Who: agent (PR-62d, the choices). The sheet is a native `<dialog>` opened with `showModal()`: the
+top layer puts it and its backdrop over the fixed tab bar (z-index 4) without a z-index race, and
+the rest of the page goes inert; a small Tab wrap keeps focus inside for certain. The page's
+details container moves into the dialog while open and back on close — one DetailPanel per part,
+the selection script unchanged — rather than a second phone-only copy (duplicate ids). It sits
+above the tab bar as drawn, at most 56 dvh, and the chosen plate scrolls into the room above it
+(the drawing shows the assembly over the sheet). A `#part-n` link opens its part in the sheet on a
+phone (it names a detail); `#part-9` opens nothing. The ‹ › steps sit in the handle row, not on
+the label line: the NL label and the steps do not share a 320 px line. Copy wins over the drawing:
+the label and intro stay, no `TAP A PART →` hint (the intro already says to select a part); the
+balloon labels stay beside the balloons. New strings `ui.education.sheet` (close, previous, next;
+copy.md) — additive, as `ui.tabBar` was. Instead of: a hand-rolled fixed `div` with its own
+focus trap and z-index; hiding the parts list behind the sheet.

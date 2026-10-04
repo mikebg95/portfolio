@@ -122,6 +122,14 @@ states: default, hover (fill-1 at 50%), selected (fill-1), pending (redline text
 1.5 px ink border, paper-raised, padding 24: label "DETAIL n · SCALE 2:1", display-m title, meta
 mono, body paragraph, sub-rows (code · text · EC), optional NOTE.
 
+## PartSheet (phone, Sheet 05)
+Phone (< 768, PR-62d, `education-part3-sheet-light-390`): a part's DetailPanel in a bottom sheet
+above the tab bar — paper, 2 px ink top rule, 40 × 4 handle (a 44 px close button; drag it down
+to close), `‹ n · n ›` steps to the neighbouring parts at the right of the handle row, body
+scrolls. Modal: backdrop (ink 16 %) over the page and the tab bar, focus kept inside, Escape or a
+backdrop tap closes, focus returns to the part. The chosen plate scrolls into the room above it.
+Slides up/down 250 ms; none under reduced motion. Without JS: no sheet, details inline.
+
 ## Crosshair
 Two dashed 1 px redline hairlines at 45% opacity + mono 10 px redline readout "X 0412 · Y 0233",
 `pointer-events: none`, `aria-hidden`. Desktop fine pointer only.

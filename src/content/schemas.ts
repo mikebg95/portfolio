@@ -352,6 +352,8 @@ export const uiSchema = z.strictObject({
     note: text,
     /** The parts list's caption (screen readers) and column headers. */
     parts: z.strictObject({ caption: text, item: text, part: text, supplier: text, year: text }),
+    /** The phone bottom sheet holding a part's detail: its close (drag handle) and ‹ › step names. */
+    sheet: z.strictObject({ close: text, previous: text, next: text }),
   }),
   lang,
   translated,
