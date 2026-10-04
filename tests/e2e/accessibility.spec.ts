@@ -105,36 +105,22 @@ test.describe('keyboard', () => {
     });
   }
 
-  test('phone: the sheet index opens, traps focus and closes by keyboard alone', async ({
+  test('phone: the tab bar is the last stop and opens a sheet by keyboard alone', async ({
     page,
   }) => {
     test.skip((page.viewportSize()?.width ?? 0) >= 768, 'desktop and tablet show the tab row');
-    await page.goto('/nl/education');
-    const toggle = page.locator('.sheet-index button[aria-controls]');
-    const items = page.locator('#sheet-index-panel').locator('a[href], button');
+    await page.goto('/nl/projects');
+    const cells = page.getByRole('navigation', { name: 'Bladen' }).getByRole('link');
+    await expect(cells).toHaveCount(5);
 
-    // Tab to the toggle like a visitor would, rather than focusing it from script.
-    for (let i = 0; i < 10; i++) {
-      await page.keyboard.press('Tab');
-      if (await toggle.evaluate((el) => el === document.activeElement)) break;
-    }
-    await expect(toggle).toBeFocused();
-    await page.keyboard.press('Enter');
-    await expect(toggle).toHaveAttribute('aria-expanded', 'true');
-
-    const count = await items.count();
-    expect(count).toBeGreaterThan(5);
-    for (let i = 0; i < count; i++) {
-      await page.keyboard.press('Tab');
-      await expect(items.nth(i)).toBeFocused();
-    }
-    await page.keyboard.press('Tab');
-    await expect(toggle).toBeFocused();
+    // Backwards from the top of the page wraps to the last tabbable: the bar's last cell.
     await page.keyboard.press('Shift+Tab');
-    await expect(items.last()).toBeFocused();
-
-    await page.keyboard.press('Escape');
-    await expect(toggle).toHaveAttribute('aria-expanded', 'false');
-    await expect(toggle).toBeFocused();
+    await expect(cells.last()).toBeFocused();
+    await page.keyboard.press('Shift+Tab');
+    await expect(cells.nth(3)).toBeFocused();
+    await page.keyboard.press('Tab');
+    await page.keyboard.press('Enter');
+    await expect(page).toHaveURL(/\/nl\/education\/?$/);
+    await expect(cells.last()).toHaveAttribute('aria-current', 'page');
   });
 });

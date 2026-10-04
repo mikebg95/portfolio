@@ -72,10 +72,30 @@ queue.
 
 ### Hardening
 
-- [ ] **PR-62 Phone layout per the new drawings**
-  - Michael, 2026-10-04: *"on mobile the app doesnt look so great. i want to have a more beautiful modern professional creative app layout"*. Drawings: `design/screens/overview-default-light-390.png`, `experience-default-light-390.png`, `education-part3-sheet-light-390.png` (+ their HTML in `design/screens/html/`).
-  - Done when, below 768 px: (1) header is one 56 px row — MG cell · "SHEET 0n / 05" + sheet name · EN/NL · theme swatch — and the old SHEETS panel is replaced by (2) a **title-block tab bar fixed to the bottom** (5 cells 01–05 with short names Overview/Work/Projects/Certs/Education, active cell ink-filled, safe-area inset, 62 px tall, content padded so nothing hides under it; CV moves to the Overview buttons + footer); (3) Overview: name fit-to-width (PR-61), portrait in a "FIG. 0" framed card with balloons on its edge and a 3-cell caption strip, two-button row, "How I work" as a horizontal snap-scroll card rail with a position indicator, spec rows stacked label-over-value; (4) Experience: a **vertical timeline** — years down a left ruler, the Conspect bracket spanning its assignments, assignment cards beside it (tap expands the full detail in place), hatched sabbatical; (5) Education: the exploded assembly scaled to the screen, tapping a part opens a **bottom sheet** (drag handle, swipe down to close, ‹ › to step parts, focus-trapped, Escape closes) with the detail; parts list below; (6) Projects and Certifications get the same card language (full-width cards, title-block strips) without new drawings; (7) everything 44 px+ touch targets, no horizontal page scroll at 320 px, works with reduced motion and without JS (tab bar is plain links; bottom sheet degrades to inline details); Playwright phone screenshots of every page in both themes saved to `.e2e/` and compared by eye against the drawings; e2e for tab bar navigation, timeline expand, bottom sheet open/step/close.
-  - Spec: design/screens (390 drawings), design/components.md, design/motion.md
+- [x] **PR-62a Phone chrome: one-row header + fixed bottom tab bar** (split from PR-62, items 1, 2)
+  - Done: below 768 px the header is one 56 px row (MG · SHEET 0n / 05 + name · EN/NL · theme swatch); the SHEETS panel is replaced by `SheetTabBar` fixed to the screen bottom (5 cells, short names from `ui.tabBar`, current ink-filled, safe-area inset, 62 px, body padded); CV in the title block's CONTACT cell; `tests/e2e/tab-bar.spec.ts`.
+
+- [ ] **PR-62b Phone Overview per the drawing** (rest of PR-62, item 3)
+  - Michael, 2026-10-04: *"on mobile the app doesnt look so great. i want to have a more beautiful modern professional creative app layout"*. Drawing: `design/screens/overview-default-light-390.png` (+ `html/overview-default-light-390.html`).
+  - Done when, below 768 px: name fit-to-width (PR-61, already), portrait in a "FIG. 0 — PORTRAIT · SCALE 1:1" framed card with balloons 1–3 on its right edge and a 3-cell caption strip under it (balloon 1 still links to /certifications), two-button row (projects + CV, 48 px), "How I work" as a horizontal snap-scroll card rail with a position indicator (works without JS: plain overflow scroll; indicator is decoration or JS-enhanced), spec rows stacked label-over-value; 44 px+ targets, no horizontal page scroll at 320 px, reduced motion; Playwright phone screenshots in both themes in `.e2e/` compared by eye; e2e for the rail.
+  - Spec: design/screens overview 390, design/components.md, design/motion.md
+  - Out of scope: desktop layout; the header/tab bar (PR-62a, done).
+
+- [ ] **PR-62c Phone Experience: vertical timeline with expandable cards** (rest of PR-62, item 4)
+  - Drawing: `design/screens/experience-default-light-390.png` (+ html).
+  - Done when, below 768 px: years down a left ruler, the Conspect bracket spanning its assignments, assignment cards beside it (tap expands the full detail in place; without JS the detail is reachable — `<details>` or already open), hatched sabbatical; 44 px+ targets, no horizontal scroll at 320, reduced motion; screenshots both themes; e2e for timeline expand.
+  - Spec: design/screens experience 390; docs/RECORD.md (2026-10-04 Conspect entry)
+  - Out of scope: desktop layout.
+
+- [ ] **PR-62d Phone Education: assembly + bottom sheet** (rest of PR-62, item 5)
+  - Drawing: `design/screens/education-part3-sheet-light-390.png` (+ html).
+  - Done when, below 768 px: the exploded assembly scaled to the screen; tapping a part opens a **bottom sheet** (drag handle, swipe down to close, ‹ › to step parts, focus-trapped, Escape closes) with the detail; parts list below; without JS the detail degrades to inline details; reduced motion; screenshots both themes; e2e for bottom sheet open/step/close. Note: the tab bar (z-index 4, fixed) must sit under the sheet's backdrop.
+  - Spec: design/screens education 390, design/components.md, design/motion.md
+  - Out of scope: desktop layout.
+
+- [ ] **PR-62e Phone Projects and Certifications card language** (rest of PR-62, items 6–7)
+  - Done when, below 768 px: Projects and Certifications (and project details) use the same card language as the new phone drawings (full-width cards, title-block strips) without new drawings; 44 px+ targets everywhere, no horizontal page scroll at 320 px; Playwright phone screenshots of EVERY page in both themes saved to `.e2e/` and compared by eye against the drawings.
+  - Spec: design/screens (390 drawings), design/components.md
   - Out of scope: desktop layout.
 
 - [ ] **PR-63 App-like navigation, preloading and offline**

@@ -14,7 +14,14 @@ theme:
   toPaper: Schakel naar het papierthema
   toBlueprint: Schakel naar het blauwdrukthema
 cv: CV
-sheetIndex: { open: BLADEN, openLabel: Open de bladindex, close: SLUITEN }
+tabBar:
+  label: Bladen
+  sheets:
+    overview: Overzicht
+    experience: Werk
+    projects: Projecten
+    certifications: Certs
+    education: Opleiding
 skipLink: Ga naar de inhoud van het blad
 titleBlock:
   project: PROJECT

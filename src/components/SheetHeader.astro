@@ -4,12 +4,14 @@ import { CV_PATH, SITE_URL } from '../config';
 import { t } from '../i18n/content';
 import { alternate, LANGS, localize, type Lang } from '../i18n/paths';
 import { SHEETS } from '../i18n/routes';
+import { formatSheet } from '../title-block';
 
 // SPEC §3.2, components.md SheetHeader/SheetTab: monogram cell, the five sheet tabs, then the
 // utility cluster (language, theme, CV). Not drawn: the utilities sit in their own cell at the
 // right; below 1280 px they share the first row with the monogram and the tabs take a full row.
-// Phone (< 768 px, SheetIndexPanel): monogram + current sheet + SHEETS button opening a panel with
-// the five sheets, language, theme and CV; without JS the panel is a <details>.
+// Phone (< 768 px, design/screens/overview-default-light-390): one 56 px row of cells — monogram,
+// "SHEET 0n / 05" over the sheet name, the language switch, the theme swatch. The sheets move to
+// the tab bar fixed to the screen bottom (SheetTabBar), the CV to Sheet 01's buttons and the footer.
 interface Props {
   lang: Lang;
   /** The sheet this page belongs to; undefined on the 404 sheet (no tab is current). */
@@ -27,7 +29,7 @@ const langLinks = LANGS.map((code) => ({
   href: code === lang ? here : alternate(lang, here),
   current: code === lang,
 }));
-const PANEL_ID = 'sheet-index-panel';
+const otherLang = LANGS.find((code) => code !== lang) ?? lang;
 ---
 
 <header class="sheet-header">
@@ -39,14 +41,12 @@ const PANEL_ID = 'sheet-index-panel';
     </span>
   </a>
 
-  {current && (
-    <p class="sheet-header__current">
-      <span class="sheet-tab__number">
-        {ui.sheet} {pad(current.number)}
-      </span>
-      <span>{ui.sheets[current.key]}</span>
-    </p>
-  )}
+  <p class="sheet-header__current">
+    <span class="sheet-header__current-number">
+      {ui.sheet} {formatSheet(current?.number, SHEETS.length)}
+    </span>
+    {current && <span class="sheet-header__current-name">{ui.sheets[current.key]}</span>}
+  </p>
 
   <nav class="sheet-header__tabs">
     {SHEETS.map(({ key, number, path }) => (
@@ -78,6 +78,25 @@ const PANEL_ID = 'sheet-index-panel';
         </a>
       ))}
     </span>
+    <!-- Phone: one cell, both codes shown (the current one underlined), the link goes to the other. -->
+    <a
+      class="sheet-header__util sheet-header__lang-switch"
+      href={langLinks.find(({ code }) => code === otherLang)?.href}
+      hreflang={otherLang}
+      lang={otherLang}
+    >
+      {langLinks.map(({ code, current }, i) => (
+        <>
+          {i > 0 && <span aria-hidden="true">/</span>}
+          <span
+            class:list={['sheet-header__lang-code', { 'is-current': current }]}
+            aria-hidden={current ? 'true' : undefined}
+          >
+            {ui.languages[code]}
+          </span>
+        </>
+      ))}
+    </a>
     <!-- Label and name follow the theme on screen through CSS (no wrong label before the script
          runs, live when the system changes); the script only toggles and remembers. -->
     <button class="sheet-header__util sheet-header__theme" type="button" data-theme-switch>
@@ -95,165 +114,17 @@ const PANEL_ID = 'sheet-index-panel';
         <span class="sr-only">{ui.theme.toPaper}</span>
       </span>
     </button>
-    <a class="sheet-header__util" href={CV_PATH} target="_blank" rel="noopener">
+    <a class="sheet-header__util sheet-header__cv" href={CV_PATH} target="_blank" rel="noopener">
       {ui.cv}
     </a>
   </div>
-
-  <div class="sheet-index" data-sheet-index>
-    <button
-      class="sheet-header__util sheet-index__toggle"
-      type="button"
-      hidden
-      aria-expanded="false"
-      aria-controls={PANEL_ID}
-      aria-label={ui.sheetIndex.openLabel}
-      data-open-text={ui.sheetIndex.open}
-      data-close-text={ui.sheetIndex.close}
-    >
-      {ui.sheetIndex.open}
-    </button>
-    <details class="sheet-index__fallback">
-      <summary class="sheet-header__util sheet-index__toggle">{ui.sheetIndex.open}</summary>
-      <div class="sheet-index__panel" id={PANEL_ID}>
-        <nav>
-          {SHEETS.map(({ key, number, path }) => (
-            <a
-              class="sheet-index__sheet"
-              href={localize(lang, path)}
-              aria-current={key === sheet ? 'page' : undefined}
-            >
-              <span class="sheet-index__number">{pad(number)}</span>
-              <span>{ui.sheets[key]}</span>
-            </a>
-          ))}
-        </nav>
-        <div class="sheet-index__utils">
-          <span class="sheet-index__cell">
-            {langLinks.map(({ code, href, current }) => (
-              <a
-                class="sheet-header__util sheet-header__lang"
-                href={href}
-                hreflang={code}
-                lang={code}
-                aria-current={current ? 'true' : undefined}
-              >
-                {ui.languages[code]}
-              </a>
-            ))}
-          </span>
-          <span class="sheet-index__cell">
-            <button class="sheet-header__util sheet-header__theme" type="button" data-theme-switch>
-              <span class="sheet-header__swatch" aria-hidden="true"></span>
-              <span class="sheet-header__theme-state" data-when="paper">
-                <span class="sheet-header__theme-label" aria-hidden="true">
-                  {ui.theme.paper}
-                </span>
-                <span class="sr-only">{ui.theme.toBlueprint}</span>
-              </span>
-              <span class="sheet-header__theme-state" data-when="blueprint">
-                <span class="sheet-header__theme-label" aria-hidden="true">
-                  {ui.theme.blueprint}
-                </span>
-                <span class="sr-only">{ui.theme.toPaper}</span>
-              </span>
-            </button>
-          </span>
-          <span class="sheet-index__cell">
-            <a class="sheet-header__util" href={CV_PATH} target="_blank" rel="noopener">
-              {ui.cv}
-            </a>
-          </span>
-        </div>
-      </div>
-    </details>
-  </div>
 </header>
-
-<script>
-  // Enhances the <details> fallback into a button + panel (SPEC §3.2): clip-path wipe, closes on
-  // Escape, selection and outside tap, traps focus while open and hands it back to the button.
-  const root = document.querySelector<HTMLElement>('[data-sheet-index]');
-  const button = root?.querySelector<HTMLButtonElement>('button[aria-controls]');
-  const details = root?.querySelector('details');
-  const panel = button && document.getElementById(button.getAttribute('aria-controls') ?? '');
-
-  if (root && button && details && panel) {
-    const openLabel = button.getAttribute('aria-label') ?? '';
-    details.replaceWith(panel);
-    panel.hidden = true;
-    panel.dataset.state = 'closed';
-    button.hidden = false;
-
-    const isOpen = () => button.getAttribute('aria-expanded') === 'true';
-    const focusables = () => [
-      button,
-      ...panel.querySelectorAll<HTMLElement>('a[href], button:not([disabled])'),
-    ];
-
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        close();
-        return;
-      }
-      if (event.key !== 'Tab') return;
-      const items = focusables();
-      const first = items[0];
-      const last = items[items.length - 1];
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last?.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first?.focus();
-      }
-    };
-
-    const onPointer = (event: PointerEvent) => {
-      if (!root.contains(event.target as Node)) close(false);
-    };
-
-    function open() {
-      panel!.hidden = false;
-      panel!.getBoundingClientRect(); // start the wipe from the closed clip-path
-      panel!.dataset.state = 'open';
-      button!.setAttribute('aria-expanded', 'true');
-      button!.removeAttribute('aria-label');
-      button!.textContent = button!.dataset.closeText ?? '';
-      document.addEventListener('keydown', onKey);
-      document.addEventListener('pointerdown', onPointer);
-    }
-
-    function close(returnFocus = true) {
-      if (!isOpen()) return;
-      panel!.dataset.state = 'closed';
-      button!.setAttribute('aria-expanded', 'false');
-      button!.setAttribute('aria-label', openLabel);
-      button!.textContent = button!.dataset.openText ?? '';
-      document.removeEventListener('keydown', onKey);
-      document.removeEventListener('pointerdown', onPointer);
-      if (returnFocus) button!.focus();
-      // Hide once the wipe has run (getAnimations flushes style, so it sees the new transition);
-      // reopening cancels it (rejects) and keeps the panel shown. Reduced motion: none, hide now.
-      Promise.all(panel!.getAnimations().map((animation) => animation.finished))
-        .then(() => {
-          if (!isOpen()) panel!.hidden = true;
-        })
-        .catch(() => {});
-    }
-
-    button.addEventListener('click', () => (isOpen() ? close() : open()));
-    panel.addEventListener('click', (event) => {
-      if ((event.target as Element).closest('a')) close(false);
-    });
-  }
-</script>
 
 <script>
   import { effectiveTheme, otherTheme, THEME_STORAGE_KEY } from '../theme';
   import { revealTheme } from '../view-transitions';
 
-  // SPEC §3.3: every theme button (header and phone panel) flips paper ↔ blueprint and remembers
+  // SPEC §3.3: every theme button flips paper ↔ blueprint and remembers
   // the choice; until then the theme follows the system (tokens.css), as the head script left it.
   // motion.md §M7: the new theme washes in as a circle growing from the button.
   const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
@@ -501,101 +372,29 @@ const PANEL_ID = 'sheet-index-panel';
     }
   }
 
-  /* Phone (components.md SheetIndexPanel): monogram, current sheet, SHEETS; the tab row and the
-     utility cluster move into the panel. */
+  /* Phone only: the current sheet and the one-cell language switch. */
   .sheet-header__current,
-  .sheet-index {
+  .sheet-header__lang-switch {
     display: none;
   }
 
-  .sheet-header [hidden] {
-    display: none;
-  }
-
-  .sheet-index__toggle {
-    list-style: none;
-  }
-
-  .sheet-index__toggle::-webkit-details-marker {
-    display: none;
-  }
-
-  .sheet-index__panel {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    left: 0;
-    z-index: 5;
-    border-top: var(--border-thin);
-    border-bottom: var(--border-thin);
-    background: var(--color-paper);
-    transition: clip-path var(--motion-normal) var(--motion-ease-plot);
-  }
-
-  .sheet-index__panel[data-state='closed'] {
-    clip-path: inset(0 0 100% 0);
-  }
-
-  .sheet-index__sheet {
-    display: flex;
-    align-items: center;
-    gap: var(--space-4);
-    min-height: 56px;
-    padding: 0 var(--space-4);
-    border-bottom: var(--border-thin);
-    font-size: var(--size-label);
-    letter-spacing: 0.04em;
-  }
-
-  .sheet-index__number {
-    color: var(--color-muted);
-    font-size: var(--size-micro);
-  }
-
-  .sheet-header .sheet-index__sheet[aria-current='page'] {
-    background: var(--color-ink);
-    color: var(--color-ink-on-fill);
-  }
-
-  .sheet-index__sheet[aria-current='page'] .sheet-index__number {
-    color: inherit;
-    opacity: 0.7;
-  }
-
-  .sheet-index__utils {
-    display: flex;
-    flex-wrap: wrap;
-    font-size: var(--size-label);
-    letter-spacing: 0.04em;
-  }
-
-  .sheet-index__cell {
-    display: flex;
-    flex: 1 1 auto;
-    align-items: center;
-    justify-content: center;
-    min-height: 56px;
-    padding: 0 var(--space-2);
-  }
-
-  .sheet-index__cell + .sheet-index__cell {
-    border-left: var(--border-thin);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .sheet-index__panel {
-      transition: none;
-    }
-  }
-
+  /* Phone (design/screens/overview-default-light-390): one 56 px row of ruled cells. */
   @media (max-width: 767px) {
     .sheet-header {
-      position: relative;
       flex-wrap: nowrap;
+      height: 56px;
     }
 
     .sheet-header__mark {
-      padding: var(--space-3);
+      justify-content: center;
+      width: 56px;
+      padding: 0;
+    }
+
+    .sheet-header__monogram {
+      width: 30px;
+      height: 30px;
+      font-size: 12px;
     }
 
     /* The set name stays in the link's accessible name; only the MG square shows. */
@@ -613,12 +412,10 @@ const PANEL_ID = 'sheet-index-panel';
       flex: 1 1 auto;
       flex-direction: column;
       justify-content: center;
-      gap: 3px;
+      gap: 2px;
       min-width: 0;
       margin: 0;
-      padding: var(--space-2) var(--space-3);
-      font-size: var(--size-label);
-      letter-spacing: 0.04em;
+      padding: 0 var(--space-3);
     }
 
     .sheet-header__current > span {
@@ -627,20 +424,73 @@ const PANEL_ID = 'sheet-index-panel';
       white-space: nowrap;
     }
 
-    .sheet-index {
-      display: flex;
-      flex: none;
-      align-items: center;
-      margin-left: auto;
-      padding: 0 var(--space-2);
-      border-left: var(--border-thin);
-      font-size: var(--size-label);
+    .sheet-header__current-number {
+      color: var(--color-muted);
+      font-size: var(--size-micro);
+      letter-spacing: var(--size-micro-letter-spacing);
+    }
+
+    .sheet-header__current-name {
+      font-size: 13px;
       letter-spacing: 0.04em;
     }
 
     .sheet-header__tabs,
-    .sheet-header__utils {
+    .sheet-header__langs,
+    .sheet-header__cv,
+    .sheet-header__theme-label {
       display: none;
+    }
+
+    .sheet-header__utils {
+      flex-wrap: nowrap;
+      align-items: stretch;
+      gap: 0;
+      margin-left: 0;
+      padding: 0;
+      font-size: var(--size-micro);
+    }
+
+    .sheet-header__utils > .sheet-header__util {
+      width: 56px;
+      padding: 0;
+      border-left: var(--border-thin);
+    }
+
+    .sheet-header .sheet-header__lang-switch {
+      display: inline-flex;
+      gap: 2px;
+      color: var(--color-muted);
+    }
+
+    .sheet-header__lang-code.is-current {
+      color: var(--color-ink);
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    /* The swatch shows both themes, split on the diagonal. */
+    .sheet-header__swatch {
+      width: 16px;
+      height: 16px;
+      border-width: 1.5px;
+      background: linear-gradient(135deg, var(--color-paper) 50%, var(--color-ink) 50%);
+    }
+  }
+
+  /* Narrow phones: the utility cells give the sheet name room, still 44 px+ targets. */
+  @media (max-width: 359px) {
+    .sheet-header__mark,
+    .sheet-header__utils > .sheet-header__util {
+      width: 48px;
+    }
+
+    .sheet-header__current {
+      padding: 0 var(--space-2);
+    }
+
+    .sheet-header__current-name {
+      font-size: var(--size-label);
     }
   }
 </style>

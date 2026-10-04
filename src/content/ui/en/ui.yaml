@@ -14,7 +14,14 @@ theme:
   toPaper: Switch to paper theme
   toBlueprint: Switch to blueprint theme
 cv: CV
-sheetIndex: { open: SHEETS, openLabel: Open sheet index, close: CLOSE }
+tabBar:
+  label: Sheets
+  sheets:
+    overview: Overview
+    experience: Work
+    projects: Projects
+    certifications: Certs
+    education: Education
 skipLink: Skip to sheet content
 titleBlock:
   project: PROJECT

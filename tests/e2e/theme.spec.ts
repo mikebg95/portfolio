@@ -17,15 +17,27 @@ function rgb(token: string, theme: Theme): string {
   return `rgb(${r}, ${g}, ${b})`;
 }
 
-/** The theme button the visitor can reach: in the header, or in the sheet index on phone. */
-async function themeButton(page: Page) {
-  const phone = (page.viewportSize()?.width ?? 0) < 768;
-  if (phone) await page.getByRole('button', { name: 'Open sheet index' }).click();
-  return page.locator('[data-theme-switch]:visible');
-}
+/** The theme button in the header (on a phone its swatch cell). */
+const themeButton = async (page: Page) => page.locator('[data-theme-switch]:visible');
 
-/** The visible label (the accessible name is the action, copy.md Global). */
-const label = (button: Locator) => button.locator('.sheet-header__theme-label:visible');
+/** The label naming the theme on screen (the accessible name is the action, copy.md Global). A
+ * phone shows only the swatch: there the label of the shown state is in the page but not drawn. */
+async function expectLabel(button: Locator, text: string) {
+  if ((button.page().viewportSize()?.width ?? 0) >= 768) {
+    await expect(button.locator('.sheet-header__theme-label:visible')).toHaveText(text);
+    return;
+  }
+  await expect
+    .poll(() =>
+      button.evaluate((el) =>
+        [...el.querySelectorAll('.sheet-header__theme-state')]
+          .filter((state) => getComputedStyle(state).display !== 'none')
+          .map((state) => state.querySelector('.sheet-header__theme-label')?.textContent?.trim()),
+      ),
+    )
+    .toEqual([text]);
+  await expect(button.locator('.sheet-header__theme-label:visible')).toHaveCount(0);
+}
 
 async function expectTheme(page: Page, theme: Theme) {
   const body = page.locator('body');
@@ -41,13 +53,13 @@ test('the button toggles paper ↔ blueprint and the choice survives a reload', 
   await expect(page.locator('html')).not.toHaveAttribute('data-theme', /.*/);
   let button = await themeButton(page);
   await expect(button).toHaveAccessibleName('Switch to blueprint theme');
-  await expect(label(button)).toHaveText('PAPER');
+  await expectLabel(button, 'PAPER');
   await expectTheme(page, 'paper');
 
   await button.click();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'blueprint');
   await expect(button).toHaveAccessibleName('Switch to paper theme');
-  await expect(label(button)).toHaveText('BLUEPRINT');
+  await expectLabel(button, 'BLUEPRINT');
   await expectTheme(page, 'blueprint');
   expect(await stored(page)).toBe('blueprint');
 
@@ -55,14 +67,14 @@ test('the button toggles paper ↔ blueprint and the choice survives a reload', 
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'blueprint');
   await expectTheme(page, 'blueprint');
   button = await themeButton(page);
-  await expect(label(button)).toHaveText('BLUEPRINT');
+  await expectLabel(button, 'BLUEPRINT');
 
   // By keyboard this time; focus stays on the button.
   await button.focus();
   await page.keyboard.press('Enter');
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'paper');
   await expect(button).toBeFocused();
-  await expect(label(button)).toHaveText('PAPER');
+  await expectLabel(button, 'PAPER');
   await expectTheme(page, 'paper');
   expect(await stored(page)).toBe('paper');
 });
@@ -74,7 +86,7 @@ test('a dark system shows blueprint until the visitor picks paper', async ({ pag
   await expectTheme(page, 'blueprint');
   const button = await themeButton(page);
   await expect(button).toHaveAccessibleName('Switch to paper theme');
-  await expect(label(button)).toHaveText('BLUEPRINT');
+  await expectLabel(button, 'BLUEPRINT');
   await expectNoAxeViolations(page);
 
   await button.click();
@@ -84,15 +96,15 @@ test('a dark system shows blueprint until the visitor picks paper', async ({ pag
 
   await page.reload();
   await expectTheme(page, 'paper');
-  await expect(label(await themeButton(page))).toHaveText('PAPER');
+  await expectLabel(await themeButton(page), 'PAPER');
 });
 
 test('the label follows a system change while nothing is chosen', async ({ page }) => {
   await page.goto('/');
   const button = await themeButton(page);
-  await expect(label(button)).toHaveText('PAPER');
+  await expectLabel(button, 'PAPER');
   await page.emulateMedia({ colorScheme: 'dark' });
-  await expect(label(button)).toHaveText('BLUEPRINT');
+  await expectLabel(button, 'BLUEPRINT');
   await expectTheme(page, 'blueprint');
 });
 

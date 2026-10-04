@@ -61,6 +61,7 @@
   --sheet-content-padding-phone: 24px;
   --sheet-grid-minor: 16px;
   --sheet-grid-major: 80px;
+  --sheet-tab-bar-height: 62px;
   --border-strong: 2px solid var(--color-ink);
   --border-normal: 1.5px solid var(--color-ink);
   --border-thin: 1px solid var(--color-ink);

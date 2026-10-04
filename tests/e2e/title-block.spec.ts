@@ -1,5 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 
+import { CV_PATH } from '../../src/config';
 import { expectNoAxeViolations } from './helpers/axe';
 import { ui } from './helpers/content';
 
@@ -35,7 +36,7 @@ for (const { path, sheet } of SHEETS) {
   });
 }
 
-test('the contact cell links email, LinkedIn and GitHub', async ({ page }) => {
+test('the contact cell links email, LinkedIn, GitHub and the CV', async ({ page }) => {
   await page.goto('/');
   const footer = page.getByRole('contentinfo');
   await expect(footer.getByRole('link', { name: 'Email', exact: true })).toHaveAttribute(
@@ -45,6 +46,7 @@ test('the contact cell links email, LinkedIn and GitHub', async ({ page }) => {
   for (const [name, href] of [
     ['LinkedIn', 'https://linkedin.com/in/mikebg95'],
     ['GitHub', 'https://github.com/mikebg95'],
+    ['CV', CV_PATH],
   ] as const) {
     const link = footer.getByRole('link', { name, exact: true });
     await expect(link).toHaveAttribute('href', href);

@@ -20,8 +20,8 @@ const TEXT = [
   'svg text',
 ].join(', ');
 
-// Text out of the layout on purpose: visually hidden, or the phone index panel while closed.
-const HIDDEN = ".sr-only, [hidden], .sheet-index__panel[data-state='closed']";
+// Text out of the layout on purpose: visually hidden.
+const HIDDEN = '.sr-only, [hidden]';
 
 // Text that runs past its box as drawn: the employer note on the desktop timeline runs left of a
 // dimension line shorter than it (src/components/experience/Timeline.astro).

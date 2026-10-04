@@ -1,4 +1,5 @@
 ---
+import { CV_PATH } from '../config';
 import type { SheetKey } from '../content/schemas';
 import { getLocalized, t } from '../i18n/content';
 import type { Lang } from '../i18n/paths';
@@ -7,6 +8,7 @@ import { formatRev, formatSheet } from '../title-block';
 
 // SPEC §3.2, components.md TitleBlock: the footer cell grid, right-aligned, max 760 px.
 // 4 columns [PROJECT ×2][SCALE][SHEET] / [DRAWN][CHECKED][REV][CONTACT]; 2 columns on phone.
+// CONTACT ends with the CV: on a phone the header has no room for it (SheetHeader).
 interface Props {
   lang: Lang;
   /** The sheet this page belongs to; undefined on the 404 sheet (`?? / 05`). */
@@ -29,6 +31,7 @@ const links = [
   { label: tb.email, href: `mailto:${contact.email}`, external: false },
   { label: tb.linkedin, href: contact.linkedin, external: true },
   { label: tb.github, href: contact.github, external: true },
+  { label: ui.cv, href: CV_PATH, external: true },
 ];
 ---
 

@@ -5,7 +5,7 @@ import { expectNoAxeViolations } from './helpers/axe';
 import { ui } from './helpers/content';
 
 // SheetHeader (SPEC §3.2, §3.5; components.md SheetHeader/SheetTab) on desktop and tablet.
-// Phone gets the sheet index panel (PR-8) instead of the tab row.
+// Phone gets the one-row header and the bottom tab bar instead (tests/e2e/tab-bar.spec.ts).
 const SHEET_PATHS = ['/', '/experience', '/projects', '/certifications', '/education'];
 const LANGS = [
   { lang: 'en', prefix: '' },
@@ -26,7 +26,7 @@ async function expectCurrentTab(page: Page, index: number | undefined) {
 }
 
 test.beforeEach(({ page }) => {
-  test.skip((page.viewportSize()?.width ?? 0) < 768, 'phone uses the sheet index panel');
+  test.skip((page.viewportSize()?.width ?? 0) < 768, 'phone uses the tab bar');
 });
 
 for (const { lang, prefix } of LANGS) {
@@ -81,7 +81,7 @@ test('the language switch goes to the same sheet in the other language', async (
 
 test('the CV link opens the PDF in a new tab, and the theme button is there', async ({ page }) => {
   await page.goto('/');
-  const cv = page.getByRole('link', { name: 'CV', exact: true });
+  const cv = page.getByRole('banner').getByRole('link', { name: 'CV', exact: true });
   await expect(cv).toHaveAttribute('href', CV_PATH);
   await expect(cv).toHaveAttribute('target', '_blank');
   const pdf = await page.request.get(CV_PATH);

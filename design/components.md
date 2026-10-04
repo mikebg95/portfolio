@@ -14,12 +14,19 @@ Monogram cell: 38 px square, 2 px ink border, "MG" Archivo 800; beside it "DRAWI
 600) / "michaelgoldman.dev" (muted). Tabs: flex 1 1 140 px, padding 12 × 18, 1 px ink right rule,
 small line "SHEET 0n" (10 px muted) over name (12 px mono). States: default; hover (underline draws
 under the name); active (`ink` fill, `ink-on-fill` text, `aria-current="page"`); focus. Utility
-cluster (right, or in phone panel): EN/NL switch (two mono buttons, active one underlined), theme
+cluster (right): EN/NL switch (two mono buttons, active one underlined), theme
 switch (button "PAPER"/"BLUEPRINT" with a small square swatch), CV link.
 
-## SheetIndexPanel (phone)
-Full-width panel under the header, ink 1 px borders, one row per sheet (number + name, 56 px tall),
-then language, theme, CV. Open/close: clip-path wipe down 250 ms. Escape closes, focus trapped.
+Phone (< 768 px, `overview-default-light-390`): one 56 px row of ruled cells — 56 px monogram cell
+(30 px MG square) · "SHEET 0n / 05" (micro muted) over the sheet name (13 px mono) · language cell
+"EN/NL" (current underlined; links to the other) · theme cell (16 px swatch split on the diagonal,
+no label on screen). No CV: it is on Sheet 01's buttons and in the title block's CONTACT cell.
+
+## SheetTabBar (phone)
+Title-block strip fixed to the screen bottom (replaces the old SHEETS panel): 2 px ink top rule,
+5 equal cells with 1 px ink rules, 62 px tall + the safe-area inset; number (mono 15 600) over the
+short name (mono 10). Current cell ink-filled (`aria-current="page"`); the fill slides between
+cells on a sheet change (§M2). Plain links (works without JS); the page is padded to scroll clear.
 
 ## SheetLabel
 Mono 12 px, letter-spacing .12em, `line` colour, uppercase: "SHEET 0n — NAME · VIEW TYPE".

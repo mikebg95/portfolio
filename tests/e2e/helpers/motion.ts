@@ -3,9 +3,7 @@ import type { Page } from '@playwright/test';
 // Elements whose opacity or clip-path is their drawn final state, not an animation's start.
 const FINAL_STATE_EXCEPTIONS = [
   '.sheet-tab__number', // the current tab's number, dimmed (components.md Tab)
-  '.sheet-index__number', // the same in the phone sheet index
   '.sheet-header__set', // visually hidden set name on phones
-  ".sheet-index__panel[data-state='closed']", // the phone sheet index, closed (clipped away)
   '.mini-diagram__hexagon', // hexagon shapes
   '.hexagon',
   '.assembly[data-active] .plate[aria-pressed="false"]', // parts dimmed while another is selected

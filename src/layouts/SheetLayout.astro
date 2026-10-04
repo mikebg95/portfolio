@@ -2,6 +2,7 @@
 import FontPreload from '../components/FontPreload.astro';
 import SheetFrame from '../components/SheetFrame.astro';
 import SheetHeader from '../components/SheetHeader.astro';
+import SheetTabBar from '../components/SheetTabBar.astro';
 import TitleBlock from '../components/TitleBlock.astro';
 import { ICONS, SITE_URL } from '../config';
 import { FIRST_VIEW_CLASS, FIRST_VIEW_KEY, JS_CLASS } from '../motion';
@@ -13,8 +14,8 @@ import { absoluteUrl, alternates, neutralPath } from '../seo';
 import { THEME_STORAGE_KEY, THEMES } from '../theme';
 import '../styles/base.css';
 
-// The page shell every route uses: theme before paint, skip link, the sheet frame, the header and
-// the title block footer. SPEC §3.8: title, description, canonical, hreflang, Open Graph text and
+// The page shell every route uses: theme before paint, skip link, the sheet frame, the header,
+// the title block footer and the phone tab bar. SPEC §3.8: title, description, canonical, hreflang, Open Graph text and
 // image (src/pages/og/) and the Twitter card in the head; a page adds more (Sheet 01's JSON-LD)
 // through the `head` slot.
 interface Props {
@@ -41,7 +42,7 @@ const ogImage = new URL(ogImagePath(lang, path), SITE_URL).href;
 <html lang={lang}>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <!-- SPEC §3.3: apply a remembered theme before first paint; no choice → CSS follows the system. -->
     <script is:inline define:vars={{ key: THEME_STORAGE_KEY, themes: THEMES }}>
       try {
@@ -114,6 +115,7 @@ const ogImage = new URL(ogImagePath(lang, path), SITE_URL).href;
       </main>
       <TitleBlock slot="footer" lang={lang} sheet={sheet} />
     </SheetFrame>
+    <SheetTabBar lang={lang} sheet={sheet} />
   </body>
 </html>
 

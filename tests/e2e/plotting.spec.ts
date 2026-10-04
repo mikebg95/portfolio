@@ -12,7 +12,7 @@ const HEADER_CELLS = [
   '.sheet-header__current',
   '.sheet-tab',
   '.sheet-header__utils',
-  '.sheet-index',
+  '.tab-bar__cell',
 ];
 
 /** Text a visitor reads first on Sheet 01: the header cells and the hero copy. */

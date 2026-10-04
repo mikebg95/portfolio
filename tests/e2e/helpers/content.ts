@@ -12,7 +12,7 @@ interface Ui {
   sheet: string;
   sheets: Record<'overview' | 'experience' | 'projects' | 'certifications' | 'education', string>;
   theme: { toBlueprint: string };
-  sheetIndex: { close: string };
+  tabBar: { label: string; sheets: Ui['sheets'] };
   titleBlock: Record<'project' | 'scale' | 'sheet' | 'drawn' | 'checked' | 'rev', string>;
   seo: { notFound: { title: string } };
   notFound: { label: string; heading: string; note: string };

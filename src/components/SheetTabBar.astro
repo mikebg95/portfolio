@@ -1,0 +1,124 @@
+---
+import type { SheetKey } from '../content/schemas';
+import { t } from '../i18n/content';
+import { localize, type Lang } from '../i18n/paths';
+import { SHEETS } from '../i18n/routes';
+
+// Phone (< 768 px, design/screens/overview-default-light-390): the five sheets as a title-block
+// strip fixed to the screen bottom — number over short name, the current cell ink-filled. Plain
+// links, so it works without JS; SheetLayout renders it outside the frame (a transformed or named
+// ancestor would stop `position: fixed` from holding to the screen) and pads the page under it.
+interface Props {
+  lang: Lang;
+  /** The sheet this page belongs to; undefined on the 404 sheet (no cell is current). */
+  sheet: SheetKey | undefined;
+}
+
+const { lang, sheet } = Astro.props;
+const ui = await t(lang);
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+
+<nav class="tab-bar" aria-label={ui.tabBar.label}>
+  <span class="tab-bar__ground" aria-hidden="true"></span>
+  {SHEETS.map(({ key, number, path }) => (
+    <a
+      class="tab-bar__cell"
+      href={localize(lang, path)}
+      aria-current={key === sheet ? 'page' : undefined}
+    >
+      {key === sheet && <span class="tab-bar__fill" aria-hidden="true" />}
+      <span class="tab-bar__number">{pad(number)}</span>
+      <span class="tab-bar__name">{ui.tabBar.sheets[key]}</span>
+    </a>
+  ))}
+</nav>
+
+<style>
+  .tab-bar {
+    display: none;
+  }
+
+  @media (max-width: 767px) {
+    /* The page scrolls clear of the bar: nothing ends up under it. */
+    :global(body) {
+      padding-bottom: calc(var(--sheet-tab-bar-height) + env(safe-area-inset-bottom, 0px));
+    }
+
+    .tab-bar {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 4;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+      border-top: var(--border-strong);
+      font-family: var(--font-mono);
+    }
+
+    /* The paper under the bar is its own layer, so in a sheet change the sliding fill can pass
+       between it and the cell text (transitions.css). */
+    .tab-bar__ground {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: var(--color-paper);
+    }
+
+    .tab-bar__cell {
+      position: relative;
+      isolation: isolate;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      min-width: 0;
+      height: var(--sheet-tab-bar-height);
+      border-right: var(--border-thin);
+      color: var(--color-ink);
+      font-size: var(--size-micro);
+      letter-spacing: 0.04em;
+      text-decoration: none;
+    }
+
+    .tab-bar__cell:last-child {
+      border-right: 0;
+    }
+
+    /* The bar sits on the screen edge, where an outside ring would be cut off. */
+    .tab-bar__cell:focus-visible {
+      outline-offset: -4px;
+    }
+
+    .tab-bar__number {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .tab-bar__name {
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .tab-bar__cell[aria-current='page'] {
+      color: var(--color-ink-on-fill);
+    }
+
+    /* The ink fill is its own layer under the text, as the header tab's is (transitions.css). */
+    .tab-bar__fill {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: var(--color-ink);
+    }
+
+    .tab-bar__cell[aria-current='page']:focus-visible {
+      outline-color: var(--color-ink-on-fill);
+    }
+  }
+</style>

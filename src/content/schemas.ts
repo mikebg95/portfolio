@@ -246,8 +246,17 @@ export const uiSchema = z.strictObject({
   languages: z.strictObject({ en: text, nl: text }),
   theme: z.strictObject({ paper: text, blueprint: text, toPaper: text, toBlueprint: text }),
   cv: text,
-  /** The phone header's sheet index button. */
-  sheetIndex: z.strictObject({ open: text, openLabel: text, close: text }),
+  /** The phone tab bar fixed to the screen bottom: its landmark name and short sheet names. */
+  tabBar: z.strictObject({
+    label: text,
+    sheets: z.strictObject({
+      overview: text,
+      experience: text,
+      projects: text,
+      certifications: text,
+      education: text,
+    }),
+  }),
   skipLink: text,
   titleBlock: z.strictObject({
     project: text,

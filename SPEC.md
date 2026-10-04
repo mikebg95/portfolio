@@ -48,11 +48,12 @@ collected. Everyone sees the same public pages.
   tabs "SHEET 01 Overview · 02 Experience · 03 Projects · 04 Certifications · 05 Education". The
   current sheet's tab is filled ink (inverted). Project detail pages mark tab 03.
 - Header also holds: language switch (EN / NL), theme switch (paper / blueprint), "CV" download link.
-- Phone (< 768 px): monogram + current sheet name + a "Sheets" button opening a full-width sheet index
-  panel (same five entries, plus language, theme, CV). Panel closes on Escape, on selection and on
-  outside tap; focus is trapped while open and returns to the button.
+- Phone (< 768 px, Michael 2026-10-04, PR-62): one 56 px header row — monogram · "SHEET 0n / 05" +
+  sheet name · EN/NL · theme swatch — and a title-block tab bar fixed to the screen bottom with the
+  five sheets (short names Overview/Work/Projects/Certs/Education), current cell ink-filled. CV: on
+  Sheet 01's buttons and in the title block.
 - Footer on every page: title block (PROJECT: MICHAEL GOLDMAN · SCALE 1:1 · SHEET nn / 05 · DRAWN: M.
-  GOLDMAN · CHECKED: 251 TESTS · REV: build date as YYYY.MM · CONTACT links: email, LinkedIn, GitHub).
+  GOLDMAN · CHECKED: 251 TESTS · REV: build date as YYYY.MM · CONTACT links: email, LinkedIn, GitHub, CV).
 
 ### 3.3 Themes
 - **Paper** (light, default when system is light) and **Blueprint** (dark: deep navy paper, pale

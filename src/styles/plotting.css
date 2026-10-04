@@ -79,7 +79,7 @@
   }
 
   /* 0.50–0.80 header cells drop in, 60 ms apart: monogram, the five tabs, then the utilities;
-     on a phone the monogram, current sheet and SHEETS button. Only the cells shown at the width
+     on a phone the monogram, current sheet and the language and theme cells. Only the cells shown at the width
      are animated (a hidden cell would keep its start state in its computed style). */
   .js.first-view .sheet-header__mark {
     animation: plot-drop 450ms var(--motion-ease-out) calc(500ms + var(--plot-cell, 0) * 60ms)
@@ -118,7 +118,7 @@
   }
 
   @media (max-width: 767px) {
-    .js.first-view :is(.sheet-header__current, .sheet-index) {
+    .js.first-view :is(.sheet-header__current, .sheet-header__utils) {
       animation: plot-drop 450ms var(--motion-ease-out) calc(500ms + var(--plot-cell, 0) * 60ms)
         backwards;
     }
@@ -127,13 +127,13 @@
       --plot-cell: 1;
     }
 
-    .js.first-view .sheet-index {
+    .js.first-view .sheet-header__utils {
       --plot-cell: 2;
     }
   }
 
   /* 0.90–1.40 the active tab's ink fill (its own layer under the text) wipes in left → right. */
-  .js.first-view .sheet-tab__fill {
+  .js.first-view :is(.sheet-tab__fill, .tab-bar__fill) {
     animation: reveal-draw 500ms var(--motion-ease-plot) 900ms backwards;
   }
 

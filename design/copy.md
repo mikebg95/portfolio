@@ -10,7 +10,7 @@ itself, in the same voice: first person, short sentences, concrete nouns, no hyp
 - Monogram: `MG` · `DRAWING SET` · `michaelgoldman.dev`
 - Tabs: `SHEET 01` Overview · `SHEET 02` Experience · `SHEET 03` Projects · `SHEET 04` Certifications · `SHEET 05` Education
 - Utilities: `EN` / `NL` · theme button `PAPER` / `BLUEPRINT` (aria-label "Switch to blueprint theme" / "Switch to paper theme") · `CV`
-- Phone: button `SHEETS` (aria-label "Open sheet index") / `CLOSE`
+- Phone tab bar (nav label `Sheets`): `01` Overview · `02` Work · `03` Projects · `04` Certs · `05` Education
 - Skip link: `Skip to sheet content`
 - Title block captions/values: `PROJECT` MICHAEL GOLDMAN · `SCALE` 1 : 1 · `SHEET` 01 / 05 · `DRAWN` M. GOLDMAN · `CHECKED` 251 TESTS · `REV` <build YYYY.MM> · `CONTACT` Email ↗ · LinkedIn ↗ · GitHub ↗
 - Contact targets: mailto:mikebgoldman95@gmail.com · https://linkedin.com/in/mikebg95 · https://github.com/mikebg95

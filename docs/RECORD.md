@@ -579,3 +579,17 @@ passes `fitTo="container"` and measures against `.cert-card__head`. Instead of: 
 width table measured in a browser (fontkit already reads the font for the OG cards, with kerning);
 JS fit-text (flashes, nothing without JS). Seen while walking it, out of this task's scope (other
 typography): the desktop header tab breaks "Certification / s" at 1280 px — queued as PR-67.
+
+## 2026-10-04 — Phone chrome: one-row header and a fixed tab bar (PR-62a)
+Who: Michael asked (*"a more beautiful modern professional creative app layout"*); agent (PR-62a,
+the choices). The SHEETS panel is gone; the five sheets live in `SheetTabBar`, rendered by
+SheetLayout outside the sheet frame because `position: fixed` under the named, animated frame is
+not guaranteed to hold to the screen. The language cell shows both codes `EN/NL` (the task's
+wording; the drawing's single `EN` gave no hint where it leads) with the current one underlined and
+links to the other, its accessible name the target code as on desktop. Short names are content
+(`ui.tabBar.sheets`; NL Overzicht/Werk/Projecten/Certs/Opleiding — "Certs" as in EN, the full word
+does not fit a 320 px cell). The bar's paper is its own layer (`.tab-bar__ground`) so the `active-tab`
+fill slides between cells under the text on a sheet change, as the desktop tab fill does. Below
+360 px the header's utility cells are 48 px (still ≥ 44) so NL "Certificeringen" fits uncut. CV
+joins the title block's CONTACT cell on every width. Instead of: an icon-only bar (the drawing has
+numbers and names); keeping the panel as a "more" menu (nothing left to put in it).

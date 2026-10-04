@@ -10,8 +10,8 @@
   view-transition-name: sheet;
 }
 
-/* A name makes its element a stacking context, so the header's phone panel (z-index 5 inside it)
-   would paint under the named content that follows; the header is lifted above it. */
+/* A name makes its element a stacking context; the header is lifted above the named content that
+   follows it. */
 .sheet-header {
   position: relative;
   z-index: 1;
@@ -19,6 +19,21 @@
 }
 
 .sheet-tab__fill {
+  view-transition-name: active-tab;
+}
+
+/* The phone tab bar stays put like the header; its fill takes the same name and slides between
+   cells (only one of the two fills is ever rendered at a width) over the bar's paper and under its
+   text. Fixed to the screen, it keeps its names when the old page left scrolled. */
+.tab-bar {
+  view-transition-name: tab-bar;
+}
+
+.tab-bar__ground {
+  view-transition-name: tab-bar-ground;
+}
+
+.tab-bar__fill {
   view-transition-name: active-tab;
 }
 
@@ -40,6 +55,8 @@
    new one shows at once; header and title block cross-fade only what differs. */
 ::view-transition-group(sheet),
 ::view-transition-group(sheet-header),
+::view-transition-group(tab-bar),
+::view-transition-group(tab-bar-ground),
 ::view-transition-group(sheet-content),
 ::view-transition-group(title-block) {
   animation: none;
@@ -54,8 +71,9 @@
   animation: none;
 }
 
-/* The header's tab text sits over the sliding fill. */
-::view-transition-group(sheet-header) {
+/* The header's and the tab bar's text sits over the sliding fill. */
+::view-transition-group(sheet-header),
+::view-transition-group(tab-bar) {
   z-index: 1;
 }
 
