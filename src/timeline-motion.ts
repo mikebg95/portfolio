@@ -126,6 +126,14 @@ function drawRuler(ruler: HTMLElement, horizontal: boolean) {
     );
 }
 
+/** The element the URL's hash names, if it lies inside `scope`. */
+function hashTarget(scope: Element): HTMLElement | null {
+  // Entry ids are plain slugs, so the raw hash is the id; no decoding to throw on a stray `%`.
+  const id = location.hash.slice(1);
+  const target = id ? document.getElementById(id) : null;
+  return target && scope.contains(target) ? target : null;
+}
+
 /** Desktop: pin the timeline while the detail blocks pass under it; mark the role being read. */
 function pinWithCursor(timeline: HTMLElement, bars: readonly Bar[]) {
   const cursor = timeline.querySelector<HTMLElement>('.timeline__cursor');
@@ -137,10 +145,12 @@ function pinWithCursor(timeline: HTMLElement, bars: readonly Bar[]) {
   const details = blocks[0]?.block.closest('section');
   if (!details) return;
   const root = document.documentElement;
-  root.style.setProperty(
-    '--timeline-pinned',
-    `${PIN_TOP_PX + timeline.offsetHeight + PIN_GAP_PX}px`,
-  );
+  const pinned = PIN_TOP_PX + timeline.offsetHeight + PIN_GAP_PX;
+  root.style.setProperty('--timeline-pinned', `${pinned}px`);
+  // The browser scrolled to a hash target before this ran, with no margin yet: re-land it.
+  const target = hashTarget(details);
+  const top = target?.getBoundingClientRect().top ?? -1;
+  const arrived = top >= -1 && top < pinned ? target : null;
 
   ScrollTrigger.create({
     trigger: timeline,
@@ -163,6 +173,7 @@ function pinWithCursor(timeline: HTMLElement, bars: readonly Bar[]) {
       },
     });
   }
+  arrived?.scrollIntoView({ block: 'start', behavior: 'instant' });
   return () => {
     root.style.removeProperty('--timeline-pinned');
     if (cursor) delete cursor.dataset.at;

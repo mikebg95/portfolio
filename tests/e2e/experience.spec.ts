@@ -214,3 +214,47 @@ test('a detail block is two columns on desktop and one on phone', async ({ page 
   const phone = (page.viewportSize()?.width ?? 0) < 768;
   expect(body.y >= meta.y + meta.height).toBe(phone);
 });
+
+// QA-68: on desktop the timeline pins over the blocks (src/timeline-motion.ts) only once GSAP has
+// loaded, after the browser's own hash scroll; an arrival with a hash must still land the entry's
+// heading clear of the pinned strip, as a bar click does.
+test.describe('an arrival with a hash, motion on', () => {
+  test.use({ reducedMotion: 'no-preference' });
+
+  /** The entry's heading is on screen and nothing (the pinned timeline) is drawn over it. */
+  async function expectLandedClear(page: Page, id: string) {
+    await expect(page.locator('.timeline.timeline--pinned')).toHaveCount(1);
+    const heading = page.locator(`#${id} :is(h2, h3)`).first();
+    await expect(heading).toBeInViewport();
+    await expect
+      .poll(() =>
+        heading.evaluate((h) => {
+          const box = h.getBoundingClientRect();
+          const at = document.elementFromPoint(box.left + 8, box.top + box.height / 2);
+          return at?.closest('article')?.id ?? at?.closest('.timeline')?.className ?? null;
+        }),
+      )
+      .toBe(id);
+  }
+
+  test.beforeEach(({ page }) => {
+    test.skip(
+      (page.viewportSize()?.width ?? 0) < 1024 || (page.viewportSize()?.height ?? 0) < 640,
+      'the timeline pins on desktop only',
+    );
+  });
+
+  for (const path of ['/experience#optiecon', '/experience#dji', '/nl/experience#optiecon']) {
+    test(`typed ${path}`, async ({ page }) => {
+      await page.goto(path);
+      await expectLandedClear(page, path.split('#')[1] ?? '');
+    });
+  }
+
+  test('the Overview "In progress" link', async ({ page }) => {
+    await page.goto('/');
+    await page.locator('a[href="/experience#optiecon"]').first().click();
+    await expect(page).toHaveURL(/\/experience#optiecon$/);
+    await expectLandedClear(page, 'optiecon');
+  });
+});
