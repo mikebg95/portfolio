@@ -66,7 +66,7 @@ queue.
 
 ### 404 and SEO
 
-- [ ] **PR-38 Open Graph images**
+- [x] **PR-38 Open Graph images**
   - Done when: a build step renders a 1200×630 PNG per sheet and per project in both languages (mini sheet: frame, grid, sheet label, display heading, small title block with michaelgoldman.dev) using satori/resvg or Playwright at build time; og:image and twitter:card tags point at them; test asserts every page has an existing og:image file of 1200×630.
   - Spec: SPEC §3.8; design/README.md "Not drawn"
   - Out of scope: —
