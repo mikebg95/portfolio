@@ -22,7 +22,12 @@ const certs = (await getAllLocalized('certifications', lang)).sort((a, b) =>
 );
 ---
 
-<SheetLayout lang={lang} sheet="certifications" title={ui.seo.certifications.title}>
+<SheetLayout
+  lang={lang}
+  sheet="certifications"
+  title={ui.seo.certifications.title}
+  description={ui.seo.certifications.description}
+>
   <section class="sheet-panel record">
     <div class="record__head">
       <SheetLabel>{ui.certifications.label}</SheetLabel>

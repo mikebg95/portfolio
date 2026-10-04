@@ -58,6 +58,7 @@ const pending = data.status === 'in-progress' ? text.status['in-progress'] : und
   lang={lang}
   sheet="projects"
   title={ui.seo.project.title.replace('{title}', data.title)}
+  description={data.summary}
 >
   <section class="sheet-panel detail-head">
     <div class="detail-head__intro">

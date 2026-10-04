@@ -60,6 +60,9 @@ line.
 - `src/i18n/paths.ts` — `DEFAULT_LANG`, `localize`, `delocalize`, `alternate`, `langPaths`; `astro.config.ts` i18n reads `LANGS`/`DEFAULT_LANG` from it.
 - `src/i18n/routes.ts` — `SHEETS` (key, number, path) and `projectPath(slug)`.
 - `src/i18n/content.ts` — `t(lang)`, `getLocalized`, `getAllLocalized`, `sharedId`.
+- `src/seo.ts` — canonical/hreflang URLs (`neutralPath` strips Astro's trailing slash), `sitemap`, `robots`, `personJsonLd`; `SheetLayout` renders the head from its `description`/`noindex` props, pages add more via `slot="head"`.
+- `src/pages/sitemap.xml.ts`, `src/pages/robots.txt.ts` — endpoints; the sitemap is built from `SHEETS` + project slugs, so a new route is listed only if added there. `tests/e2e/seo.spec.ts` (chromium-desktop only).
+- TRAP: `Astro.url.pathname` in the build is `/experience/` (directory format) while links are `/experience`; canonicals and the sitemap use the slash-less form, so the static host must serve `/experience` without a redirect (nginx `try_files $uri $uri/index.html`).
 
 ## Sheet chrome
 

@@ -288,3 +288,16 @@ selected look (plate lifted 12 px, filled line colour at 25 % over paper — CKA
 ink-blue" — others at 60 %) starts with the first selection or a `#part-n` hash. The hash is
 written with `history.replaceState`, so selecting parts does not stack history entries. No-JS
 stacking uses `@media (scripting: enabled)` rather than a `js` class, which PR-39 has not added yet.
+
+## 2026-10-04 — SEO head: canonicals without a trailing slash; 404 noindex; JSON-LD on both overviews
+Who: agent (PR-37). Why: canonical, hreflang (en, nl, x-default → en) and the sitemap use the
+slash-less URLs the site links to (`/experience`, homes `/` and `/nl/`), not Astro's `/experience/`.
+The 404 sheets have no description (copy.md "—"), `noindex`, and no canonical/alternates, since they
+answer any unknown URL. The JSON-LD Person renders on `/` and `/nl/` (the NL one in that language's
+strings): name from `profile.hero.name` title-cased, jobTitle = `profile.hero.role` before " — ",
+sameAs LinkedIn + GitHub from `profile.contact`, address only `PERSON_ADDRESS` (Amsterdam, NL, from
+cv.md) in `src/config.ts` — derived rather than new schema fields, since the `ui` schema is a
+contract. Open Graph text tags (type, site_name, title, description, url) are in now; og:image and
+twitter:card are PR-38's; no og:locale (would need a territory the sources don't give). Sitemap and
+robots are hand-written endpoints, not `@astrojs/sitemap` (it names its output `sitemap-index.xml`
+and adds a dependency for twenty URLs).

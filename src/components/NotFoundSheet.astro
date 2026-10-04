@@ -19,7 +19,7 @@ const ui = await t(lang);
 const pad = (n: number) => String(n).padStart(2, '0');
 ---
 
-<SheetLayout lang={lang} title={ui.seo.notFound.title}>
+<SheetLayout lang={lang} title={ui.seo.notFound.title} noindex>
   <section class="sheet-panel not-found">
     <SheetLabel>{ui.notFound.label}</SheetLabel>
     <DisplayHeading as="h1" size="l" class="not-found__heading">

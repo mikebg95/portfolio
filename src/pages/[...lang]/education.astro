@@ -25,7 +25,12 @@ const partName = (part: (typeof parts)[number]) =>
   ui.education.part.replace('{n}', String(part.item)).replace('{name}', part.balloon);
 ---
 
-<SheetLayout lang={lang} sheet="education" title={ui.seo.education.title}>
+<SheetLayout
+  lang={lang}
+  sheet="education"
+  title={ui.seo.education.title}
+  description={ui.seo.education.description}
+>
   <section class="sheet-panel education" data-education>
     <div class="education__head">
       <SheetLabel>{ui.education.label}</SheetLabel>

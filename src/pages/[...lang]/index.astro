@@ -1,11 +1,13 @@
 ---
-import { t } from '../../i18n/content';
-import { langPaths, type Lang } from '../../i18n/paths';
+import { PERSON_ADDRESS, SITE_URL } from '../../config';
+import { getLocalized, t } from '../../i18n/content';
+import { langPaths, localize, type Lang } from '../../i18n/paths';
 import Hero from '../../components/overview/Hero.astro';
 import HowIWork from '../../components/overview/HowIWork.astro';
 import InProgress from '../../components/overview/InProgress.astro';
 import SpecNotes from '../../components/overview/SpecNotes.astro';
 import SheetLayout from '../../layouts/SheetLayout.astro';
+import { jsonLdText, personJsonLd } from '../../seo';
 
 export function getStaticPaths() {
   return langPaths();
@@ -17,9 +19,24 @@ interface Props {
 
 const { lang } = Astro.props;
 const ui = await t(lang);
+const { hero, contact } = (await getLocalized('profile', 'profile', lang)).data;
+// SPEC §3.8: who this is, for search engines — no phone, no address beyond city and country.
+const person = personJsonLd({
+  name: hero.name,
+  role: hero.role,
+  url: new URL(localize(lang, '/'), SITE_URL).href,
+  sameAs: [contact.linkedin, contact.github],
+  address: PERSON_ADDRESS,
+});
 ---
 
-<SheetLayout lang={lang} sheet="overview" title={ui.seo.overview.title}>
+<SheetLayout
+  lang={lang}
+  sheet="overview"
+  title={ui.seo.overview.title}
+  description={ui.seo.overview.description}
+>
+  <script is:inline slot="head" type="application/ld+json" set:html={jsonLdText(person)} />
   <Hero lang={lang} />
   <HowIWork lang={lang} />
   <SpecNotes lang={lang} />

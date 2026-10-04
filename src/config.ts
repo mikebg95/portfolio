@@ -17,3 +17,10 @@ export const SCENTIFY_DEMO = {
   width: 360,
   height: 800,
 } as const;
+
+/** The only address the site gives (SPEC §3.8, JSON-LD on Sheet 01): city and country, from
+ * `docs/source/cv.md` ("Amsterdam, The Netherlands"). Never a street or a phone number. */
+export const PERSON_ADDRESS = { locality: 'Amsterdam', country: 'NL' } as const;
+
+/** Built by `src/pages/sitemap.xml.ts`; `robots.txt` points at it. */
+export const SITEMAP_PATH = '/sitemap.xml';

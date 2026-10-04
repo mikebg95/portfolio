@@ -27,7 +27,12 @@ const roles = entries.filter((e) => e.kind === 'role');
 const number = (entry: (typeof entries)[number]) => `${sheet}.${roles.indexOf(entry) + 1}`;
 ---
 
-<SheetLayout lang={lang} sheet="experience" title={ui.seo.experience.title}>
+<SheetLayout
+  lang={lang}
+  sheet="experience"
+  title={ui.seo.experience.title}
+  description={ui.seo.experience.description}
+>
   <section class="sheet-panel experience-head">
     <SheetLabel>{ui.experience.label}</SheetLabel>
     <DisplayHeading as="h1" size="l">

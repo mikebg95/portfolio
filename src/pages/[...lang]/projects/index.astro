@@ -27,7 +27,12 @@ const seriesTests = series.reduce((sum, p) => sum + (p.tests ?? 0), 0);
 const href = (slug: string) => localize(lang, projectPath(slug));
 ---
 
-<SheetLayout lang={lang} sheet="projects" title={ui.seo.projects.title}>
+<SheetLayout
+  lang={lang}
+  sheet="projects"
+  title={ui.seo.projects.title}
+  description={ui.seo.projects.description}
+>
   <section class="sheet-panel register">
     <div class="register__head">
       <SheetLabel>{ui.projects.label}</SheetLabel>
