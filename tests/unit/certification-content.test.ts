@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 
 import { describe, expect, it } from 'vitest';
 
-import { certificationSchema } from '../../src/content/schemas';
+import { certificationSchema, uiSchema } from '../../src/content/schemas';
 import { readCollection } from './helpers/content';
 
 // PR-30: the EN certification entries hold design/copy.md's Sheet 04 lines verbatim, and every
@@ -100,5 +100,19 @@ describe('certifications (EN) against design/copy.md', () => {
       oca: cvLinks.get('OCA Java SE 8'),
       ckad: undefined,
     });
+  });
+
+  it('holds the sheet label, heading, intro and pending date in ui', () => {
+    const ui = uiSchema.parse(readCollection('ui').find((f) => f.path === 'en/ui')?.data);
+    const strings = [
+      ...(sheet04.find((l) => l.startsWith('- Label '))?.matchAll(/`([^`]+)`/g) ?? []),
+    ].map((m) => m[1]);
+
+    expect([
+      ui.certifications.label,
+      ui.certifications.heading.join(' '),
+      ui.certifications.intro,
+    ]).toEqual(strings);
+    expect(rows.find((r) => r.code === 'C-04')?.date).toBe(ui.certifications.pending);
   });
 });

@@ -1,0 +1,128 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+import { formatMonth, type DateWords } from '../../dates';
+import Chip from '../drawing/Chip.astro';
+import ChipList from '../drawing/ChipList.astro';
+import DisplayHeading from '../drawing/DisplayHeading.astro';
+import Link from '../drawing/Link.astro';
+import SheetLabel from '../drawing/SheetLabel.astro';
+import Stamp from '../drawing/Stamp.astro';
+
+// components.md CertCard: 1.5 px ink border, padding 28, the stamp in the top-right corner; code,
+// name, issuer · date, what I learned, skill chips, then the verify link to the issuer's own
+// record. Pending is dashed redline with no link. The block's id is the entry id (`#ckad`).
+interface Props {
+  id: string;
+  cert: CollectionEntry<'certifications'>['data'];
+  dates: DateWords;
+  /** Shown in place of the date while pending (`ui.certifications.pending`). */
+  pending: string;
+}
+
+const { id, cert, dates, pending } = Astro.props;
+const isPending = cert.status === 'pending';
+const nameId = `${id}-name`;
+---
+
+<article class:list={['cert-card', isPending && 'cert-card--pending']} id={id} data-cert={id}>
+  <div class="cert-card__head">
+    <Stamp lines={cert.stamp} state={cert.status} class="cert-card__stamp" />
+    <SheetLabel as="span" class="cert-card__code">
+      {cert.code}
+    </SheetLabel>
+    <DisplayHeading as="h2" size="s" id={nameId}>
+      {cert.name}
+    </DisplayHeading>
+    <p class="cert-card__issuer">
+      {cert.issuer} · {cert.date === null ? pending : formatMonth(cert.date, dates)}
+    </p>
+  </div>
+  <p class="cert-card__learned">{cert.learned}</p>
+  <ChipList>
+    {cert.skills.map((skill) => (
+      <Chip>{skill}</Chip>
+    ))}
+  </ChipList>
+  {cert.verifyUrl && (
+    <Link href={cert.verifyUrl} external class="cert-card__verify" aria-describedby={nameId}>
+      {cert.verifyLabel}
+    </Link>
+  )}
+</article>
+
+<style>
+  .cert-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 28px;
+    border: var(--border-normal);
+    background: var(--color-paper-raised);
+  }
+
+  .cert-card--pending {
+    border-style: dashed;
+    border-color: var(--color-redline);
+  }
+
+  .cert-card--pending :global(.cert-card__code) {
+    color: var(--color-redline);
+  }
+
+  /* The stamp floats in the corner, 22 px in from the edges (the card pads 28), and the code, name
+     and issuer wrap around its circle, so a long name uses the full width below it. The name's
+     size is capped by the card's width, so no word of it breaks mid-word in a phone column. */
+  .cert-card__head {
+    container-type: inline-size;
+    display: flow-root;
+  }
+
+  .cert-card__head > :global(*:not(.cert-card__stamp)) {
+    display: block;
+  }
+
+  .cert-card__head > :global(* + *:not(.cert-card__stamp)) {
+    margin-top: 14px;
+  }
+
+  .cert-card__head > :global(.cert-card__stamp + *) {
+    margin-top: 0;
+  }
+
+  .cert-card__head :global(.cert-card__stamp) {
+    float: right;
+    margin: -6px -6px 8px 12px;
+    shape-outside: circle(50%);
+    shape-margin: 8px;
+  }
+
+  /* overflow-wrap normal: a word too long to sit beside the stamp drops below it instead of
+     breaking (the size cap keeps every word inside the card). */
+  .cert-card__head :global(h2) {
+    font-size: min(var(--size-display-s), 10cqi);
+    overflow-wrap: normal;
+  }
+
+  .cert-card__issuer {
+    margin: 0;
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: var(--size-code);
+  }
+
+  .cert-card__learned {
+    margin: 0;
+    color: var(--color-text-2);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .cert-card :global(.cert-card__verify) {
+    align-self: flex-start;
+    padding-top: 6px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+  }
+</style>

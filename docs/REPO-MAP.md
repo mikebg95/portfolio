@@ -107,3 +107,9 @@ line.
 - `src/components/drawing/PipelineRoute.astro` — stations `<ol>`, last filled; Arrow `turns` = right ≥ 768 px, down below.
 - TRAP: after adding a schema field with a `.default()`, a cached `node_modules/.astro/data-store.json` keeps entries without it; symptom: build "Cannot read properties of undefined" on that field. Delete the file and rebuild.
 
+## Sheet 04 — Certifications
+
+- `src/pages/[...lang]/certifications.astro` — label + heading + intro (`ui.certifications`), then a `CertCard` per entry in code order; 1 column, 2 from 768 px; heading capped at `13cqi` so INSPECTED fits a 320 px phone.
+- `src/components/certifications/CertCard.astro` — card id = entry id (`#ckad` is the Overview's target); the Stamp floats in the head with `shape-outside: circle()` so code/name/issuer wrap round it.
+- TRAP: card names need `overflow-wrap: normal` — with DisplayHeading's `break-word` a word too long to sit beside a float is split ("PROFESSIO NAL") instead of dropping below it.
+- `tests/e2e/certifications.spec.ts` — four cards, ids, stamps, three verify links (exact cv.md URLs), CKAD none; `brokenWords` helper catches mid-word heading breaks at 320/390 px.

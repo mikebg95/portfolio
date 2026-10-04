@@ -77,5 +77,10 @@ projects:
     next: NEXT SHEET
     seriesPart: SERIES PART {n}
     status: { in-progress: IN PROGRESS, retired-hosting: HOSTING RETIRED }
+certifications:
+  label: SHEET 04 — CERTIFICATIONS · INSPECTION RECORD
+  heading: [INSPECTED, AND SIGNED OFF]
+  intro: "Every stamp links to the issuer's own record, so you can check it yourself."
+  pending: in progress
 lang: nl
 translated: false

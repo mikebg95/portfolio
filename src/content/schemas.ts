@@ -304,6 +304,16 @@ export const uiSchema = z.strictObject({
       status: z.strictObject({ 'in-progress': text, 'retired-hosting': text }),
     }),
   }),
+  /**
+   * Sheet 04's own strings (copy.md Sheet 04): label, the heading's two drawn lines, intro, and the
+   * date shown for a pending certification. Card text comes from the `certifications` entries.
+   */
+  certifications: z.strictObject({
+    label: text,
+    heading: z.tuple([text, text]),
+    intro: text,
+    pending: text,
+  }),
   lang,
   translated,
 });

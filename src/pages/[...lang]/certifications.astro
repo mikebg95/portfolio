@@ -1,5 +1,8 @@
 ---
-import { t } from '../../i18n/content';
+import CertCard from '../../components/certifications/CertCard.astro';
+import DisplayHeading from '../../components/drawing/DisplayHeading.astro';
+import SheetLabel from '../../components/drawing/SheetLabel.astro';
+import { getAllLocalized, sharedId, t } from '../../i18n/content';
 import { langPaths, type Lang } from '../../i18n/paths';
 import SheetLayout from '../../layouts/SheetLayout.astro';
 
@@ -13,12 +16,76 @@ interface Props {
 
 const { lang } = Astro.props;
 const ui = await t(lang);
+// The inspection record (SPEC §4.5): C-01…C-04 in code order, 2 × 2 from tablet up.
+const certs = (await getAllLocalized('certifications', lang)).sort((a, b) =>
+  a.data.code.localeCompare(b.data.code),
+);
 ---
 
 <SheetLayout lang={lang} sheet="certifications" title={ui.seo.certifications.title}>
-  <section class="sheet-panel">
-    <h1>{ui.sheets.certifications}</h1>
-    {/* Target of the Overview's in-progress link; PR-31 (the CKAD card) takes the id over. */}
-    <div id="ckad"></div>
+  <section class="sheet-panel record">
+    <div class="record__head">
+      <SheetLabel>{ui.certifications.label}</SheetLabel>
+      <DisplayHeading as="h1" size="l">
+        <span class="record__line">{ui.certifications.heading[0]}</span>{' '}
+        <span class="record__line">{ui.certifications.heading[1]}</span>
+      </DisplayHeading>
+      <p class="record__intro">{ui.certifications.intro}</p>
+    </div>
+    <div class="record__cards">
+      {certs.map((entry) => (
+        <CertCard
+          id={sharedId(entry)}
+          cert={entry.data}
+          dates={ui.dates}
+          pending={ui.certifications.pending}
+        />
+      ))}
+    </div>
   </section>
 </SheetLayout>
+
+<style>
+  .record {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    padding-bottom: 64px;
+  }
+
+  /* The display size, capped by the sheet's width so INSPECTED never breaks mid-word on a phone. */
+  .record__head {
+    container-type: inline-size;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .record__head :global(h1) {
+    font-size: min(var(--size-display-l), 13cqi);
+  }
+
+  .record__line {
+    display: block;
+  }
+
+  .record__intro {
+    max-width: 640px;
+    margin: 0;
+    color: var(--color-text-2);
+    font-size: var(--size-lead);
+    line-height: 1.6;
+  }
+
+  .record__cards {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-5);
+  }
+
+  @media (min-width: 768px) {
+    .record__cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>
