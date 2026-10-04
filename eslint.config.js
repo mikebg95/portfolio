@@ -28,4 +28,8 @@ export default defineConfig(
       globals: { ...globals.browser, ...globals.node },
     },
   },
+  {
+    files: ['src/service-worker.js'],
+    languageOptions: { globals: globals.serviceworker },
+  },
 );

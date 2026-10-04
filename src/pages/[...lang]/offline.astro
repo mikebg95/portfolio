@@ -1,0 +1,18 @@
+---
+import NotFoundSheet from '../../components/NotFoundSheet.astro';
+import { langPaths, type Lang } from '../../i18n/paths';
+
+// PR-63: the sheet the service worker (src/service-worker.js) serves for a page it has not stored
+// while there is no connection. Not in the sitemap, not indexed.
+export function getStaticPaths() {
+  return langPaths();
+}
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+---
+
+<NotFoundSheet lang={lang} kind="offline" />

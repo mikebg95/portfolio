@@ -41,3 +41,10 @@ export const ICONS = {
 
 /** The manifest's `short_name` (a home-screen label); its `name` is the EN Sheet 01 title. */
 export const SITE_SHORT_NAME = 'M. Goldman';
+
+/** Offline (PR-63): the service worker, built into `dist/` by `src/precache.ts` from
+ * `src/service-worker.js`; the sheet it serves for a page it has not stored; the most the install
+ * may download (the build fails above it). */
+export const SERVICE_WORKER_PATH = '/sw.js';
+export const OFFLINE_PATH = '/offline';
+export const PRECACHE_LIMIT_BYTES = 3 * 1024 * 1024;

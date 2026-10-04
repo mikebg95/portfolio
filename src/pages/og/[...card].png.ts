@@ -1,6 +1,6 @@
 import type { APIRoute, GetStaticPaths, InferGetStaticPropsType } from 'astro';
 
-import { SITE_URL } from '../../config';
+import { OFFLINE_PATH, SITE_URL } from '../../config';
 import type { SheetKey } from '../../content/schemas';
 import { getAllLocalized, getLocalized, sharedId, t } from '../../i18n/content';
 import { LANGS } from '../../i18n/paths';
@@ -9,7 +9,7 @@ import { ogImageParam, renderOgPng, type OgCard } from '../../og';
 import { detailLabel } from '../../project-detail';
 import { formatSheet } from '../../title-block';
 
-// SPEC §3.8: the Open Graph image of every sheet, project detail sheet and 404 sheet, in both
+// SPEC §3.8: the Open Graph image of every sheet, project detail sheet, 404 and offline sheet, in both
 // languages, at `ogImagePath(lang, path)` — the URL SheetLayout puts in og:image. The label and
 // heading are the ones the page draws, from the same content.
 export const getStaticPaths = (async () => {
@@ -45,6 +45,7 @@ export const getStaticPaths = (async () => {
           card(detailLabel(data, projectsSheet, ui.projects.detail), [data.title], projectsSheet),
         ]),
         ['/404', card(ui.notFound.label, [ui.notFound.heading])],
+        [OFFLINE_PATH, card(ui.offline.label, [ui.offline.heading])],
       ];
       return pages.map(([path, og]) => ({
         params: { card: ogImageParam(lang, path) },

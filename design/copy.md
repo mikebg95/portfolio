@@ -152,3 +152,6 @@ Common: back link `← SHEET 03 · DRAWING REGISTER` · label `DETAIL SHEET 03.n
 
 ## 404
 - Label `SHEET ?? — NOT IN SET` · Heading `SHEET NOT FOUND` · note `REV. NOTE △ This sheet isn't in the set. Try one of these:` · list of the five sheets.
+
+## Offline
+- Served by the service worker for a page it has not stored, while offline (PR-63; not drawn — the 404 sheet's layout). Label `SHEET ?? — OFFLINE` · Heading `SHEET OFFLINE` · note `REV. NOTE △ No connection, and this sheet isn't stored on this device yet. These are:` · list of the five sheets. Tab title `Sheet offline · Michael Goldman — Portfolio`.

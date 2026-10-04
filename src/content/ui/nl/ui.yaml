@@ -56,10 +56,15 @@ seo:
     description: Politicologie, een programmeerminor met Harvard CS50, en hoe dat samen een software engineer opleverde.
   project: { title: '{title} · Michael Goldman — Portfolio' }
   notFound: { title: Blad niet gevonden · Michael Goldman — Portfolio }
+  offline: { title: Blad offline · Michael Goldman — Portfolio }
 notFound:
   label: BLAD ?? — NIET IN DE SET
   heading: BLAD NIET GEVONDEN
   note: 'REV. NOTITIE △ Dit blad zit niet in de set. Probeer een van deze:'
+offline:
+  label: BLAD ?? — OFFLINE
+  heading: BLAD OFFLINE
+  note: 'REV. NOTITIE △ Geen verbinding, en dit blad staat nog niet op dit apparaat. Deze wel:'
 dates:
   months: [jan, feb, mrt, apr, mei, jun, jul, aug, sep, okt, nov, dec]
   now: nu

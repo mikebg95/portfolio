@@ -14,6 +14,10 @@ export default defineConfig({
   use: {
     baseURL: `http://localhost:${PORT}`,
     trace: 'retain-on-failure',
+    // The production build registers the offline service worker (PR-63), which would download the
+    // whole precache in every test's fresh context and answer requests `page.route` cannot see.
+    // tests/e2e/offline.spec.ts allows it.
+    serviceWorkers: 'block',
   },
   projects: [
     {

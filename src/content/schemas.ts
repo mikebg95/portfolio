@@ -285,8 +285,11 @@ export const uiSchema = z.strictObject({
     /** `{title}` is replaced by the project's title; the description is its summary. */
     project: z.strictObject({ title: text.includes('{title}') }),
     notFound: z.strictObject({ title: text }),
+    offline: z.strictObject({ title: text }),
   }),
   notFound: z.strictObject({ label: text, heading: text, note: text }),
+  /** The sheet the service worker serves for a page it has not stored while offline (PR-63). */
+  offline: z.strictObject({ label: text, heading: text, note: text }),
   /** Month words as displayed (`JAN` / `jan`) and the open end (`NOW`); see `src/dates.ts`. */
   dates: z.strictObject({ months: z.array(text).length(12), now: text }),
   /**

@@ -35,7 +35,13 @@ const { hero } = (await getLocalized('profile', 'profile', lang)).data;
     <RevisionNote text={hero.revisionNote} />
     <div class="hero__actions">
       <Button href={localize(lang, sheetPath('projects'))}>{hero.buttons.projects}</Button>
-      <Button variant="secondary" href={CV_PATH} target="_blank" rel="noopener">
+      <Button
+        variant="secondary"
+        href={CV_PATH}
+        target="_blank"
+        rel="noopener"
+        data-astro-prefetch="false"
+      >
         {hero.buttons.cv}
       </Button>
     </div>

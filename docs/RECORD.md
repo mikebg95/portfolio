@@ -657,3 +657,19 @@ equivalent, WCAG 2.5.8). Dashed cards (pending cert, in-progress project) are 1 
 WebKit at 3× drops dashed sides at 1.5 px; the same defect on the revision notes and the sabbatical
 card is queued (QA-63), not fixed here. Instead of: shrinking the stamp to keep the float (names
 still split); new phone drawings (the task forbids them).
+
+## 2026-10-04 — Offline: a hand-written worker, no project media in the precache, workers off in e2e
+Who: agent (PR-63a). PR-63 was split: prefetch + the offline service worker shipped first (they
+stand alone); the ClientRouter half (PR-63b) changes the motion contract and goes on its own.
+Choices: the worker is a plain-JS template (`src/service-worker.js`) the build fills with a manifest
+from `dist/` (`src/precache.ts`), so no Workbox and no second bundler. Pages are stored under their
+directory URL (`/experience/`) and every request is looked up by that key, so `/experience`
+(which GitHub Pages redirects) and `/experience/` are one entry, and a redirected response is never
+stored. Lookups use `ignoreVary` — module scripts send `Origin`, the install did not, and
+`Vary: Origin` made every script miss offline (seen: pages opened, scripts ERR_FAILED). The
+precache is pages, CSS, JS, fonts, icons and the CV: 59 files, 1.49 MB; the Open Graph cards and
+the Scentify demo (0.96 MB) are left out — the demo is stored the first time it is seen. Playwright
+blocks service workers for every spec but `tests/e2e/offline.spec.ts`, or each fresh context would
+download the whole precache and answer requests `page.route` cannot see. The offline sheet reuses
+the 404 sheet's layout (`NotFoundSheet kind="offline"`); its copy is new (copy.md "Offline").
+Instead of: Workbox (a dependency for ~100 lines); precaching the demo (2.5 MB of a 3 MB budget).

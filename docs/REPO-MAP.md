@@ -27,6 +27,10 @@ line.
 - `src/glyphs.ts` — `openWoff2`/`run`: text as glyph outlines from `public/fonts/`, shared by the OG cards and the icons.
 - `tests/e2e/facts.spec.ts` + `tests/e2e/facts-allowlist.yaml` — facts audit (SPEC §3.7) over the built EN pages: every number, month-year date, capitalised/camelCase word and outbound URL must be in `docs/source/` or the allowlist (grouped by reason + evidence). New copy with a fact the sources lack fails here: source it or drop it; an allowlist entry no page needs fails too. Also: phone number (read from cv.md) in no HTML, Jamigos has no live link.
 - `tests/e2e/helpers/axe.ts` — `expectNoAxeViolations(page)`, WCAG 2.2 AA tags; every page's e2e calls it.
+- `src/precache.ts` — Astro integration (in `astro.config.ts`) that writes `dist/sw.js` from the template `src/service-worker.js` + a manifest of `dist/` (`isPrecached` picks the files); logs the precache size and fails the build over `PRECACHE_LIMIT_BYTES`. `src/offline.ts` registers it (SheetLayout, production only). `tests/e2e/offline.spec.ts`.
+- TRAP: `playwright.config.ts` sets `serviceWorkers: 'block'`; a spec that needs the worker opts in with `test.use({ serviceWorkers: 'allow' })`. Symptom: `navigator.serviceWorker.ready` never resolves in a test.
+- TRAP: the worker's `cache.match` must pass `ignoreVary` — module scripts send `Origin`, the install's requests do not. Symptom: offline pages open but every `_astro/*.js` fails ERR_FAILED.
+- `astro.config.ts` `prefetch` — every link prefetched on viewport; project cards/pager `data-astro-prefetch="hover"`, CV links `"false"`; `tests/e2e/navigation.spec.ts`.
 
 ## Styles
 
@@ -75,6 +79,7 @@ line.
 
 - `src/pages/[...lang]/` — every sheet once; `langPaths()` (src/i18n/paths.ts) yields `/x` and `/nl/x`.
 - `src/pages/404.astro`, `src/pages/nl/404.astro` — the only per-language page files; built as `dist/404.html` and `dist/nl/404/index.html`.
+- `src/pages/[...lang]/offline.astro` — the offline sheet the service worker serves (`NotFoundSheet kind="offline"`, copy `ui.offline`); noindex, not in the sitemap.
 - `src/components/NotFoundSheet.astro` — the 404 sheet both 404 pages render (label, heading, note, `[data-sheet-list]` of the five sheets); `tests/e2e/not-found.spec.ts`.
 - Static host 404: answer unknown URLs with `dist/404.html` and status 404 (nginx `error_page 404 /404.html;`); for Dutch, `location /nl/ { error_page 404 /nl/404/index.html; }`. `astro preview` serves `404.html` for every unknown URL, `/nl/…` included.
 - `src/i18n/paths.ts` — `DEFAULT_LANG`, `localize`, `delocalize`, `alternate`, `langPaths`; `astro.config.ts` i18n reads `LANGS`/`DEFAULT_LANG` from it.

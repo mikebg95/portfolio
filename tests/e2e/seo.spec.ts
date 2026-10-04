@@ -203,8 +203,8 @@ const builtPages = (dir = new URL('../../dist/', import.meta.url).pathname): str
 
 test('every built page has an Open Graph image: an existing 1200×630 PNG', async ({ request }) => {
   const pages = builtPages();
-  // 20 sheets and project details, plus the two 404 sheets.
-  expect(pages.length).toBe(EN.length + NL.length + 2);
+  // 20 sheets and project details, plus the two 404 and the two offline sheets.
+  expect(pages.length).toBe(EN.length + NL.length + 4);
   for (const page of pages) {
     const html = await (await request.get(page)).text();
     const image = /<meta property="og:image" content="([^"]+)"/.exec(html)?.[1];

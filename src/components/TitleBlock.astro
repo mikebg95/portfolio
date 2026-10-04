@@ -55,6 +55,7 @@ const links = [
             href={href}
             target={external ? '_blank' : undefined}
             rel={external ? 'noopener' : undefined}
+            data-astro-prefetch={href === CV_PATH ? 'false' : undefined}
           >
             {label}
             <span aria-hidden="true">↗</span>

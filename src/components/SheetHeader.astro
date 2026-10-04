@@ -114,7 +114,13 @@ const otherLang = LANGS.find((code) => code !== lang) ?? lang;
         <span class="sr-only">{ui.theme.toPaper}</span>
       </span>
     </button>
-    <a class="sheet-header__util sheet-header__cv" href={CV_PATH} target="_blank" rel="noopener">
+    <a
+      class="sheet-header__util sheet-header__cv"
+      href={CV_PATH}
+      target="_blank"
+      rel="noopener"
+      data-astro-prefetch="false"
+    >
       {ui.cv}
     </a>
   </div>

@@ -134,7 +134,13 @@ const pending = data.status === 'in-progress' ? text.status['in-progress'] : und
     </div>
   </section>
   <section class="sheet-panel detail-pager">
-    <a class="detail-pager__link" href={href(previous.slug)} rel="prev" data-pager="previous">
+    <a
+      class="detail-pager__link"
+      href={href(previous.slug)}
+      rel="prev"
+      data-astro-prefetch="hover"
+      data-pager="previous"
+    >
       <span class="detail-pager__direction">
         <span aria-hidden="true">← </span>
         {text.previous}
@@ -146,6 +152,7 @@ const pending = data.status === 'in-progress' ? text.status['in-progress'] : und
     <a
       class="detail-pager__link detail-pager__link--next"
       href={href(next.slug)}
+      data-astro-prefetch="hover"
       rel="next"
       data-pager="next"
     >

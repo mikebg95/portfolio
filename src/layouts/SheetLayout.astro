@@ -121,10 +121,12 @@ const ogImage = new URL(ogImagePath(lang, path), SITE_URL).href;
 
 <script>
   import { reveal } from '../motion';
+  import { registerServiceWorker } from '../offline';
   import { markScrolledSwaps } from '../view-transitions';
 
   reveal();
   markScrolledSwaps();
+  if (import.meta.env.PROD) registerServiceWorker();
 </script>
 
 <style>

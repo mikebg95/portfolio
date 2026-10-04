@@ -56,10 +56,15 @@ seo:
     description: Political science, a programming minor with Harvard CS50, and how they assembled into a software engineer.
   project: { title: '{title} · Michael Goldman — Portfolio' }
   notFound: { title: Sheet not found · Michael Goldman — Portfolio }
+  offline: { title: Sheet offline · Michael Goldman — Portfolio }
 notFound:
   label: SHEET ?? — NOT IN SET
   heading: SHEET NOT FOUND
   note: "REV. NOTE △ This sheet isn't in the set. Try one of these:"
+offline:
+  label: SHEET ?? — OFFLINE
+  heading: SHEET OFFLINE
+  note: "REV. NOTE △ No connection, and this sheet isn't stored on this device yet. These are:"
 dates:
   months: [JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC]
   now: NOW

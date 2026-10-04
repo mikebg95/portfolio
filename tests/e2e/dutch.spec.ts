@@ -45,8 +45,8 @@ test('no built Dutch page carries an English UI word', () => {
   const pages = readdirSync(dir, { recursive: true, encoding: 'utf8' }).filter((f) =>
     f.endsWith('.html'),
   );
-  // Five sheets, five project details and the 404.
-  expect(pages).toHaveLength(11);
+  // Five sheets, five project details, the 404 and the offline sheet.
+  expect(pages).toHaveLength(12);
   for (const page of pages) {
     const text = readable(readFileSync(`${dir}${page}`, 'utf8'));
     const found = ENGLISH.filter((word) => new RegExp(`\\b${word}\\b`).test(text));

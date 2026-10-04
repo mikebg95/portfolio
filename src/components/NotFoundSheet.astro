@@ -10,24 +10,27 @@ import SheetLabel from './drawing/SheetLabel.astro';
 
 // SPEC §3.9 / §4.7 (not drawn): sheet label, display heading, the redline revision note and the
 // five sheets as a sheet index list — one row per sheet, number + name, like SheetIndexPanel.
-// Shared by `src/pages/404.astro` and `src/pages/nl/404.astro`, the only per-language pages.
+// Shared by `src/pages/404.astro` and `src/pages/nl/404.astro`, the only per-language pages, and
+// (`kind="offline"`) by the offline sheet the service worker serves (`src/pages/[...lang]/offline.astro`).
 // No paragraph here: the body face never renders, so only the heading's face is preloaded.
 interface Props {
   lang: Lang;
+  kind?: 'notFound' | 'offline';
 }
 
-const { lang } = Astro.props;
+const { lang, kind = 'notFound' } = Astro.props;
 const ui = await t(lang);
+const copy = ui[kind];
 const pad = (n: number) => String(n).padStart(2, '0');
 ---
 
-<SheetLayout lang={lang} title={ui.seo.notFound.title} noindex preloadFonts={[DISPLAY_FONT]}>
+<SheetLayout lang={lang} title={ui.seo[kind].title} noindex preloadFonts={[DISPLAY_FONT]}>
   <section class="sheet-panel not-found">
-    <SheetLabel data-plot="label">{ui.notFound.label}</SheetLabel>
+    <SheetLabel data-plot="label">{copy.label}</SheetLabel>
     <DisplayHeading as="h1" size="l" class="not-found__heading" data-plot="heading">
-      {ui.notFound.heading}
+      {copy.heading}
     </DisplayHeading>
-    <RevisionNote text={ui.notFound.note} data-plot="note" />
+    <RevisionNote text={copy.note} data-plot="note" />
     <ol class="not-found__sheets" data-sheet-list data-plot="hero">
       {SHEETS.map(({ key, number, path }) => (
         <li>

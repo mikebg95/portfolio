@@ -14,8 +14,9 @@ interface Ui {
   theme: { toBlueprint: string };
   tabBar: { label: string; sheets: Ui['sheets'] };
   titleBlock: Record<'project' | 'scale' | 'sheet' | 'drawn' | 'checked' | 'rev', string>;
-  seo: { notFound: { title: string } };
+  seo: Record<'notFound' | 'offline', { title: string }>;
   notFound: { label: string; heading: string; note: string };
+  offline: Ui['notFound'];
   dates: { months: string[]; now: string };
   experience: { toggle: { more: string; less: string } };
   education: { sheet: { close: string; previous: string; next: string } };
