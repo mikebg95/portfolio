@@ -68,7 +68,7 @@ queue.
 
 ### Motion
 
-- [ ] **PR-39 Motion foundation**
+- [x] **PR-39 Motion foundation**
   - Done when: an inline head script adds `js` to `<html>`; CSS custom properties for the three easings and durations; a tiny `motion.ts` with `reveal()` (IntersectionObserver, threshold 0.2, once, `data-reveal="ink|rise|wipe|stamp|draw|cards"`, stagger via `data-reveal-delay`), a sessionStorage first-visit flag (try/catch), and global guards so reduced motion and no-JS show final states; documented in `docs/conventions/motion.md` and indexed in CLAUDE.md; Playwright tests: reduced motion → no element with opacity < 1 or non-none clip-path after load; JS disabled → all content visible.
   - Spec: design/motion.md principles, §M3
   - Out of scope: the specific animations.
