@@ -55,3 +55,15 @@ History, not a queue.
   - Done when: Astro i18n with `en` default at `/` and `nl` at `/nl/`; a `t(lang)`/`getEntry`-based helper returns content for the current language; `alternate(lang, path)` returns the same page in the other language; unit tests for both; a stub page exists for every route in SPEC §4 in both languages (empty sheets with an h1) so later tasks fill them.
   - Spec: SPEC §1.4, §3.6
   - Out of scope: Dutch copy (PR-60).
+
+
+## Pruned from the queue
+
+1 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### Sheet chrome
+
+- [x] **PR-6 SheetFrame and SheetLayout**
+  - Done when: `SheetLayout.astro` renders desk background → sheet (paper + 16/80 px grid) with the double frame and the desktop zone strip 1–8, slots for header, main and footer, a skip link "Skip to sheet content", `<html lang>` per language, and the theme-init inline head script (SPEC §3.3, no flash); every stub page uses it; matches the frame in `design/screens/overview-default-light-1440.png`; e2e: skip link focuses main.
+  - Spec: SPEC §3.1, §3.3; design/components.md SheetFrame, SkipLink; design/screens/html/overview-default-light-1440.html
+  - Out of scope: header contents (PR-7), footer (PR-9), motion.
