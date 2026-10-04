@@ -80,7 +80,7 @@ queue.
 
 ### QA walk, 2026-10-05
 
-- [ ] **QA-70 /nl/<unknown> — a mistyped Dutch URL shows the English 404 sheet on GitHub Pages**
+- [x] **QA-70 /nl/<unknown> — a mistyped Dutch URL shows the English 404 sheet on GitHub Pages**
   - Route: any unknown URL under `/nl/`, e.g. `/nl/no-such-sheet`, `/nl/projects/nope`.
   - Did: `curl https://michaelgoldman.dev/nl/does-not-exist` (live GitHub Pages, 2026-10-05) and, locally, `npm run build && npm run preview -- --ignore-lock` then opened `http://localhost:4321/nl/no-such-sheet` in Playwright (desktop 1440 and iPhone 14). `astro preview` answers unknown URLs with `dist/404.html` exactly as GitHub Pages does.
   - Happened: status 404 with `<html lang="en">`, heading "SHEET NOT FOUND", title "Sheet not found · …", and the five sheet links go to English pages (`/`, `/experience` …) — a Dutch reader is dropped out of Dutch. The Dutch sheet exists (`/nl/404/` → 200, "BLAD NIET GEVONDEN") but GitHub Pages only ever serves the root `404.html`; the nginx rule in docs/REPO-MAP.md (`location /nl/ { error_page 404 /nl/404/index.html; }`) covers the Docker image only, and `.github/workflows/pages.yml` is the real deploy (CLAUDE.md).
