@@ -43,3 +43,15 @@ History, not a queue.
   - Done when: a script (`npm run tokens`, run by `build` and `dev`) generates `src/styles/tokens.css` from `design/tokens.json` with `:root` (paper) and `[data-theme="blueprint"]` values plus `@media (prefers-color-scheme: dark) :root:not([data-theme="paper"])`; Archivo (variable, wdth+wght), IBM Plex Sans and Mono (400/500/600) are self-hosted woff2 latin subsets with `font-display: swap` and preload for the two above-the-fold faces; `src/styles/base.css` sets body font, colours, focus ring and the `.sr-only` utility; a Vitest test asserts every token in tokens.json appears in tokens.css; no request leaves the site for fonts.
   - Spec: design/tokens.json, design/README.md rules 1–4, SPEC §6
   - Out of scope: components.
+
+
+## Pruned from the queue
+
+1 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### Foundation
+
+- [x] **PR-5 i18n routing and string helper**
+  - Done when: Astro i18n with `en` default at `/` and `nl` at `/nl/`; a `t(lang)`/`getEntry`-based helper returns content for the current language; `alternate(lang, path)` returns the same page in the other language; unit tests for both; a stub page exists for every route in SPEC §4 in both languages (empty sheets with an h1) so later tasks fill them.
+  - Spec: SPEC §1.4, §3.6
+  - Out of scope: Dutch copy (PR-60).

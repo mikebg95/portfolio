@@ -52,11 +52,6 @@ queue.
 
 ### Foundation
 
-- [x] **PR-5 i18n routing and string helper**
-  - Done when: Astro i18n with `en` default at `/` and `nl` at `/nl/`; a `t(lang)`/`getEntry`-based helper returns content for the current language; `alternate(lang, path)` returns the same page in the other language; unit tests for both; a stub page exists for every route in SPEC §4 in both languages (empty sheets with an h1) so later tasks fill them.
-  - Spec: SPEC §1.4, §3.6
-  - Out of scope: Dutch copy (PR-60).
-
 ### Sheet chrome
 
 - [ ] **PR-6 SheetFrame and SheetLayout**
