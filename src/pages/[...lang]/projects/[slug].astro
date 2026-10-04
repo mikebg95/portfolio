@@ -27,5 +27,7 @@ const ui = await t(lang);
 ---
 
 <SheetLayout lang={lang} title={ui.seo.project.title.replace('{title}', project.data.title)}>
-  <h1>{project.data.title}</h1>
+  <section class="sheet-panel">
+    <h1>{project.data.title}</h1>
+  </section>
 </SheetLayout>

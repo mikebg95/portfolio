@@ -39,3 +39,19 @@ body {
   white-space: nowrap;
   border: 0;
 }
+
+/* A panel of the sheet (design/README.md Layout): content padding, a full-width 1 px ink rule
+   between consecutive panels. Pages compose `<main>` from these. */
+.sheet-panel {
+  padding: var(--sheet-content-padding);
+}
+
+.sheet-panel + .sheet-panel {
+  border-top: var(--border-thin);
+}
+
+@media (max-width: 767px) {
+  .sheet-panel {
+    padding: var(--sheet-content-padding-phone);
+  }
+}

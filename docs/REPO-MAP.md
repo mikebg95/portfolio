@@ -48,5 +48,10 @@ line.
 - `src/i18n/paths.ts` — `DEFAULT_LANG`, `localize`, `delocalize`, `alternate`, `langPaths`; `astro.config.ts` i18n reads `LANGS`/`DEFAULT_LANG` from it.
 - `src/i18n/routes.ts` — `SHEETS` (key, number, path) and `projectPath(slug)`.
 - `src/i18n/content.ts` — `t(lang)`, `getLocalized`, `getAllLocalized`, `sharedId`.
-- `src/layouts/SheetLayout.astro` — the page shell (`<html lang>`, title, fonts, `<main id="main">`); PR-6 draws the sheet in it.
 
+## Sheet chrome
+
+- `src/layouts/SheetLayout.astro` — the page shell: `<html lang>`, theme-init inline script, skip link, `SheetFrame` with `header`/`footer` slots around `<main id="main" tabindex="-1">`.
+- `src/components/SheetFrame.astro` — desk, paper + grid, double frame, zone strip 1–8 (desktop only, `aria-hidden`).
+- `src/theme.ts` — `THEMES`, `THEME_STORAGE_KEY`; the head script and the theme switch both read them.
+- `tests/e2e/sheet.spec.ts` — skip link, frame widths/grid, zone strip per viewport, stored theme applied.

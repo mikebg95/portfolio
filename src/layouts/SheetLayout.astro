@@ -1,27 +1,77 @@
 ---
 import FontPreload from '../components/FontPreload.astro';
+import SheetFrame from '../components/SheetFrame.astro';
+import { t } from '../i18n/content';
 import type { Lang } from '../i18n/paths';
+import { THEME_STORAGE_KEY, THEMES } from '../theme';
 import '../styles/base.css';
 
-// The page shell every route uses. PR-6 draws the sheet frame, header and footer around the slot.
+// The page shell every route uses: theme before paint, skip link, the sheet frame and its slots.
+// Pages fill `header`/`footer` slots until SheetHeader (PR-7) and TitleBlock (PR-9) live here.
 interface Props {
   lang: Lang;
   title: string;
 }
 
 const { lang, title } = Astro.props;
+const ui = await t(lang);
 ---
 
 <html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- SPEC §3.3: apply a remembered theme before first paint; no choice → CSS follows the system. -->
+    <script is:inline define:vars={{ key: THEME_STORAGE_KEY, themes: THEMES }}>
+      try {
+        const theme = localStorage.getItem(key);
+        if (themes.includes(theme)) document.documentElement.dataset.theme = theme;
+      } catch {
+        // Storage blocked: follow the system.
+      }
+    </script>
     <title>{title}</title>
     <FontPreload />
   </head>
   <body>
-    <main id="main">
-      <slot />
-    </main>
+    <a class="skip-link" href="#main">
+      {ui.skipLink}
+    </a>
+    <SheetFrame>
+      <slot name="header" slot="header" />
+      <main id="main" tabindex="-1">
+        <slot />
+      </main>
+      <slot name="footer" slot="footer" />
+    </SheetFrame>
   </body>
 </html>
+
+<style>
+  /* components.md SkipLink: hidden until focused, then an ink button top-left. */
+  .skip-link {
+    position: absolute;
+    top: var(--space-2);
+    left: var(--space-2);
+    z-index: 10;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: var(--space-3) var(--space-5);
+    background: var(--color-ink);
+    color: var(--color-ink-on-fill);
+    font-family: var(--font-mono);
+    font-size: var(--size-small);
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    transform: translateY(calc(-100% - var(--space-4)));
+  }
+
+  .skip-link:focus {
+    transform: none;
+  }
+
+  main:focus {
+    outline: none;
+  }
+</style>

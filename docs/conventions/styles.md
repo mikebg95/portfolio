@@ -17,3 +17,7 @@
   (→ ↗ △ ◐) fall back to a system font.
 - Every page imports `src/styles/base.css` (tokens + fonts + body + focus ring + `.sr-only`) and
   renders `src/components/FontPreload.astro` in its head (SheetLayout will own both).
+- Page content inside `<main>` is a stack of `<section class="sheet-panel">` (base.css): content
+  padding 56 px / 24 px on phone, and a full-width 1 px ink rule between consecutive panels — the
+  sheet is divided into panels, never by empty space alone. Override the padding per page when a
+  drawing differs; keep the class.
