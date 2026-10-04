@@ -73,7 +73,7 @@ queue.
   - Spec: design/motion.md §M2
   - Out of scope: theme switch.
 
-- [ ] **PR-46 Theme switch reveal**
+- [x] **PR-46 Theme switch reveal**
   - Done when: §M7 circular clip-path reveal from the theme button via `document.startViewTransition` (500 ms, ease-plot); instant fallback; reduced motion instant; e2e toggles twice without errors.
   - Spec: design/motion.md §M7
   - Out of scope: —
