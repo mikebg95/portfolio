@@ -72,7 +72,7 @@ queue.
 
 ### Hardening
 
-- [ ] **PR-63a Preloading and offline** (split from PR-63)
+- [x] **PR-63a Preloading and offline** (split from PR-63)
   - Michael, 2026-10-04: *"when my internet is slow that means it will take really long … without internet it will just crash?!"*
   - Done when: (2) prefetch: all sheet links prefetched on viewport (`prefetch: { prefetchAll: true, defaultStrategy: 'viewport' }`), project detail pages on hover/tap; (3) **offline**: a small hand-written service worker (no Workbox) precaches every built HTML page, CSS, JS, font, icon and the CV PDF at install (manifest generated at build from `dist/` with content hashes; total size logged and asserted < 3 MB), cache-first for hashed assets, stale-while-revalidate for HTML, old caches cleaned on activate, a drawn "SHEET OFFLINE" page for anything uncached; registered only in production; tests: offline after the first load, every sheet and project page still opens.
   - Spec: SPEC §7
