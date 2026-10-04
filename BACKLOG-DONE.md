@@ -358,3 +358,15 @@ History, not a queue.
   - Done when: per-page title/description from copy.md SEO table (NL from content), canonical, hreflang en/nl/x-default, sitemap.xml (both languages, excluding `/_primitives` and 404), robots.txt, JSON-LD Person on `/` (no phone/address); a Vitest/e2e test parses each built page's head and asserts all of it.
   - Spec: SPEC §3.8; design/copy.md SEO
   - Out of scope: OG images (PR-38).
+
+
+## Pruned from the queue
+
+1 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### 404 and SEO
+
+- [x] **PR-38 Open Graph images**
+  - Done when: a build step renders a 1200×630 PNG per sheet and per project in both languages (mini sheet: frame, grid, sheet label, display heading, small title block with michaelgoldman.dev) using satori/resvg or Playwright at build time; og:image and twitter:card tags point at them; test asserts every page has an existing og:image file of 1200×630.
+  - Spec: SPEC §3.8; design/README.md "Not drawn"
+  - Out of scope: —
