@@ -6,7 +6,7 @@ kind: 'ORIGIN'
 order: 5
 title: Scentify
 diagram: ['4 QUESTIONS', '52 SCENTS']
-cardSummary: 'My first real app: an Android fragrance recommender in Java, built at the end of the programming minor.'
+cardSummary: 'My first real app: an Android fragrance recommender in Java, built during a year of self-study before my first developer job.'
 summary: 'Answer four questions — season, age, lifestyle, scent type — and get matching fragrances from a catalogue of 52. My first real app.'
 period: 'NOV 2020 – JAN 2021'
 platform: 'ANDROID'

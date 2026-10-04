@@ -80,8 +80,8 @@ a{color:#1F3F86;text-decoration:none}a:hover{color:#C8402A}
 <div class="row"><span>SECURITY</span><span>Three ordered security chains: public API docs, Actuator behind basic auth, the API behind JWT. Roles read from the token; method security and a custom ownership annotation.</span></div>
 <div class="row"><span>DATA</span><span>PostgreSQL for users (JPA), MongoDB for items and the audit log.</span></div>
 <div class="row"><span>TESTING</span><span>Unit, slice, security and integration tests on Testcontainers.</span></div>
-<div class="row"><span>FRONTEND</span><span>Vue 3, Pinia, Vite; Capacitor builds for iOS and Android.</span></div>
-<div class="row" style="border-bottom: none;"><span>DELIVERY</span><span>Docker images for backend, frontend and Keycloak; local, dev and prod profiles.</span></div>
+<div class="row"><span>FRONTEND</span><span>Vue 3, Pinia, Vite and keycloak-js, signing in with OIDC + PKCE. The mobile build, the frontend unit tests and a later UI restyle were AI-generated and are labelled that way in the README.</span></div>
+<div class="row" style="border-bottom: none;"><span>DELIVERY</span><span>GitHub Actions builds and tests only what changed, pushes Docker images to GHCR and deployed three services — frontend, backend and Keycloak — to Render. Local, dev, test and prod profiles; Docker Compose for local work.</span></div>
 </div>
 </div>
 <div style="flex: 1 1 380px; min-width: 0; padding: 32px 40px 40px; display: flex; flex-direction: column; gap: 22px;">

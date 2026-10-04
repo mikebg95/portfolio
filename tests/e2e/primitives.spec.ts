@@ -119,7 +119,7 @@ test('shows the five project cards, each one link with its mini diagram', async 
     }
     const label = (slug: string) =>
       page.locator(`[data-primitives-theme="${theme}"] [data-project="${slug}"] .sheet-label`);
-    await expect(label('jamigos')).toHaveText('P-01 · FLAGSHIP');
+    await expect(label('jamigos')).toHaveText('P-01 · FULL-STACK');
     await expect(cards.and(page.locator('[data-project="jamigos"]'))).toContainText(
       'SECURITY · CI/CD',
     );

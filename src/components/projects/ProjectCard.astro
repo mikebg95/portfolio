@@ -18,7 +18,7 @@ interface Props {
 }
 
 const { project, href, headingLevel = 'h2' } = Astro.props;
-// The register's first card is its flagship (copy.md `P-01 · FLAGSHIP`).
+// The register's first card (copy.md `P-01`) is drawn large.
 const flagship = project.order === 1;
 const inProgress = project.status === 'in-progress';
 ---

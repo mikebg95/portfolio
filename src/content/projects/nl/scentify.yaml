@@ -6,7 +6,7 @@ kind: 'OORSPRONG'
 order: 5
 title: Scentify
 diagram: ['4 VRAGEN', '52 GEUREN']
-cardSummary: 'Mijn eerste echte app: een Android-app in Java die parfums aanbeveelt, gebouwd aan het eind van de minor programmeren.'
+cardSummary: 'Mijn eerste echte app: een Android-app in Java die parfums aanbeveelt, gebouwd in een jaar zelfstudie vóór mijn eerste developerbaan.'
 summary: 'Beantwoord vier vragen — seizoen, leeftijd, levensstijl, geurtype — en krijg passende parfums uit een catalogus van 52. Mijn eerste echte app.'
 period: 'nov 2020 – jan 2021'
 platform: 'ANDROID'

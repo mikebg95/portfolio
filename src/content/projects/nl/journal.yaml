@@ -7,8 +7,8 @@ order: 4
 title: Journal
 diagram: ['DOMEIN']
 series: true
-cardSummary: 'Rijk domeinmodel, 7 vastgelegde ontwerpbeslissingen en een AI-stap die elke notitie samenvat.'
-summary: "Een dagboek waarin één AI-aanroep elke notitie omzet in een samenvatting, tags, een stemming en to-do's — en de notitie wordt ook opgeslagen als de AI onbereikbaar is. Deel 3 van de serie: hexagonale architectuur en een rijk domeinmodel."
+cardSummary: 'Hexagonale architectuur, een rijk domeinmodel en 7 vastgelegde ontwerpbeslissingen. De AI-stap die elke notitie samenvat is ontworpen en komt hierna.'
+summary: "Een dagboek dat zo is ontworpen dat één AI-aanroep elke notitie omzet in een samenvatting, tags, een stemming en to-do's — en dat de notitie ook wordt opgeslagen als de AI onbereikbaar is. Deel 3 van de serie: hexagonale architectuur en een rijk domeinmodel."
 period: 'jul 2026 – nu'
 status: in-progress
 repo: https://github.com/mikebg95/journal

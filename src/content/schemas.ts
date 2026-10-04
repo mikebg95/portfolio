@@ -57,7 +57,7 @@ const figure = z.strictObject({
 export const projectSchema = z.strictObject({
   slug: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, 'expected a kebab-case slug'),
   code: z.string().regex(/^P-\d{2}$/, 'expected P-nn'),
-  /** The words after the code on the card, e.g. `FLAGSHIP`, `LAYERED · JDBC`. */
+  /** The words after the code on the card, e.g. `FULL-STACK`, `LAYERED · JDBC`. */
   kind: text,
   order: z.number().int().nonnegative(),
   title: text,

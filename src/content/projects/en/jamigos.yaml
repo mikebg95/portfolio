@@ -1,7 +1,7 @@
 # design/copy.md Sheet 03: the register row (PR-21) and detail sheet 03.1 (PR-25).
 slug: jamigos
 code: P-01
-kind: 'FLAGSHIP'
+kind: 'FULL-STACK'
 order: 1
 title: Jamigos
 tag: 'SECURITY · CI/CD'
@@ -11,7 +11,7 @@ diagram:
   - "SPRING BOOT API\n3 SECURITY CHAINS"
   - 'POSTGRESQL'
   - 'MONGODB'
-cardSummary: 'A full-stack app built to practise production-grade security and delivery — sign-in, roles, ownership checks and audit logging, shipped by its own GitHub Actions pipeline.'
+cardSummary: 'A full-stack app built to practise security and delivery: Keycloak sign-in, roles, ownership checks and audit logging, tested on Testcontainers and shipped by its own GitHub Actions pipeline.'
 summary: 'A deliberately simple app — sign in, see a dashboard for your role, manage your own items — used to practise everything around it: security, testing and delivery.'
 period: 'AUG 2025 – NOV 2025'
 status: retired-hosting
@@ -28,9 +28,9 @@ spec:
   - label: TESTING
     text: 'Unit, slice, security and integration tests on Testcontainers.'
   - label: FRONTEND
-    text: 'Vue 3, Pinia, Vite; Capacitor builds for iOS and Android.'
+    text: 'Vue 3, Pinia, Vite and keycloak-js, signing in with OIDC + PKCE. The mobile build, the frontend unit tests and a later UI restyle were AI-generated and are labelled that way in the README.'
   - label: DELIVERY
-    text: 'Docker images for backend, frontend and Keycloak; local, dev and prod profiles.'
+    text: 'GitHub Actions builds and tests only what changed, pushes Docker images to GHCR and deployed three services — frontend, backend and Keycloak — to Render. Local, dev, test and prod profiles; Docker Compose for local work.'
 figures:
   - title: CONTAINER VIEW
     labels:
