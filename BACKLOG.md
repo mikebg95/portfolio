@@ -69,7 +69,7 @@ queue.
   - Spec: SPEC §4.6; design/screens/html/education-default-light-1440.html; design/components.md ExplodedAssembly
   - Out of scope: selection (PR-35), scroll motion (PR-44).
 
-- [ ] **PR-34 Parts list and detail panel**
+- [x] **PR-34 Parts list and detail panel**
   - Done when: DetailPanel (default part 3) and PartsList table exactly as drawn, rows as buttons (`aria-pressed`), pending row in redline; panel stacks below assembly on phone/tablet; e2e asserts default detail and table rows.
   - Spec: SPEC §4.6; design/components.md PartsList, DetailPanel
   - Out of scope: interaction (PR-35).
