@@ -1,0 +1,223 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+import { localize, type Lang } from '../../i18n/paths';
+import { PORTRAIT } from '../../portrait';
+import Balloon from '../drawing/Balloon.astro';
+import DimensionLine from '../drawing/DimensionLine.astro';
+
+// SPEC §4.1 portrait block: the ASCII portrait as real text in an aria-hidden <pre> (its
+// description is sr-only text), dimensioned across the top and down the left, with three
+// ballooned callouts. Desktop: the callouts sit right of the portrait on leaders (as drawn);
+// phone: a numbered list under it (design/README.md "Responsive").
+type Hero = CollectionEntry<'profile'>['data']['hero'];
+
+interface Props {
+  lang: Lang;
+  dimensions: Hero['dimensions'];
+  balloons: Hero['balloons'];
+  alt: string;
+}
+
+const { lang, dimensions, balloons, alt } = Astro.props;
+// The file's blank lead lines would only pad the frame (and a <pre> drops the first newline).
+const ascii = PORTRAIT.replace(/^(?:[ \t]*\n)+/, '').trimEnd();
+---
+
+<figure class="portrait">
+  <div class="portrait__drawing">
+    <DimensionLine class="portrait__dim portrait__dim--h" label={dimensions.horizontal} />
+    <DimensionLine
+      class="portrait__dim portrait__dim--v"
+      orientation="v"
+      label={dimensions.vertical}
+    />
+    <div class="portrait__frame">
+      <pre class="portrait__ascii" aria-hidden="true">{ascii}</pre>
+      <figcaption class="sr-only">{alt}</figcaption>
+    </div>
+  </div>
+  <ol class="portrait__callouts">
+    {balloons.map((balloon, i) => (
+      <li class="portrait__callout">
+        {balloon.href ? (
+          <a
+            class="portrait__callout-body portrait__callout-link"
+            href={localize(lang, balloon.href)}
+          >
+            <span class="portrait__leader" aria-hidden="true" />
+            <Balloon number={i + 1} />
+            <span class="portrait__callout-text">{balloon.text}</span>
+          </a>
+        ) : (
+          <span class="portrait__callout-body">
+            <span class="portrait__leader" aria-hidden="true" />
+            <Balloon number={i + 1} />
+            <span class="portrait__callout-text">{balloon.text}</span>
+          </span>
+        )}
+      </li>
+    ))}
+  </ol>
+</figure>
+
+<style>
+  /* Desktop geometry from the drawing: the portrait inset 44 px from the top and left for the
+     dimension lines, 150 px from the right for the callouts, which start 30 px inside its frame.
+     The block stretches to the hero's height, and the vertical dimension with it. */
+  .portrait {
+    --portrait-inset-top: 44px;
+    --portrait-inset-left: 44px;
+    --portrait-inset-right: 150px;
+    --portrait-inset-bottom: 30px;
+    /* The portrait's widest line, in characters; IBM Plex Mono advances 0.6 em. */
+    --portrait-columns: 66;
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding-right: var(--portrait-inset-right);
+  }
+
+  .portrait__drawing {
+    position: relative;
+    flex: 1;
+    padding: var(--portrait-inset-top) 0 var(--portrait-inset-bottom) var(--portrait-inset-left);
+  }
+
+  .portrait__dim--h {
+    position: absolute;
+    top: var(--space-2);
+    right: 0;
+    left: var(--portrait-inset-left);
+  }
+
+  .portrait__dim--v {
+    position: absolute;
+    top: var(--portrait-inset-top);
+    bottom: var(--portrait-inset-bottom);
+    left: var(--space-2);
+    height: auto;
+  }
+
+  .portrait__ascii {
+    margin: 0;
+    padding: 14px 10px 0;
+    overflow: hidden;
+    border: var(--border-normal);
+    background: var(--color-paper-raised);
+    color: var(--color-line);
+    font-family: var(--font-mono);
+    font-size: 6.4px;
+    line-height: 1.02;
+  }
+
+  .portrait__callouts {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .portrait__callout {
+    position: absolute;
+    right: 0;
+    width: 180px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.35;
+  }
+
+  .portrait__callout:nth-child(1) {
+    top: 70px;
+  }
+
+  .portrait__callout:nth-child(2) {
+    top: 170px;
+  }
+
+  .portrait__callout:nth-child(3) {
+    top: 270px;
+  }
+
+  .portrait__callout-body {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--color-ink);
+  }
+
+  /* components.md Leader: 1 px ink, from the portrait to the balloon. */
+  .portrait__leader {
+    flex: none;
+    width: 34px;
+    height: 1px;
+    background: var(--color-ink);
+  }
+
+  .portrait__callout-text {
+    /* Breaks each callout onto two lines as drawn ("Spring / certified"). */
+    max-width: 10ch;
+  }
+
+  .portrait__callout-link {
+    text-decoration: none;
+    transition: color var(--motion-fast) var(--motion-ease-out);
+  }
+
+  .portrait__callout-link:hover {
+    color: var(--color-redline);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .portrait__callout-link {
+      transition: none;
+    }
+  }
+
+  /* Phone: the portrait fills the width, the callouts become a numbered list beneath it. */
+  @media (max-width: 767px) {
+    .portrait {
+      --portrait-inset-top: 32px;
+      --portrait-inset-left: 28px;
+      --portrait-inset-bottom: 0px;
+
+      width: 100%;
+      padding-right: 0;
+    }
+
+    .portrait__dim--v {
+      left: 0;
+    }
+
+    /* Size containment: the frame takes the column's width, never the portrait's. */
+    .portrait__frame {
+      container-type: inline-size;
+    }
+
+    .portrait__ascii {
+      /* 23 px = padding + border; the font grows until the widest line fills the frame. */
+      font-size: calc((100cqi - 23px) / (var(--portrait-columns) * 0.6));
+    }
+
+    .portrait__callouts {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      margin-top: var(--space-5);
+    }
+
+    .portrait__callout {
+      position: static;
+      width: auto;
+    }
+
+    .portrait__leader {
+      display: none;
+    }
+
+    .portrait__callout-text {
+      max-width: none;
+    }
+  }
+</style>

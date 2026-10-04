@@ -22,5 +22,8 @@ export const SHEETS: readonly Sheet[] = SHEET_KEYS.map((key, i) => ({
   path: PATHS[key],
 }));
 
+/** A sheet's language-neutral path; pass it through `localize`. */
+export const sheetPath = (key: SheetKey) => PATHS[key];
+
 /** A project detail sheet is part of sheet 03. */
 export const projectPath = (slug: string) => `${PATHS.projects}/${slug}`;

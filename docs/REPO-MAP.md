@@ -67,3 +67,11 @@ line.
 - `tests/e2e/sheet.spec.ts` — skip link, frame widths/grid, zone strip per viewport, stored theme applied.
 - `tests/e2e/theme.spec.ts` — toggle + reload, dark system, storage blocked, every sheet × both themes with axe.
 - TRAP: Playwright `toHaveText(…, { useInnerText: true })` still includes `.sr-only` text (clip is not "not rendered"); assert the visible label `.sheet-header__theme-label:visible` instead.
+
+## Sheet 01 — Overview
+
+- `src/pages/[...lang]/index.astro` — composes the Overview panels; each panel is a component in `src/components/overview/`.
+- `src/components/overview/Hero.astro` — label, name, role, intro, note, buttons; reads `profile.hero`; links via `sheetPath(key)` (src/i18n/routes.ts) + `localize`.
+- `src/components/overview/Portrait.astro` — `<pre aria-hidden>` portrait + sr-only figcaption, dimension lines, callouts (absolute on desktop, a list < 768 px; the phone font size fills the width via `cqi`).
+- TRAP: Astro compresses the whitespace between two elements on separate lines; text that needs a space between spans needs `{' '}`. Symptom: h1 accessible name "MICHAELGOLDMAN".
+- `tests/e2e/overview.spec.ts` — hero text, links (EN + NL), portrait text vs. its source file, callouts per viewport, 320 px.

@@ -1,0 +1,138 @@
+---
+import { CV_PATH } from '../../config';
+import { getLocalized } from '../../i18n/content';
+import { localize, type Lang } from '../../i18n/paths';
+import { sheetPath } from '../../i18n/routes';
+import Button from '../drawing/Button.astro';
+import DisplayHeading from '../drawing/DisplayHeading.astro';
+import RevisionNote from '../drawing/RevisionNote.astro';
+import SheetLabel from '../drawing/SheetLabel.astro';
+import Portrait from './Portrait.astro';
+
+// SPEC §4.1 hero: label, name, rule + role, intro, revision note, the two buttons — and the
+// portrait block beside it (below it from tablet down). Drawing: overview-default-light-1440.
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const { hero } = (await getLocalized('profile', 'profile', lang)).data;
+---
+
+<section class="sheet-panel hero">
+  <div class="hero__text">
+    <SheetLabel>{hero.label}</SheetLabel>
+    <DisplayHeading as="h1" size="xl" class="hero__name">
+      <span class="hero__name-line">{hero.name[0]}</span>{' '}
+      <span class="hero__name-line">{hero.name[1]}</span>
+    </DisplayHeading>
+    <p class="hero__role">
+      <span class="hero__rule" aria-hidden="true"></span>
+      <span>{hero.role}</span>
+    </p>
+    <p class="hero__intro">{hero.intro}</p>
+    <RevisionNote text={hero.revisionNote} />
+    <div class="hero__actions">
+      <Button href={localize(lang, sheetPath('projects'))}>{hero.buttons.projects}</Button>
+      <Button variant="secondary" href={CV_PATH} target="_blank" rel="noopener">
+        {hero.buttons.cv}
+      </Button>
+    </div>
+  </div>
+  <div class="hero__figure">
+    <Portrait
+      lang={lang}
+      dimensions={hero.dimensions}
+      balloons={hero.balloons}
+      alt={hero.portraitAlt}
+    />
+  </div>
+</section>
+
+<style>
+  .hero {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8);
+    padding-bottom: var(--space-7);
+  }
+
+  .hero__text {
+    display: flex;
+    flex: 999 1 560px;
+    flex-direction: column;
+    gap: 28px;
+    min-width: 0;
+  }
+
+  .hero__name-line {
+    display: block;
+  }
+
+  .hero__role {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 500;
+    font-stretch: 100%;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  .hero__rule {
+    flex: none;
+    width: var(--space-9);
+    height: 2px;
+    background: var(--color-ink);
+  }
+
+  .hero__intro {
+    max-width: 620px;
+    margin: 0;
+    color: var(--color-text-2);
+    font-size: var(--size-lead);
+    line-height: var(--size-body-line-height);
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    padding-top: var(--space-1);
+  }
+
+  .hero__figure {
+    display: flex;
+    flex: 1 1 420px;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  @media (max-width: 767px) {
+    .hero {
+      gap: var(--space-7);
+    }
+
+    .hero__text {
+      gap: var(--space-5);
+    }
+
+    /* GOLDMAN is 6.3 em wide and must never break: below ~420 px the token's 56 px floor is too
+       wide for the column (viewport − 90 px: desk, frame and panel padding). */
+    .hero .hero__name {
+      font-size: min(var(--size-display-xl), calc((100vw - 90px) / 6.4));
+    }
+
+    .hero__role {
+      gap: var(--space-3);
+      font-size: 20px;
+    }
+
+    .hero__rule {
+      width: var(--space-6);
+    }
+  }
+</style>

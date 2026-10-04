@@ -1,6 +1,7 @@
 ---
 import { t } from '../../i18n/content';
 import { langPaths, type Lang } from '../../i18n/paths';
+import Hero from '../../components/overview/Hero.astro';
 import SheetLayout from '../../layouts/SheetLayout.astro';
 
 export function getStaticPaths() {
@@ -16,7 +17,5 @@ const ui = await t(lang);
 ---
 
 <SheetLayout lang={lang} sheet="overview" title={ui.seo.overview.title}>
-  <section class="sheet-panel">
-    <h1>{ui.sheets.overview}</h1>
-  </section>
+  <Hero lang={lang} />
 </SheetLayout>

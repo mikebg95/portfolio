@@ -108,3 +108,12 @@ EN paths (`/certifications`, `/experience#optiecon`); pages pass them through `l
 labels (`HOW I WORK`, `SPECIFICATION`, `GENERAL NOTES`, `IN PROGRESS`) are not in `profile` — the
 schema has no field and changing it is its own task; PR-14–16 place them. The portrait is not
 content: `src/portrait.ts` reads `docs/source/ascii-portrait.txt` (the `-dark` variant is unused).
+
+## 2026-10-04 — Overview hero: choices the drawing left open
+Who: agent (PR-13). (1) Below ~420 px the name is capped at `(100vw − 90px) / 6.4` instead of the
+display-xl token's 56 px floor, which broke GOLDMAN mid-word in a 230 px column; the token is
+unchanged. (2) Callout 1 is one link around balloon + text ("Spring certified"); the balloon is
+decorative inside it, so the link is read once and the whole callout is clickable. (3) The portrait
+drops the source file's blank lead lines (a `<pre>` would show them as empty space; the drawing has
+none). (4) The vertical dimension stretches with the hero's height, as the drawing's HTML does.
+(5) On phone the callouts lose their leaders (a list has nothing to point at).
