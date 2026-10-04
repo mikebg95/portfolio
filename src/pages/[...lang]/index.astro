@@ -8,8 +8,8 @@ import InProgress from '../../components/overview/InProgress.astro';
 import SpecNotes from '../../components/overview/SpecNotes.astro';
 import SheetLayout from '../../layouts/SheetLayout.astro';
 import { jsonLdText, personJsonLd } from '../../seo';
-// motion.md §M1: Sheet 01's first-load plotting; only this page plays it.
-import '../../styles/plotting.css';
+// motion.md §M1: Sheet 01's long hero plotting; the chrome's is in every page's plotting.css.
+import '../../styles/plotting-overview.css';
 
 export function getStaticPaths() {
   return langPaths();

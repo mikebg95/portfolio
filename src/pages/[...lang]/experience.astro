@@ -34,8 +34,8 @@ const number = (entry: (typeof entries)[number]) => `${sheet}.${roles.indexOf(en
   description={ui.seo.experience.description}
 >
   <section class="sheet-panel experience-head">
-    <SheetLabel>{ui.experience.label}</SheetLabel>
-    <DisplayHeading as="h1" size="l">
+    <SheetLabel data-plot="label">{ui.experience.label}</SheetLabel>
+    <DisplayHeading as="h1" size="l" data-plot="heading">
       <span class="experience-head__line">{ui.experience.heading[0]}</span>{' '}
       <span class="experience-head__line">{ui.experience.heading[1]}</span>
     </DisplayHeading>

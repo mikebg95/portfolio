@@ -21,12 +21,12 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
 <SheetLayout lang={lang} title={ui.seo.notFound.title} noindex>
   <section class="sheet-panel not-found">
-    <SheetLabel>{ui.notFound.label}</SheetLabel>
-    <DisplayHeading as="h1" size="l" class="not-found__heading">
+    <SheetLabel data-plot="label">{ui.notFound.label}</SheetLabel>
+    <DisplayHeading as="h1" size="l" class="not-found__heading" data-plot="heading">
       {ui.notFound.heading}
     </DisplayHeading>
-    <RevisionNote text={ui.notFound.note} />
-    <ol class="not-found__sheets" data-sheet-list>
+    <RevisionNote text={ui.notFound.note} data-plot="note" />
+    <ol class="not-found__sheets" data-sheet-list data-plot="hero">
       {SHEETS.map(({ key, number, path }) => (
         <li>
           <a class="not-found__sheet" href={localize(lang, path)}>

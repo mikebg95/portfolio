@@ -59,17 +59,23 @@ const pending = data.status === 'in-progress' ? text.status['in-progress'] : und
   <section class="sheet-panel detail-head">
     <div class="detail-head__intro">
       <div class="detail-head__text">
-        <Link class="detail-head__back" href={localize(lang, sheetPath('projects'))}>
+        <Link
+          class="detail-head__back"
+          data-plot="hero"
+          href={localize(lang, sheetPath('projects'))}
+        >
           <span aria-hidden="true">← </span>
           {text.back}
         </Link>
-        <SheetLabel>{label}</SheetLabel>
-        <DisplayHeading as="h1" size="l" class="detail-head__title">
+        <SheetLabel data-plot="label">{label}</SheetLabel>
+        <DisplayHeading as="h1" size="l" class="detail-head__title" data-plot="heading">
           {data.title}
         </DisplayHeading>
-        <p class="detail-head__summary">{data.summary}</p>
+        <p class="detail-head__summary" data-plot="hero">
+          {data.summary}
+        </p>
       </div>
-      <div class="detail-head__repo">
+      <div class="detail-head__repo" data-plot="hero">
         <Button href={data.repo} external>
           {text.repo}
         </Button>

@@ -20,8 +20,11 @@ never a second system.
 - **First view:** the head script sets sessionStorage `plotted` and adds `first-view` to `<html>` on
   the session's first page view; §M1's full plotting is styled under `.js.first-view`. Storage
   blocked → never `first-view` (docs/RECORD.md 2026-10-04). In scripts: `isFirstView()`.
-- **First-load plotting (§M1):** `src/styles/plotting.css`, imported by the Overview page only (a
-  page-level import is the scope; PR-42 lifts frame/grid/header to every sheet). Rules sit under
+- **First-load plotting (§M1):** `src/styles/plotting.css` (every page, via base.css) plots the
+  chrome — frame, grid, header, active tab — and the other sheets' short hero variant: put
+  `data-plot="label|heading|hero|note"` on a hero's sheet label, h1, other hero blocks and note;
+  all are in by 1.2 s. Sheet 01's long hero timeline is `src/styles/plotting-overview.css`,
+  imported by the Overview page only, and Sheet 01 carries no `data-plot`. Rules sit under
   `.js.first-view` in a no-preference block, reuse the `reveal-*` keyframes (start-only, `backwards`
   fill, delay written on the element). Frame and grid draw on SheetFrame's `.sheet__plot` layer
   (`display: none` elsewhere); the portrait is one inline-block `.portrait__line` per row with

@@ -1,7 +1,8 @@
-/* design/motion.md §M1: on the session's first page view Sheet 01 plots itself — frame, grid,
-   header, then the hero and the portrait. Imported by the Overview page only, so no other sheet
-   plays it (their short variant is PR-42's). Durations, delays and easings are the reference
-   preview's (design/screens/html/motion-preview.dc.html); `t` in the comments is seconds from first
+/* design/motion.md §M1: on the session's first page view the sheet plots itself — frame, grid,
+   header, then the hero. Every page loads this (src/styles/base.css): the chrome below with the
+   reference preview's durations, delays and easings (design/screens/html/motion-preview.dc.html),
+   then each sheet's short hero variant on `[data-plot]` elements, all in by 1.2 s. Sheet 01's longer
+   hero timeline is src/styles/plotting-overview.css. `t` in the comments is seconds from first
    paint. Like the reveals (src/styles/motion.css, docs/conventions/motion.md) the keyframes give only
    the start and `animation-fill-mode: backwards` holds it through the delay, so every element ends
    in its own styles; without `.js.first-view` or under reduced motion none of this applies. */
@@ -148,86 +149,23 @@
     animation: reveal-draw 500ms var(--motion-ease-plot) 900ms backwards;
   }
 
-  /* 0.60 the sheet label rises; 0.70 / 0.85 the name's two lines wipe in like a plotter pen. */
-  .js.first-view .hero .sheet-label {
-    animation: reveal-rise 700ms var(--motion-ease-out) 600ms backwards;
+  /* The short variant on sheets 02–05, the project details and 404 (§M1 "other sheets"): label
+     0.35–0.85, heading wipe 0.40–1.20, the rest of the hero 0.60–1.20, a note stamps 0.80–1.18.
+     Sheet 01 has no `[data-plot]`; its hero is plotting-overview.css. */
+  .js.first-view [data-plot='label'] {
+    animation: reveal-rise 500ms var(--motion-ease-out) 350ms backwards;
   }
 
-  .js.first-view .hero__name-line {
-    animation: reveal-wipe var(--motion-wipe) var(--motion-ease-plot) 700ms backwards;
+  .js.first-view [data-plot='heading'] {
+    animation: reveal-wipe var(--motion-wipe) var(--motion-ease-plot) 400ms backwards;
   }
 
-  .js.first-view .hero__name-line + .hero__name-line {
-    animation-delay: 850ms;
+  .js.first-view [data-plot='hero'] {
+    animation: reveal-rise 600ms var(--motion-ease-out) 600ms backwards;
   }
 
-  /* 1.05 the role line's rule extends; 1.10 the role, 1.20 the intro rise; 2.30 the revision note
-     stamps down (380 ms, slight overshoot — as the `stamp` reveal). */
-  .js.first-view .hero__rule {
-    animation: reveal-draw 500ms var(--motion-ease-plot) 1050ms backwards;
-  }
-
-  .js.first-view .hero__role-text {
-    animation: reveal-rise 700ms var(--motion-ease-out) 1100ms backwards;
-  }
-
-  /* The buttons are not in the preview; they rise with the intro rather than stand alone on an
-     empty sheet (docs/RECORD.md 2026-10-04). */
-  .js.first-view :is(.hero__intro, .hero__actions) {
-    animation: reveal-rise 700ms var(--motion-ease-out) 1200ms backwards;
-  }
-
-  .js.first-view .hero .revision-note {
-    animation: reveal-stamp 380ms cubic-bezier(0.2, 0.9, 0.25, 1.15) 2300ms backwards;
-  }
-
-  /* 0.55–1.50 the portrait scans in top → bottom: each line wipes in 260 ms, 22 ms apart. */
-  .js.first-view .portrait__line {
-    animation: reveal-wipe 260ms linear calc(550ms + var(--line, 0) * 22ms) backwards;
-  }
-
-  /* 1.50–2.10 the dimension lines extend from their centre, arrowheads on their ends; labels fade
-     in at 1.95. */
-  .js.first-view .portrait__dim {
-    animation: reveal-draw var(--motion-draw) var(--motion-ease-plot) 1500ms backwards;
-    --reveal-origin: center;
-  }
-
-  .js.first-view .portrait__dim--v {
-    animation-delay: 1600ms;
-    --reveal-from: scaleY(0);
-  }
-
-  .js.first-view .portrait__dim .dimension__label {
-    animation: plot-fade 300ms ease 1950ms backwards;
-  }
-
-  /* 1.75–2.35 each callout, 100 ms after the one above: the leader draws (300 ms), the balloon
-     pops 200 ms later, the text slides in 100 ms after that. */
-  .js.first-view .portrait__callout {
-    --plot-callout: 0;
-  }
-
-  .js.first-view .portrait__callout:nth-child(2) {
-    --plot-callout: 1;
-  }
-
-  .js.first-view .portrait__callout:nth-child(3) {
-    --plot-callout: 2;
-  }
-
-  .js.first-view .portrait__leader {
-    animation: reveal-draw 300ms var(--motion-ease-plot) calc(1750ms + var(--plot-callout) * 100ms)
-      backwards;
-  }
-
-  .js.first-view .portrait__callout .balloon {
-    animation: plot-pop 450ms var(--motion-ease-pop) calc(1950ms + var(--plot-callout) * 100ms)
-      backwards;
-  }
-
-  .js.first-view .portrait__callout-text {
-    animation: plot-slide 350ms ease calc(2050ms + var(--plot-callout) * 100ms) backwards;
+  .js.first-view [data-plot='note'] {
+    animation: reveal-stamp 380ms cubic-bezier(0.2, 0.9, 0.25, 1.15) 800ms backwards;
   }
 }
 

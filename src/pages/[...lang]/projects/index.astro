@@ -35,12 +35,14 @@ const href = (slug: string) => localize(lang, projectPath(slug));
 >
   <section class="sheet-panel register">
     <div class="register__head">
-      <SheetLabel>{ui.projects.label}</SheetLabel>
-      <DisplayHeading as="h1" size="l">
+      <SheetLabel data-plot="label">{ui.projects.label}</SheetLabel>
+      <DisplayHeading as="h1" size="l" data-plot="heading">
         <span class="register__line">{ui.projects.heading[0]}</span>{' '}
         <span class="register__line">{ui.projects.heading[1]}</span>
       </DisplayHeading>
-      <p class="register__intro">{ui.projects.intro}</p>
+      <p class="register__intro" data-plot="hero">
+        {ui.projects.intro}
+      </p>
     </div>
     <div class="register__cards">
       {standalone.map((project) => (

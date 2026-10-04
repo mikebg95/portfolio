@@ -338,3 +338,12 @@ intro, buttons) — the e2e seeks every animation to 1.3 s and requires each at 
 The hero buttons are not in the preview: they rise with the intro (1.2 s) instead of standing alone
 on an empty sheet for a second. Scope: plotting.css is imported by the Overview page only, so a
 session that starts on another sheet gets no plotting until PR-42 adds the short variant.
+
+## 2026-10-04 — Other sheets' first-load plotting: "≤ 1.2 s" means finished by 1.2 s
+Who: agent (PR-42a). §M1 gives the other sheets "frame + grid + header (same timing), then their
+heading wipe and hero elements in ≤ 1.2 s". Read as: every hero animation has ended by 1.2 s —
+label rise 0.35–0.85, h1 wipe 0.40–1.20 (the whole heading, one 800 ms wipe, not a line each: two
+staggered lines would end at 1.35), the rest of the hero (intro, summary, back link, repo button,
+404 sheet list) rise 0.60–1.20, the 404 note stamps 0.80–1.18. Marked by `data-plot` on the
+elements rather than per-page selectors, so one rule set covers six templates. Below-hero content
+(timeline, cards, FIG. 1, assembly) is not plotted; §M3 reveals cover it.

@@ -33,12 +33,14 @@ const partName = (part: (typeof parts)[number]) =>
 >
   <section class="sheet-panel education" data-education>
     <div class="education__head">
-      <SheetLabel>{ui.education.label}</SheetLabel>
-      <DisplayHeading as="h1" size="l">
+      <SheetLabel data-plot="label">{ui.education.label}</SheetLabel>
+      <DisplayHeading as="h1" size="l" data-plot="heading">
         <span class="education__line">{ui.education.heading[0]}</span>{' '}
         <span class="education__line">{ui.education.heading[1]}</span>
       </DisplayHeading>
-      <p class="education__intro">{ui.education.intro}</p>
+      <p class="education__intro" data-plot="hero">
+        {ui.education.intro}
+      </p>
     </div>
     <div class="education__body">
       <ExplodedAssembly

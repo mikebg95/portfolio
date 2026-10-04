@@ -30,12 +30,14 @@ const certs = (await getAllLocalized('certifications', lang)).sort((a, b) =>
 >
   <section class="sheet-panel record">
     <div class="record__head">
-      <SheetLabel>{ui.certifications.label}</SheetLabel>
-      <DisplayHeading as="h1" size="l">
+      <SheetLabel data-plot="label">{ui.certifications.label}</SheetLabel>
+      <DisplayHeading as="h1" size="l" data-plot="heading">
         <span class="record__line">{ui.certifications.heading[0]}</span>{' '}
         <span class="record__line">{ui.certifications.heading[1]}</span>
       </DisplayHeading>
-      <p class="record__intro">{ui.certifications.intro}</p>
+      <p class="record__intro" data-plot="hero">
+        {ui.certifications.intro}
+      </p>
     </div>
     <div class="record__cards">
       {certs.map((entry) => (
