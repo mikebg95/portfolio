@@ -644,3 +644,16 @@ History, not a queue.
   - Done when: `src/portrait.ts` exports both files; the portrait renders the dark file in the blueprint theme (both `[data-theme="blueprint"]` and system-dark-without-override) and the light file in paper — via two `<pre aria-hidden>` blocks toggled by CSS so it works without JS and never flashes the wrong one; the line-by-line scan-in animation (motion.md §M1) works for whichever is visible; colour in blueprint is tuned (try `--color-ink`/near-white vs `--color-line`) so contrast against the navy paper reads as a portrait, judged by screenshots of both themes saved to `.e2e/`; a test asserts the right file is visible per theme.
   - Spec: SPEC §4.1; design/motion.md §M1
   - Out of scope: the portrait's layout.
+
+
+## Pruned from the queue
+
+1 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### Hardening
+
+- [x] **PR-60 Conspect is the employer; DJI and OptieCon are assignments inside it**
+  - Michael, 2026-10-04: *"from 1 november 2023 until now i work at conspect. dji is a consultancy project that i was gedetacheerd to, but now i'm back again at conspect … is it intentional that conspect was not mentioned here?"* It was not. Today the Experience sheet reads as if DJI and OptieCon were employers.
+  - Done when: (1) content: a `conspect` employer entry — **Java Consultant · Conspect · Almere · Nov 2023 – now**, "IT consultancy in agile software development and data analytics." — owns three assignments in order: **DJI (client assignment / secondment, Jan 2024 – Jan 2026)**, **Sabbatical (Jan – May 2026)**, **OptieCon (internal Conspect product, Jun 2026 – now, between client assignments)**; LinkPizza stays a separate employer; schema change in its own commit (CLAUDE.md contract); EN + NL (NL may say "gedetacheerd bij DJI"; never "op de bank" — EN wording "between client assignments"); (2) timeline: a Conspect employer bar spanning Nov 2023 – now drawn as the outer assembly, with DJI, the hatched sabbatical and OptieCon as sub-bars inside/under it (drawing language: a bracket or dimension line labelled CONSPECT), LinkPizza as its own bar; (3) detail blocks: one 02.1 block "Java Consultant — Conspect" with nested assignment blocks 02.1a OptieCon, 02.1b Sabbatical, 02.1c DJI (newest first), each keeping its existing content; 02.2 LinkPizza; (4) Overview "In progress" and any other mention name Conspect as employer; (5) e2e asserts Conspect is the visible employer heading and DJI is labelled a client assignment; screenshots both themes, desktop + phone.
+  - Spec: SPEC §4.2; design/copy.md Sheet 02; docs/source/cv.md
+  - Out of scope: other sheets' layout.
