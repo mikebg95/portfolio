@@ -2,12 +2,13 @@
 import type { CollectionEntry } from 'astro:content';
 
 import { localize, type Lang } from '../../i18n/paths';
-import { PORTRAIT } from '../../portrait';
+import { PORTRAIT, PORTRAIT_DARK } from '../../portrait';
 import Balloon from '../drawing/Balloon.astro';
 import DimensionLine from '../drawing/DimensionLine.astro';
 
 // SPEC §4.1 portrait block: the ASCII portrait as real text in an aria-hidden <pre> (its
-// description is sr-only text), dimensioned across the top and down the left, with three
+// description is sr-only text) — one per theme, CSS showing the theme's own, so it works without
+// JS and never flashes the other — dimensioned across the top and down the left, with three
 // ballooned callouts. Desktop: the callouts sit right of the portrait on leaders (as drawn);
 // phone: a numbered list under it (design/README.md "Responsive").
 type Hero = CollectionEntry<'profile'>['data']['hero'];
@@ -21,9 +22,16 @@ interface Props {
 
 const { lang, dimensions, balloons, alt } = Astro.props;
 // The file's blank lead lines would only pad the frame (and a <pre> drops the first newline).
-const ascii = PORTRAIT.replace(/^(?:[ \t]*\n)+/, '').trimEnd();
 // One span per line, so §M1 can scan the portrait in line by line; the newlines stay between them.
-const lines = ascii.split('\n');
+const linesOf = (portrait: string) =>
+  portrait
+    .replace(/^(?:[ \t]*\n)+/, '')
+    .trimEnd()
+    .split('\n');
+const versions = [
+  { theme: 'paper', lines: linesOf(PORTRAIT) },
+  { theme: 'blueprint', lines: linesOf(PORTRAIT_DARK) },
+];
 ---
 
 <figure class="portrait">
@@ -35,8 +43,10 @@ const lines = ascii.split('\n');
       label={dimensions.vertical}
     />
     <div class="portrait__frame">
-      <!-- prettier-ignore -->
-      <pre class="portrait__ascii" aria-hidden="true">{lines.map((line, i) => <Fragment>{i ? '\n' : ''}<span class="portrait__line" style={`--line: ${i}`}>{line}</span></Fragment>)}</pre>
+      {versions.map(({ theme, lines }) =>
+        // prettier-ignore
+        <pre class={`portrait__ascii portrait__ascii--${theme}`} aria-hidden="true">{lines.map((line, i) => <Fragment>{i ? '\n' : ''}<span class="portrait__line" style={`--line: ${i}`}>{line}</span></Fragment>)}</pre>,
+      )}
       <figcaption class="sr-only">{alt}</figcaption>
     </div>
   </div>
@@ -114,6 +124,44 @@ const lines = ascii.split('\n');
     font-family: var(--font-mono);
     font-size: 6.4px;
     line-height: 1.02;
+  }
+
+  /* One portrait per theme (src/portrait.ts): paper by default, blueprint where the page is —
+     chosen, or the system's dark preference without a paper override (tokens.css). The theme's
+     own stays in flow, sized as drawn; the other lies over it, hidden by visibility, not display,
+     so both scan in together (§M1) and a theme switch mid-plot never restarts the scan. On the
+     navy the brightest token, ink, reads as a lit face; line blue made it flat. */
+  .portrait__frame {
+    position: relative;
+  }
+
+  .portrait__ascii--blueprint,
+  :global([data-theme='blueprint']) .portrait__ascii--paper {
+    position: absolute;
+    inset: 0;
+    visibility: hidden;
+  }
+
+  .portrait__ascii--blueprint {
+    color: var(--color-ink);
+  }
+
+  :global([data-theme='blueprint']) .portrait__ascii--blueprint {
+    position: static;
+    visibility: visible;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='paper'])) .portrait__ascii--paper {
+      position: absolute;
+      inset: 0;
+      visibility: hidden;
+    }
+
+    :global(:root:not([data-theme='paper'])) .portrait__ascii--blueprint {
+      position: static;
+      visibility: visible;
+    }
   }
 
   /* Inline-block so a line can be clipped (the §M1 scan) without changing the text or its rows. */

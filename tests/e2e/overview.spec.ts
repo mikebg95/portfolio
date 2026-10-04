@@ -2,16 +2,21 @@ import { readFileSync } from 'node:fs';
 
 import { expect, test } from '@playwright/test';
 
+import { THEME_STORAGE_KEY } from '../../src/theme';
+
 import { expectNoAxeViolations } from './helpers/axe';
 import { profile } from './helpers/content';
 import { settleAnimations } from './helpers/motion';
 
 // Sheet 01 hero and portrait (SPEC §4.1; copy.md Sheet 01; design/README.md "Responsive").
 
-// The source file without its blank lead lines and trailing whitespace.
-const PORTRAIT = readFileSync('docs/source/ascii-portrait.txt', 'utf8')
-  .replace(/^(?:[ \t]*\n)+/, '')
-  .trimEnd();
+// A source file without its blank lead lines and trailing whitespace.
+const portrait = (file: string) =>
+  readFileSync(`docs/source/${file}`, 'utf8')
+    .replace(/^(?:[ \t]*\n)+/, '')
+    .trimEnd();
+const PORTRAIT = portrait('ascii-portrait.txt');
+const PORTRAIT_DARK = portrait('ascii-portrait-dark.txt');
 
 test('the hero shows the drawn text in order', async ({ page }) => {
   await page.goto('/');
@@ -79,8 +84,9 @@ test('the portrait is real text, hidden from assistive tech, with a text alterna
 }) => {
   await page.goto('/');
   const ascii = page.locator('pre.portrait__ascii');
-  await expect(ascii).toHaveAttribute('aria-hidden', 'true');
-  expect(await ascii.textContent()).toBe(PORTRAIT);
+  await expect(ascii).toHaveCount(2);
+  for (const pre of await ascii.all()) await expect(pre).toHaveAttribute('aria-hidden', 'true');
+  expect(await ascii.locator('visible=true').textContent()).toBe(PORTRAIT);
   await expect(page.locator('figure.portrait figcaption.sr-only')).toHaveText(
     'Portrait of Michael Goldman, drawn in ASCII characters.',
   );
@@ -88,6 +94,44 @@ test('the portrait is real text, hidden from assistive tech, with a text alterna
   await expect(dims).toHaveText(['5+ YRS JAVA · FULL-STACK', 'SPRING · JAKARTA EE']);
   for (const dim of await dims.all()) await expect(dim).toBeVisible();
 });
+
+// Dense glyphs are dark areas, so light text on the navy needs the inverted file (PR-59).
+for (const { name, scheme, chosen, file, text } of [
+  { name: 'system light', scheme: 'light', chosen: null, file: 'paper', text: PORTRAIT },
+  { name: 'system dark', scheme: 'dark', chosen: null, file: 'blueprint', text: PORTRAIT_DARK },
+  {
+    name: 'blueprint chosen',
+    scheme: 'light',
+    chosen: 'blueprint',
+    file: 'blueprint',
+    text: PORTRAIT_DARK,
+  },
+  { name: 'paper chosen', scheme: 'dark', chosen: 'paper', file: 'paper', text: PORTRAIT },
+] as const) {
+  test(`${name}: the portrait is the ${file} file, scanned in on the first view`, async ({
+    page,
+  }) => {
+    await page.emulateMedia({ colorScheme: scheme });
+    if (chosen) {
+      await page.addInitScript(({ key, theme }) => localStorage.setItem(key, theme), {
+        key: THEME_STORAGE_KEY,
+        theme: chosen,
+      });
+    }
+    await page.goto('/');
+    const visible = page.locator('pre.portrait__ascii:visible');
+    await expect(visible).toHaveCount(1);
+    await expect(visible).toHaveClass(new RegExp(`portrait__ascii--${file}`));
+    expect(await visible.textContent()).toBe(text);
+    // §M1: the visible portrait's lines carry the scan (the first view of a fresh context).
+    expect(
+      await visible
+        .locator('.portrait__line')
+        .nth(10)
+        .evaluate((line) => getComputedStyle(line).animationName),
+    ).toBe('reveal-wipe');
+  });
+}
 
 test('balloons 1–3 are numbered callouts; balloon 1 links to the certifications', async ({
   page,
@@ -108,7 +152,7 @@ test('desktop: callouts sit right of the portrait on leaders', async ({ page }) 
   test.skip((page.viewportSize()?.width ?? 0) < 1024, 'desktop layout');
   await page.goto('/');
   await settleAnimations(page); // the first view plots the callouts in (motion.md §M1)
-  const frame = await page.locator('pre.portrait__ascii').boundingBox();
+  const frame = await page.locator('pre.portrait__ascii:visible').boundingBox();
   const leaders = page.locator('.portrait__leader');
   await expect(leaders).toHaveCount(3);
   for (const leader of await leaders.all()) {
@@ -123,7 +167,7 @@ test('phone: callouts become a numbered list under a full-width portrait', async
   test.skip((page.viewportSize()?.width ?? 0) >= 768, 'phone layout');
   await page.goto('/');
   await settleAnimations(page); // the first view plots the callouts in (motion.md §M1)
-  const frame = await page.locator('pre.portrait__ascii').boundingBox();
+  const frame = await page.locator('pre.portrait__ascii:visible').boundingBox();
   const figure = await page.locator('.hero__figure').boundingBox();
   expect(frame && figure && frame.width).toBeGreaterThan((figure?.width ?? 0) - 40);
   await expect(page.locator('.portrait__leader').first()).toBeHidden();

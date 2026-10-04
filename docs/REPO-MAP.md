@@ -59,7 +59,7 @@ line.
 - `src/content/ui/<lang>/ui.yaml` — header, footer, SEO and 404 strings (copy.md Global/SEO/404); read via `t(lang)`.
 - `tests/unit/helpers/content.ts` — `readCollection` (YAML from disk) and `fakeAstroContent` for `vi.mock('astro:content', …)`.
 - TRAP: `astro:content` imports fine under Vitest but its store is empty — `getEntry` returns undefined, `getCollection` []; mock it with `fakeAstroContent`.
-- `src/portrait.ts` — `PORTRAIT`, `docs/source/ascii-portrait.txt` inlined via `?raw` at build time; the only copy of the portrait.
+- `src/portrait.ts` — `PORTRAIT` (paper) and `PORTRAIT_DARK` (blueprint; density inverted), `docs/source/ascii-portrait{,-dark}.txt` inlined via `?raw` at build time; the only copies.
 - `tests/unit/profile-content.test.ts` — parses design/copy.md Sheet 01 and compares it with the EN profile; a copy.md wording change fails it.
 - `tests/unit/experience-content.test.ts` — the same for Sheet 02 (`### … (id `…`)` blocks) plus ordering/overlap and the Conspect line in `profile.employers`.
 - `tests/unit/project-content.test.ts` — Sheet 03 register table in copy.md vs EN `projects`; 251-test sum; scans `src/` and `public/` for any jamigos domain link.
@@ -106,7 +106,7 @@ line.
 
 - `src/pages/[...lang]/index.astro` — composes the Overview panels; each panel is a component in `src/components/overview/`.
 - `src/components/overview/Hero.astro` — label, name, role, intro, note, buttons; reads `profile.hero`; links via `sheetPath(key)` (src/i18n/routes.ts) + `localize`.
-- `src/components/overview/Portrait.astro` — `<pre aria-hidden>` portrait + sr-only figcaption, dimension lines, callouts (absolute on desktop, a list < 768 px; the phone font size fills the width via `cqi`).
+- `src/components/overview/Portrait.astro` — two `<pre aria-hidden>` portraits (one per theme, stacked in a grid cell, the other `visibility: hidden` — so a test must pick `pre.portrait__ascii:visible`) + sr-only figcaption, dimension lines, callouts (absolute on desktop, a list < 768 px; the phone font size fills the width via `cqi`).
 - `src/components/overview/HowIWork.astro` — four principles + AI note; panel labels come from `profile.labels` (docs/RECORD.md 2026-10-04).
 - `src/components/overview/SpecNotes.astro` — SPECIFICATION table + GENERAL NOTES; side by side (notes column 380 px) at ≥ 1024, stacked below; S-06's `pending` in redline.
 - `src/components/overview/InProgress.astro` — the IN PROGRESS rows, hrefs from `profile.current` through `localize`; `#optiecon` is the experience detail block; `#ckad` a placeholder `<div id>` in the certifications stub until PR-31 moves it onto the real card (never two).

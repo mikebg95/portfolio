@@ -107,7 +107,8 @@ does; `splitNote` sets it in 600 weight. Hrefs in `profile` (balloon 1, in-progr
 EN paths (`/certifications`, `/experience#optiecon`); pages pass them through `localize`. The panel
 labels (`HOW I WORK`, `SPECIFICATION`, `GENERAL NOTES`, `IN PROGRESS`) are not in `profile` — the
 schema has no field and changing it is its own task; PR-14–16 place them. The portrait is not
-content: `src/portrait.ts` reads `docs/source/ascii-portrait.txt` (the `-dark` variant is unused).
+content: `src/portrait.ts` reads `docs/source/ascii-portrait.txt` (the `-dark` variant was unused
+until PR-59, below).
 
 ## 2026-10-04 — Overview hero: choices the drawing left open
 Who: agent (PR-13). (1) Below ~420 px the name is capped at `(100vw − 90px) / 6.4` instead of the
@@ -538,3 +539,14 @@ than in the header (≈ 55 %) so it still reads at 16 px. Apple-touch sits on pa
 margin (iOS rounds corners); maskable puts a 50 % cell inside the 40 %-radius safe zone; manifest
 `display: browser` (a portfolio, not an app), theme and background colour = light paper.
 Replaces PR-52's framed-sheet/registration-mark favicon.
+
+## 2026-10-04 — The portrait has a version per theme
+Who: Michael (asked: the portrait looked like a negative in blueprint); agent (PR-59, the rest).
+Blueprint shows `docs/source/ascii-portrait-dark.txt` (dense glyphs = light areas), paper the
+light file. Both `<pre>`s are always in the page, stacked in one grid cell; CSS hides the other by
+`visibility`, not `display`: a `display: none` copy never runs §M1's scan, so switching theme during
+the first view would blank the portrait and replay the scan from the start (and the hidden copy's
+lines read as "not in final state"). Blueprint colour is `--color-ink` (#e6eefa): judged by
+screenshots in `.e2e/pr59/` against `--color-line` (#9dc1f5), which read flatter and less like a lit
+face. Instead of: swapping the text with JS (flashes the wrong one before the script, nothing
+without JS).
