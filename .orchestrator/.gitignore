@@ -1,0 +1,23 @@
+# The loop's runtime state. Tracked: the scripts, config.sh and the prompts.
+# Untracked on purpose: the loop writes these between and during tasks, and a
+# tracked one would make the tree dirty under the release's clean-tree rule.
+logs/
+STATUS
+run.pid
+PAUSED
+progress.md
+gate-state
+*-progress.md
+*-progress.md.abandoned-*
+.last-deployed
+.last-simplified
+.deploy-failures
+.regress-attempts
+.restart-attempts
+design-check-done
+prompt-on-argv
+no-sonnet
+.task-check-pass
+.tsbuildinfo
+.eslintcache
+__pycache__/

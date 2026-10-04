@@ -1,0 +1,6 @@
+# Extra paths that send the task check to the FULL unit suite (never e2e).
+# One extended regex per line, matched against the repo-relative path — for
+# modules whose effect on tests the import graph cannot see (loaded by a test
+# setup file, or global by design). package.json, lockfiles, tsconfig*,
+# vitest/vite/eslint configs, test setup files, prisma/drizzle migrations and
+# .env* are built into the script.
