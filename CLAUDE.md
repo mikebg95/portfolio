@@ -82,3 +82,4 @@ that genuinely needs something new adds it here in the same commit. -->
 - Content (collections, EN/NL twins, YAML) → docs/conventions/content.md
 - Styles (tokens → CSS, fonts, base, breakpoints) → docs/conventions/styles.md
 - Languages and routes (`[...lang]` pages, `localize`/`alternate`, `t(lang)`) → docs/conventions/i18n.md
+- Motion (`data-reveal`, `js`/`first-view` classes, reduced-motion and no-JS guards) → docs/conventions/motion.md

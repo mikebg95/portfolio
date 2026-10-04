@@ -1,5 +1,6 @@
 ---
 import DisplayHeading from '../components/drawing/DisplayHeading.astro';
+import RevisionNote from '../components/drawing/RevisionNote.astro';
 import SheetLabel from '../components/drawing/SheetLabel.astro';
 import { DEFAULT_LANG } from '../i18n/paths';
 import SheetLayout from '../layouts/SheetLayout.astro';
@@ -24,6 +25,32 @@ import Specimens from './Specimens.astro';
           </h2>
           <Specimens />
         </div>
+      ))}
+    </div>
+  </section>
+  <section class="sheet-panel motion-specimens" data-motion-specimens>
+    <SheetLabel data-reveal="wipe" style="--reveal-duration: 400ms">
+      MOTION — SCROLL REVEALS
+    </SheetLabel>
+    <DisplayHeading size="m" as="h2" data-reveal="wipe">
+      Inking in
+    </DisplayHeading>
+    <div>
+      {[0, 1, 2].map((i) => (
+        <p class="motion-specimens__row" data-reveal="ink" data-reveal-delay={String(i * 80)}>
+          Row {i + 1} inks in, {i * 80} ms after the first
+        </p>
+      ))}
+    </div>
+    <p data-reveal="rise">A paragraph rises in.</p>
+    <div class="motion-specimens__line" data-reveal="draw"></div>
+    <svg class="motion-specimens__svg" viewBox="0 0 200 20" aria-hidden="true">
+      <line x1="0" y1="10" x2="200" y2="10" pathLength="1" data-reveal="draw"></line>
+    </svg>
+    <RevisionNote text="REV. NOTE △ A note stamps down." data-reveal="stamp" />
+    <div class="motion-specimens__cards" data-reveal="cards">
+      {[1, 2, 3, 4, 5, 6].map((n) => (
+        <div class="motion-specimens__card">Card {n}</div>
       ))}
     </div>
   </section>
@@ -66,5 +93,42 @@ import Specimens from './Specimens.astro';
 
   h2 {
     margin: 0 0 var(--space-4);
+  }
+
+  /* One of each data-reveal kind (docs/conventions/motion.md), below the fold. */
+  .motion-specimens {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    background: var(--color-paper);
+  }
+
+  .motion-specimens__row {
+    margin: 0;
+    padding: var(--space-3) 0;
+    border-bottom: var(--border-thin);
+  }
+
+  .motion-specimens__line {
+    height: 2px;
+    background: var(--color-ink);
+  }
+
+  .motion-specimens__svg {
+    width: 100%;
+    height: 20px;
+    stroke: var(--color-line);
+    stroke-width: 1.5;
+  }
+
+  .motion-specimens__cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--space-4);
+  }
+
+  .motion-specimens__card {
+    padding: var(--space-5);
+    border: var(--border-normal);
   }
 </style>

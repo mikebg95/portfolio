@@ -1,0 +1,152 @@
+/* The motion foundation (design/motion.md principles, §M3; docs/conventions/motion.md). Easings and
+   durations are the --motion-* tokens. A hidden start state only exists under `.js` (SheetLayout's
+   head script) and without a reduced-motion preference, so no-JS and reduced motion see every
+   element in its final state. The keyframes give only the start; each element ends in its own
+   styles. */
+
+/* Set by src/motion.ts on the element itself; never inherited, so nested reveals keep their own. */
+@property --reveal-delay {
+  syntax: '*';
+  inherits: false;
+}
+
+@property --reveal-duration {
+  syntax: '*';
+  inherits: false;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal]:not([data-reveal='cards'], .is-revealed),
+  .js [data-reveal='cards']:not(.is-revealed) > * {
+    opacity: 0;
+  }
+
+  .js [data-reveal].is-revealed:not([data-reveal='cards']),
+  .js [data-reveal='cards'].is-revealed > * {
+    animation-delay: var(--reveal-delay, 0ms);
+    animation-fill-mode: backwards;
+  }
+
+  /* §M3 rows: text fades and rises 8 px. */
+  .js [data-reveal='ink'].is-revealed {
+    animation-name: reveal-ink;
+    animation-duration: var(--reveal-duration, 500ms);
+    animation-timing-function: var(--motion-ease-out);
+  }
+
+  /* §M1 .rise: fade + 14 px. */
+  .js [data-reveal='rise'].is-revealed {
+    animation-name: reveal-rise;
+    animation-duration: var(--reveal-duration, 700ms);
+    animation-timing-function: var(--motion-ease-out);
+  }
+
+  /* §M1 plotter wipe, left → right. Section labels pass --reveal-duration: 400ms. */
+  .js [data-reveal='wipe'].is-revealed {
+    animation-name: reveal-wipe;
+    animation-duration: var(--reveal-duration, var(--motion-wipe));
+    animation-timing-function: var(--motion-ease-plot);
+  }
+
+  /* §M1 revision note stamp: from scale 1.25, rotate −6°, slight overshoot. */
+  .js [data-reveal='stamp'].is-revealed {
+    animation-name: reveal-stamp;
+    animation-duration: var(--reveal-duration, 380ms);
+    animation-timing-function: cubic-bezier(0.2, 0.9, 0.25, 1.15);
+  }
+
+  /* A line extends from its start: scaleX from the left; --reveal-from (e.g. scaleY(0)) and
+     --reveal-origin change it. */
+  .js [data-reveal='draw'].is-revealed {
+    animation-name: reveal-draw;
+    animation-duration: var(--reveal-duration, var(--motion-draw));
+    animation-timing-function: var(--motion-ease-plot);
+  }
+
+  /* An SVG stroke draws along its path; the element needs pathLength="1". */
+  .js :is(path, line, polyline, polygon, circle, ellipse, rect)[data-reveal='draw'].is-revealed {
+    animation-name: reveal-stroke;
+  }
+
+  /* §M3 cards: each child rises 16 px; src/motion.ts staggers them 70 ms by column. */
+  .js [data-reveal='cards'].is-revealed > * {
+    animation-name: reveal-card;
+    animation-duration: var(--reveal-duration, 700ms);
+    animation-timing-function: var(--motion-ease-out);
+  }
+}
+
+@keyframes reveal-ink {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@keyframes reveal-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+@keyframes reveal-card {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+@keyframes reveal-wipe {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  to {
+    clip-path: inset(0);
+  }
+}
+
+@keyframes reveal-stamp {
+  from {
+    opacity: 0;
+    transform: rotate(-6deg) scale(1.25);
+  }
+}
+
+@keyframes reveal-draw {
+  from {
+    transform: var(--reveal-from, scaleX(0));
+    transform-origin: var(--reveal-origin, left center);
+  }
+
+  to {
+    transform-origin: var(--reveal-origin, left center);
+  }
+}
+
+@keyframes reveal-stroke {
+  from {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+
+  to {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Principle 5: reduced motion jumps every animation to its end, once; the CKAD ring (the one
+   infinite animation) stops. Transitions follow interaction, and each component sets its own
+   (often 0 s, which a clamp to 1 ms would undo). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}

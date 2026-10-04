@@ -1,6 +1,8 @@
-/* Global base: tokens, faces, body type and colour, focus ring, utilities. Every page imports this. */
+/* Global base: tokens, faces, the motion foundation, body type and colour, focus ring, utilities.
+   Every page imports this. */
 @import './tokens.css';
 @import './fonts.css';
+@import './motion.css';
 
 *,
 *::before,

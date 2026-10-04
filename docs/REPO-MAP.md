@@ -31,6 +31,9 @@ line.
 - `src/dev/primitives.astro` — the `/_primitives` specimen page; `astro.config.ts` injects it only in dev or when `BUILD_PRIMITIVES=1` (Playwright's webServer sets it), so production builds never have it.
 - TRAP: a token like `--border-normal: 1.5px solid var(--color-ink)` resolves where it is declared; in a nested `[data-theme]` it would keep the outer ink unless re-declared there (tokens.css does it for every `[data-theme]`). Symptom: borders in the page theme's colour inside the other theme's section.
 - `public/fonts/` — vendored woff2 + OFL licences (docs/RECORD.md 2026-10-04).
+- `src/motion.ts` — `reveal()`, `isFirstView()`, `prefersReducedMotion()` and the class/key names; `src/styles/motion.css` — reveal keyframes + the global reduced-motion clamp; SheetLayout's head script sets `js`/`first-view`, its module script runs `reveal()` (docs/conventions/motion.md).
+- `tests/e2e/helpers/motion.ts` — `notInFinalState(page, scope)` + the list of elements whose opacity/clip-path is drawn on purpose; `tests/e2e/motion.spec.ts` runs it on every route (reduced motion, no JS). `tests/e2e/helpers/routes.ts` — `PAGES`/`ROUTES`, every route × language.
+- TRAP: a `[data-reveal]` element stays at opacity 0 if `reveal()` never runs on the page (a page not using SheetLayout, or a script error before it); symptom: content missing only with JS on and motion allowed.
 
 ## Content
 

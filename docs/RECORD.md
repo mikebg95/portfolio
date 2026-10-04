@@ -313,3 +313,18 @@ cannot apply a variation to a WOFF2 font, so `wawoff2` decompresses each file to
 theme only (a link preview has no theme). The 404 sheets get a card too, so every page carries
 og:image. Title block on the card: PROJECT and SHEET cells from `ui.titleBlock`, then the host from
 `SITE_URL` with no caption (copy.md has none). Twitter: `summary_large_image` + `twitter:image`.
+
+## 2026-10-04 — Motion foundation: start-only keyframes, storage blocked means no first view
+Who: agent (PR-39). Reveal keyframes give only the `from` state and use `animation-fill-mode:
+backwards`, so every element ends in its own CSS (a revision note keeps its own rotation, a card its
+own transform) and no-JS / reduced motion need no separate "final" rules — the hidden start state
+exists only under `.js` + `prefers-reduced-motion: no-preference`. The task's "CSS custom properties
+for the three easings and durations" are the existing `--motion-*` tokens; no `--ease-*` aliases were
+added (styles convention: one name per token). When sessionStorage throws, the page is never treated
+as a first view: principle 4 ("once, not every time") outranks the wow of the plotting, and
+replaying the full §M1 timeline on every page would be the worse failure. Reduced motion forces
+animations to 1 ms rather than `none`, so `forwards` animations land on their end and `animationend`
+handlers still run. Transitions are left out of that clamp: components already set their own
+reduced-motion transitions (often 0 s), and clamping lifted them to 1 ms (education.spec failed). `reveal()` also reveals pending
+elements once their top passes 80 % of the viewport: IntersectionObserver at 0.2 never fires for an
+element taller than five viewports, nor for one jumped past by a hash link.

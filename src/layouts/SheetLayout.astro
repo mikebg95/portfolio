@@ -4,6 +4,7 @@ import SheetFrame from '../components/SheetFrame.astro';
 import SheetHeader from '../components/SheetHeader.astro';
 import TitleBlock from '../components/TitleBlock.astro';
 import { SITE_URL } from '../config';
+import { FIRST_VIEW_CLASS, FIRST_VIEW_KEY, JS_CLASS } from '../motion';
 import type { SheetKey } from '../content/schemas';
 import { t } from '../i18n/content';
 import type { Lang } from '../i18n/paths';
@@ -48,6 +49,22 @@ const ogImage = new URL(ogImagePath(lang, path), SITE_URL).href;
         // Storage blocked: follow the system.
       }
     </script>
+    <!-- design/motion.md principles 4 and 6: animations opt in through `js`; the full plotting plays
+         on the session's first page view only (src/motion.ts). -->
+    <script
+      is:inline
+      define:vars={{ jsClass: JS_CLASS, firstViewClass: FIRST_VIEW_CLASS, key: FIRST_VIEW_KEY }}
+    >
+      document.documentElement.classList.add(jsClass);
+      try {
+        if (!sessionStorage.getItem(key)) {
+          sessionStorage.setItem(key, '1');
+          document.documentElement.classList.add(firstViewClass);
+        }
+      } catch {
+        // Storage blocked: no way to tell, so never replay the plotting on every page.
+      }
+    </script>
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
     {noindex && <meta name="robots" content="noindex" />}
@@ -83,6 +100,12 @@ const ogImage = new URL(ogImagePath(lang, path), SITE_URL).href;
     </SheetFrame>
   </body>
 </html>
+
+<script>
+  import { reveal } from '../motion';
+
+  reveal();
+</script>
 
 <style>
   /* components.md SkipLink: hidden until focused, then an ink button top-left. */
