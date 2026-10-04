@@ -800,3 +800,15 @@ History, not a queue.
   - Seen by PR-63b's agent, 2026-10-04, and it fails on 43466df too (before ClientRouter): `npx playwright test tests/e2e/motion.spec.ts --project=webkit-iphone -g "slam in card order"`. Its first `.stamp` sits below the fold on iPhone 14 (top ≈ 731 px, viewport 664), so it never gets `is-revealed` and the wait times out.
   - Done when: the test passes on all three projects. If the test is wrong, fix the test (for example by scrolling the stamp into view first) without loosening what it asserts. If the reveal is wrong, fix the reveal.
   - Out of scope: the stamp's look.
+
+
+## Pruned from the queue
+
+1 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### Hardening
+
+- [x] **QA-65 Lighthouse best-practices 0.96 on /education (font size)**
+  - Seen by PR-63b's agent, 2026-10-04, and the same on 43466df: `npm run build && npm run lhci` fails the `categories.best-practices` minScore 1 assertion on /education (mobile preset). The `font-size` audit flags 11 px callouts and parts list, plus the 9–11 px title block. Everything else passes.
+  - Done when: `npm run lhci` passes on every URL without changing `lighthouserc.json`, and the drawing's look at desktop widths is unchanged.
+  - Spec: design/tokens.json type sizes; design/screens education-*-390
