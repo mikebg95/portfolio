@@ -72,7 +72,7 @@ queue.
 
 ### Hardening
 
-- [ ] **PR-66 Content pass: a guard test so the corrected claims stay corrected**
+- [x] **PR-66 Content pass: a guard test so the corrected claims stay corrected**
   - Michael, 2026-10-04: later tasks (PR-54 facts audit included) must not reintroduce what PR-60–65 removed.
   - Done when: a Vitest test reads the EN and NL content YAML (and copy.md) and fails if — the profile says "five years of Spring Boot" / "vijf jaar Spring Boot"; any How-I-work title or text contains "to production" / "tot in productie"; the DJI files (EN, NL) contain production/productie, "empty repository"/"lege repository", greenfield or go-live; OptieCon says "end to end"; the Jamigos spec mentions Capacitor without "AI-generated"/"AI-gegenereerd"; the Journal card summary describes the AI step without "next"/"designed" (NL equivalents); Scentify mentions the minor; Jamigos' kind is FLAGSHIP/VLAGGENSCHIP. The test file contains no confidential DJI terms — only the generic phrases above. PR-54's allowlist (when it runs) treats `docs/source/briefing.md` as a source; tests green.
   - Spec: SPEC §3.7; docs/source/briefing.md
