@@ -70,7 +70,7 @@ queue.
 
 ### Dutch
 
-- [ ] **PR-48 Dutch translation — profile, global, SEO**
+- [x] **PR-48 Dutch translation — profile, global, SEO**
   - Done when: NL `profile` entry and all global/header/footer/SEO strings translated per SPEC §3.6 (natural Dutch, "je", English tech terms); `/nl/` renders fully in Dutch; the language switch on every page goes to the same page; e2e asserts `/nl/` hero text is Dutch and `<html lang="nl">`.
   - Spec: SPEC §1.4, §3.6; design/copy.md Sheet 01, Global, SEO
   - Out of scope: other collections.
