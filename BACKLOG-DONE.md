@@ -424,3 +424,15 @@ History, not a queue.
   - Learned (PR-42a): no component carries `data-reveal` yet — add it at call sites (SheetLabel, DisplayHeading, RevisionNote, SpecTable, Figure spread their props). Hero elements are `data-plot` (plotting.css) and Sheet 01's `.hero` is plotting-overview.css: never give those a `data-reveal` too. Other-sheet content right under the hero (timeline, cards, FIG. 1, assembly) is visible at load, so its reveal plays at load.
   - Spec: design/motion.md §M3, §M6 numbers
   - Out of scope: timeline, exploded view, stamps, theme switch.
+
+
+## Pruned from the queue
+
+1 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### Motion
+
+- [x] **PR-43 Experience timeline scroll animation**
+  - Done when: §M4 with GSAP ScrollTrigger lazy-loaded only on `/experience`: ruler draws with ticks, bars extrude scrubbed to scroll, durations count with the bar, hatching slides, OptieCon arrow pulses twice, sticky timeline with scale cursor on desktop ≥ 1024 marking the role in view; no stickiness on phone; reduced motion → final state; JS weight budget respected; e2e scrolls and asserts final widths.
+  - Spec: design/motion.md §M4
+  - Out of scope: —
