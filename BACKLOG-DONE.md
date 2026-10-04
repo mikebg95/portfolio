@@ -902,3 +902,17 @@ History, not a queue.
   - Happened: `dialog[data-part-sheet]` stays open. The same handle closes the sheet when tapped (Pixel 7 / iPhone 14 `tap()`) or activated with Enter, and Escape and the backdrop close it with the mouse too. Likely cause, from `src/part-sheet.ts`: the head's `pointerdown` calls `head.setPointerCapture(...)`, so a mouse click is dispatched to the captured head rather than to the grip, and the grip's `click` listener never runs.
   - Should: a mouse click on the handle closes the sheet exactly as a tap does, focus returning to the part that opened it (SPEC/components.md: the drag handle is also the close button).
   - Done when: `tests/e2e/education-sheet.spec.ts` has a case at 390 px without touch that opens the sheet from a row with `click()`, clicks the handle with `click()`, and expects the sheet hidden and the row's button focused — passing on chromium and webkit; the existing tap, Escape, backdrop and swipe-down tests still pass.
+
+
+## Pruned from the queue
+
+1 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### QA walk, 2026-10-05
+
+- [x] **QA-70 /nl/<unknown> — a mistyped Dutch URL shows the English 404 sheet on GitHub Pages**
+  - Route: any unknown URL under `/nl/`, e.g. `/nl/no-such-sheet`, `/nl/projects/nope`.
+  - Did: `curl https://michaelgoldman.dev/nl/does-not-exist` (live GitHub Pages, 2026-10-05) and, locally, `npm run build && npm run preview -- --ignore-lock` then opened `http://localhost:4321/nl/no-such-sheet` in Playwright (desktop 1440 and iPhone 14). `astro preview` answers unknown URLs with `dist/404.html` exactly as GitHub Pages does.
+  - Happened: status 404 with `<html lang="en">`, heading "SHEET NOT FOUND", title "Sheet not found · …", and the five sheet links go to English pages (`/`, `/experience` …) — a Dutch reader is dropped out of Dutch. The Dutch sheet exists (`/nl/404/` → 200, "BLAD NIET GEVONDEN") but GitHub Pages only ever serves the root `404.html`; the nginx rule in docs/REPO-MAP.md (`location /nl/ { error_page 404 /nl/404/index.html; }`) covers the Docker image only, and `.github/workflows/pages.yml` is the real deploy (CLAUDE.md).
+  - Should: an unknown URL under `/nl/` shows the Dutch not-found sheet (SPEC §3.9, `/nl/404`; SPEC §1.4 Dutch under `/nl/`) — heading "BLAD NIET GEVONDEN", `lang="nl"`, sheet links to `/nl/…` — on the GitHub Pages deploy, with the English 404 unchanged for every other unknown URL.
+  - Done when: under `npm run preview` (which serves `404.html` like GitHub Pages), `/nl/no-such-sheet` shows the Dutch sheet (h1 "BLAD NIET GEVONDEN", `html[lang=nl]`, first sheet link `/nl/`), still with status 404 and `noindex`, asserted in `tests/e2e/not-found.spec.ts`; `/no-such-sheet` still shows the English sheet; how the root 404 serves Dutch (and what happens without JS, if it needs JS) is recorded in `docs/RECORD.md`.
