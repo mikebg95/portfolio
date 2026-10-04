@@ -80,13 +80,6 @@ queue.
 
 ### QA walk, 2026-10-05
 
-- [x] **QA-69 /education (< 768 px, mouse) — clicking the part sheet's handle does not close the sheet**
-  - Route: `/education` (and `/nl/education`) at a width under 768 px with a mouse pointer — e.g. a desktop browser window 390 or 700 px wide; Chromium and WebKit both.
-  - Did: Playwright context `{ viewport: { width: 390, height: 844 } }` (no touch), waited 3 s, clicked the parts-list row button `.parts-list__select[data-part="3"]` (the bottom sheet opens), then clicked the handle `[data-sheet-close]` ("Close") with the mouse and waited 1.2 s.
-  - Happened: `dialog[data-part-sheet]` stays open. The same handle closes the sheet when tapped (Pixel 7 / iPhone 14 `tap()`) or activated with Enter, and Escape and the backdrop close it with the mouse too. Likely cause, from `src/part-sheet.ts`: the head's `pointerdown` calls `head.setPointerCapture(...)`, so a mouse click is dispatched to the captured head rather than to the grip, and the grip's `click` listener never runs.
-  - Should: a mouse click on the handle closes the sheet exactly as a tap does, focus returning to the part that opened it (SPEC/components.md: the drag handle is also the close button).
-  - Done when: `tests/e2e/education-sheet.spec.ts` has a case at 390 px without touch that opens the sheet from a row with `click()`, clicks the handle with `click()`, and expects the sheet hidden and the row's button focused — passing on chromium and webkit; the existing tap, Escape, backdrop and swipe-down tests still pass.
-
 - [ ] **QA-70 /nl/<unknown> — a mistyped Dutch URL shows the English 404 sheet on GitHub Pages**
   - Route: any unknown URL under `/nl/`, e.g. `/nl/no-such-sheet`, `/nl/projects/nope`.
   - Did: `curl https://michaelgoldman.dev/nl/does-not-exist` (live GitHub Pages, 2026-10-05) and, locally, `npm run build && npm run preview -- --ignore-lock` then opened `http://localhost:4321/nl/no-such-sheet` in Playwright (desktop 1440 and iPhone 14). `astro preview` answers unknown URLs with `dist/404.html` exactly as GitHub Pages does.

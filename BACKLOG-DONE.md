@@ -888,3 +888,17 @@ History, not a queue.
   - Happened: the page scrolls the article to the top of the viewport (heading "OPTIECON — FULL-STACK JAVA ENGINEER" at y ≈ 40), and the pinned timeline is drawn over it — `document.elementFromPoint` at the heading returns an element inside `.timeline`; the screen shows the timeline, then 02.1b Sabbatical and 02.1c DJI, never the OptieCon entry the link promised. `--timeline-pinned` is 270px by then, but it is set by `src/timeline-motion.ts` (lazy GSAP) after the browser has already done the initial hash scroll, so the article's `scroll-margin-top` is still 0 at that moment. Clicking the OptieCon bar on the page itself lands it clear (heading at y ≈ 310), so only arrivals with a hash are wrong.
   - Should: an arrival with a hash shows that entry's heading below the pinned timeline, exactly as the on-page bar link does.
   - Done when: an e2e test in `tests/e2e/experience.spec.ts` (chromium-desktop, motion on) opens `/experience#optiecon` directly and also via the Overview "In progress" link, and asserts the `#optiecon` heading is in the viewport and not covered by `.timeline` (`elementFromPoint` at its box is inside `#optiecon`); `/experience#dji` the same; the phone behaviour of `experience-phone.spec.ts` (hash opens the card) is unchanged.
+
+
+## Pruned from the queue
+
+1 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### QA walk, 2026-10-05
+
+- [x] **QA-69 /education (< 768 px, mouse) — clicking the part sheet's handle does not close the sheet**
+  - Route: `/education` (and `/nl/education`) at a width under 768 px with a mouse pointer — e.g. a desktop browser window 390 or 700 px wide; Chromium and WebKit both.
+  - Did: Playwright context `{ viewport: { width: 390, height: 844 } }` (no touch), waited 3 s, clicked the parts-list row button `.parts-list__select[data-part="3"]` (the bottom sheet opens), then clicked the handle `[data-sheet-close]` ("Close") with the mouse and waited 1.2 s.
+  - Happened: `dialog[data-part-sheet]` stays open. The same handle closes the sheet when tapped (Pixel 7 / iPhone 14 `tap()`) or activated with Enter, and Escape and the backdrop close it with the mouse too. Likely cause, from `src/part-sheet.ts`: the head's `pointerdown` calls `head.setPointerCapture(...)`, so a mouse click is dispatched to the captured head rather than to the grip, and the grip's `click` listener never runs.
+  - Should: a mouse click on the handle closes the sheet exactly as a tap does, focus returning to the part that opened it (SPEC/components.md: the drag handle is also the close button).
+  - Done when: `tests/e2e/education-sheet.spec.ts` has a case at 390 px without touch that opens the sheet from a row with `click()`, clicks the handle with `click()`, and expects the sheet hidden and the row's button focused — passing on chromium and webkit; the existing tap, Escape, backdrop and swipe-down tests still pass.
