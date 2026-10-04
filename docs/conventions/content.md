@@ -5,8 +5,9 @@
 - Every EN entry has an NL twin with the **same shape**: same optional fields present, same list
   lengths. `tests/unit/content-collections.test.ts` fails otherwise (it also validates every file
   against `src/content/schemas.ts`).
-- Until the Dutch tasks (PR-48–50): an EN content task writes the NL twin with the English text and
-  `translated: false`. The Dutch tasks flip it to `true` (or drop it — the default is `true`).
+- Every NL twin is written in Dutch (SPEC §3.6; vocabulary in docs/RECORD.md, 2026-10-04). A unit
+  test fails on any entry with `translated: false`; `tests/e2e/dutch.spec.ts` fails if a built
+  `dist/nl/` page carries copy.md Global's English UI words.
 - `id` (experience) and `slug` (projects) equal the file name.
 - Quote YAML strings containing `: `, `#`, a comma inside `{ … }` / `[ … ]` (it splits the item), a leading `*`/`&`/`!`, or that look like dates/booleans;
   `YYYY-MM` months are always quoted (`'2026-06'`).

@@ -5,51 +5,50 @@ code: P-03
 kind: 'JPA · DESIGN-FIRST'
 order: 3
 title: Recipe Book
-diagram: ['OPENAPI 3.1', 'generates', 'RECIPE ⟶ STEPS']
+diagram: ['OPENAPI 3.1', 'genereert', 'RECIPE ⟶ STEPS']
 series: true
-cardSummary: 'API contract first, code generated from it; architecture rules enforced by tests.'
-summary: 'Recipes with ordered steps and ingredients. Part 2 of the series: JPA done deliberately, with the API contract written before any code.'
-period: 'JUL 2026'
+cardSummary: 'Eerst het API-contract, de code daaruit gegenereerd; architectuurregels afgedwongen door tests.'
+summary: 'Recepten met stappen op volgorde en ingrediënten. Deel 2 van de serie: JPA bewust ingezet, met het API-contract geschreven vóór er code was.'
+period: 'jul 2026'
 status: done
 repo: https://github.com/mikebg95/recipe-book
 tests: 109
 facts:
   - { label: TESTS, value: '109' }
   - { label: API, value: 'Design-first' }
-  - { label: STATUS, value: 'Backend done' }
+  - { label: STATUS, value: 'Backend af' }
 spec:
   - label: AGGREGATE
-    text: 'Recipe is the aggregate root: steps and ingredients are reached, saved and deleted only through it — cascade ALL and orphanRemoval in JPA, ON DELETE CASCADE in the schema.'
-  - label: PERSISTENCE
-    text: 'JPA/Hibernate through a hand-written EntityManager repository, no Spring Data. SEQUENCE ids with allocationSize 50, id-based equals, open-in-view off.'
+    text: 'Recipe is de aggregate root: stappen en ingrediënten worden alleen via de root bereikt, opgeslagen en verwijderd — cascade ALL en orphanRemoval in JPA, ON DELETE CASCADE in het schema.'
+  - label: PERSISTENTIE
+    text: "JPA/Hibernate via een handgeschreven EntityManager-repository, geen Spring Data. SEQUENCE-id's met allocationSize 50, equals op id, open-in-view uit."
   - label: CONCURRENCY
-    text: '@Version optimistic locking: a concurrent edit gets 409 Conflict as RFC 9457 problem details.'
+    text: '@Version optimistic locking: een gelijktijdige wijziging krijgt 409 Conflict als RFC 9457 problem details.'
   - label: QUERIES
-    text: 'The list reads a RecipeSummary projection — name, description and counts — instead of loading whole aggregates.'
-  - label: INTEGRITY
-    text: 'CHECK constraints, case-insensitive unique names and deferrable unique step order, across 5 Flyway migrations on PostgreSQL 18.'
+    text: 'De lijst leest een RecipeSummary-projectie — naam, beschrijving en aantallen — in plaats van hele aggregates te laden.'
+  - label: INTEGRITEIT
+    text: 'CHECK-constraints, hoofdletterongevoelig unieke namen en een deferrable unieke stapvolgorde, verdeeld over 5 Flyway-migraties op PostgreSQL 18.'
   - label: API
-    text: 'Design-first OpenAPI 3.1: openapi-generator builds the DTOs and API interfaces from docs/api/openapi.yaml; the mappers are hand-written.'
-  - label: TESTING
-    text: '109 tests, written test-first: unit, web slice, repository and end-to-end on Testcontainers, plus ArchUnit rules that enforce the layering.'
+    text: "Design-first OpenAPI 3.1: openapi-generator bouwt de DTO's en API-interfaces uit docs/api/openapi.yaml; de mappers zijn handgeschreven."
+  - label: TESTEN
+    text: '109 tests, test-first geschreven: unit, web slice, repository en end-to-end op Testcontainers, plus ArchUnit-regels die de gelaagdheid afdwingen.'
 figures:
-  - title: DESIGN-FIRST FLOW
+  - title: DESIGN-FIRST-FLOW
     labels:
       - "openapi.yaml\nOpenAPI 3.1"
-      - generates
-      - "API interfaces & DTOs\ngenerated at build"
-      - DTOs
-      - "Controllers\nproblem+json errors"
+      - genereert
+      - "API-interfaces & DTO's\ngegenereerd bij de build"
+      - DTO's
+      - "Controllers\nproblem+json-fouten"
       - mapper
-      - "Recipe aggregate\nJPA · Hibernate"
+      - "Recipe-aggregate\nJPA · Hibernate"
       - JPA
-      - "PostgreSQL 18\n5 Flyway migrations"
+      - "PostgreSQL 18\n5 Flyway-migraties"
   - title: AGGREGATE
     labels:
       - "Recipe\naggregate root · @Version"
       - cascade ALL · orphanRemoval
-      - "Step\nordered · deferrable unique"
-      - "Ingredient\nquantity > 0 · unique name"
-note: 'REV. NOTE △ Re-ordering steps saves in one transaction thanks to deferrable unique constraints.'
+      - "Step\nop volgorde · deferrable uniek"
+      - "Ingredient\nhoeveelheid > 0 · unieke naam"
+note: 'REV. NOTITIE △ Stappen herschikken wordt in één transactie opgeslagen, dankzij deferrable unique constraints.'
 lang: nl
-translated: false

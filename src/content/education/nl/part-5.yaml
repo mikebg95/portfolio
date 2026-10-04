@@ -1,14 +1,13 @@
 item: 5
-part: CKAD (in progress)
-balloon: CKAD — to be fitted
+part: CKAD (in voorbereiding)
+balloon: CKAD — nog te monteren
 supplier: Linux Foundation
 years: —
 pending: true
 plate: { size: full, style: dashed }
 detail:
-  title: CKAD (to be fitted)
-  meta: The Linux Foundation · in progress
-  body: 'The next part going on: Kubernetes, for building and running applications the way the teams I want to join do.'
-  link: { label: SEE SHEET 04 →, href: /certifications#ckad }
+  title: CKAD (nog te monteren)
+  meta: The Linux Foundation · in voorbereiding
+  body: 'Het volgende onderdeel dat erop gaat: Kubernetes, om applicaties te bouwen en te draaien zoals de teams waar ik bij wil horen dat doen.'
+  link: { label: ZIE BLAD 04 →, href: /certifications#ckad }
 lang: nl
-translated: false

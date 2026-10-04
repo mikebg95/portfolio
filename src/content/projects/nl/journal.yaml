@@ -2,56 +2,55 @@
 # figure words from github.com/mikebg95/journal; FIG. 2 is its 7 ADRs (title, then the link).
 slug: journal
 code: P-04
-kind: 'HEXAGONAL · IN PROGRESS'
+kind: 'HEXAGONAAL · IN UITVOERING'
 order: 4
 title: Journal
-diagram: ['DOMAIN']
+diagram: ['DOMEIN']
 series: true
-cardSummary: 'Rich domain model, 7 written design decisions, and an AI step that summarises each entry.'
-summary: 'A journal where one AI call turns each entry into a summary, tags, a mood and to-dos — and the entry is still saved if the AI is down. Part 3 of the series: hexagonal architecture and a rich domain model.'
-period: 'JUL 2026 – NOW'
+cardSummary: 'Rijk domeinmodel, 7 vastgelegde ontwerpbeslissingen en een AI-stap die elke notitie samenvat.'
+summary: "Een dagboek waarin één AI-aanroep elke notitie omzet in een samenvatting, tags, een stemming en to-do's — en de notitie wordt ook opgeslagen als de AI onbereikbaar is. Deel 3 van de serie: hexagonale architectuur en een rijk domeinmodel."
+period: 'jul 2026 – nu'
 status: in-progress
 repo: https://github.com/mikebg95/journal
 tests: 79
 facts:
   - { label: TESTS, value: '79' }
   - { label: ADRS, value: '7' }
-  - { label: STATUS, value: 'Building' }
+  - { label: STATUS, value: 'In aanbouw' }
 spec:
-  - label: ARCHITECTURE
-    text: 'Hexagonal: domain/model, application/port/in and out, adapter/in/web, adapter/out/persistence and ai. ArchUnit fails the build if a boundary is crossed.'
-  - label: DOMAIN
-    text: 'A rich domain model — Entry, Tag, Todo — whose objects reject invalid state themselves; application services work through ports only.'
+  - label: ARCHITECTUUR
+    text: 'Hexagonaal: domain/model, application/port/in en out, adapter/in/web, adapter/out/persistence en ai. ArchUnit laat de build falen als een grens wordt overschreden.'
+  - label: DOMEIN
+    text: 'Een rijk domeinmodel — Entry, Tag, Todo — waarvan de objecten zelf een ongeldige toestand weigeren; application services werken alleen via ports.'
   - label: AI
-    text: 'Planned: one Spring AI call turns an entry into a summary, tags, a mood and to-dos. If the call fails, the entry is still saved (graceful degradation).'
-  - label: PERSISTENCE
-    text: 'In progress: a Spring Data JPA adapter on PostgreSQL 18 with Flyway, MapStruct mapping between the domain and JPA entities.'
+    text: "Gepland: één Spring AI-aanroep zet een notitie om in een samenvatting, tags, een stemming en to-do's. Mislukt de aanroep, dan wordt de notitie toch opgeslagen (graceful degradation)."
+  - label: PERSISTENTIE
+    text: 'In uitvoering: een Spring Data JPA-adapter op PostgreSQL 18 met Flyway, MapStruct-mapping tussen het domein en de JPA-entities.'
   - label: CONCURRENCY
-    text: 'Optimistic locking on entries: a concurrent edit is detected by a version column and surfaced as a conflict for the user to resolve.'
+    text: 'Optimistic locking op notities: een gelijktijdige wijziging wordt herkend aan een versiekolom en als conflict aan de gebruiker voorgelegd.'
   - label: API
-    text: 'Design-first OpenAPI 3.1 contract, written before the code; the planned REST adapter is generated from it.'
-  - label: TESTING
-    text: '79 tests, written test-first: domain and service unit tests with in-memory fakes, persistence on Testcontainers, ArchUnit on the hexagonal boundaries.'
+    text: 'Design-first OpenAPI 3.1-contract, geschreven vóór de code; de geplande REST-adapter wordt eruit gegenereerd.'
+  - label: TESTEN
+    text: '79 tests, test-first geschreven: unit tests voor domein en services met in-memory fakes, persistentie op Testcontainers, ArchUnit op de hexagonale grenzen.'
 figures:
   - title: PORTS & ADAPTERS
     labels:
-      - "Domain\nEntry · Tag · Todo"
+      - "Domein\nEntry · Tag · Todo"
       - "Application\nservices · ports in / out"
-      - "Web\nREST adapter · planned"
+      - "Web\nREST-adapter · gepland"
       - EntryUseCases
-      - "Persistence\nSpring Data JPA · in progress"
+      - "Persistentie\nSpring Data JPA · in uitvoering"
       - EntryStore · TagStore
-      - "AI\nSpring AI · planned"
+      - "AI\nSpring AI · gepland"
       - EntryEnricher
-  - title: DECISION RECORDS
+  - title: BESLISSINGSRECORDS
     labels:
-      - "Hexagonal architecture at P3\nhttps://github.com/mikebg95/journal/blob/main/docs/architecture/adr/0001-hexagonal-at-p3.md"
-      - "Synchronous AI processing\nhttps://github.com/mikebg95/journal/blob/main/docs/architecture/adr/0002-synchronous-ai-processing.md"
-      - "Spring AI as the LLM integration library\nhttps://github.com/mikebg95/journal/blob/main/docs/architecture/adr/0003-spring-ai.md"
-      - "No cascade delete to shared tags\nhttps://github.com/mikebg95/journal/blob/main/docs/architecture/adr/0004-no-cascade-to-tags.md"
-      - "Graceful degradation on AI failure\nhttps://github.com/mikebg95/journal/blob/main/docs/architecture/adr/0005-graceful-degradation.md"
-      - "Tag normalisation defines tag identity\nhttps://github.com/mikebg95/journal/blob/main/docs/architecture/adr/0006-tag-data-contract.md"
-      - "Optimistic locking on entries, with user-resolved conflicts\nhttps://github.com/mikebg95/journal/blob/main/docs/architecture/adr/0007-optimistic-locking.md"
-note: 'REV. NOTE △ In progress: the domain model is built and persistence is under way; the web and AI adapters come next.'
+      - "Hexagonale architectuur in deel 3\nhttps://github.com/mikebg95/journal/blob/main/docs/architecture/adr/0001-hexagonal-at-p3.md"
+      - "Synchrone AI-verwerking\nhttps://github.com/mikebg95/journal/blob/main/docs/architecture/adr/0002-synchronous-ai-processing.md"
+      - "Spring AI als LLM-integratiebibliotheek\nhttps://github.com/mikebg95/journal/blob/main/docs/architecture/adr/0003-spring-ai.md"
+      - "Geen cascade delete naar gedeelde tags\nhttps://github.com/mikebg95/journal/blob/main/docs/architecture/adr/0004-no-cascade-to-tags.md"
+      - "Graceful degradation als de AI faalt\nhttps://github.com/mikebg95/journal/blob/main/docs/architecture/adr/0005-graceful-degradation.md"
+      - "Tagnormalisatie bepaalt de identiteit van een tag\nhttps://github.com/mikebg95/journal/blob/main/docs/architecture/adr/0006-tag-data-contract.md"
+      - "Optimistic locking op notities, conflicten opgelost door de gebruiker\nhttps://github.com/mikebg95/journal/blob/main/docs/architecture/adr/0007-optimistic-locking.md"
+note: 'REV. NOTITIE △ In uitvoering: het domeinmodel staat en de persistentie is onderweg; de web- en AI-adapters volgen.'
 lang: nl
-translated: false

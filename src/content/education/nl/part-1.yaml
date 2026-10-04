@@ -1,12 +1,11 @@
 item: 1
 part: VWO
-balloon: VWO — base
+balloon: VWO — basis
 supplier: Amsterdams Lyceum
 years: 2007–13
 plate: { size: full, style: solid }
 detail:
   title: VWO
   meta: Het Amsterdams Lyceum · 2007–2013
-  body: 'Pre-university secondary education in Amsterdam: the base plate everything else is mounted on.'
+  body: 'Voorbereidend wetenschappelijk onderwijs in Amsterdam: de grondplaat waarop al het andere is gemonteerd.'
 lang: nl
-translated: false

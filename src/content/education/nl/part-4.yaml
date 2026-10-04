@@ -7,9 +7,8 @@ ec: 6
 plate: { size: small, style: solid }
 detail:
   title: Harvard CS50
-  meta: Introduction to Computer Science · within the minor · 6 EC
-  body: "Harvard's introduction to computer science: C and memory, algorithms and data structures, then Python, SQL and the web. My problem sets are on GitHub."
+  meta: Introduction to Computer Science · binnen de minor · 6 EC
+  body: 'Harvards introductie in de informatica: C en geheugen, algoritmes en datastructuren, daarna Python, SQL en het web. Mijn problem sets staan op GitHub.'
   # The external link draws its own ↗, so the label is stored without it.
-  link: { label: CS50 PROBLEM SETS ON GITHUB, href: 'https://github.com/mikebg95/CS50-Psets' }
+  link: { label: CS50 PROBLEM SETS OP GITHUB, href: 'https://github.com/mikebg95/CS50-Psets' }
 lang: nl
-translated: false

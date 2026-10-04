@@ -29,6 +29,14 @@ describe.each(COLLECTIONS)('content collection %s', (name) => {
     delete data[firstField ?? ''];
     expect(schemas[name].safeParse(data).success).toBe(false);
   });
+
+  // The Dutch tasks (PR-48–50) translated every entry; none may fall back to English again.
+  it('has no entry marked untranslated', () => {
+    const untranslated = files.filter(
+      (f) => (f.data as { translated?: boolean }).translated === false,
+    );
+    expect(untranslated.map((f) => f.path)).toEqual([]);
+  });
 });
 
 describe('ids written inside entries', () => {

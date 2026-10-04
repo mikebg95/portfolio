@@ -227,8 +227,12 @@ const fill = (item: number) => `var(--color-${FILLS[item - 1] ?? 'paper'})`;
     color: var(--color-redline);
   }
 
+  /* A long Dutch compound (Politicologie) is wider than the phone's label column: hyphenate it
+     (the page's lang picks the dictionary), else break it, never spill past the sheet. */
   .assembly__label {
     min-width: 0;
+    overflow-wrap: break-word;
+    hyphens: auto;
   }
 
   @media (max-width: 767px) {

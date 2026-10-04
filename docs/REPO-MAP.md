@@ -70,6 +70,8 @@ line.
 - `src/i18n/paths.ts` — `DEFAULT_LANG`, `localize`, `delocalize`, `alternate`, `langPaths`; `astro.config.ts` i18n reads `LANGS`/`DEFAULT_LANG` from it.
 - `src/i18n/routes.ts` — `SHEETS` (key, number, path) and `projectPath(slug)`.
 - `src/i18n/content.ts` — `t(lang)`, `getLocalized`, `getAllLocalized`, `sharedId`.
+- `tests/e2e/helpers/content.ts` — `ui`, `profile`, `certification` read straight from the YAML, so e2e that walks `/nl/` expects each language's own words; `tests/e2e/dutch.spec.ts` greps built `dist/nl/` for English UI words.
+- TRAP: long Dutch compounds (Politicologie, LEVERANCIER) overflow fixed phone columns at 320 px; the education label column and parts list rely on `hyphens: auto` (the page's `lang` picks the dictionary).
 - `src/seo.ts` — canonical/hreflang URLs (`neutralPath` strips Astro's trailing slash), `sitemap`, `robots`, `personJsonLd`; `SheetLayout` renders the head from its `description`/`noindex` props, pages add more via `slot="head"`.
 - `src/pages/sitemap.xml.ts`, `src/pages/robots.txt.ts` — endpoints; the sitemap is built from `SHEETS` + project slugs, so a new route is listed only if added there. `tests/e2e/seo.spec.ts` (chromium-desktop only).
 - `src/og.ts` — Open Graph cards: `ogImagePath(lang, path)` (SheetLayout's og:image), the SVG layout, `renderOgPng`; `src/pages/og/[...card].png.ts` lists the cards from content (label + heading as the page draws them). `tests/unit/og.test.ts`; `tests/e2e/seo.spec.ts` checks every built page's image is a 1200×630 PNG.

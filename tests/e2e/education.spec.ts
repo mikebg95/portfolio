@@ -71,19 +71,27 @@ test('plates sit on one axis, top to bottom, never overlapping the next one', as
   expect(boxes[1]!.width).toBeLessThan(boxes[0]!.width * 0.7);
 });
 
-for (const width of [320, 390, 768]) {
-  test(`the assembly scales and the sheet fits ${width} px without scrolling sideways`, async ({
-    page,
-  }) => {
-    await page.setViewportSize({ width, height: 900 });
-    await open(page, '/education');
-    const panel = await page.locator('.education').boundingBox();
-    const right = await page
-      .locator('.assembly__drawing, .plate, .assembly__callout, .detail-panel, .parts-list')
-      .evaluateAll((els) => Math.max(...els.map((el) => el.getBoundingClientRect().right)));
-    expect(right).toBeLessThanOrEqual(panel!.x + panel!.width);
-    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(width);
-  });
+for (const prefix of ['', '/nl']) {
+  for (const width of [320, 390, 768]) {
+    test(`${prefix}/education: the assembly scales and the sheet fits ${width} px without scrolling sideways`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await open(page, `${prefix}/education`);
+      const panel = await page.locator('.education').boundingBox();
+      const right = await page
+        .locator('.assembly__drawing, .plate, .assembly__callout, .detail-panel, .parts-list')
+        .evaluateAll((els) => Math.max(...els.map((el) => el.getBoundingClientRect().right)));
+      expect(right).toBeLessThanOrEqual(panel!.x + panel!.width);
+      // No balloon label spills out of its column (Dutch compounds are long).
+      expect(
+        await page
+          .locator('.assembly__label')
+          .evaluateAll((els) => els.filter((el) => el.scrollWidth > el.clientWidth).length),
+      ).toBe(0);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(width);
+    });
+  }
 }
 
 test('/nl/education renders the five parts too', async ({ page }) => {

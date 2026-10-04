@@ -2,48 +2,47 @@
 # figure words from github.com/mikebg95/Scentify; FIG. 2 labels are the demo's alt text and credit.
 slug: scentify
 code: P-05
-kind: 'ORIGIN'
+kind: 'OORSPRONG'
 order: 5
 title: Scentify
-diagram: ['4 QUESTIONS', '52 SCENTS']
-cardSummary: 'My first real app: an Android fragrance recommender in Java, built at the end of the programming minor.'
-summary: 'Answer four questions — season, age, lifestyle, scent type — and get matching fragrances from a catalogue of 52. My first real app.'
-period: 'NOV 2020 – JAN 2021'
+diagram: ['4 VRAGEN', '52 GEUREN']
+cardSummary: 'Mijn eerste echte app: een Android-app in Java die parfums aanbeveelt, gebouwd aan het eind van de minor programmeren.'
+summary: 'Beantwoord vier vragen — seizoen, leeftijd, levensstijl, geurtype — en krijg passende parfums uit een catalogus van 52. Mijn eerste echte app.'
+period: 'nov 2020 – jan 2021'
 platform: 'ANDROID'
 status: done
 repo: https://github.com/mikebg95/Scentify
 facts:
-  - { label: YEAR, value: '2020' }
+  - { label: JAAR, value: '2020' }
   - { label: STACK, value: 'Android' }
-  - { label: LANG, value: 'Java' }
+  - { label: TAAL, value: 'Java' }
 spec:
   - label: PLATFORM
-    text: 'Android in Java (min SDK 21, target SDK 29); XML layouts with AndroidX AppCompat, Material Components and ConstraintLayout.'
-  - label: SCREENS
-    text: 'Four activities joined by explicit Intents — home, questionnaire, results, detail. The answers travel as a HashMap extra.'
+    text: 'Android in Java (min SDK 21, target SDK 29); XML-layouts met AndroidX AppCompat, Material Components en ConstraintLayout.'
+  - label: SCHERMEN
+    text: 'Vier activities, verbonden door expliciete Intents — home, vragenlijst, resultaten, detail. De antwoorden reizen mee als HashMap-extra.'
   - label: MATCHING
-    text: 'A fragrance is recommended only if it matches every answer; "Doesn''t matter" is a wildcard. Age ranges use android.util.Range.'
-  - label: LIST
-    text: 'Results render through PerfumeAdapter, a custom ArrayAdapter with its own row layout.'
-  - label: CATALOGUE
-    text: '52 fragrances, each with brand, name, seasons, age range, lifestyle, type and image.'
-  - label: LIMITATIONS
-    text: 'Named in the README: the catalogue is hard-coded in an activity, matching is strict rather than scored, and buttons are styled with touch listeners.'
+    text: 'Een parfum wordt alleen aanbevolen als het bij elk antwoord past; "Maakt niet uit" is een wildcard. Leeftijdsbereiken gebruiken android.util.Range.'
+  - label: LIJST
+    text: 'De resultaten worden getoond via PerfumeAdapter, een eigen ArrayAdapter met een eigen rij-layout.'
+  - label: CATALOGUS
+    text: '52 parfums, elk met merk, naam, seizoenen, leeftijdsbereik, levensstijl, type en afbeelding.'
+  - label: BEPERKINGEN
+    text: 'Benoemd in de README: de catalogus staat hard-coded in een activity, de matching is strikt in plaats van met scores, en knoppen zijn opgemaakt met touch listeners.'
 figures:
-  - title: QUESTION FLOW
+  - title: VRAGENFLOW
     labels:
-      - "4 questions\nQuestionActivity"
-      - answers · Intent
-      - "Filter\n52 fragrances · all must match"
+      - "4 vragen\nQuestionActivity"
+      - antwoorden · Intent
+      - "Filter\n52 parfums · alles moet passen"
       - matches
-      - "Results list\ncustom ArrayAdapter"
-      - tap
+      - "Resultatenlijst\neigen ArrayAdapter"
+      - tik
       - "Detail\nPerfumeActivity"
   - title: DEMO
-    caption: 'Scentify running on an Android emulator.'
+    caption: 'Scentify op een Android-emulator.'
     labels:
-      - 'Scentify in use: the home screen, the questions one by one, and the list of recommended fragrances.'
-      - 'Source: scentify_gif.gif, github.com/mikebg95/Scentify'
-note: 'REV. NOTE △ Where it started: the app that made me want to do this every day.'
+      - 'Scentify in gebruik: het startscherm, de vragen een voor een en de lijst met aanbevolen parfums.'
+      - 'Bron: scentify_gif.gif, github.com/mikebg95/Scentify'
+note: 'REV. NOTITIE △ Waar het begon: de app waardoor ik dit elke dag wilde doen.'
 lang: nl
-translated: false

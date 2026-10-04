@@ -456,3 +456,17 @@ intro's "controleren"). A stamp line must stay ≤ 80 px (e2e). Certificate name
 skill chips stay English (Pods & deployments, Core API's). The Sheet 04 heading cap went from
 `13cqi` to `11.5cqi` so AFGETEKEND does not break at 320 px. Instead of: IN UITVOERING on the stamp
 (91 px, past the ring); GEVERIFIEERD (12 letters).
+
+## 2026-10-04 — Dutch projects and education
+Who: agent (PR-50). Project titles, class/annotation names, figure words that are code
+(EntryUseCases, cascade ALL) and the Jamigos pipeline stations (CI job names: detect changes,
+build & test, deploy) stay English; "wijzigingen detecteren" was clipped in its 55 px station at
+320 px. Spec labels go Dutch where Dutch developers say it in Dutch (ARCHITECTUUR, PERSISTENTIE,
+TESTEN, LAGEN), English where they don't (SECURITY, CONCURRENCY, AGGREGATE, DELIVERY). A journal
+"entry" is a "notitie". Course names stay as given (CS50 Intro to CS, Introduction to Computer
+Science); degrees are Dutch (BSc Politicologie, Minor Programmeren). Long Dutch words overflowed a
+320 px phone (the parts list by 8 px, the "Politicologie" balloon label by 4 px): both now use
+`hyphens: auto` (phone only for the parts list) rather than a wider label column, which would
+shrink the EN drawing. Every content entry is now translated; a unit test forbids
+`translated: false`, and `tests/e2e/dutch.spec.ts` greps the built `dist/nl/` for copy.md Global's
+English words (not PROJECT: the Dutch caption is the same word).

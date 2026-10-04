@@ -106,7 +106,8 @@ const rows = [...parts].sort((a, b) => b.item - a.item);
     color: var(--color-redline);
   }
 
-  /* A phone keeps all four columns: tighter cells, and the year may break after its dash. */
+  /* A phone keeps all four columns: tighter cells, the year may break after its dash, and long
+     words (Dutch LEVERANCIER, Politicologie) hyphenate so the table stays inside a 320 px sheet. */
   @media (max-width: 767px) {
     .parts-list {
       font-size: 11px;
@@ -115,6 +116,7 @@ const rows = [...parts].sort((a, b) => b.item - a.item);
     th,
     td {
       padding: 8px 6px;
+      hyphens: auto;
     }
   }
 

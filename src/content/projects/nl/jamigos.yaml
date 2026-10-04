@@ -1,7 +1,7 @@
 # design/copy.md Sheet 03: the register row (PR-21) and detail sheet 03.1 (PR-25).
 slug: jamigos
 code: P-01
-kind: 'FLAGSHIP'
+kind: 'VLAGGENSCHIP'
 order: 1
 title: Jamigos
 tag: 'SECURITY · CI/CD'
@@ -11,41 +11,40 @@ diagram:
   - "SPRING BOOT API\n3 SECURITY CHAINS"
   - 'POSTGRESQL'
   - 'MONGODB'
-cardSummary: 'A full-stack app built to practise production-grade security and delivery — sign-in, roles, ownership checks and audit logging, shipped by its own GitHub Actions pipeline.'
-summary: 'A deliberately simple app — sign in, see a dashboard for your role, manage your own items — used to practise everything around it: security, testing and delivery.'
-period: 'AUG 2025 – NOV 2025'
+cardSummary: 'Een full-stack app om security en delivery op productieniveau te oefenen — inloggen, rollen, eigenaarschapscontroles en audit logging, uitgerold door een eigen GitHub Actions-pipeline.'
+summary: 'Een bewust eenvoudige app — log in, zie een dashboard voor je rol, beheer je eigen items — om alles eromheen te oefenen: security, testen en delivery.'
+period: 'aug 2025 – nov 2025'
 status: retired-hosting
 repo: https://github.com/mikebg95/jamigos
 facts:
   - { label: STACK, value: 'Spring Boot · Vue' }
-  - { label: CHECKED, value: 'Unit · slice · security · IT' }
+  - { label: GETEST, value: 'Unit · slice · security · IT' }
   - { label: PIPELINE, value: 'GitHub Actions → GHCR' }
 spec:
   - label: SECURITY
-    text: 'Three ordered security chains: public API docs, Actuator behind basic auth, the API behind JWT. Roles read from the token; method security and a custom ownership annotation enforced by an aspect.'
+    text: 'Drie security chains op volgorde: publieke API-documentatie, Actuator achter basic auth, de API achter JWT. Rollen komen uit het token; method security en een eigen ownership-annotatie, afgedwongen door een aspect.'
   - label: DATA
-    text: 'PostgreSQL for users (JPA), MongoDB for items and the audit log.'
-  - label: TESTING
-    text: 'Unit, slice, security and integration tests on Testcontainers.'
+    text: 'PostgreSQL voor gebruikers (JPA), MongoDB voor items en de audit log.'
+  - label: TESTEN
+    text: 'Unit-, slice-, security- en integratietests op Testcontainers.'
   - label: FRONTEND
-    text: 'Vue 3, Pinia, Vite; Capacitor builds for iOS and Android.'
+    text: 'Vue 3, Pinia, Vite; Capacitor-builds voor iOS en Android.'
   - label: DELIVERY
-    text: 'Docker images for backend, frontend and Keycloak; local, dev and prod profiles.'
+    text: 'Docker-images voor backend, frontend en Keycloak; local-, dev- en prod-profielen.'
 figures:
-  - title: CONTAINER VIEW
+  - title: CONTAINERVIEW
     labels:
       - "Browser · Vue 3\nPinia · keycloak-js"
       - JWT
-      - "Spring Boot API\n3 security filter chains\n@PreAuthorize · @RequireOwner\naudit-log aspect"
-      - "PostgreSQL\nusers · JPA"
+      - "Spring Boot API\n3 security filter chains\n@PreAuthorize · @RequireOwner\naudit-log-aspect"
+      - "PostgreSQL\ngebruikers · JPA"
       - "MongoDB\nitems · audit log"
-      - "Keycloak\nOAuth2 / OIDC · PKCE · custom login theme"
-  - title: PIPELINE ROUTE
+      - "Keycloak\nOAuth2 / OIDC · PKCE · eigen login-thema"
+  - title: PIPELINEROUTE
     labels:
       - "detect\nchanges"
       - "build\n& test"
       - "image\n→ GHCR"
       - deploy
-note: 'REV. NOTE △ The jamigos.app domain is retired. The code, tests and pipeline stay public on GitHub.'
+note: 'REV. NOTITIE △ Het domein jamigos.app is opgeheven. De code, tests en pipeline blijven openbaar op GitHub.'
 lang: nl
-translated: false
