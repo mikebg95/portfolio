@@ -54,16 +54,6 @@ queue.
 
 ### Sheet chrome
 
-- [x] **PR-7 SheetHeader with tabs (desktop/tablet)**
-  - Done when: monogram cell + five tabs exactly as drawn, active tab ink-filled with `aria-current="page"` (project detail pages mark tab 03), hover underline, utilities cluster (EN/NL links via `alternate()`, theme button placeholder, CV link to `/michael-goldman-cv.pdf` with the PDF copied from `docs/source/cv.pdf` into `public/`); e2e: every tab navigates to its route in both languages and the correct tab is current.
-  - Spec: SPEC §3.2, §3.5; design/components.md SheetHeader/SheetTab; design/copy.md Global
-  - Out of scope: phone panel (PR-8), theme behaviour (PR-10).
-
-- [x] **PR-8 Phone sheet index panel**
-  - Done when: below 768 px the header shows monogram + current sheet name + `SHEETS` button; the panel lists the five sheets, language, theme, CV; opens/closes with a clip-path wipe (250 ms), closes on Escape/selection/outside tap, traps focus and returns it to the button; `aria-expanded`/`aria-controls` correct; works without JS as a `<details>` fallback; e2e on chromium-phone covers open, navigate, Escape.
-  - Spec: SPEC §3.2; design/components.md SheetIndexPanel
-  - Out of scope: desktop header.
-
 - [ ] **PR-9 TitleBlock footer**
   - Done when: footer title block as drawn (PROJECT ×2, SCALE, SHEET nn / 05, DRAWN, CHECKED 251 TESTS, REV = build year.month, CONTACT email/LinkedIn/GitHub) on every page; 2 columns on phone; sheet number correct per page (project details "03 / 05"); unit test for the REV formatter.
   - Spec: SPEC §3.2; design/components.md TitleBlock; design/copy.md Global
