@@ -74,11 +74,6 @@ queue.
 
 ### Delivery
 
-- [x] **PR-55 Dockerfile**
-  - Done when: multi-stage Dockerfile (node:22 build → nginxinc/nginx-unprivileged serving `dist/` on 8080) with gzip/brotli-static, long cache headers for hashed assets, no-cache for HTML, 404 page wired, `.dockerignore`; `docker build` + `docker run` smoke test script `scripts/docker-smoke.sh` curls `/`, `/nl/`, an unknown URL (404) — run it if Docker is available, otherwise document; docs/REPO-MAP.md notes it.
-  - Spec: NOTES.md "Stack preferences", SPEC §7
-  - Out of scope: deploying anywhere.
-
 - [ ] **PR-56 GitHub Actions CI**
   - Done when: `.github/workflows/ci.yml` on push/PR: npm ci, typecheck, lint, format check, unit, build, Playwright (with browsers cache), axe, Lighthouse CI, Docker build; uploads `dist/` and the Playwright report as artifacts; concurrency group; README badge; workflow passes on GitHub after push (check with `gh run list`).
   - Spec: NOTES.md "Stack preferences"

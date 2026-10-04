@@ -824,3 +824,15 @@ History, not a queue.
   - Seen by QA-65's agent, 2026-10-04, also before its change: at 320 px wide (Chromium, `/education`, reduced motion off, after the explosion settles) `.parts-list-frame` is 228 px wide and its table 251 px (`scrollWidth` 251 > `clientWidth` 228); at 340 px 251 vs 248. NL fits. PartsList.astro's comment promises the table fits a 320 px sheet without scrolling its frame.
   - Done when: at 320 px in EN and NL the parts list fits its frame (`scrollWidth <= clientWidth`), asserted in `tests/e2e/education.spec.ts`'s 320 px fit test, with 12 px type kept from 360 px up (QA-65).
   - Spec: design/components.md parts list; docs/RECORD.md 2026-10-04 responsive pass
+
+
+## Pruned from the queue
+
+1 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### Delivery
+
+- [x] **PR-55 Dockerfile**
+  - Done when: multi-stage Dockerfile (node:22 build → nginxinc/nginx-unprivileged serving `dist/` on 8080) with gzip/brotli-static, long cache headers for hashed assets, no-cache for HTML, 404 page wired, `.dockerignore`; `docker build` + `docker run` smoke test script `scripts/docker-smoke.sh` curls `/`, `/nl/`, an unknown URL (404) — run it if Docker is available, otherwise document; docs/REPO-MAP.md notes it.
+  - Spec: NOTES.md "Stack preferences", SPEC §7
+  - Out of scope: deploying anywhere.
