@@ -6,13 +6,25 @@ import { ui } from './helpers/content';
 // The 404 sheet (SPEC §3.9 / §4.7; copy.md 404): label, heading, redline note and the five sheets
 // as a list of links. `astro preview` answers an unknown URL with `dist/404.html`, as the
 // static host does (docs/REPO-MAP.md "Routes and languages"). English is copy.md verbatim; Dutch is
-// its translation in the NL content.
+// its translation in the NL content. GitHub Pages serves the root `404.html` for every unknown URL,
+// `/nl/…` included, so under `/nl/` that page swaps itself for the Dutch sheet (QA-70).
 const PATHS = ['/', '/experience', '/projects', '/certifications', '/education'];
 const nl = ui('nl');
 
-for (const { url, lang, prefix, title, label, heading, note, names } of [
+const dutch = {
+  lang: 'nl',
+  prefix: '/nl',
+  title: nl.seo.notFound.title,
+  label: nl.notFound.label,
+  heading: nl.notFound.heading,
+  note: nl.notFound.note,
+  names: Object.values(nl.sheets),
+};
+
+for (const { url, status, lang, prefix, title, label, heading, note, names } of [
   {
     url: '/no-such-sheet',
+    status: 404,
     lang: 'en',
     prefix: '',
     title: 'Sheet not found · Michael Goldman — Portfolio',
@@ -21,21 +33,15 @@ for (const { url, lang, prefix, title, label, heading, note, names } of [
     note: "REV. NOTE △ This sheet isn't in the set. Try one of these:",
     names: ['Overview', 'Experience', 'Projects', 'Certifications', 'Education'],
   },
-  {
-    url: '/nl/404',
-    lang: 'nl',
-    prefix: '/nl',
-    title: nl.seo.notFound.title,
-    label: nl.notFound.label,
-    heading: nl.notFound.heading,
-    note: nl.notFound.note,
-    names: Object.values(nl.sheets),
-  },
+  { url: '/nl/404', status: undefined, ...dutch },
+  { url: '/nl/no-such-sheet', status: 404, ...dutch },
+  { url: '/nl/projects/nope', status: 404, ...dutch },
 ]) {
   test(`${url} is the not-found sheet with links to the five sheets`, async ({ page }) => {
     const response = await page.goto(url);
-    if (lang === 'en') expect(response?.status()).toBe(404);
+    if (status) expect(response?.status()).toBe(status);
     await expect(page.locator('html')).toHaveAttribute('lang', lang);
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex');
     await expect(page).toHaveTitle(title);
     await expect(page.locator('.not-found .sheet-label')).toHaveText(label);
     await expect(page.getByRole('heading', { level: 1 })).toHaveText(heading);
@@ -48,9 +54,36 @@ for (const { url, lang, prefix, title, label, heading, note, names } of [
     );
     // No tab is current: the 404 sheet belongs to no sheet.
     await expect(page.locator('.sheet-header [aria-current="page"]')).toHaveCount(0);
+    // The address the reader typed stays; the sheet is shown, not hidden behind the swap.
+    expect(new URL(page.url()).pathname).toBe(url);
+    await expect(page.locator('html')).not.toHaveCSS('visibility', 'hidden');
     await expectNoAxeViolations(page);
   });
 }
+
+test('Back to an unknown Dutch URL shows the Dutch not-found sheet again', async ({ page }) => {
+  await page.goto('/nl/no-such-sheet');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(dutch.heading);
+  await page.locator('[data-sheet-list] a').nth(1).click();
+  await expect(page).toHaveURL(/\/nl\/experience$/);
+  await page.goBack();
+  await expect(page).toHaveURL(/\/nl\/no-such-sheet$/);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(dutch.heading);
+  await expect(page.locator('html')).toHaveAttribute('lang', 'nl');
+});
+
+test.describe('without JavaScript', () => {
+  test.use({ javaScriptEnabled: false });
+
+  test('an unknown Dutch URL shows the English not-found sheet, never a hidden page', async ({
+    page,
+  }) => {
+    const response = await page.goto('/nl/no-such-sheet');
+    expect(response?.status()).toBe(404);
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('SHEET NOT FOUND');
+    await expect(page.locator('html')).not.toHaveCSS('visibility', 'hidden');
+  });
+});
 
 test('a sheet link on the not-found sheet leads to that sheet', async ({ page }) => {
   await page.goto('/no-such-sheet');

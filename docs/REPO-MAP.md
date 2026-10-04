@@ -89,6 +89,7 @@ line.
 - `src/pages/[...lang]/offline.astro` — the offline sheet the service worker serves (`NotFoundSheet kind="offline"`, copy `ui.offline`); noindex, not in the sitemap.
 - `src/components/NotFoundSheet.astro` — the 404 sheet both 404 pages render (label, heading, note, `[data-sheet-list]` of the five sheets); `tests/e2e/not-found.spec.ts`.
 - Static host 404: answer unknown URLs with `dist/404.html` and status 404 (nginx `error_page 404 /404.html;`); for Dutch, `location /nl/ { error_page 404 /nl/404/index.html; }`. `astro preview` serves `404.html` for every unknown URL, `/nl/…` included.
+- `src/not-found.ts` — GitHub Pages serves the root `404.html` under `/nl/` too: that page (`src/pages/404.astro`, its inline head script hides it) fetches `/nl/404` and swaps it in through the router, URL and 404 status kept; NotFoundSheet's `data-not-found` lets the router spot the root 404 on Back. Without JS: English.
 - `src/i18n/paths.ts` — `DEFAULT_LANG`, `localize`, `delocalize`, `alternate`, `langPaths`; `astro.config.ts` i18n reads `LANGS`/`DEFAULT_LANG` from it.
 - `src/i18n/routes.ts` — `SHEETS` (key, number, path) and `projectPath(slug)`.
 - `src/i18n/content.ts` — `t(lang)`, `getLocalized`, `getAllLocalized`, `sharedId`.

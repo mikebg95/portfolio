@@ -1,7 +1,24 @@
 ---
 import NotFoundSheet from '../components/NotFoundSheet.astro';
+import { LOCALIZED_PREFIXES } from '../not-found';
 
 // Not under [...lang]/: Astro serves only `src/pages/404.astro` as the 404 page by name.
+// The static host serves this page for unknown `/nl/…` URLs too; there it hides itself before first
+// paint and swaps in the Dutch sheet (src/not-found.ts). Shown again after 3 s whatever happens.
 ---
 
-<NotFoundSheet lang="en" />
+<NotFoundSheet lang="en">
+  <script is:inline slot="head" define:vars={{ prefixes: LOCALIZED_PREFIXES }}>
+    if (prefixes.some((prefix) => location.pathname.startsWith(prefix))) {
+      const style = document.documentElement.style;
+      style.visibility = 'hidden';
+      setTimeout(() => style.removeProperty('visibility'), 3000);
+    }
+  </script>
+</NotFoundSheet>
+
+<script>
+  import { serveLocalizedNotFound } from '../not-found';
+
+  void serveLocalizedNotFound('en');
+</script>

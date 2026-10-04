@@ -770,3 +770,18 @@ Lighthouse 12.6.1 mobile, simulated (the budget's method), 3 runs: with `crossor
 After a router sheet change neither engine fetches a font again or warns. If WebKit ever drops
 `-webkit-transform-2d` it gets the `cors` preload and double-fetches again;
 `tests/e2e/performance.spec.ts` ("fetches each preloaded font once") fails on webkit-iphone then.
+
+## 2026-10-05 — Dutch 404 on GitHub Pages: the root 404 swaps itself for the Dutch sheet (QA-70)
+Who: agent (QA-70). GitHub Pages answers every unknown URL with the root `404.html` (English) and has
+no per-directory 404, so `/nl/<unknown>` cannot be routed to `dist/nl/404/index.html` by the host
+the way nginx does (PR-55). Chosen: on a `/nl/` URL the root 404 page hides itself before first
+paint (inline head script, shown again after 3 s whatever happens), fetches `/nl/404`, and swaps it
+in through the ClientRouter by "navigating" to its own address with the fetched markup as the
+loader's document (`src/not-found.ts`). The address stays, the browser keeps the 404 status of the
+first response, `noindex` comes with the Dutch head; the swap skips the cross-fade and keeps the
+first view's plotting. The router also replaces the root 404 with the Dutch sheet when it loads it
+again at a `/nl/` URL later in the visit (Back). Without JS the English sheet shows, as before —
+there is no static way on GitHub Pages. Refused: `location.replace('/nl/404/')` (status 200 and the
+typed address lost); `document.open()/write()` (same window, so the page's module scripts never
+re-run and the header and router stay unwired); rendering both languages into `404.html` (two h1s,
+duplicate ids, twice the markup). `tests/e2e/not-found.spec.ts` covers it, Back and no-JS included.
