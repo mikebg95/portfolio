@@ -61,7 +61,7 @@ queue.
   - Spec: SPEC §4.1; design/copy.md "How I work"; design/README.md
   - Out of scope: other panels.
 
-- [ ] **PR-15 Overview specification and general notes**
+- [x] **PR-15 Overview specification and general notes**
   - Done when: the two-panel row as drawn: SPECIFICATION S-01…S-07 (S-06 Kubernetes in redline) and GENERAL NOTES 1–6; stacks on phone; e2e asserts all rows.
   - Spec: SPEC §4.1; design/screens/overview-default-light-1440.png
   - Out of scope: motion.
