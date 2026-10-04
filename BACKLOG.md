@@ -64,11 +64,6 @@ queue.
 
 ### Sheet 05 — Education
 
-- [x] **PR-32 Education content (EN)**
-  - Done when: `education` EN entries for parts 1–5 with every field and detail panel text from copy.md; Vitest asserts ordering and that part 3 has three sub-rows totalling 30 EC.
-  - Spec: design/copy.md Sheet 05
-  - Out of scope: NL.
-
 - [ ] **PR-33 Exploded assembly (static)**
   - Done when: `/education` renders label, heading, intro and the isometric exploded assembly as drawn (5 plates, CS50 smaller, CKAD dashed redline, centre axis, balloons + leaders), with vertical spacing so plates don't overlap beyond their thickness; scales to width on phone; plates/balloons are buttons with accessible names; e2e asserts five parts.
   - Spec: SPEC §4.6; design/screens/html/education-default-light-1440.html; design/components.md ExplodedAssembly

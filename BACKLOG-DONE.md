@@ -300,3 +300,15 @@ History, not a queue.
   - Done when: `/certifications` as drawn: label, heading, intro, 2×2 CertCards with Stamp (verified/pending), skill chips, verify links (external ↗); 1 column on phone; ids `spring`, `psm`, `oca`, `ckad`; e2e asserts four cards and three verify links.
   - Spec: SPEC §4.5; design/screens/html/certifications-default-light-1440.html
   - Out of scope: stamp motion (PR-47).
+
+
+## Pruned from the queue
+
+1 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### Sheet 05 — Education
+
+- [x] **PR-32 Education content (EN)**
+  - Done when: `education` EN entries for parts 1–5 with every field and detail panel text from copy.md; Vitest asserts ordering and that part 3 has three sub-rows totalling 30 EC.
+  - Spec: design/copy.md Sheet 05
+  - Out of scope: NL.
