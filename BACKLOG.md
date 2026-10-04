@@ -71,7 +71,7 @@ queue.
   - Spec: design/copy.md 03.3; github.com/mikebg95/recipe-book
   - Out of scope: other projects.
 
-- [ ] **PR-28 Journal detail sheet**
+- [x] **PR-28 Journal detail sheet**
   - Done when: content from copy.md 03.4 plus spec rows from research-repos.md P-04 (hexagonal packages, rich domain model, Spring AI with graceful degradation, MapStruct, optimistic locking, ArchUnit, 79 tests); FIG. 1 ports & adapters hexagon (CSS clip-path hexagon + boxes), FIG. 2 the 7 ADR titles read from the repo's `docs/architecture/adr/`, each linking to the ADR on GitHub; status "in progress" styling (redline); e2e asserts 7 ADR links.
   - Spec: design/copy.md 03.4; github.com/mikebg95/journal
   - Out of scope: other projects.
