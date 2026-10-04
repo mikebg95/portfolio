@@ -382,3 +382,15 @@ History, not a queue.
   - Done when: an inline head script adds `js` to `<html>`; CSS custom properties for the three easings and durations; a tiny `motion.ts` with `reveal()` (IntersectionObserver, threshold 0.2, once, `data-reveal="ink|rise|wipe|stamp|draw|cards"`, stagger via `data-reveal-delay`), a sessionStorage first-visit flag (try/catch), and global guards so reduced motion and no-JS show final states; documented in `docs/conventions/motion.md` and indexed in CLAUDE.md; Playwright tests: reduced motion → no element with opacity < 1 or non-none clip-path after load; JS disabled → all content visible.
   - Spec: design/motion.md principles, §M3
   - Out of scope: the specific animations.
+
+
+## Pruned from the queue
+
+1 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### Motion
+
+- [x] **PR-40 Crosshair**
+  - Done when: the drafting crosshair per design/motion.md §M6 on every sheet: dashed redline hairlines + "X 0000 · Y 0000" readout in sheet coordinates, rAF-throttled, `pointer-events: none`, `aria-hidden`, only for `(hover: hover) and (pointer: fine)`, off under reduced motion; ported from the preview's script; e2e asserts it appears on mouse move (desktop) and is absent on phone.
+  - Spec: design/motion.md §M6; design/screens/html/motion-preview.dc.html
+  - Out of scope: —
