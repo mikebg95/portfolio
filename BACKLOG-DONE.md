@@ -166,3 +166,15 @@ History, not a queue.
   - Done when: a panel labelled `IN PROGRESS` lists the three current items as rows (redline ◐ marker, text, → link to the target anchor/page), above the title block; links resolve (anchors exist or are added as ids by their page tasks — if a target page is still a stub, the id is added there now); e2e follows each link.
   - Spec: SPEC §4.1; design/copy.md "Current work"
   - Out of scope: —
+
+
+## Pruned from the queue
+
+1 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### Sheet 02 — Experience
+
+- [x] **PR-17 Experience content (EN)**
+  - Done when: `experience` EN entries for OptieCon, sabbatical, DJI, LinkPizza with every field from design/copy.md verbatim (ids optiecon, sabbatical, dji, linkpizza; start/end YYYY-MM); Conspect employer line in profile or a small `employers` field; Vitest checks dates and ordering.
+  - Spec: design/copy.md Sheet 02; SPEC §5
+  - Out of scope: NL.

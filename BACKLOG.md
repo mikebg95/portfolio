@@ -58,11 +58,6 @@ queue.
 
 ### Sheet 02 — Experience
 
-- [x] **PR-17 Experience content (EN)**
-  - Done when: `experience` EN entries for OptieCon, sabbatical, DJI, LinkPizza with every field from design/copy.md verbatim (ids optiecon, sabbatical, dji, linkpizza; start/end YYYY-MM); Conspect employer line in profile or a small `employers` field; Vitest checks dates and ordering.
-  - Spec: design/copy.md Sheet 02; SPEC §5
-  - Out of scope: NL.
-
 - [ ] **PR-18 Timeline maths**
   - Done when: a pure module computes, from start/end months and a ruler range (Jan 2021 – Jan 2027 derived from the data, end extended to the next January after today's build date), each bar's left %/width % and the duration label ("2 Y 8 M"); "now" uses the build date; Vitest covers LinkPizza 1.4%/44.4%, DJI 50%/33.3%, sabbatical 83.3%/6.9%, OptieCon start 90.3%, and duration rounding.
   - Spec: SPEC §4.2
