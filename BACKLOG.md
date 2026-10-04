@@ -56,11 +56,6 @@ queue.
 
 ### Sheet 01 — Overview
 
-- [x] **PR-13 Overview hero and portrait**
-  - Done when: `/` renders the hero exactly as `design/screens/overview-default-light-1440.png` (label, MICHAEL/GOLDMAN display-xl, rule + role line, intro, revision note, VIEW PROJECTS and DOWNLOAD CV buttons) and the portrait block (`<pre aria-hidden>` portrait + sr-only text, horizontal and vertical dimension lines, balloons 1–3 with leaders; balloon 1 links to /certifications); phone layout per design/README.md "Responsive" (balloons become a numbered list under the portrait); e2e checks text, links and no horizontal scroll at 320 px.
-  - Spec: SPEC §4.1; design/screens/html/overview-default-light-1440.html
-  - Out of scope: motion (PR-41).
-
 - [ ] **PR-14 Overview "How I work" panel**
   - Done when: a panel below the hero (split by 1 px ink rule, label `HOW I WORK`) shows the four numbered principles as a 4-column drawing grid (2 on tablet, 1 on phone) in the drawing language (numbers as mono `01`–`04` in line colour, display-s titles, body text), plus the mono AI note beneath; no rounded corners, no icons; e2e asserts the four titles.
   - Spec: SPEC §4.1; design/copy.md "How I work"; design/README.md
