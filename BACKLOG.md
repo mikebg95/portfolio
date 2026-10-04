@@ -73,7 +73,7 @@ queue.
   - Spec: design/motion.md §M1 (other sheets)
   - Out of scope: timeline, exploded view, stamps, theme switch.
 
-- [ ] **PR-42b Scroll reveals everywhere + count-ups**
+- [x] **PR-42b Scroll reveals everywhere + count-ups**
   - Done when: §M3 reveals applied across all pages (spec/table rows ink in with rule draw, section labels wipe, below-fold headings wipe, revision notes stamp, figures' boxes then arrows draw in data-flow order, cards rise staggered); counts (tests, durations) count up once; e2e: after scrolling to the bottom every element is in its final state.
   - Learned (PR-42a): no component carries `data-reveal` yet — add it at call sites (SheetLabel, DisplayHeading, RevisionNote, SpecTable, Figure spread their props). Hero elements are `data-plot` (plotting.css) and Sheet 01's `.hero` is plotting-overview.css: never give those a `data-reveal` too. Other-sheet content right under the hero (timeline, cards, FIG. 1, assembly) is visible at load, so its reveal plays at load.
   - Spec: design/motion.md §M3, §M6 numbers
