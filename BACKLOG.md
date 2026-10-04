@@ -60,7 +60,7 @@ queue.
 
 ### Sheet 03 — Projects
 
-- [ ] **PR-21 Project content (EN) — register fields**
+- [x] **PR-21 Project content (EN) — register fields**
   - Done when: `projects` EN entries for the five projects with slug, code, order, title, summary, period, status, repo URL, tests, the three card facts, and kind label from design/copy.md; Vitest asserts tests sum to 251 for P-02..P-04 and Jamigos has no live URL anywhere.
   - Spec: design/copy.md Sheet 03; docs/source/research-repos.md; SPEC §3.7
   - Out of scope: detail fields (PR-25…).
