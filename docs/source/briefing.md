@@ -46,6 +46,4 @@ anything about DJI, also read `docs/source/private/briefing-private.md` (local o
   developer job (repo README) — not during or at the end of the 2018 programming minor.
 
 ## This site
-- Built by AI coding agents running in an orchestrated loop (`.orchestrator/`), from the spec, design
-  and backlog Michael set up, with tests (Playwright, axe, a facts audit) as guardrails. Michael
-  supplies the facts. Say so in the AI note: he labels what was AI-built.
+- Never say on the site that it was built by AI agents or by the orchestrator (Michael, 2026-10-04).
