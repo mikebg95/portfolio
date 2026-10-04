@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 import { describe, expect, it } from 'vitest';
 
-import { projectSchema } from '../../src/content/schemas';
+import { projectSchema, uiSchema } from '../../src/content/schemas';
 import { readCollection } from './helpers/content';
 
 // PR-21: the EN project entries hold design/copy.md's Sheet 03 register table verbatim. Expected
@@ -72,9 +72,26 @@ describe('projects (EN) against design/copy.md', () => {
   });
 
   it('counts 251 tests across the series, P-02..P-04, as the register line says', () => {
-    const series = entries.filter((e) => ['P-02', 'P-03', 'P-04'].includes(e.code));
+    const series = entries.filter((e) => e.series);
+    expect(series.map((e) => e.code)).toEqual(['P-02', 'P-03', 'P-04']);
     expect(series.reduce((sum, e) => sum + (e.tests ?? 0), 0)).toBe(251);
     expect(sheet03.join('\n')).toContain('`251 TESTS · ALL TEST-FIRST`');
+  });
+
+  it('holds the sheet label, heading, intro and series line in ui', () => {
+    const ui = uiSchema.parse(readCollection('ui').find((f) => f.path === 'en/ui')?.data);
+    const strings = (prefix: string) =>
+      [...(sheet03.find((l) => l.startsWith(prefix))?.matchAll(/`([^`]+)`/g) ?? [])].map(
+        (m) => m[1],
+      );
+    const [label, heading, intro] = strings('- Label ');
+
+    expect(ui.projects.label).toBe(label);
+    expect(ui.projects.heading.join(' ')).toBe(heading);
+    expect(ui.projects.intro).toBe(intro);
+    expect([ui.projects.series.label, ui.projects.series.tests.replace('{count}', '251')]).toEqual(
+      strings('- Series line:'),
+    );
   });
 });
 

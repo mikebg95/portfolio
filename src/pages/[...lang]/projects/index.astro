@@ -1,6 +1,10 @@
 ---
-import { t } from '../../../i18n/content';
-import { langPaths, type Lang } from '../../../i18n/paths';
+import DisplayHeading from '../../../components/drawing/DisplayHeading.astro';
+import SheetLabel from '../../../components/drawing/SheetLabel.astro';
+import ProjectCard from '../../../components/projects/ProjectCard.astro';
+import { getAllLocalized, t } from '../../../i18n/content';
+import { langPaths, localize, type Lang } from '../../../i18n/paths';
+import { projectPath } from '../../../i18n/routes';
 import SheetLayout from '../../../layouts/SheetLayout.astro';
 
 export function getStaticPaths() {
@@ -13,10 +17,119 @@ interface Props {
 
 const { lang } = Astro.props;
 const ui = await t(lang);
+const projects = (await getAllLocalized('projects', lang)).map((e) => e.data);
+
+// The drawing register (SPEC §4.3): the projects outside the series first (flagship, then origin),
+// then the series assembly row under its label line, whose count is the series' tests summed.
+const standalone = projects.filter((p) => !p.series);
+const series = projects.filter((p) => p.series);
+const seriesTests = series.reduce((sum, p) => sum + (p.tests ?? 0), 0);
+const href = (slug: string) => localize(lang, projectPath(slug));
 ---
 
 <SheetLayout lang={lang} sheet="projects" title={ui.seo.projects.title}>
-  <section class="sheet-panel">
-    <h1>{ui.sheets.projects}</h1>
+  <section class="sheet-panel register">
+    <div class="register__head">
+      <SheetLabel>{ui.projects.label}</SheetLabel>
+      <DisplayHeading as="h1" size="l">
+        <span class="register__line">{ui.projects.heading[0]}</span>{' '}
+        <span class="register__line">{ui.projects.heading[1]}</span>
+      </DisplayHeading>
+      <p class="register__intro">{ui.projects.intro}</p>
+    </div>
+    <div class="register__cards">
+      {standalone.map((project) => (
+        <ProjectCard project={project} href={href(project.slug)} />
+      ))}
+    </div>
+    <section class="register__series" aria-labelledby="series-label">
+      <h2 class="register__series-line" id="series-label">
+        <SheetLabel as="span">{ui.projects.series.label}</SheetLabel>{' '}
+        <span class="register__rule" aria-hidden="true"></span>
+        <span class="register__tests">
+          {ui.projects.series.tests.replace('{count}', String(seriesTests))}
+        </span>
+      </h2>
+      <div class="register__cards">
+        {series.map((project) => (
+          <ProjectCard project={project} href={href(project.slug)} headingLevel="h3" />
+        ))}
+      </div>
+    </section>
   </section>
 </SheetLayout>
+
+<style>
+  .register {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 64px;
+  }
+
+  .register__head {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .register__line {
+    display: block;
+  }
+
+  .register__intro {
+    max-width: 640px;
+    margin: 0;
+    color: var(--color-text-2);
+    font-size: var(--size-lead);
+    line-height: 1.6;
+  }
+
+  .register__cards {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .register__head + .register__cards {
+    margin-block: var(--space-7) var(--space-6);
+  }
+
+  @media (min-width: 768px) {
+    .register__cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .register__cards {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .register__series {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding-top: var(--space-2);
+  }
+
+  .register__series-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 14px;
+    margin: 0;
+    font-weight: inherit;
+  }
+
+  .register__rule {
+    flex: 1 1 40px;
+    height: 1px;
+    background: var(--color-line);
+  }
+
+  .register__tests {
+    color: var(--color-line);
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+</style>

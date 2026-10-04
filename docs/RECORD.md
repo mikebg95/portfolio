@@ -180,3 +180,11 @@ The flagship is the entry with `order: 1`. Hover/focus shows the 6 px shadow wit
 and arrows do not redraw: motion is PR-47's (§M6). Card titles are `min(display-s, 10cqi)` so
 SUBSCRIPTION never breaks mid-word in a narrow column. The diagram is `aria-hidden`; the link's
 name is the card's text. Instead of: dropping the tag; diagram labels hard-coded in the component.
+
+## 2026-10-04 — Projects register: `series` flag and `ui.projects`
+Who: agent (PR-23). Which cards sit in the series row is an explicit `series: true` on P-02..P-04
+(additive, default false), not inferred from `tests` or `order`; the detail sheets of the series
+(PR-26–28) can read it too. Sheet 03's fixed strings are `ui.projects`, as Sheet 02's are
+`ui.experience`; the series count is `{count}` in `series.tests`, filled with the series' `tests`
+summed, so the line can never disagree with the cards. The series line is an `<h2>` and its cards'
+titles `<h3>`; Jamigos and Scentify titles stay `<h2>`.

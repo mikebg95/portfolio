@@ -60,5 +60,12 @@ experience:
   label: SHEET 02 — EXPERIENCE · ELEVATION
   heading: ['FIVE YEARS,', DRAWN TO SCALE]
   legend: ['HATCHED: SABBATICAL', MUAY THAI · SURFING]
+projects:
+  label: SHEET 03 — PROJECTS · DRAWING REGISTER
+  heading: [DESIGNED FIRST., THEN BUILT.]
+  intro: 'Each project has its own detail sheet: the architecture, the decisions, the tests and the repository.'
+  series:
+    label: ASSEMBLY · SPRING PERSISTENCE & ARCHITECTURE SERIES
+    tests: '{count} TESTS · ALL TEST-FIRST'
 lang: nl
 translated: false

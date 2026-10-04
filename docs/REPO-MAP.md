@@ -91,6 +91,8 @@ line.
 
 ## Sheet 03 — Projects
 
+- `src/pages/[...lang]/projects/index.astro` — the register: non-`series` cards first, then the series line (`ui.projects.series`, count = series `tests` summed) and the `series: true` cards; 1 / 2 / 3 columns at phone / 768 / 1024.
+- `tests/e2e/projects.spec.ts` — card order + hrefs (EN and NL), sheet strings, series heading, columns per viewport.
 - `src/components/projects/ProjectCard.astro` — one register card (whole card one link, `data-project` = slug); flagship = `order: 1` spans 2 grid columns from 768 px; `in-progress` dashed with a redline label.
 - `src/components/projects/MiniDiagram.astro` — per-slug layouts fed by the entry's `diagram` labels (`LABELS` = count per slug); a new project needs a layout here or the build throws.
 - `src/components/drawing/Box.astro` `mini`/`main`, `Arrow.astro` `mini` — the card-sized variants; `/_primitives` shows all five cards (`tests/e2e/primitives.spec.ts`).

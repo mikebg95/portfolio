@@ -62,6 +62,8 @@ export const projectSchema = z.strictObject({
    * (`src/components/projects/MiniDiagram.astro`, which says how many each needs). A `\n` breaks a box.
    */
   diagram: z.array(text).min(1),
+  /** Part of the Spring Persistence & Architecture series (P-02..P-04): the register's second row. */
+  series: z.boolean().default(false),
   /** Register card text; `summary` is the detail sheet's. */
   cardSummary: text,
   summary: text,
@@ -267,6 +269,16 @@ export const uiSchema = z.strictObject({
     label: text,
     heading: z.tuple([text, text]),
     legend: z.tuple([text, text]),
+  }),
+  /**
+   * Sheet 03's own strings (copy.md Sheet 03): label, the heading's two drawn lines, intro and the
+   * series line. `{count}` in `series.tests` is the sum of the series entries' `tests`.
+   */
+  projects: z.strictObject({
+    label: text,
+    heading: z.tuple([text, text]),
+    intro: text,
+    series: z.strictObject({ label: text, tests: text.includes('{count}') }),
   }),
   lang,
   translated,
