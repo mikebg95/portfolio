@@ -247,7 +247,11 @@ test.describe('certification stamps (§M6)', () => {
   async function stamps(page: Page) {
     await page.goto('/certifications');
     await page.goto('/certifications');
-    await expect(page.locator('.stamp').first()).toHaveClass(new RegExp(REVEALED_CLASS));
+    // Stamps slam "on enter" (§M6): on an iPhone 14 the first one starts below the fold. Scrolled
+    // in the page, not with scrollIntoViewIfNeeded, which waits for the slam to end.
+    const stamp = page.locator('.stamp').first();
+    await stamp.evaluate((el) => el.scrollIntoView({ block: 'center', behavior: 'instant' }));
+    await expect(stamp).toHaveClass(new RegExp(REVEALED_CLASS));
     return page.evaluate(() => ({
       first: document
         .querySelector('.stamp')!

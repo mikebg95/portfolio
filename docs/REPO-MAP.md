@@ -30,6 +30,7 @@ line.
 - `src/precache.ts` — Astro integration (in `astro.config.ts`) that writes `dist/sw.js` from the template `src/service-worker.js` + a manifest of `dist/` (`isPrecached` picks the files); logs the precache size and fails the build over `PRECACHE_LIMIT_BYTES`. `src/offline.ts` registers it (SheetLayout, production only). `tests/e2e/offline.spec.ts`.
 - TRAP: `playwright.config.ts` sets `serviceWorkers: 'block'`; a spec that needs the worker opts in with `test.use({ serviceWorkers: 'allow' })`. Symptom: `navigator.serviceWorker.ready` never resolves in a test.
 - TRAP: the worker's `cache.match` must pass `ignoreVary` — module scripts send `Origin`, the install's requests do not. Symptom: offline pages open but every `_astro/*.js` fails ERR_FAILED.
+- TRAP: Playwright `scrollIntoViewIfNeeded()` waits for the element to be stable, so on a revealing element it returns after the reveal ended; to inspect a running animation scroll with `el.scrollIntoView()` in `evaluate` (tests/e2e/motion.spec.ts stamps). Symptom: `getAnimations()` is `[]` on chromium-desktop.
 - `astro.config.ts` `prefetch` — every link prefetched on viewport; project cards/pager `data-astro-prefetch="hover"`, CV links `"false"`; `tests/e2e/navigation.spec.ts`.
 
 ## Styles
