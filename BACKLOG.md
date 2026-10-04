@@ -66,7 +66,7 @@ queue.
 
 ### 404 and SEO
 
-- [ ] **PR-36 404 sheet**
+- [x] **PR-36 404 sheet**
   - Done when: `/404` and `/nl/404` per SPEC §3.9 / §4.7 and copy.md, built from the sheet primitives, listing the five sheets; static host config notes in docs/REPO-MAP.md; e2e visits an unknown URL in preview and gets this sheet.
   - Spec: SPEC §3.9, §4.7
   - Out of scope: —
