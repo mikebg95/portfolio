@@ -378,3 +378,18 @@ AND ≥ 640 px tall — a pinned ~270 px strip in a shorter window leaves too li
 cursor: a redline from the ruler down to the bars at the centre of the role whose block spans 55 %
 of the viewport. JS on /experience: 49.8 KB gzipped in all (GSAP + ScrollTrigger chunk 45.4 KB),
 under SPEC §7's 60 KB.
+
+## 2026-10-04 — Education exploded view: CKAD outside the stack, scrub only below the 80 % line
+Who: agent (PR-44). §M5 says "top plate first" and "CKAD fades in last", and CKAD is the top
+plate: read as the solid plates (4, 3, 2) rise out of the stack top first and CKAD, the dashed
+to-be-fitted part, is not in the stack at all — it fades in at its place over the last 18 %.
+"Stacked tight (gap 6 px)": each solid plate's centre sits 6 drawing units above the one below it
+(the plates' thickness is drawn as a horizontal offset, so no vertical gap is lost to it); the base
+plate never moves and its balloon appears with the last plate's. The axis draws up from the base
+over the first 60 %. Like §M4 (2026-10-04, PR-43), the drawing sits at ~456 px from the top at
+load on every measured viewport (1440×900, 1280×720, 768×1024, Pixel 7), above the 80 % line;
+scrubbing there would leave balloon labels hidden at rest. So a drawing above the line at load,
+and every phone (§M5), plays the same progress once as the 1.2 s phone timeline; one below it
+(short windows) is scrubbed from "top 80 %" to "bottom bottom" (0.6 s smoothing) and stays
+exploded once done. Plates move by the `translate` property so the selection's `transform` lift
+keeps working mid-explosion.

@@ -2,23 +2,13 @@ import { expect, test, type Page } from '@playwright/test';
 
 import { SCRUB_ATTR } from '../../src/scrub';
 import { PIN_TOP_PX } from '../../src/timeline-motion';
-import { settleAnimations } from './helpers/motion';
+import { countGsap, settleAnimations } from './helpers/motion';
 
 // design/motion.md §M4: the Sheet 02 timeline on GSAP + ScrollTrigger, lazy-loaded on /experience.
 test.use({ reducedMotion: 'no-preference' });
 
 const TIMELINE = '.timeline';
 const DURATIONS = ['2 Y 8 M', '2 Y 0 M'];
-
-/** Counts the scripts served that carry ScrollTrigger. */
-function countGsap(page: Page) {
-  const seen = { count: 0 };
-  page.on('response', async (response) => {
-    if (response.request().resourceType() !== 'script') return;
-    if ((await response.text().catch(() => '')).includes('scrollTrigger')) seen.count++;
-  });
-  return seen;
-}
 
 /** The horizontal (or, below desktop, vertical) scale of the first bar's segment. */
 const firstBarScale = (page: Page) =>

@@ -1,7 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 
-import { layout, TILT_DEG } from '../../assembly';
+import { explode, layout, TILT_DEG, type Window } from '../../assembly';
 import Balloon from '../drawing/Balloon.astro';
 
 // components.md ExplodedAssembly (SPEC §4.6): the five education plates on a dashed centre axis,
@@ -9,6 +9,8 @@ import Balloon from '../drawing/Balloon.astro';
 // balloons are buttons named `name(part)`;
 // `selected` is drawn pressed (balloon filled, label bold). Geometry in drawing units from
 // src/assembly.ts, scaled by `--u` so the drawing fits the column beside a fixed label width.
+// motion.md §M5: each plate carries its assembled offset (`--drop`) and explosion schedule
+// (`data-move/-callout/-fade`, from `explode`), which src/assembly-motion.ts plays.
 interface Props {
   parts: CollectionEntry<'education'>['data'][];
   selected: number;
@@ -19,6 +21,8 @@ interface Props {
 
 const { parts, selected, name, label } = Astro.props;
 const assembly = layout(parts);
+const explosion = explode(assembly);
+const windowOf = (window: Window | null) => window?.join(' ');
 
 // As drawn: the base plate on paper, the next three on fill-1, -2, -3; CKAD is dashed redline.
 const FILLS = ['paper', 'fill-1', 'fill-2', 'fill-3'];
@@ -27,21 +31,25 @@ const fill = (item: number) => `var(--color-${FILLS[item - 1] ?? 'paper'})`;
 
 <div
   class="assembly"
+  data-scrub="pending"
   role="group"
   aria-label={label}
   style={`--tilt: ${TILT_DEG}deg; --width: ${assembly.balloon}; --height: ${assembly.height}`}
 >
   <div class="assembly__drawing">
     <span class="assembly__axis" style={`--x: ${assembly.axis}`} aria-hidden="true"></span>
-    {assembly.plates.map(({ part, side, cx, cy, right }) => (
+    {assembly.plates.map(({ part, side, cx, cy, right }, i) => (
       <>
         <button
           type="button"
           class:list={['plate', `plate--${part.plate.style}`, `plate--${part.plate.size}`]}
-          style={`--x: ${cx - side / 2}; --y: ${cy - side / 2}; --side: ${side}; --fill: ${fill(part.item)}`}
+          style={`--x: ${cx - side / 2}; --y: ${cy - side / 2}; --side: ${side}; --fill: ${fill(part.item)}; --drop: ${explosion[i]?.drop ?? 0}`}
           aria-label={name(part)}
           aria-pressed={part.item === selected ? 'true' : 'false'}
           data-part={part.item}
+          data-move={windowOf(explosion[i]?.move ?? null)}
+          data-callout={windowOf(explosion[i]?.callout ?? null)}
+          data-fade={windowOf(explosion[i]?.fade ?? null)}
         />
         <span
           class:list={[
@@ -70,6 +78,14 @@ const fill = (item: number) => `var(--color-${FILLS[item - 1] ?? 'paper'})`;
   </div>
 </div>
 
+<script>
+  import { SCRUB_ATTR, startScrub } from '../../scrub';
+
+  for (const assembly of document.querySelectorAll<HTMLElement>(`.assembly[${SCRUB_ATTR}]`)) {
+    startScrub(assembly, () => import('../../assembly-motion'));
+  }
+</script>
+
 <style>
   /* The drawing scales (--u, px per drawing unit) to the width left after the label column. */
   .assembly {
@@ -93,6 +109,7 @@ const fill = (item: number) => `var(--color-${FILLS[item - 1] ?? 'paper'})`;
     bottom: 0;
     left: calc(var(--x) * var(--u));
     border-left: 1.5px dashed color-mix(in srgb, var(--color-ink) 45%, transparent);
+    transform-origin: center bottom;
   }
 
   /* A square turned flat: the transform draws the diamond and turns the shadow into thickness. */
@@ -105,6 +122,7 @@ const fill = (item: number) => `var(--color-${FILLS[item - 1] ?? 'paper'})`;
     padding: 0;
     border: var(--border-normal);
     background: var(--fill);
+    opacity: var(--shown, 1);
     transform: translateY(var(--lift, 0px)) rotateX(var(--tilt)) rotateZ(-45deg);
     cursor: pointer;
   }
@@ -131,7 +149,7 @@ const fill = (item: number) => `var(--color-${FILLS[item - 1] ?? 'paper'})`;
 
   .assembly[data-active] .plate[aria-pressed='false'],
   .assembly[data-active] .assembly__callout:not(.assembly__callout--selected) {
-    opacity: 0.6;
+    opacity: calc(0.6 * var(--shown, 1));
   }
 
   /* Transitions only once the page script marks the drawing ready: the stylesheets can land after
@@ -151,6 +169,36 @@ const fill = (item: number) => `var(--color-${FILLS[item - 1] ?? 'paper'})`;
     .assembly[data-ready] .plate,
     .assembly[data-ready] .assembly__callout {
       transition: none;
+    }
+  }
+
+  /* §M5 start state, until the explosion is done (docs/conventions/motion.md): solid plates piled
+     on the base (`translate`, so the selection's `transform` lift still works), the axis undrawn,
+     callouts hidden, the dashed plate not yet there. */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .assembly:not([data-scrub='done']) .plate {
+      translate: 0 calc(var(--drop) * var(--u));
+    }
+
+    :global(.js) .assembly:not([data-scrub='done']) .plate--dashed {
+      --shown: 0;
+    }
+
+    :global(.js) .assembly:not([data-scrub='done']) .assembly__axis {
+      transform: scaleY(0);
+    }
+
+    :global(.js) .assembly:not([data-scrub='done']) :global(.balloon__leader) {
+      transform: scaleX(0);
+      transform-origin: left center;
+    }
+
+    :global(.js) .assembly:not([data-scrub='done']) :global(.balloon__mark) {
+      transform: scale(0);
+    }
+
+    :global(.js) .assembly:not([data-scrub='done']) .assembly__label {
+      opacity: 0;
     }
   }
 

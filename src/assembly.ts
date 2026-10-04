@@ -36,7 +36,7 @@ export const diamond = (side: number): Diamond => ({
 /** The fields of an `education` entry the geometry reads. */
 export interface PlateInput {
   item: number;
-  plate: { size: PlateSize };
+  plate: { size: PlateSize; style?: 'solid' | 'dashed' };
 }
 
 export interface PlatePlacement<P extends PlateInput> {
@@ -87,6 +87,66 @@ export function layout<P extends PlateInput>(parts: readonly P[]): Assembly<P> {
     });
   const balloon = widest + LEADER;
   return { plates, axis, balloon, width: balloon, height: y - PLATE_GAP + AXIS_OVERRUN };
+}
+
+// design/motion.md §M5: the drawing starts assembled and explodes to the layout above. Progress
+// runs 0 → 1 (scrubbed by scroll, or played as one timeline); every window below is a slice of it.
+
+/** Assembled, each solid plate sits this far above the one below it (§M5 "gap 6 px"). */
+export const STACK_GAP = 6;
+
+/** Progress windows: the axis draws, plates rise top first, a callout as its plate arrives. */
+export const EXPLODE = {
+  axis: [0, 0.6],
+  move: 0.45,
+  stagger: 0.12,
+  callout: 0.12,
+  /** The dashed (to-be-fitted) plate fades in last, its callout with it. */
+  fade: [0.82, 1],
+} as const;
+
+export type Window = readonly [from: number, to: number];
+
+export interface PlateExplosion {
+  item: number;
+  /** Drawing units the plate sits below its drawn position while assembled. */
+  drop: number;
+  /** When it rises; null for the base plate and a dashed one, which never move. */
+  move: Window | null;
+  /** When its leader draws, balloon pops and label fades in. */
+  callout: Window;
+  /** When it fades in; null for a solid plate, which is there from the start. */
+  fade: Window | null;
+}
+
+/**
+ * The assembled stack and the explosion's schedule. Solid plates pile onto the base plate,
+ * `STACK_GAP` apart, and rise to their drawn positions top plate first; the base plate's callout
+ * appears with the last one's; a dashed plate is not in the stack and fades in last.
+ */
+export function explode<P extends PlateInput>(assembly: Assembly<P>): PlateExplosion[] {
+  const solid = assembly.plates.filter((p) => p.part.plate.style !== 'dashed');
+  const base = solid.at(-1);
+  const movers = solid.slice(0, -1);
+  const arrival = (i: number) => i * EXPLODE.stagger + EXPLODE.move;
+  const last = arrival(Math.max(0, movers.length - 1));
+  return assembly.plates.map((plate) => {
+    const item = plate.part.item;
+    if (plate.part.plate.style === 'dashed') {
+      return { item, drop: 0, move: null, callout: [1 - EXPLODE.callout, 1], fade: EXPLODE.fade };
+    }
+    const i = movers.indexOf(plate);
+    const level = solid.length - 1 - solid.indexOf(plate);
+    const drop = base ? base.cy - level * STACK_GAP - plate.cy : 0;
+    const to = i < 0 ? last : arrival(i);
+    return {
+      item,
+      drop,
+      move: i < 0 ? null : [to - EXPLODE.move, to],
+      callout: [to, to + EXPLODE.callout],
+      fade: null,
+    };
+  });
 }
 
 /** `#part-4` → 4 when 4 is one of `items`; anything else → undefined. */

@@ -1,6 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 
 import { expectNoAxeViolations } from './helpers/axe';
+import { settleAnimations } from './helpers/motion';
 
 // Sheet 05 exploded assembly (SPEC §4.6; copy.md Sheet 05; drawing
 // education-default-light-1440): five plates top to bottom 5 → 1, a balloon each, part 3 selected.
@@ -13,8 +14,14 @@ const BALLOONS = [
 ];
 const NAMES = BALLOONS.map((b, i) => `Part ${5 - i}: ${b}`);
 
+/** Opens a page once the §M5 explosion (tests/e2e/education-motion.spec.ts) has played. */
+async function open(page: Page, url: string) {
+  await page.goto(url);
+  await settleAnimations(page);
+}
+
 test('the sheet shows its label, heading and intro', async ({ page }) => {
-  await page.goto('/education');
+  await open(page, '/education');
   await expect(page.locator('.education__head .sheet-label')).toHaveText(
     'SHEET 05 — ASSEMBLY, EXPLODED VIEW',
   );
@@ -29,7 +36,7 @@ test('the sheet shows its label, heading and intro', async ({ page }) => {
 test('the assembly has five parts: a plate and a balloon button each, part 3 pressed', async ({
   page,
 }) => {
-  await page.goto('/education');
+  await open(page, '/education');
   const assembly = page.getByRole('group', { name: 'Exploded assembly of the education parts' });
   const plates = assembly.locator('.plate');
   const balloons = assembly.locator('.balloon__mark');
@@ -50,7 +57,7 @@ test('the assembly has five parts: a plate and a balloon button each, part 3 pre
 });
 
 test('plates sit on one axis, top to bottom, never overlapping the next one', async ({ page }) => {
-  await page.goto('/education');
+  await open(page, '/education');
   const boxes = await page
     .locator('.plate')
     .evaluateAll((els) => els.map((el) => el.getBoundingClientRect().toJSON() as DOMRect));
@@ -69,7 +76,7 @@ for (const width of [320, 390, 768]) {
     page,
   }) => {
     await page.setViewportSize({ width, height: 900 });
-    await page.goto('/education');
+    await open(page, '/education');
     const panel = await page.locator('.education').boundingBox();
     const right = await page
       .locator('.assembly__drawing, .plate, .assembly__callout, .detail-panel, .parts-list')
@@ -80,13 +87,13 @@ for (const width of [320, 390, 768]) {
 }
 
 test('/nl/education renders the five parts too', async ({ page }) => {
-  await page.goto('/nl/education');
+  await open(page, '/nl/education');
   await expect(page.locator('.assembly .plate')).toHaveCount(5);
   await expect(page.locator('.assembly .balloon__mark')).toHaveCount(5);
 });
 
 test('the detail panel shows part 3 by default', async ({ page }) => {
-  await page.goto('/education');
+  await open(page, '/education');
   const panel = page.locator('.detail-panel:visible');
   await expect(panel).toHaveCount(1);
   await expect(panel).toHaveId('part-3');
@@ -104,7 +111,7 @@ test('the detail panel shows part 3 by default', async ({ page }) => {
 });
 
 test('the parts list has five rows, 5 → 1, part 3 selected and CKAD pending', async ({ page }) => {
-  await page.goto('/education');
+  await open(page, '/education');
   const table = page.getByRole('table', { name: 'Parts list' });
   await expect(table.getByRole('columnheader')).toHaveText(['ITEM', 'PART', 'SUPPLIER', 'YEAR']);
   const rows = table.locator('tbody tr');
@@ -127,7 +134,7 @@ test('the parts list has five rows, 5 → 1, part 3 selected and CKAD pending', 
 test('the panel and parts list sit beside the assembly on desktop, below it otherwise', async ({
   page,
 }) => {
-  await page.goto('/education');
+  await open(page, '/education');
   const width = page.viewportSize()?.width ?? 0;
   const assembly = (await page.locator('.assembly').boundingBox())!;
   const panel = (await page.locator('.detail-panel:visible').boundingBox())!;
@@ -157,7 +164,7 @@ const top = (page: Page, item: number) =>
   plate(page, item).evaluate((el) => el.getBoundingClientRect().top + scrollY);
 
 test('clicking a plate, a balloon or a row selects that part', async ({ page }) => {
-  await page.goto('/education');
+  await open(page, '/education');
   const restingTop = await top(page, 5);
 
   await plate(page, 5).click();
@@ -185,7 +192,7 @@ test('clicking a plate, a balloon or a row selects that part', async ({ page }) 
 });
 
 test('Enter and Space on a balloon, plate or row select its part', async ({ page }) => {
-  await page.goto('/education');
+  await open(page, '/education');
   await page.locator('.balloon__mark[data-part="1"]').focus();
   await page.keyboard.press('Enter');
   await expectSelected(page, 1);
@@ -201,18 +208,18 @@ test('Enter and Space on a balloon, plate or row select its part', async ({ page
 });
 
 test('a #part-n hash is honoured on load and on change', async ({ page }) => {
-  await page.goto('/education#part-5');
+  await open(page, '/education#part-5');
   await expectSelected(page, 5);
   await page.evaluate(() => (location.hash = '#part-1'));
   await expectSelected(page, 1);
   // An unknown part leaves the default.
-  await page.goto('/nl/education#part-9');
+  await open(page, '/nl/education#part-9');
   await expect(page.locator('.detail-panel:visible')).toHaveId('part-3');
 });
 
 test('hovering a parts-list row previews the lift on its plate', async ({ page }) => {
   test.skip((page.viewportSize()?.width ?? 0) < 1024, 'hover is a desktop pointer');
-  await page.goto('/education');
+  await open(page, '/education');
   const resting = await top(page, 1);
   await page.locator('tr[data-part="1"]').hover();
   await expect.poll(async () => resting - (await top(page, 1))).toBeCloseTo(12, 0);
@@ -221,7 +228,7 @@ test('hovering a parts-list row previews the lift on its plate', async ({ page }
 });
 
 test('the panel wipes in on selection, instantly under reduced motion', async ({ page }) => {
-  await page.goto('/education');
+  await open(page, '/education');
   await page.locator('.balloon__mark[data-part="5"]').click();
   expect(
     await page
@@ -240,7 +247,7 @@ test.describe('without JavaScript', () => {
   test.use({ javaScriptEnabled: false });
 
   test('all five details render stacked', async ({ page }) => {
-    await page.goto('/education');
+    await open(page, '/education');
     await expect(page.locator('.detail-panel:visible')).toHaveCount(5);
     await expect(page.locator('.detail-panel h2')).toHaveText([
       'VWO',

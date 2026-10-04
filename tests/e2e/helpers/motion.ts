@@ -12,6 +12,16 @@ const FINAL_STATE_EXCEPTIONS = [
   '.assembly[data-active] .assembly__callout:not(.assembly__callout--selected)',
 ];
 
+/** Counts the scripts served that carry ScrollTrigger (the lazy GSAP chunk). */
+export function countGsap(page: Page) {
+  const seen = { count: 0 };
+  page.on('response', async (response) => {
+    if (response.request().resourceType() !== 'script') return;
+    if ((await response.text().catch(() => '')).includes('scrollTrigger')) seen.count++;
+  });
+  return seen;
+}
+
 /**
  * Waits for every finite animation on the page to end — CSS and Web Animations, and the GSAP set
  * pieces (`data-scrub`, src/scrub.ts) about to play or playing; one armed for a scroll is at rest.
