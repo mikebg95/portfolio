@@ -1,9 +1,10 @@
-import { readdirSync, readFileSync } from 'node:fs';
+import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { describe, expect, it } from 'vitest';
 
+import { SCENTIFY_DEMO } from '../../src/config';
 import { projectSchema, uiSchema } from '../../src/content/schemas';
 import { detailMeta } from '../../src/project-detail';
 import { readCollection } from './helpers/content';
@@ -139,8 +140,7 @@ describe('detail sheets (EN) against design/copy.md', () => {
     ]);
   });
 
-  // PR-29 adds its title here when it writes its sheet.
-  it.each(['Jamigos', 'Subscription Tracker', 'Recipe Book', 'Journal'])(
+  it.each(['Jamigos', 'Subscription Tracker', 'Recipe Book', 'Journal', 'Scentify'])(
     'holds %s verbatim',
     (title) => {
       const line = detailLine(title);
@@ -186,5 +186,15 @@ describe('detail sheets (EN) against design/copy.md', () => {
         new RegExp(`^${entry?.repo}/blob/main/docs/architecture/adr/000${i + 1}-[a-z0-9-]+\\.md$`),
       );
     });
+  });
+
+  // FIG. 2 is the repo's demo GIF, re-encoded small (docs/RECORD.md), captioned as copy.md says.
+  it('captions the Scentify demo and ships it small', () => {
+    const entry = entries.find((e) => e.slug === 'scentify');
+    expect(entry?.figures[1].caption).toBe(quoted(detailLine('Scentify'), 'captioned'));
+    for (const file of [SCENTIFY_DEMO.animated, SCENTIFY_DEMO.still]) {
+      const path = fileURLToPath(new URL(`../../public${file}`, import.meta.url));
+      expect(statSync(path).size).toBeLessThan(1.5 * 1024 * 1024);
+    }
   });
 });

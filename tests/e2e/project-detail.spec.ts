@@ -16,6 +16,7 @@ const META: Record<string, RegExp> = {
   'subscription-tracker': / · SERIES PART 1$/,
   'recipe-book': / · SERIES PART 2$/,
   journal: / · SERIES PART 3 · IN PROGRESS$/,
+  scentify: /^NOV 2020 – JAN 2021 · ANDROID$/,
 };
 
 PROJECTS.forEach((project, i) => {
@@ -312,4 +313,56 @@ test('Journal: ports & adapters, 7 ADR links and the status in redline (copy.md 
   const box = await fig1.boundingBox();
   const row = await fig1.locator('.detail-figure__row').boundingBox();
   expect(row!.x + row!.width).toBeLessThanOrEqual(box!.x + box!.width + 1);
+});
+
+test('Scentify: question flow and the demo, still under reduced motion (copy.md 03.5)', async ({
+  page,
+}) => {
+  await page.goto('/projects/scentify');
+  const fig1 = page.locator('[data-figure="1"]');
+  await expect(fig1.locator('figcaption')).toHaveText('FIG. 1 — QUESTION FLOW');
+  await expect(fig1.locator('.box__title')).toHaveText([
+    '4 questions',
+    'Filter',
+    'Results list',
+    'Detail',
+  ]);
+  await expect(fig1.locator('.box--main')).toContainText('52 fragrances');
+
+  const fig2 = page.locator('[data-figure="2"]');
+  await expect(fig2.locator('figcaption')).toHaveText('FIG. 2 — DEMO');
+  const image = fig2.getByRole('img', { name: /^Scentify in use/ });
+  await expect(image).toHaveAttribute('loading', 'lazy');
+  await expect(image).toHaveAttribute('width', '360');
+  await expect(image).toHaveAttribute('height', '800');
+  await image.scrollIntoViewIfNeeded();
+  await expect(image).toHaveJSProperty('complete', true);
+  expect(await image.evaluate((i: HTMLImageElement) => i.naturalWidth)).toBe(360);
+  expect(await image.evaluate((i: HTMLImageElement) => i.currentSrc)).toMatch(/\/demo\.webp$/);
+  await expect(fig2.locator('.demo__caption')).toContainText(
+    'Scentify running on an Android emulator.',
+  );
+  await expect(fig2.locator('.demo__credit')).toHaveText(
+    'Source: scentify_gif.gif, github.com/mikebg95/Scentify',
+  );
+
+  await expect(page.locator('.detail-body .spec-row dt')).toHaveText([
+    'PLATFORM',
+    'SCREENS',
+    'MATCHING',
+    'LIST',
+    'CATALOGUE',
+    'LIMITATIONS',
+  ]);
+  await expect(page.locator('.detail-body .revision-note')).toContainText('Where it started');
+
+  // Reduced motion: the first frame, not the animation.
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.reload();
+  const still = page.locator('[data-figure="2"] img');
+  await still.scrollIntoViewIfNeeded();
+  await expect(still).toHaveJSProperty('complete', true);
+  expect(await still.evaluate((i: HTMLImageElement) => i.currentSrc)).toMatch(
+    /\/demo-still\.webp$/,
+  );
 });

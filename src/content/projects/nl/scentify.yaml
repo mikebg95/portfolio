@@ -1,5 +1,5 @@
-# Register fields from design/copy.md Sheet 03 (PR-21); summary, figures and note are the detail
-# sheet's — PR-29 replaces those placeholders.
+# design/copy.md Sheet 03: the register row (PR-21) and detail sheet 03.5 (PR-29). Spec rows and
+# figure words from github.com/mikebg95/Scentify; FIG. 2 labels are the demo's alt text and credit.
 slug: scentify
 code: P-05
 kind: 'ORIGIN'
@@ -7,17 +7,43 @@ order: 5
 title: Scentify
 diagram: ['4 QUESTIONS', '52 SCENTS']
 cardSummary: 'My first real app: an Android fragrance recommender in Java, built at the end of the programming minor.'
-summary: 'Placeholder (PR-29)'
+summary: 'Answer four questions — season, age, lifestyle, scent type — and get matching fragrances from a catalogue of 52. My first real app.'
 period: 'NOV 2020 – JAN 2021'
+platform: 'ANDROID'
 status: done
 repo: https://github.com/mikebg95/Scentify
 facts:
   - { label: YEAR, value: '2020' }
   - { label: STACK, value: 'Android' }
   - { label: LANG, value: 'Java' }
+spec:
+  - label: PLATFORM
+    text: 'Android in Java (min SDK 21, target SDK 29); XML layouts with AndroidX AppCompat, Material Components and ConstraintLayout.'
+  - label: SCREENS
+    text: 'Four activities joined by explicit Intents — home, questionnaire, results, detail. The answers travel as a HashMap extra.'
+  - label: MATCHING
+    text: 'A fragrance is recommended only if it matches every answer; "Doesn''t matter" is a wildcard. Age ranges use android.util.Range.'
+  - label: LIST
+    text: 'Results render through PerfumeAdapter, a custom ArrayAdapter with its own row layout.'
+  - label: CATALOGUE
+    text: '52 fragrances, each with brand, name, seasons, age range, lifestyle, type and image.'
+  - label: LIMITATIONS
+    text: 'Named in the README: the catalogue is hard-coded in an activity, matching is strict rather than scored, and buttons are styled with touch listeners.'
 figures:
-  - { title: 'Placeholder (PR-29)' }
-  - { title: 'Placeholder (PR-29)' }
-note: 'Placeholder (PR-29)'
+  - title: QUESTION FLOW
+    labels:
+      - "4 questions\nQuestionActivity"
+      - answers · Intent
+      - "Filter\n52 fragrances · all must match"
+      - matches
+      - "Results list\ncustom ArrayAdapter"
+      - tap
+      - "Detail\nPerfumeActivity"
+  - title: DEMO
+    caption: 'Scentify running on an Android emulator.'
+    labels:
+      - 'Scentify in use: the home screen, the questions one by one, and the list of recommended fragrances.'
+      - 'Source: scentify_gif.gif, github.com/mikebg95/Scentify'
+note: 'REV. NOTE △ Where it started: the app that made me want to do this every day.'
 lang: nl
 translated: false

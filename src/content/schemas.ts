@@ -74,6 +74,8 @@ export const projectSchema = z.strictObject({
   cardSummary: text,
   summary: text,
   period: text,
+  /** A platform other than the web, named on the detail sheet's meta line (Scentify: `ANDROID`). */
+  platform: text.optional(),
   status: z.enum(['done', 'in-progress', 'retired-hosting']),
   repo: z.url({ protocol: /^https$/ }),
   tests: z.number().int().positive().optional(),

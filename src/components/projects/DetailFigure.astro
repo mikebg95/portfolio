@@ -1,4 +1,5 @@
 ---
+import { SCENTIFY_DEMO } from '../../config';
 import Arrow from '../drawing/Arrow.astro';
 import Box from '../drawing/Box.astro';
 import Link from '../drawing/Link.astro';
@@ -7,12 +8,13 @@ import PipelineRoute from '../drawing/PipelineRoute.astro';
 // The drawing inside a detail sheet's FIG. 1 or FIG. 2 (SPEC §4.4), one layout per project and
 // figure. Words come from the entry's `figures[n - 1].labels`, in drawing order; LABELS says how
 // many each layout reads. A box label's first line is its title; a test pyramid level's is its name,
-// the second its test count; a decision record's is its title, the second its URL. A project without
-// a layout here draws nothing yet (PR-29 adds its own).
+// the second its test count; a decision record's is its title, the second its URL. Scentify's demo
+// reads its alt text and its source credit; the caption is the figure's own `caption`.
 interface Props {
   slug: string;
   n: 1 | 2;
   labels: string[];
+  caption?: string | undefined;
 }
 
 const LABELS: Record<string, readonly [number, number]> = {
@@ -20,6 +22,7 @@ const LABELS: Record<string, readonly [number, number]> = {
   'subscription-tracker': [7, 4],
   'recipe-book': [9, 4],
   journal: [8, 7],
+  scentify: [7, 2],
 };
 
 // Figures that are one row of boxes joined by labelled arrows (box, arrow, box, …): the index of
@@ -28,9 +31,10 @@ const LABELS: Record<string, readonly [number, number]> = {
 const CHAINS: Record<string, number> = {
   'subscription-tracker-1': 4,
   'recipe-book-1': 0,
+  'scentify-1': 2,
 };
 
-const { slug, n, labels } = Astro.props;
+const { slug, n, labels, caption } = Astro.props;
 const expected = LABELS[slug]?.[n - 1];
 if (expected === undefined && labels.length > 0) {
   throw new Error(`no FIG. ${n} layout for project ${slug}, but it has labels`);
@@ -151,6 +155,26 @@ const layout = `${slug}-${n}`;
       </li>
     ))}
   </ol>
+)}
+{layout === 'scentify-2' && (
+  <div class="demo">
+    <picture>
+      <source srcset={SCENTIFY_DEMO.still} media="(prefers-reduced-motion: reduce)" />
+      <img
+        class="demo__image"
+        src={SCENTIFY_DEMO.animated}
+        width={SCENTIFY_DEMO.width}
+        height={SCENTIFY_DEMO.height}
+        alt={a}
+        loading="lazy"
+        decoding="async"
+      />
+    </picture>
+    <p class="demo__caption">
+      {caption}
+      <span class="demo__credit">{b}</span>
+    </p>
+  </div>
 )}
 
 <style>
@@ -282,6 +306,35 @@ const layout = `${slug}-${n}`;
     margin-right: var(--space-2);
     color: var(--color-ink);
     font-weight: 600;
+  }
+
+  .demo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+    margin: 0;
+  }
+
+  .demo__image {
+    display: block;
+    width: 240px;
+    max-width: 100%;
+    height: auto;
+    border: var(--border-box);
+  }
+
+  .demo__caption {
+    margin: 0;
+    color: var(--color-text-2);
+    font-size: var(--size-code);
+    text-align: center;
+  }
+
+  .demo__credit {
+    display: block;
+    color: var(--color-muted);
+    font-family: var(--font-mono);
   }
 
   /* Phone: the row becomes a column; its arrows turn down (Arrow `turns`). */

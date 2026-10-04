@@ -246,3 +246,14 @@ the two outbound adapters sit side by side under the hexagon (stacked, they read
 AI); between 768 and ~1280 px they wrap below, led by their arrows. "In progress" styling: only the
 status word of the meta line is redline (`.detail-head__status`), as design/README.md reserves
 redline for pending / in progress.
+
+## 2026-10-04 — Scentify sheet: `platform` field, the demo as animated WebP, still under reduced motion
+Who: agent (PR-29). The meta line's `· ANDROID` comes from a new optional `platform` field (additive;
+`detailMeta` puts it after the series part, before the status), not from the slug. The repo's
+`scentify_gif.gif` (10 MB, 600×1333, 12 fps, 300 frames) is shipped re-encoded as an animated WebP,
+360 × 800 at 10 fps, q 60 (971 KB; a 300 px GIF was still 2–3 MB), drawn 240 px wide; its first
+frame (the home screen, 5 KB) is the reduced-motion image, chosen by a `<picture>` source with
+`media="(prefers-reduced-motion: reduce)"`, so it needs no JS. Paths and size are `SCENTIFY_DEMO` in
+`src/config.ts`. FIG. 2's labels are the alt text and the source credit; its caption is the
+figure's `caption` (copy.md). Rebuild: `ffmpeg -i scentify_gif.gif -vf "fps=10,scale=360:-1:
+flags=lanczos" f%03d.png` then `img2webp -loop 0 -lossy -q 60 -m 6 -d 100 f*.png -o demo.webp`.
