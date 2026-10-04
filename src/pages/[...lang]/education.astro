@@ -1,5 +1,9 @@
 ---
-import { t } from '../../i18n/content';
+import { DEFAULT_PART } from '../../assembly';
+import DisplayHeading from '../../components/drawing/DisplayHeading.astro';
+import SheetLabel from '../../components/drawing/SheetLabel.astro';
+import ExplodedAssembly from '../../components/education/ExplodedAssembly.astro';
+import { getAllLocalized, t } from '../../i18n/content';
 import { langPaths, type Lang } from '../../i18n/paths';
 import SheetLayout from '../../layouts/SheetLayout.astro';
 
@@ -13,10 +17,68 @@ interface Props {
 
 const { lang } = Astro.props;
 const ui = await t(lang);
+// The exploded assembly (SPEC §4.6): five parts by item, 1 = the base plate.
+const parts = (await getAllLocalized('education', lang)).map((entry) => entry.data);
+const partName = (part: (typeof parts)[number]) =>
+  ui.education.part.replace('{n}', String(part.item)).replace('{name}', part.balloon);
 ---
 
 <SheetLayout lang={lang} sheet="education" title={ui.seo.education.title}>
-  <section class="sheet-panel">
-    <h1>{ui.sheets.education}</h1>
+  <section class="sheet-panel education">
+    <div class="education__head">
+      <SheetLabel>{ui.education.label}</SheetLabel>
+      <DisplayHeading as="h1" size="l">
+        <span class="education__line">{ui.education.heading[0]}</span>{' '}
+        <span class="education__line">{ui.education.heading[1]}</span>
+      </DisplayHeading>
+      <p class="education__intro">{ui.education.intro}</p>
+    </div>
+    <div class="education__body">
+      <ExplodedAssembly
+        parts={parts}
+        selected={DEFAULT_PART}
+        name={partName}
+        label={ui.education.assembly}
+      />
+    </div>
   </section>
 </SheetLayout>
+
+<style>
+  .education {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    padding-bottom: 64px;
+  }
+
+  /* The display size, capped by the sheet's width so ASSEMBLED never breaks mid-word on a phone. */
+  .education__head {
+    container-type: inline-size;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .education__head :global(h1) {
+    font-size: min(var(--size-display-l), 13cqi);
+  }
+
+  .education__line {
+    display: block;
+  }
+
+  .education__intro {
+    max-width: 640px;
+    margin: 0;
+    color: var(--color-text-2);
+    font-size: var(--size-lead);
+    line-height: 1.6;
+  }
+
+  .education__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-5);
+  }
+</style>

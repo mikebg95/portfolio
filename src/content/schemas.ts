@@ -314,6 +314,18 @@ export const uiSchema = z.strictObject({
     intro: text,
     pending: text,
   }),
+  /**
+   * Sheet 05's own strings (copy.md Sheet 05): label, the heading's two drawn lines and intro.
+   * `assembly` names the drawing; `part` is each plate's and balloon's button name, `{n}` the
+   * item and `{name}` its balloon text. Part texts come from the `education` entries.
+   */
+  education: z.strictObject({
+    label: text,
+    heading: z.tuple([text, text]),
+    intro: text,
+    assembly: text,
+    part: text.includes('{n}').includes('{name}'),
+  }),
   lang,
   translated,
 });

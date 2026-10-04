@@ -11,7 +11,7 @@ type Props = Omit<HTMLAttributes<'button'> & HTMLAttributes<'a'>, 'type'> & {
   href?: string;
   as?: 'span' | 'button';
   label?: string;
-  /** Which side the leader leaves from; omitted = no leader. */
+  /** Which side the leader leaves from; omitted = no leader. Length: `--balloon-leader` (34 px). */
   leader?: 'left' | 'right' | 'up' | 'down';
 };
 
@@ -49,7 +49,7 @@ if (interactive && !label) throw new Error(`Balloon ${number}: a link or button 
 <style>
   .balloon {
     --balloon-size: 24px;
-    --leader-length: 34px;
+    --leader-length: var(--balloon-leader, 34px);
 
     display: inline-flex;
     flex: none;
@@ -73,6 +73,10 @@ if (interactive && !label) throw new Error(`Balloon ${number}: a link or button 
     width: var(--leader-length);
     height: 1px;
     background: var(--color-ink);
+  }
+
+  .balloon:has(.balloon__mark--pending) .balloon__leader {
+    background: var(--color-redline);
   }
 
   .balloon--leader-up .balloon__leader,

@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 
 import { describe, expect, it } from 'vitest';
 
-import { educationSchema } from '../../src/content/schemas';
+import { educationSchema, uiSchema } from '../../src/content/schemas';
 import { readCollection } from './helpers/content';
 
 // PR-32: the EN education entries hold design/copy.md's Sheet 05 balloons, parts-list rows and
@@ -110,5 +110,16 @@ describe('education (EN) against design/copy.md', () => {
 
   it('points CKAD at its certification card on Sheet 04', () => {
     expect(entries.find((e) => e.item === 5)?.detail.link?.href).toBe('/certifications#ckad');
+  });
+
+  it('holds the sheet label, heading and intro in ui', () => {
+    const ui = uiSchema.parse(readCollection('ui').find((f) => f.path === 'en/ui')?.data);
+    const strings = [
+      ...(sheet05.find((l) => l.startsWith('- Label '))?.matchAll(/`([^`]+)`/g) ?? []),
+    ].map((m) => m[1]);
+
+    expect([ui.education.label, ui.education.heading.join(' '), ui.education.intro]).toEqual(
+      strings,
+    );
   });
 });

@@ -1,0 +1,158 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+import { layout, TILT_DEG } from '../../assembly';
+import Balloon from '../drawing/Balloon.astro';
+
+// components.md ExplodedAssembly (SPEC §4.6): the five education plates on a dashed centre axis,
+// each with a leader and balloon. Plates and balloons are buttons named `name(part)`;
+// `selected` is drawn pressed (balloon filled, label bold). Geometry in drawing units from
+// src/assembly.ts, scaled by `--u` so the drawing fits the column beside a fixed label width.
+interface Props {
+  parts: CollectionEntry<'education'>['data'][];
+  selected: number;
+  /** Accessible name of a part's plate and balloon. */
+  name: (part: CollectionEntry<'education'>['data']) => string;
+  label: string;
+}
+
+const { parts, selected, name, label } = Astro.props;
+const assembly = layout(parts);
+
+// As drawn: the base plate on paper, the next three on fill-1, -2, -3; CKAD is dashed redline.
+const FILLS = ['paper', 'fill-1', 'fill-2', 'fill-3'];
+const fill = (item: number) => `var(--color-${FILLS[item - 1] ?? 'paper'})`;
+---
+
+<div
+  class="assembly"
+  role="group"
+  aria-label={label}
+  style={`--tilt: ${TILT_DEG}deg; --width: ${assembly.balloon}; --height: ${assembly.height}`}
+>
+  <div class="assembly__drawing">
+    <span class="assembly__axis" style={`--x: ${assembly.axis}`} aria-hidden="true"></span>
+    {assembly.plates.map(({ part, side, cx, cy, right }) => (
+      <>
+        <button
+          type="button"
+          class:list={['plate', `plate--${part.plate.style}`, `plate--${part.plate.size}`]}
+          style={`--x: ${cx - side / 2}; --y: ${cy - side / 2}; --side: ${side}; --fill: ${fill(part.item)}`}
+          aria-label={name(part)}
+          aria-pressed={part.item === selected ? 'true' : 'false'}
+          data-part={part.item}
+        />
+        <span
+          class:list={[
+            'assembly__callout',
+            part.item === selected && 'assembly__callout--selected',
+            part.pending && 'assembly__callout--pending',
+          ]}
+          style={`--x: ${right}; --y: ${cy}; --leader: ${assembly.balloon - right}`}
+        >
+          <Balloon
+            as="button"
+            number={part.item}
+            leader="left"
+            state={part.pending ? 'pending' : part.item === selected ? 'active' : 'default'}
+            label={name(part)}
+            aria-pressed={part.item === selected ? 'true' : 'false'}
+            data-part={part.item}
+          />
+          <span class="assembly__label" aria-hidden="true">
+            {part.balloon}
+          </span>
+        </span>
+      </>
+    ))}
+  </div>
+</div>
+
+<style>
+  /* The drawing scales (--u, px per drawing unit) to the width left after the label column. */
+  .assembly {
+    --labels: 190px;
+
+    container-type: inline-size;
+  }
+
+  .assembly__drawing {
+    --u: min(1px, (100cqi - var(--labels)) / var(--width));
+
+    position: relative;
+    width: calc(var(--width) * var(--u) + var(--labels));
+    height: calc(var(--height) * var(--u));
+    margin-inline: auto;
+  }
+
+  .assembly__axis {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(var(--x) * var(--u));
+    border-left: 1.5px dashed color-mix(in srgb, var(--color-ink) 45%, transparent);
+  }
+
+  /* A square turned flat: the transform draws the diamond and turns the shadow into thickness. */
+  .plate {
+    position: absolute;
+    top: calc(var(--y) * var(--u));
+    left: calc(var(--x) * var(--u));
+    width: calc(var(--side) * var(--u));
+    height: calc(var(--side) * var(--u));
+    padding: 0;
+    border: var(--border-normal);
+    background: var(--fill);
+    transform: rotateX(var(--tilt)) rotateZ(-45deg);
+    cursor: pointer;
+  }
+
+  .plate--full.plate--solid {
+    box-shadow: var(--shadow-plate);
+  }
+
+  .plate--dashed {
+    border: var(--border-dashed-note);
+    background: var(--color-redline-tint);
+  }
+
+  .assembly__callout {
+    --balloon-leader: calc(var(--leader) * var(--u));
+
+    position: absolute;
+    top: calc(var(--y) * var(--u));
+    left: calc(var(--x) * var(--u));
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: calc(var(--leader) * var(--u) + var(--labels));
+    transform: translateY(-50%);
+    color: var(--color-ink);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.3;
+  }
+
+  .assembly__callout--selected .assembly__label {
+    font-weight: 600;
+  }
+
+  .assembly__callout--pending {
+    color: var(--color-redline);
+  }
+
+  .assembly__label {
+    min-width: 0;
+  }
+
+  @media (max-width: 767px) {
+    .assembly {
+      --labels: 112px;
+    }
+
+    .assembly__callout {
+      gap: 6px;
+      font-size: 11px;
+    }
+  }
+</style>

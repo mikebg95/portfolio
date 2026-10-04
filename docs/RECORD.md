@@ -257,3 +257,17 @@ frame (the home screen, 5 KB) is the reduced-motion image, chosen by a `<picture
 `src/config.ts`. FIG. 2's labels are the alt text and the source credit; its caption is the
 figure's `caption` (copy.md). Rebuild: `ffmpeg -i scentify_gif.gif -vf "fps=10,scale=360:-1:
 flags=lanczos" f%03d.png` then `img2webp -loop 0 -lossy -q 60 -m 6 -d 100 f*.png -o demo.webp`.
+
+## 2026-10-04 — Education assembly: `ui.education`, plates spaced apart, every plate a button
+Who: agent (PR-33). Sheet 05's label, heading, intro, the drawing's group name and the
+`Part {n}: {name}` button name are `ui.education` (additive, as `ui.certifications`). The drawing
+overlaps the plates (150 px steps for 187 px tall diamonds); the PR-33 line asks for no overlap,
+so plates stack 16 drawing units apart (src/assembly.ts) and the drawing is ~970 px tall at full
+size instead of 780. The thickness is the 7 px box-shadow, which the isometric transform turns into
+a horizontal offset, so it costs no height. Fills as drawn by item: 1 paper, 2 fill-1, 3 fill-2,
+4 fill-3, 5 dashed redline on redline-tint; CS50 and CKAD have no thickness (drawing over
+components.md). Plates and balloons are both buttons in the tab order with the same name
+(components.md, PR-35 "Enter/Space on a plate"), though SPEC §4.6 only needs balloons and rows for
+the keyboard. Part 3 renders pressed (balloon filled, label bold); dimming the others is PR-35's.
+On a phone the plates scale (`--u`, px per drawing unit) to the width left after a 112 px label
+column; labels wrap there instead of shrinking.

@@ -114,3 +114,11 @@ line.
 - `src/components/certifications/CertCard.astro` — card id = entry id (`#ckad` is the Overview's target); the Stamp floats in the head with `shape-outside: circle()` so code/name/issuer wrap round it.
 - TRAP: card names need `overflow-wrap: normal` — with DisplayHeading's `break-word` a word too long to sit beside a float is split ("PROFESSIO NAL") instead of dropping below it.
 - `tests/e2e/certifications.spec.ts` — four cards, ids, stamps, three verify links (exact cv.md URLs), CKAD none; `brokenWords` helper catches mid-word heading breaks at 320/390 px.
+
+## Sheet 05 — Education
+
+- `src/pages/[...lang]/education.astro` — label + heading + intro (`ui.education`), then `.education__body` holding the assembly; parts are `education` entries by `item`.
+- `src/assembly.ts` — plate geometry in drawing units (`layout`, `diamond`, `DEFAULT_PART`); pure, unit-tested.
+- `src/components/education/ExplodedAssembly.astro` — plates (`.plate[data-part]`) and Balloon buttons (`.balloon__mark[data-part]`), both `aria-pressed`; sizes are `calc(n * var(--u))`, `--u` = min(1 px, column minus `--labels` over the drawing width).
+- TRAP: `--u` uses `cqi`, so it must be declared below the `container-type` element (`.assembly__drawing`, not `.assembly`); on the container itself `cqi` resolves against the next container up.
+- `tests/e2e/education.spec.ts` — sheet strings, five plates + balloons with names and pressed state, one axis without overlap, fits 320/390/768 px.

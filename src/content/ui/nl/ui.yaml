@@ -82,5 +82,11 @@ certifications:
   heading: [INSPECTED, AND SIGNED OFF]
   intro: "Every stamp links to the issuer's own record, so you can check it yourself."
   pending: in progress
+education:
+  label: SHEET 05 — ASSEMBLY, EXPLODED VIEW
+  heading: [HOW THIS ENGINEER, WAS ASSEMBLED]
+  intro: 'Not a straight line from a computer-science degree. Each layer below carries load in the final build — select a part to open its detail.'
+  assembly: Exploded assembly of the education parts
+  part: 'Part {n}: {name}'
 lang: nl
 translated: false
