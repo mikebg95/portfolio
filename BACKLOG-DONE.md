@@ -84,3 +84,15 @@ History, not a queue.
   - Done when: below 768 px the header shows monogram + current sheet name + `SHEETS` button; the panel lists the five sheets, language, theme, CV; opens/closes with a clip-path wipe (250 ms), closes on Escape/selection/outside tap, traps focus and returns it to the button; `aria-expanded`/`aria-controls` correct; works without JS as a `<details>` fallback; e2e on chromium-phone covers open, navigate, Escape.
   - Spec: SPEC §3.2; design/components.md SheetIndexPanel
   - Out of scope: desktop header.
+
+
+## Pruned from the queue
+
+1 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### Sheet chrome
+
+- [x] **PR-9 TitleBlock footer**
+  - Done when: footer title block as drawn (PROJECT ×2, SCALE, SHEET nn / 05, DRAWN, CHECKED 251 TESTS, REV = build year.month, CONTACT email/LinkedIn/GitHub) on every page; 2 columns on phone; sheet number correct per page (project details "03 / 05"); unit test for the REV formatter.
+  - Spec: SPEC §3.2; design/components.md TitleBlock; design/copy.md Global
+  - Out of scope: anything else in the footer.

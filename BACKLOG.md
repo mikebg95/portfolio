@@ -54,11 +54,6 @@ queue.
 
 ### Sheet chrome
 
-- [x] **PR-9 TitleBlock footer**
-  - Done when: footer title block as drawn (PROJECT ×2, SCALE, SHEET nn / 05, DRAWN, CHECKED 251 TESTS, REV = build year.month, CONTACT email/LinkedIn/GitHub) on every page; 2 columns on phone; sheet number correct per page (project details "03 / 05"); unit test for the REV formatter.
-  - Spec: SPEC §3.2; design/components.md TitleBlock; design/copy.md Global
-  - Out of scope: anything else in the footer.
-
 - [ ] **PR-10 Paper / Blueprint theme switch**
   - Done when: the theme button toggles `data-theme` between paper and blueprint, persists in localStorage (try/catch), follows the system until toggled, labels/aria-labels per copy.md; blueprint values from tokens render correctly on every stub page; axe passes in both themes; e2e covers toggle + reload persistence + system preference.
   - Spec: SPEC §3.3; design/README.md rule 10; design/tokens.json
