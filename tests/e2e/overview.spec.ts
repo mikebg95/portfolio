@@ -130,3 +130,36 @@ test('no horizontal scroll at 320 px and the name never breaks inside a word', a
   }
   await expectNoAxeViolations(page);
 });
+
+test('how I work: four numbered principles in a 4 / 2 / 1 column grid, then the AI note', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const panel = page.locator('section.how-i-work');
+  await expect(panel.getByRole('heading', { level: 2 })).toHaveText('HOW I WORK');
+  await expect(panel.getByRole('heading', { level: 3 })).toHaveText([
+    'Design before build',
+    'Test first',
+    'Secure by design',
+    'Own it to production',
+  ]);
+  await expect(panel.locator('.how-i-work__number')).toHaveText(['01', '02', '03', '04']);
+  await expect(panel.locator('.how-i-work__ai')).toHaveText(
+    /^ON AI — I build with AI coding agents/,
+  );
+
+  for (const [width, columns] of [
+    [1440, 4],
+    [900, 2],
+    [390, 1],
+  ] as const) {
+    await page.setViewportSize({ width, height: 900 });
+    const tops = await panel
+      .locator('.how-i-work__cell')
+      .evaluateAll((cells) => cells.map((cell) => Math.round(cell.getBoundingClientRect().top)));
+    expect(
+      tops.filter((top) => top === tops[0]),
+      `${width} px`,
+    ).toHaveLength(columns);
+  }
+});

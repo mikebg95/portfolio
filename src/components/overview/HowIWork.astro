@@ -1,0 +1,107 @@
+---
+import { getLocalized } from '../../i18n/content';
+import type { Lang } from '../../i18n/paths';
+import DisplayHeading from '../drawing/DisplayHeading.astro';
+import SheetLabel from '../drawing/SheetLabel.astro';
+
+// SPEC §4.1 "How I work": the four numbered principles as a ruled drawing grid (4 columns, 2 on
+// tablet, 1 on phone), then the mono AI note. Not drawn; built from design/README.md.
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const { labels, howIWork, aiNote } = (await getLocalized('profile', 'profile', lang)).data;
+---
+
+<section class="sheet-panel how-i-work" aria-labelledby="how-i-work-label">
+  <h2 class="how-i-work__label" id="how-i-work-label">
+    <SheetLabel as="span">{labels.howIWork}</SheetLabel>
+  </h2>
+  <ol class="how-i-work__grid">
+    {howIWork.map((principle, i) => (
+      <li class="how-i-work__cell">
+        <span class="how-i-work__number" aria-hidden="true">
+          {String(i + 1).padStart(2, '0')}
+        </span>
+        <DisplayHeading as="h3" size="s">
+          {principle.title}
+        </DisplayHeading>
+        <p class="how-i-work__body">{principle.body}</p>
+      </li>
+    ))}
+  </ol>
+  <p class="how-i-work__ai">{aiNote}</p>
+</section>
+
+<style>
+  .how-i-work {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .how-i-work__label {
+    margin: 0;
+    font: inherit;
+  }
+
+  /* Cells draw their left and top rules, the grid its right and bottom: ruled at any column count. */
+  .how-i-work__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin: 0;
+    padding: 0;
+    border-right: var(--border-thin);
+    border-bottom: var(--border-thin);
+    list-style: none;
+  }
+
+  .how-i-work__cell {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-5);
+    border-top: var(--border-thin);
+    border-left: var(--border-thin);
+  }
+
+  .how-i-work__number {
+    color: var(--color-line);
+    font-family: var(--font-mono);
+    font-size: var(--size-label);
+    letter-spacing: var(--size-label-letter-spacing);
+  }
+
+  .how-i-work__body {
+    margin: 0;
+    color: var(--color-text-2);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .how-i-work__ai {
+    max-width: 880px;
+    margin: 0;
+    color: var(--color-text-2);
+    font-family: var(--font-mono);
+    font-size: var(--size-code);
+    line-height: 1.7;
+  }
+
+  @media (max-width: 1023px) {
+    .how-i-work__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 767px) {
+    .how-i-work__grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .how-i-work__cell {
+      padding: var(--space-4);
+    }
+  }
+</style>

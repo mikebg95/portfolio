@@ -12,6 +12,11 @@ hero:
     - { text: Speaks 7 languages }
     - { text: Trains Muay Thai }
   portraitAlt: Portrait of Michael Goldman, drawn in ASCII characters.
+labels:
+  howIWork: HOW I WORK
+  specification: SPECIFICATION
+  generalNotes: GENERAL NOTES
+  current: IN PROGRESS
 howIWork:
   - title: Design before build
     body: Requirements, a C4 model, a database schema and an API contract come first, and I write down the trade-offs I make. Then the code follows the drawing.

@@ -117,3 +117,12 @@ decorative inside it, so the link is read once and the whole callout is clickabl
 drops the source file's blank lead lines (a `<pre>` would show them as empty space; the drawing has
 none). (4) The vertical dimension stretches with the hero's height, as the drawing's HTML does.
 (5) On phone the callouts lose their leaders (a list has nothing to point at).
+
+## 2026-10-04 — Overview panel labels live in `profile.labels`
+Who: agent (PR-14). The four panel labels (`HOW I WORK`, `SPECIFICATION`, `GENERAL NOTES`,
+`IN PROGRESS`) are a required `labels` object on `profile`, not `ui`: they belong to Sheet 01 only,
+as `hero.label` does. An additive field, so PR-14–16 share it without a separate schema task;
+`tests/unit/profile-content.test.ts` reads them out of copy.md's `### … (label `…`)` headings.
+"How I work" is not drawn: a ruled grid (cells draw left+top, the grid right+bottom, as the title
+block does), 4 / 2 / 1 columns at ≥ 1024 / ≥ 768 / phone. Panel labels are `<h2>`s wrapping a
+SheetLabel span, so each panel is a landmark section with a heading under the h1.

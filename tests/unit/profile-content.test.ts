@@ -92,4 +92,17 @@ describe('profile (EN) against design/copy.md', () => {
       .map(([, text, href]) => ({ text, href }));
     expect(profile.current).toEqual(current);
   });
+
+  it('holds the panel labels', () => {
+    const label = (heading: string) =>
+      sheet01
+        .map((l) => new RegExp(`^### ${heading} \\(label \`(.+)\`\\)$`).exec(l)?.[1])
+        .find(Boolean);
+    expect(profile.labels).toEqual({
+      howIWork: label('How I work'),
+      specification: label('Specification'),
+      generalNotes: label('General notes'),
+      current: label('Current work'),
+    });
+  });
 });

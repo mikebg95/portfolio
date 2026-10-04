@@ -155,6 +155,13 @@ export const profileSchema = z.strictObject({
     ]),
     portraitAlt: text,
   }),
+  /** The labels of the panels below the hero (copy.md `### … (label `…`)`). */
+  labels: z.strictObject({
+    howIWork: text,
+    specification: text,
+    generalNotes: text,
+    current: text,
+  }),
   howIWork: z.tuple([
     z.strictObject({ title: text, body: text }),
     z.strictObject({ title: text, body: text }),
