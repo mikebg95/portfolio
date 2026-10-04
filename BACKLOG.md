@@ -54,11 +54,6 @@ queue.
 
 ### Sheet chrome
 
-- [x] **PR-11 Shared drawing primitives**
-  - Done when: Astro components `SheetLabel`, `DisplayHeading` (xl/l/m/s), `Button` (primary/secondary with hover wipe), `Link` (external ↗ variant), `DimensionLine` (h/v), `Balloon` (+leader; default/active/pending; renders as button/link/span), `RevisionNote`, `SpecRow`, `Figure`/`Box`/`Arrow`, `Stamp`, `Chip` exist per design/components.md, all decoration `aria-hidden`; a `/_primitives` dev-only page (excluded from build/sitemap) shows every variant in both themes; Playwright screenshot test of that page exists (not asserted against PNGs).
-  - Spec: design/components.md; design/screens/html/*.html (class vocabulary)
-  - Out of scope: page compositions.
-
 ### Sheet 01 — Overview
 
 - [ ] **PR-12 Profile content (EN)**
