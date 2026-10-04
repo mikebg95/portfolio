@@ -72,7 +72,7 @@ queue.
 
 ### Hardening
 
-- [ ] **PR-54 Facts audit**
+- [x] **PR-54 Facts audit**
   - Done when: a test (or script in `verify`) extracts every number, date, URL and proper noun from the built EN pages and checks each appears in `docs/source/` or is a GitHub repo path that exists (using a committed allowlist file reviewed by this task against the sources); any invented fact is removed; Jamigos has no live link; phone number absent from all HTML.
   - Sources include `docs/source/briefing.md` (it wins over older copy); `tests/unit/claims-guard.test.ts` (PR-66) must stay green.
   - Spec: SPEC §3.7; NOTES "Never / always"
