@@ -84,8 +84,10 @@ Exact EN wording: `design/copy.md`. Dutch: translated faithfully (natural Dutch,
 terms stay English where Dutch developers use English).
 
 ### 3.7 Facts policy
-Only facts from `docs/source/cv.md`, `docs/source/research-repos.md` and the repositories
-themselves. No invented numbers, clients, dates, users or results. Test counts: 63 / 109 / 79 (251).
+Only facts from `docs/source/cv.md`, `docs/source/briefing.md` (Michael, 2026-10-04; wins where
+older copy disagrees), `docs/source/research-repos.md` and the repositories themselves. DJI text also
+obeys `docs/source/private/briefing-private.md` — local only (gitignored): never quote it, never
+commit it. No invented numbers, clients, dates, users or results. Test counts: 63 / 109 / 79 (251).
 Jamigos hosting is retired: never show a live-demo link.
 
 ### 3.8 SEO and sharing

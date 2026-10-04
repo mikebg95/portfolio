@@ -34,10 +34,10 @@ titleBlock:
 seo:
   overview:
     title: Michael Goldman — Java software engineer, Amsterdam
-    description: 'Full-stack Java-engineer: Spring Boot, secure by design, test-first, uitgerold via CI/CD. Op weg naar Kubernetes en DevOps.'
+    description: 'Java software engineer in Amsterdam: Spring Boot- en Jakarta EE-backends met Angular- en Vue-frontends, secure by design en test-first. Op weg naar Kubernetes en DevOps.'
   experience:
     title: Ervaring — Michael Goldman
-    description: Vijf jaar full-stack Java bij DJI, Conspect en LinkPizza, op schaal getekend.
+    description: Vijf jaar full-stack Java — bij LinkPizza, daarna voor Conspect bij DJI en aan OptieCon — op schaal getekend.
   projects:
     title: Projecten — Michael Goldman
     description: 'Jamigos en de serie Spring Persistence & Architecture: eerst ontworpen, dan gebouwd en getest.'

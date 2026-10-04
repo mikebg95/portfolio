@@ -3,14 +3,14 @@
 hero:
   label: SHEET 01 — GENERAL ARRANGEMENT
   name: [MICHAEL, GOLDMAN]
-  role: Java software engineer — full-stack, building towards DevOps.
-  intro: 'Five years of Spring Boot applications with Angular and Vue frontends: for a government agency, a scale-up and a consultancy. I draw the system before I build it, write the test before the code, and stay until it runs in production.'
-  revisionNote: 'REV. NOTE △ Every project on these sheets started as a drawing: a C4 model, a database schema and an API contract. Then the tests. Then the code.'
+  role: Java software engineer — backend-first, full-stack, building towards DevOps.
+  intro: "Five years of Java backends — Spring Boot, Spring and Jakarta EE on PostgreSQL — with Angular, Vue and JSF frontends: for an influencer-marketing platform, a government agency and a consultancy's own product. I design the system before I build it, write the test before the code, and take what I build from first design to handover."
+  revisionNote: 'REV. NOTE △ Every project in my Spring series started as a drawing: requirements, a C4 model, a database schema and an API contract. Then the tests. Then the code.'
   buttons: { projects: VIEW PROJECTS →, cv: DOWNLOAD CV (PDF) }
-  dimensions: { horizontal: 5+ YRS FULL-STACK, vertical: JAVA · SPRING }
+  dimensions: { horizontal: 5+ YRS JAVA · FULL-STACK, vertical: SPRING · JAKARTA EE }
   balloons:
     - { text: Spring certified, href: /certifications }
-    - { text: Speaks 7 languages }
+    - { text: Dutch & English native }
     - { text: Trains Muay Thai }
   portraitAlt: Portrait of Michael Goldman, drawn in ASCII characters.
 labels:

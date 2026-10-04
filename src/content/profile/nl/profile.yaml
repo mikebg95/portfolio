@@ -2,14 +2,14 @@
 hero:
   label: BLAD 01 — OVERZICHTSTEKENING
   name: [MICHAEL, GOLDMAN]
-  role: Java software engineer — full-stack, op weg naar DevOps.
-  intro: 'Vijf jaar Spring Boot-applicaties met Angular- en Vue-frontends: voor een overheidsorganisatie, een scale-up en een consultancy. Ik teken het systeem voordat ik het bouw, schrijf de test vóór de code en blijf tot het in productie draait.'
-  revisionNote: 'REV. NOTITIE △ Elk project op deze bladen begon als een tekening: een C4-model, een databaseschema en een API-contract. Daarna de tests. Daarna de code.'
+  role: Java software engineer — backend-first, full-stack, op weg naar DevOps.
+  intro: 'Vijf jaar Java-backends — Spring Boot, Spring en Jakarta EE op PostgreSQL — met Angular-, Vue- en JSF-frontends: voor een influencer-marketingplatform, een overheidsorganisatie en het eigen product van een consultancy. Ik ontwerp het systeem voordat ik het bouw, schrijf de test vóór de code en neem wat ik bouw mee van het eerste ontwerp tot de overdracht.'
+  revisionNote: 'REV. NOTITIE △ Elk project in mijn Spring-serie begon als een tekening: requirements, een C4-model, een databaseschema en een API-contract. Daarna de tests. Daarna de code.'
   buttons: { projects: BEKIJK PROJECTEN →, cv: DOWNLOAD CV (PDF) }
-  dimensions: { horizontal: 5+ JR FULL-STACK, vertical: JAVA · SPRING }
+  dimensions: { horizontal: 5+ JR JAVA · FULL-STACK, vertical: SPRING · JAKARTA EE }
   balloons:
     - { text: Spring-gecertificeerd, href: /certifications }
-    - { text: Spreekt 7 talen }
+    - { text: Moedertaal Nederlands & Engels }
     - { text: Traint Muay Thai }
   portraitAlt: Portret van Michael Goldman, getekend in ASCII-tekens.
 labels:

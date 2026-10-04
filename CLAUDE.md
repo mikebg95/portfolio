@@ -19,7 +19,9 @@ template) and make people say "wow" with drafting-themed motion — while every 
 - `design/README.md` (rules), `design/tokens.json` (values), `design/components.md` (parts + states),
   `design/motion.md` (all animation, binding), `design/copy.md` (every EN string),
   `design/screens/` (PNG drawings + their HTML in `html/`; index `design/screens/README.md`).
-- `docs/source/` — CV (`cv.md`, `cv.pdf`), repo research, market research, ASCII portrait. The ONLY
+- `docs/source/` — CV (`cv.md`, `cv.pdf`), Michael's briefing (`briefing.md`, wins over older copy),
+  repo research, ASCII portrait; `docs/source/private/` (local only, gitignored — never quote or
+  commit: `briefing-private.md` limits every DJI claim; market research). The ONLY
   sources of facts, together with the public repos under github.com/mikebg95.
 - Conflicts: NOTES "Never / always" > SPEC (behaviour) > design (looks: drawing > components.md >
   README) ; copy.md wins on wording.

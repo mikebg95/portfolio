@@ -19,13 +19,13 @@ test('the hero shows the drawn text in order', async ({ page }) => {
   await expect(hero.locator('.sheet-label').first()).toHaveText('SHEET 01 — GENERAL ARRANGEMENT');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('MICHAEL GOLDMAN');
   await expect(hero.locator('.hero__role')).toHaveText(
-    'Java software engineer — full-stack, building towards DevOps.',
+    'Java software engineer — backend-first, full-stack, building towards DevOps.',
   );
   await expect(hero.locator('.hero__intro')).toHaveText(
-    /^Five years of Spring Boot applications with Angular and Vue frontends: .* stay until it runs in production\.$/,
+    /^Five years of Java backends — Spring Boot, Spring and Jakarta EE on PostgreSQL — .* from first design to handover\.$/,
   );
   await expect(hero.locator('.revision-note')).toHaveText(
-    'REV. NOTE △ Every project on these sheets started as a drawing: a C4 model, a database schema and an API contract. Then the tests. Then the code.',
+    'REV. NOTE △ Every project in my Spring series started as a drawing: requirements, a C4 model, a database schema and an API contract. Then the tests. Then the code.',
   );
   await expectNoAxeViolations(page);
 });
@@ -62,9 +62,9 @@ test('the Dutch sheet is written in Dutch', async ({ page }) => {
   await page.goto('/nl/');
   await expect(page.locator('html')).toHaveAttribute('lang', 'nl');
   await expect(page.locator('#main')).toContainText(
-    'Java software engineer — full-stack, op weg naar DevOps.',
+    'Java software engineer — backend-first, full-stack, op weg naar DevOps.',
   );
-  await expect(page.locator('#main')).toContainText('Ik teken het systeem voordat ik het bouw');
+  await expect(page.locator('#main')).toContainText('Ik ontwerp het systeem voordat ik het bouw');
   await expect(page.getByRole('link', { name: 'BEKIJK PROJECTEN →' })).toBeVisible();
   await expect(page).toHaveTitle('Michael Goldman — Java software engineer, Amsterdam');
   await expect(page.locator('head meta[name="description"]')).toHaveAttribute(
@@ -85,7 +85,7 @@ test('the portrait is real text, hidden from assistive tech, with a text alterna
     'Portrait of Michael Goldman, drawn in ASCII characters.',
   );
   const dims = page.locator('figure.portrait .dimension');
-  await expect(dims).toHaveText(['5+ YRS FULL-STACK', 'JAVA · SPRING']);
+  await expect(dims).toHaveText(['5+ YRS JAVA · FULL-STACK', 'SPRING · JAKARTA EE']);
   for (const dim of await dims.all()) await expect(dim).toBeVisible();
 });
 
@@ -96,7 +96,7 @@ test('balloons 1–3 are numbered callouts; balloon 1 links to the certification
   const callouts = page.locator('.portrait__callout');
   await expect(callouts).toHaveText([
     /^1\s*Spring certified$/,
-    /^2\s*Speaks 7 languages$/,
+    /^2\s*Dutch & English native$/,
     /^3\s*Trains Muay Thai$/,
   ]);
   await expect(callouts.getByRole('link')).toHaveCount(1);

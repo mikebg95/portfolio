@@ -19,8 +19,8 @@ itself, in the same voice: first person, short sentences, concrete nouns, no hyp
 ## SEO
 | Page | title | description |
 |---|---|---|
-| / | Michael Goldman — Java software engineer, Amsterdam | Full-stack Java engineer: Spring Boot, secure by design, test-first, shipped through CI/CD. Moving into Kubernetes and DevOps. |
-| /experience | Experience — Michael Goldman | Five years of full-stack Java at DJI, Conspect and LinkPizza, drawn to scale. |
+| / | Michael Goldman — Java software engineer, Amsterdam | Java software engineer in Amsterdam: Spring Boot and Jakarta EE backends with Angular and Vue frontends, secure by design and test-first. Moving into Kubernetes and DevOps. |
+| /experience | Experience — Michael Goldman | Five years of full-stack Java — at LinkPizza, then for Conspect at DJI and on OptieCon — drawn to scale. |
 | /projects | Projects — Michael Goldman | Jamigos and the Spring Persistence & Architecture series: designed first, then built and tested. |
 | /projects/<slug> | <Title> — Projects — Michael Goldman | <project summary> |
 | /certifications | Certifications — Michael Goldman | Spring Certified Professional, PSM I, Oracle Certified Associate Java SE 8 — CKAD in progress. Every one verifiable. |
@@ -30,12 +30,12 @@ itself, in the same voice: first person, short sentences, concrete nouns, no hyp
 ## Sheet 01 — Overview
 - Label: `SHEET 01 — GENERAL ARRANGEMENT`
 - Name: `MICHAEL` / `GOLDMAN`
-- Role line: `Java software engineer — full-stack, building towards DevOps.`
-- Intro: `Five years of Spring Boot applications with Angular and Vue frontends: for a government agency, a scale-up and a consultancy. I draw the system before I build it, write the test before the code, and stay until it runs in production.`
-- Revision note: `REV. NOTE △` `Every project on these sheets started as a drawing: a C4 model, a database schema and an API contract. Then the tests. Then the code.`
+- Role line: `Java software engineer — backend-first, full-stack, building towards DevOps.`
+- Intro: `Five years of Java backends — Spring Boot, Spring and Jakarta EE on PostgreSQL — with Angular, Vue and JSF frontends: for an influencer-marketing platform, a government agency and a consultancy's own product. I design the system before I build it, write the test before the code, and take what I build from first design to handover.`
+- Revision note: `REV. NOTE △` `Every project in my Spring series started as a drawing: requirements, a C4 model, a database schema and an API contract. Then the tests. Then the code.`
 - Buttons: `VIEW PROJECTS →` · `DOWNLOAD CV (PDF)`
-- Dimensions: `5+ YRS FULL-STACK` · `JAVA · SPRING`
-- Balloons: 1 `Spring certified` (→ /certifications) · 2 `Speaks 7 languages` · 3 `Trains Muay Thai`
+- Dimensions: `5+ YRS JAVA · FULL-STACK` · `SPRING · JAKARTA EE`
+- Balloons: 1 `Spring certified` (→ /certifications) · 2 `Dutch & English native` · 3 `Trains Muay Thai`
 
 ### How I work (label `HOW I WORK`)
 1. **Design before build** — Requirements, a C4 model, a database schema and an API contract come first, and I write down the trade-offs I make. Then the code follows the drawing.
