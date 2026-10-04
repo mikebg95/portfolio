@@ -139,27 +139,30 @@ describe('detail sheets (EN) against design/copy.md', () => {
     ]);
   });
 
-  // PR-28, PR-29 add their titles here as they write their sheets.
-  it.each(['Jamigos', 'Subscription Tracker', 'Recipe Book'])('holds %s verbatim', (title) => {
-    const line = detailLine(title);
-    const entry = entries.find((e) => e.title === title);
+  // PR-29 adds its title here when it writes its sheet.
+  it.each(['Jamigos', 'Subscription Tracker', 'Recipe Book', 'Journal'])(
+    'holds %s verbatim',
+    (title) => {
+      const line = detailLine(title);
+      const entry = entries.find((e) => e.title === title);
 
-    expect(entry?.summary).toBe(quoted(line, 'summary'));
-    expect(entry && detailMeta(entry, entries, ui.projects.detail)).toBe(quoted(line, 'meta'));
-    expect(entry?.figures.map((f) => f.title)).toEqual([
-      quoted(line, 'FIG. 1'),
-      quoted(line, 'FIG. 2'),
-    ]);
-    expect(entry?.note).toBe(quoted(line, 'Note'));
-    const specRows = /Spec rows: (.+?) · FIG\. 2/.exec(line)?.[1];
-    if (specRows) {
-      const rows = [...specRows.matchAll(/([A-Z]+) `([^`]+)`/g)].map(([, label, text]) => ({
-        label,
-        text,
-      }));
-      expect(entry?.spec).toEqual(rows);
-    }
-  });
+      expect(entry?.summary).toBe(quoted(line, 'summary'));
+      expect(entry && detailMeta(entry, entries, ui.projects.detail)).toBe(quoted(line, 'meta'));
+      expect(entry?.figures.map((f) => f.title)).toEqual([
+        quoted(line, 'FIG. 1'),
+        quoted(line, 'FIG. 2'),
+      ]);
+      expect(entry?.note).toBe(quoted(line, 'Note'));
+      const specRows = /Spec rows: (.+?) · FIG\. 2/.exec(line)?.[1];
+      if (specRows) {
+        const rows = [...specRows.matchAll(/([A-Z]+) `([^`]+)`/g)].map(([, label, text]) => ({
+          label,
+          text,
+        }));
+        expect(entry?.spec).toEqual(rows);
+      }
+    },
+  );
 
   // The pyramid's per-level counts were read from the repo's test sources (@Test and
   // @ParameterizedTest per class); they must add up to the project's total and the figure title's.
@@ -170,5 +173,18 @@ describe('detail sheets (EN) against design/copy.md', () => {
     expect(counts).toEqual([2, 22, 25, 14]);
     expect(counts.reduce((a, b) => a + b, 0)).toBe(entry?.tests);
     expect(pyramid?.title).toBe(`TEST PYRAMID — ${entry?.tests} TESTS`);
+  });
+
+  // FIG. 2 lists the journal repo's 7 ADRs in number order, each linking to its file on GitHub.
+  it('lists the Journal decision records with their links', () => {
+    const entry = entries.find((e) => e.slug === 'journal');
+    const adrs = entry?.figures[1].labels.map((l) => l.split('\n')) ?? [];
+    expect(adrs).toHaveLength(7);
+    adrs.forEach(([title, url], i) => {
+      expect(title).toBeTruthy();
+      expect(url).toMatch(
+        new RegExp(`^${entry?.repo}/blob/main/docs/architecture/adr/000${i + 1}-[a-z0-9-]+\\.md$`),
+      );
+    });
   });
 });

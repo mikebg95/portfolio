@@ -1,5 +1,5 @@
-# Register fields from design/copy.md Sheet 03 (PR-21); summary, figures and note are the detail
-# sheet's — PR-28 replaces those placeholders.
+# design/copy.md Sheet 03: the register row (PR-21) and detail sheet 03.4 (PR-28). Spec rows and
+# figure words from github.com/mikebg95/journal; FIG. 2 is its 7 ADRs (title, then the link).
 slug: journal
 code: P-04
 kind: 'HEXAGONAL · IN PROGRESS'
@@ -8,7 +8,7 @@ title: Journal
 diagram: ['DOMAIN']
 series: true
 cardSummary: 'Rich domain model, 7 written design decisions, and an AI step that summarises each entry.'
-summary: 'Placeholder (PR-28)'
+summary: 'A journal where one AI call turns each entry into a summary, tags, a mood and to-dos — and the entry is still saved if the AI is down. Part 3 of the series: hexagonal architecture and a rich domain model.'
 period: 'JUL 2026 – NOW'
 status: in-progress
 repo: https://github.com/mikebg95/journal
@@ -17,9 +17,41 @@ facts:
   - { label: TESTS, value: '79' }
   - { label: ADRS, value: '7' }
   - { label: STATUS, value: 'Building' }
+spec:
+  - label: ARCHITECTURE
+    text: 'Hexagonal: domain/model, application/port/in and out, adapter/in/web, adapter/out/persistence and ai. ArchUnit fails the build if a boundary is crossed.'
+  - label: DOMAIN
+    text: 'A rich domain model — Entry, Tag, Todo — whose objects reject invalid state themselves; application services work through ports only.'
+  - label: AI
+    text: 'Planned: one Spring AI call turns an entry into a summary, tags, a mood and to-dos. If the call fails, the entry is still saved (graceful degradation).'
+  - label: PERSISTENCE
+    text: 'In progress: a Spring Data JPA adapter on PostgreSQL 18 with Flyway, MapStruct mapping between the domain and JPA entities.'
+  - label: CONCURRENCY
+    text: 'Optimistic locking on entries: a concurrent edit is detected by a version column and surfaced as a conflict for the user to resolve.'
+  - label: API
+    text: 'Design-first OpenAPI 3.1 contract, written before the code; the planned REST adapter is generated from it.'
+  - label: TESTING
+    text: '79 tests, written test-first: domain and service unit tests with in-memory fakes, persistence on Testcontainers, ArchUnit on the hexagonal boundaries.'
 figures:
-  - { title: 'Placeholder (PR-28)' }
-  - { title: 'Placeholder (PR-28)' }
-note: 'Placeholder (PR-28)'
+  - title: PORTS & ADAPTERS
+    labels:
+      - "Domain\nEntry · Tag · Todo"
+      - "Application\nservices · ports in / out"
+      - "Web\nREST adapter · planned"
+      - EntryUseCases
+      - "Persistence\nSpring Data JPA · in progress"
+      - EntryStore · TagStore
+      - "AI\nSpring AI · planned"
+      - EntryEnricher
+  - title: DECISION RECORDS
+    labels:
+      - "Hexagonal architecture at P3\nhttps://github.com/mikebg95/journal/blob/main/docs/architecture/adr/0001-hexagonal-at-p3.md"
+      - "Synchronous AI processing\nhttps://github.com/mikebg95/journal/blob/main/docs/architecture/adr/0002-synchronous-ai-processing.md"
+      - "Spring AI as the LLM integration library\nhttps://github.com/mikebg95/journal/blob/main/docs/architecture/adr/0003-spring-ai.md"
+      - "No cascade delete to shared tags\nhttps://github.com/mikebg95/journal/blob/main/docs/architecture/adr/0004-no-cascade-to-tags.md"
+      - "Graceful degradation on AI failure\nhttps://github.com/mikebg95/journal/blob/main/docs/architecture/adr/0005-graceful-degradation.md"
+      - "Tag normalisation defines tag identity\nhttps://github.com/mikebg95/journal/blob/main/docs/architecture/adr/0006-tag-data-contract.md"
+      - "Optimistic locking on entries, with user-resolved conflicts\nhttps://github.com/mikebg95/journal/blob/main/docs/architecture/adr/0007-optimistic-locking.md"
+note: 'REV. NOTE △ In progress: the domain model is built and persistence is under way; the web and AI adapters come next.'
 lang: nl
 translated: false

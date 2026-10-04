@@ -248,3 +248,68 @@ test('Recipe Book: design-first flow, the aggregate and 109 tests (copy.md 03.3)
   const row = await fig1.locator('.detail-figure__row').boundingBox();
   expect(row!.x + row!.width).toBeLessThanOrEqual(box!.x + box!.width + 1);
 });
+
+test('Journal: ports & adapters, 7 ADR links and the status in redline (copy.md 03.4)', async ({
+  page,
+}) => {
+  await page.goto('/projects/journal');
+  const meta = page.locator('.detail-head__meta');
+  const status = meta.locator('.detail-head__status');
+  await expect(status).toHaveText('IN PROGRESS');
+  const colour = (l: typeof meta) => l.evaluate((e) => getComputedStyle(e).color);
+  expect(await colour(status)).not.toBe(await colour(meta));
+
+  const fig1 = page.locator('[data-figure="1"]');
+  await expect(fig1.locator('figcaption')).toHaveText('FIG. 1 — PORTS & ADAPTERS');
+  const hexagon = fig1.locator('.hexagon');
+  await expect(hexagon).toContainText('Application');
+  await expect(hexagon.locator('.box--main .box__title')).toHaveText('Domain');
+  expect(await hexagon.evaluate((e) => getComputedStyle(e).clipPath)).toMatch(/^polygon/);
+  await expect(fig1.locator('.box__title')).toHaveText(['Web', 'Domain', 'Persistence', 'AI']);
+  await expect(fig1.locator('.arrow__label')).toHaveText([
+    'EntryUseCases',
+    'EntryStore · TagStore',
+    'EntryEnricher',
+  ]);
+
+  const fig2 = page.locator('[data-figure="2"]');
+  await expect(fig2.locator('figcaption')).toHaveText('FIG. 2 — DECISION RECORDS');
+  const adrs = fig2.getByRole('link');
+  await expect(adrs).toHaveCount(7);
+  await expect(adrs.first()).toHaveText(/^ADR-0001\s*Hexagonal architecture at P3/);
+  for (const [i, adr] of (await adrs.all()).entries()) {
+    await expect(adr).toHaveAttribute(
+      'href',
+      new RegExp(
+        `^https://github\\.com/mikebg95/journal/blob/main/docs/architecture/adr/000${i + 1}-`,
+      ),
+    );
+    await expect(adr).toHaveAttribute('target', '_blank');
+  }
+
+  await expect(page.locator('.detail-body .spec-row dt')).toHaveText([
+    'ARCHITECTURE',
+    'DOMAIN',
+    'AI',
+    'PERSISTENCE',
+    'CONCURRENCY',
+    'API',
+    'TESTING',
+  ]);
+  await expect(page.locator('.detail-body .revision-note')).toContainText('In progress:');
+
+  // Persistence and AI both hang off the application, side by side on phone too: never one
+  // above the other, which would read as persistence → AI.
+  const [persistence, ai] = await fig1
+    .locator('.detail-figure__stack--fan .box')
+    .evaluateAll((bs) => bs.map((b) => b.getBoundingClientRect()));
+  const hex = await fig1.locator('.hexagon').boundingBox();
+  if (persistence!.y > hex!.y + hex!.height) {
+    expect(ai!.y).toBeLessThan(persistence!.y + persistence!.height);
+    expect(ai!.x).toBeGreaterThan(persistence!.x + persistence!.width);
+  }
+
+  const box = await fig1.boundingBox();
+  const row = await fig1.locator('.detail-figure__row').boundingBox();
+  expect(row!.x + row!.width).toBeLessThanOrEqual(box!.x + box!.width + 1);
+});

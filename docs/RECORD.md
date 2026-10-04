@@ -232,3 +232,17 @@ arrow with the box it points at: between 768 and ~1300 px a five-box row wraps, 
 starts with an arrow instead of one dangling at the end of the first. FIG. 2's Step and Ingredient
 stay side by side at every width under one "cascade ALL · orphanRemoval" arrow — stacked, they read
 as Recipe → Step → Ingredient, which the model is not.
+
+## 2026-10-04 — Journal sheet: ADRs as content, a clip-path hexagon, status word in redline
+Who: agent (PR-28). copy.md 03.4 gives no spec rows; seven were written from research-repos.md P-04
+and the repo README, each unbuilt part named "planned" / "in progress" as the README's status table
+does. FIG. 2's ADR titles were read from `docs/architecture/adr/` at 0810723 (prefix "ADR-000n:"
+dropped, 0007's em-dash form normalised); each label is "title\nURL" — URLs are content, like
+`repo`, and all seven answered 200 on 2026-10-04. The ADR number is drawn from the list position.
+FIG. 1: the application as a clip-path hexagon (outer hexagon in line colour, inset paper hexagon
+as the 2 px border) with the domain box at its centre; Web in, Persistence and AI out, arrows
+labelled with the real port names (EntryUseCases, EntryStore · TagStore, EntryEnricher). On phone
+the two outbound adapters sit side by side under the hexagon (stacked, they read as persistence →
+AI); between 768 and ~1280 px they wrap below, led by their arrows. "In progress" styling: only the
+status word of the meta line is redline (`.detail-head__status`), as design/README.md reserves
+redline for pending / in progress.

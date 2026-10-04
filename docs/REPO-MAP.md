@@ -101,6 +101,7 @@ line.
 - `tests/e2e/project-detail.spec.ts` — all five slugs: label, title, repo href, meta, figure captions, note, pager hrefs, tab + footer; NL navigation; spec/FIG. 2 layout per viewport.
 - `src/components/projects/DetailFigure.astro` — the FIG. 1/2 drawings per slug from `figures[n].labels` (`LABELS` = count per figure); a new project's figure needs a layout here or the build throws.
 - `tests/unit/project-content.test.ts` `detail sheets` — each written sheet's title in `it.each` checks it against copy.md; the Subscription Tracker pyramid's counts must sum to `tests`.
+- `src/components/projects/DetailFigure.astro` `CHAINS` — box→arrow→box rows (each arrow wrapped with its box); `.hexagon` (Journal) — TRAP: padding in %, it resolves against the row's width and squeezes the text to one word per line.
 - `src/components/drawing/PipelineRoute.astro` — stations `<ol>`, last filled; Arrow `turns` = right ≥ 768 px, down below.
 - TRAP: after adding a schema field with a `.default()`, a cached `node_modules/.astro/data-store.json` keeps entries without it; symptom: build "Cannot read properties of undefined" on that field. Delete the file and rebuild.
 
