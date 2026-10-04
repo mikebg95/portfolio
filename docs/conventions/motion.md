@@ -63,6 +63,13 @@ never a second system.
   `--reveal-duration` are not inherited (`@property`), so set them on the element itself.
 - A new reveal kind = a keyframe + a `[data-reveal='x']` rule in motion.css, a specimen on
   `/_primitives` (`[data-motion-specimens]`), and a line here.
+- **Scroll-scrubbed set pieces (§M4, §M5):** the piece's own module (`src/timeline-motion.ts`)
+  imports GSAP + ScrollTrigger statically; its component script loads it lazily with
+  `startScrub(root, () => import(…))` (src/scrub.ts), which never loads it under reduced motion and
+  ends `done` if it fails. The root carries `data-scrub="pending"` in the markup; the module sets
+  `waiting` / `playing` / `done`. Its hidden start state is styled under `.js` + no-preference while
+  `:not([data-scrub='done'])`; at `done` it clears every inline style it wrote. Easings: `tokenEase('plot'|'out'|'pop')`
+  reads the token. `settleAnimations` (e2e) waits for `pending`/`playing`.
 - **Crosshair (§M6):** SheetFrame renders `Crosshair.astro` as `.sheet`'s first child, under the
   inner frame's content as in the preview; `src/crosshair.ts` moves it by `--crosshair-x/y`
   (transforms only) once per frame. Shown only for `(hover: hover) and (pointer: fine)` without

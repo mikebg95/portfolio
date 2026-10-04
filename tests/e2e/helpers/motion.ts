@@ -12,8 +12,18 @@ const FINAL_STATE_EXCEPTIONS = [
   '.assembly[data-active] .assembly__callout:not(.assembly__callout--selected)',
 ];
 
-/** Waits for every finite animation on the page to end. */
+/**
+ * Waits for every finite animation on the page to end — CSS and Web Animations, and the GSAP set
+ * pieces (`data-scrub`, src/scrub.ts) about to play or playing; one armed for a scroll is at rest.
+ */
 export async function settleAnimations(page: Page): Promise<void> {
+  await page.waitForFunction(
+    () =>
+      !document.documentElement.classList.contains('js') ||
+      !document.querySelector("[data-scrub='pending'], [data-scrub='playing']"),
+    undefined,
+    { polling: 100 },
+  );
   await page.evaluate(() =>
     Promise.all(
       document

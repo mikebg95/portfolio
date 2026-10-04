@@ -359,3 +359,22 @@ content in view at load (FIG. 1, the register cards, the timeline's neighbours) 
 animate at 0 s under a frame that is still drawing; 0.8 s keeps it readable by 1.3 s. Count-ups:
 the test counts (series line, title block CHECKED, a card's TESTS fact, the test pyramid); the
 only durations are the timeline's, which PR-43 counts with its bars.
+
+## 2026-10-04 — Experience timeline motion: scrub only below the 80 % line, drawn once, pin ≥ 640 px tall
+Who: agent (PR-43). §M4 scrubs the bars between "timeline top at 80 %" and "at 35 %" of the
+viewport, but the timeline sits in the hero: measured at load its top is at 46 % (1440×900), 59 %
+(1280×720, 1024×768), 43 % (Pixel 7). Scrubbing there would leave bars part-drawn, labels hidden
+and durations wrong ("2 Y 0 M" for 2 Y 8 M) at rest until the visitor scrolls — against principle 1
+(text readable by 1.3 s) and the facts rule. So: a timeline already above the 80 % line at load
+plays the same sweep on its own (0.9 s, `--ease-plot`); one below it (short windows, zoom,
+landscape phones) is scrubbed as specified (0.6 s smoothing). Either way, once drawn it stays
+drawn — scrolling back never retracts it. One sweep along the ruler drives every bar (a bar
+extrudes while the pen crosses its months), so bars draw in time order. Bars extrude by scaleX
+(scaleY on the vertical ruler) of the segment only; labels and the legend fade in over a bar's last
+40 % rather than scale, so text never squishes. The sabbatical hatching moved to a `::before`
+layer so it can slide by transform. Sticky timeline: a ScrollTrigger pin (the timeline and the
+detail blocks are in different sections, so CSS sticky cannot span them), only at ≥ 1024 px wide
+AND ≥ 640 px tall — a pinned ~270 px strip in a shorter window leaves too little to read. Scale
+cursor: a redline from the ruler down to the bars at the centre of the role whose block spans 55 %
+of the viewport. JS on /experience: 49.8 KB gzipped in all (GSAP + ScrollTrigger chunk 45.4 KB),
+under SPEC §7's 60 KB.

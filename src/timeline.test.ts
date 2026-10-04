@@ -1,6 +1,15 @@
 import { describe, expect, it } from 'vitest';
 
-import { formatDuration, layout, monthIndex, nowIndex, place, ruler } from './timeline';
+import {
+  barProgress,
+  between,
+  formatDuration,
+  layout,
+  monthIndex,
+  nowIndex,
+  place,
+  ruler,
+} from './timeline';
 
 // The four experience entries as in src/content/experience/en (PR-17).
 const ENTRIES = [
@@ -113,5 +122,37 @@ describe('monthIndex', () => {
   it('rejects anything but YYYY-MM', () => {
     expect(() => monthIndex('2026-13')).toThrow();
     expect(() => monthIndex('2026')).toThrow();
+  });
+});
+
+describe('barProgress', () => {
+  it('draws a bar while the sweep crosses its months, not before or after', () => {
+    expect(barProgress(0, 10, 40)).toBe(0);
+    expect(barProgress(0.1, 10, 40)).toBe(0);
+    expect(barProgress(0.3, 10, 40)).toBeCloseTo(0.5);
+    expect(barProgress(0.5, 10, 40)).toBe(1);
+    expect(barProgress(1, 10, 40)).toBe(1);
+  });
+
+  it('ends every bar of the real timeline drawn when the sweep ends', () => {
+    for (const bar of layout(ENTRIES, BUILD).bars) {
+      expect(barProgress(1, bar.left, bar.width)).toBe(1);
+      expect(barProgress(0, bar.left, bar.width)).toBe(0);
+    }
+  });
+
+  it('treats a bar without length as drawn once the sweep reaches it', () => {
+    expect(barProgress(0.2, 30, 0)).toBe(0);
+    expect(barProgress(0.3, 30, 0)).toBe(1);
+  });
+});
+
+describe('between', () => {
+  it('rescales and clamps', () => {
+    expect(between(0.6, 0.6, 1)).toBe(0);
+    expect(between(0.8, 0.6, 1)).toBeCloseTo(0.5);
+    expect(between(1, 0.6, 1)).toBe(1);
+    expect(between(0.2, 0.6, 1)).toBe(0);
+    expect(between(2, 0, 0.15)).toBe(1);
   });
 });

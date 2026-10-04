@@ -42,7 +42,7 @@ Installed versions as of PR-1; "(chosen)" = picked by NOTES.md, installed by a l
 - TypeScript 6.0.3 strict + `noUncheckedIndexedAccess` (`astro/tsconfigs/strict`); `@astrojs/check`
   0.9.10. Not TS 7: `@astrojs/check` and typescript-eslint do not accept it yet.
 - Plain CSS with custom properties generated from `design/tokens.json` (chosen, PR-4). No Tailwind.
-- GSAP + ScrollTrigger, lazy-loaded on Experience and Education only (chosen, PR-43/PR-44).
+- GSAP 3.15.0 + ScrollTrigger (installed PR-43), lazy-loaded on Experience and Education only.
 - Vitest 5.0.3 (unit, `getViteConfig`); Playwright 1.63.0 (e2e, `tests/e2e`, output `.e2e/`);
   @axe-core/playwright 4.13.0; Lighthouse CI budgets (chosen).
 - ESLint 10.12.0 flat config (typescript-eslint 8.71.0, eslint-plugin-astro 3.2.1); Prettier 3.9.9

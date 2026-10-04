@@ -85,3 +85,16 @@ export const layout = <T extends Span>(entries: readonly T[], now: Date) => {
 
 /** `32` → `2 Y 8 M`. */
 export const formatDuration = (months: number) => `${Math.floor(months / 12)} Y ${months % 12} M`;
+
+const clamp = (value: number) => Math.min(1, Math.max(0, value));
+
+/**
+ * §M4 sweep: how far a bar at `start` % spanning `span` % of the ruler is drawn when a pen moving
+ * along the ruler is at `sweep` (0–1).
+ */
+export const barProgress = (sweep: number, start: number, span: number) =>
+  span > 0 ? clamp((sweep * 100 - start) / span) : sweep * 100 >= start ? 1 : 0;
+
+/** `progress` rescaled so `from` → 0 and `to` → 1, clamped. */
+export const between = (progress: number, from: number, to: number) =>
+  clamp((progress - from) / (to - from));

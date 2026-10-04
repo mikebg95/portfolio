@@ -8,7 +8,8 @@ import { formatDuration, layout, place } from '../../timeline';
 // TimelineBar): year ruler, employer dimension line, one bar per entry linking to its detail block,
 // durations under the closed roles, the sabbatical's legend. Positions come from src/timeline.ts as
 // `--start` / `--span` percentages: left/width on a horizontal ruler, top/height on the phone's
-// vertical one, so both read the same markup.
+// vertical one, so both read the same markup. Motion (§M4) is src/timeline-motion.ts, loaded by the
+// script below; `data-scrub` holds its state (src/scrub.ts) and its start state is styled here.
 interface Props {
   lang: Lang;
 }
@@ -33,7 +34,7 @@ const variant = (bar: (typeof bars)[number]) => {
 const name = (entry: (typeof entries)[number]) => entry.client ?? entry.employer ?? entry.role;
 ---
 
-<div class="timeline" style={`--months: ${months}`}>
+<div class="timeline" data-scrub="pending" style={`--months: ${months}`}>
   <div class="timeline__canvas">
     <ol class="timeline__ruler" aria-hidden="true">
       {ruler.years.map((year, i) => (
@@ -54,6 +55,9 @@ const name = (entry: (typeof entries)[number]) => entry.client ?? entry.employer
         </p>
       );
     })}
+    <div class="timeline__track" aria-hidden="true">
+      <span class="timeline__cursor"></span>
+    </div>
     <ol class="timeline__bars">
       {bars.map((bar) => {
         const { entry } = bar;
@@ -74,7 +78,9 @@ const name = (entry: (typeof entries)[number]) => entry.client ?? entry.employer
                 <>
                   <span class="timeline__label">
                     <span class="timeline__name">{name(entry)}</span>{' '}
-                    <span aria-hidden="true">→</span>
+                    <span class="timeline__arrow" aria-hidden="true">
+                      →
+                    </span>
                   </span>
                   <span class="sr-only">
                     · {entry.role} · {dates}
@@ -116,6 +122,14 @@ const name = (entry: (typeof entries)[number]) => entry.client ?? entry.employer
     );
   })}
 </div>
+
+<script>
+  import { SCRUB_ATTR, startScrub } from '../../scrub';
+
+  for (const timeline of document.querySelectorAll<HTMLElement>(`.timeline[${SCRUB_ATTR}]`)) {
+    startScrub(timeline, () => import('../../timeline-motion'));
+  }
+</script>
 
 <style>
   .timeline {
@@ -256,13 +270,26 @@ const name = (entry: (typeof entries)[number]) => entry.client ?? entry.employer
     background: var(--color-ink);
   }
 
+  /* The hatching is its own layer, larger than the bar, so §M4 can slide it (`--hatch` 1 → 0). */
   .timeline__entry--break .timeline__segment {
+    overflow: hidden;
     border-style: dashed;
+  }
+
+  .timeline__entry--break .timeline__segment::before {
+    content: '';
+    position: absolute;
+    inset: -14px;
     background-image: repeating-linear-gradient(
       -45deg,
       color-mix(in srgb, var(--color-ink) 50%, transparent) 0 1px,
       transparent 1px 7px
     );
+    transform: translate(calc(var(--hatch, 0) * -14px), calc(var(--hatch, 0) * -14px));
+  }
+
+  .timeline__arrow {
+    display: inline-block;
   }
 
   .timeline__duration {
@@ -291,6 +318,103 @@ const name = (entry: (typeof entries)[number]) => entry.client ?? entry.employer
     font-size: 10.5px;
     line-height: 1.4;
     white-space: nowrap;
+  }
+
+  /* §M4 scale cursor: marks the role whose detail block is being read, desktop only
+     (src/timeline-motion.ts sets `--at`, the bar's centre in %, and `data-at`). The cursor is as
+     wide as the track, so a % translate is a % of the ruler. */
+  .timeline__track {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 92px;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .timeline__cursor {
+    position: absolute;
+    inset: 0;
+    visibility: hidden;
+    transform: translateX(calc(var(--at, 0) * 1%));
+    transition: transform var(--motion-normal) var(--motion-ease-out);
+  }
+
+  .timeline__cursor[data-at] {
+    visibility: visible;
+  }
+
+  .timeline__cursor::before,
+  .timeline__cursor::after {
+    content: '';
+    position: absolute;
+    left: 0;
+  }
+
+  .timeline__cursor::before {
+    top: 0;
+    bottom: 6px;
+    width: 1px;
+    background: var(--color-redline);
+  }
+
+  .timeline__cursor::after {
+    bottom: 0;
+    margin-left: -4px;
+    border: 4.5px solid transparent;
+    border-top: 6px solid var(--color-redline);
+    border-bottom: 0;
+  }
+
+  /* Pinned over the detail blocks (desktop): a strip of paper, frame to frame, hides what scrolls
+     past; its top meets the viewport (PIN_TOP_PX in src/timeline-motion.ts). */
+  .timeline.timeline--pinned {
+    z-index: 3;
+    isolation: isolate;
+  }
+
+  .timeline--pinned::before {
+    content: '';
+    position: absolute;
+    inset: -16px calc(-1 * var(--sheet-content-padding)) -12px;
+    z-index: -1;
+    border-bottom: var(--border-thin);
+    background: var(--color-paper);
+  }
+
+  /* §M4 origins: bars extrude from their start month, ticks grow from the ruler line. */
+  .timeline__segment,
+  .timeline__duration .timeline__rule {
+    transform-origin: left center;
+  }
+
+  .timeline__ruler li {
+    transform-origin: center bottom;
+  }
+
+  /* §M4 start state, until the sweep is done (docs/conventions/motion.md). */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .timeline:not([data-scrub='done']) .timeline__ruler {
+      clip-path: inset(0 100% 0 0);
+    }
+
+    :global(.js) .timeline:not([data-scrub='done']) .timeline__ruler li {
+      transform: scaleY(0);
+    }
+
+    :global(.js) .timeline:not([data-scrub='done']) .timeline__segment {
+      --hatch: 1;
+      transform: scaleX(0);
+    }
+
+    :global(.js) .timeline:not([data-scrub='done']) .timeline__duration .timeline__rule {
+      transform: scaleX(0);
+    }
+
+    :global(.js) .timeline:not([data-scrub='done']) .timeline__label,
+    :global(.js) .timeline:not([data-scrub='done']) .timeline__legend,
+    :global(.js) .timeline:not([data-scrub='done']) .timeline__duration {
+      opacity: 0;
+    }
   }
 
   /* Below desktop the ruler turns vertical — years down the left, 8 px a month, bars as vertical
@@ -410,6 +534,32 @@ const name = (entry: (typeof entries)[number]) => entry.client ?? entry.employer
 
     .timeline__duration .timeline__rule {
       display: none;
+    }
+
+    .timeline__track {
+      display: none;
+    }
+
+    .timeline__segment {
+      transform-origin: center top;
+    }
+
+    .timeline__ruler li {
+      transform-origin: right center;
+    }
+  }
+
+  @media (max-width: 1023px) and (prefers-reduced-motion: no-preference) {
+    :global(.js) .timeline:not([data-scrub='done']) .timeline__ruler {
+      clip-path: inset(0 0 100% 0);
+    }
+
+    :global(.js) .timeline:not([data-scrub='done']) .timeline__ruler li {
+      transform: scaleX(0);
+    }
+
+    :global(.js) .timeline:not([data-scrub='done']) .timeline__segment {
+      transform: scaleY(0);
     }
   }
 </style>

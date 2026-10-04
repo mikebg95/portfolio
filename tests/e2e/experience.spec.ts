@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 import { expectNoAxeViolations } from './helpers/axe';
+import { settleAnimations } from './helpers/motion';
 
 // Sheet 02 timeline (SPEC §4.2; copy.md Sheet 02; drawing experience-default-light-1440):
 // horizontal from 1024 px, vertical below.
@@ -52,6 +53,7 @@ test('the sheet shows its label, heading and the drawn timeline', async ({ page 
 
 test('bars are drawn to scale along the ruler', async ({ page }) => {
   await page.goto('/experience');
+  await settleAnimations(page);
   const width = page.viewportSize()?.width ?? 0;
   const horizontal = width >= 1024;
   const box = async (selector: string) => {

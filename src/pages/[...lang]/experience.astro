@@ -75,4 +75,9 @@ const number = (entry: (typeof entries)[number]) => `${sheet}.${roles.indexOf(en
   .experience-details > :global(* + *) {
     border-top: 1px solid var(--color-rule);
   }
+
+  /* A bar's link lands its block clear of the pinned timeline (src/timeline-motion.ts sets it). */
+  .experience-details > :global(*) {
+    scroll-margin-top: var(--timeline-pinned, 0px);
+  }
 </style>

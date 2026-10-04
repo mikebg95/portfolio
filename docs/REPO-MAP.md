@@ -105,6 +105,8 @@ line.
 - `src/pages/[...lang]/experience.astro` — label + heading (`ui.experience`), the timeline, then the entries newest first: `ExperienceDetail` per role (numbered `02.n` from `SHEETS`), `ExperienceBreak` for the sabbatical; each block's id is the entry id (bar and Overview targets).
 - `src/components/experience/Timeline.astro` — ruler, employer dimension (`profile.employers`), bars, durations, legend; positions as `--start`/`--span` %, left/width ≥ 1024 px and top/height (8 px a month) below — one markup.
 - `src/dates.ts` — `formatMonth` / `formatSpan` with `ui.dates` words; the only place a `YYYY-MM` becomes `NOV 2023`.
+- `src/timeline-motion.ts` — §M4 (lazy, GSAP): one sweep drives every bar, intro vs scrub, pin + scale cursor ≥ 1024×640; `src/scrub.ts` — `startScrub`, `data-scrub` states, `tokenEase`; `tests/e2e/experience-motion.spec.ts`.
+- TRAP: GSAP's pin wraps `.timeline` in a `.pin-spacer` div; select the timeline by class, never as a direct child of `.experience-head`. Detail blocks get `scroll-margin-top: var(--timeline-pinned)` so a bar link lands clear of the pinned strip.
 - `tests/e2e/experience.spec.ts` — timeline text, bar order/hrefs, scale (month positions) per orientation, bar click → block; detail block titles/dates/order, one column on phone.
 
 ## Sheet 03 — Projects
