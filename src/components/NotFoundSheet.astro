@@ -1,0 +1,101 @@
+---
+import { t } from '../i18n/content';
+import { localize, type Lang } from '../i18n/paths';
+import { SHEETS } from '../i18n/routes';
+import SheetLayout from '../layouts/SheetLayout.astro';
+import DisplayHeading from './drawing/DisplayHeading.astro';
+import RevisionNote from './drawing/RevisionNote.astro';
+import SheetLabel from './drawing/SheetLabel.astro';
+
+// SPEC §3.9 / §4.7 (not drawn): sheet label, display heading, the redline revision note and the
+// five sheets as a sheet index list — one row per sheet, number + name, like SheetIndexPanel.
+// Shared by `src/pages/404.astro` and `src/pages/nl/404.astro`, the only per-language pages.
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const ui = await t(lang);
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+
+<SheetLayout lang={lang} title={ui.seo.notFound.title}>
+  <section class="sheet-panel not-found">
+    <SheetLabel>{ui.notFound.label}</SheetLabel>
+    <DisplayHeading as="h1" size="l" class="not-found__heading">
+      {ui.notFound.heading}
+    </DisplayHeading>
+    <RevisionNote text={ui.notFound.note} />
+    <ol class="not-found__sheets" data-sheet-list>
+      {SHEETS.map(({ key, number, path }) => (
+        <li>
+          <a class="not-found__sheet" href={localize(lang, path)}>
+            <span class="not-found__number">{pad(number)}</span>
+            <span class="not-found__name">{ui.sheets[key]}</span>
+            <span class="not-found__arrow" aria-hidden="true">
+              →
+            </span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </section>
+</SheetLayout>
+
+<style>
+  .not-found {
+    container-type: inline-size;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    padding-bottom: 64px;
+  }
+
+  /* Capped by the sheet's width so NOT FOUND never breaks mid-word on a 320 px phone. */
+  .not-found :global(.not-found__heading) {
+    font-size: min(var(--size-display-l), 11cqi);
+  }
+
+  .not-found__sheets {
+    max-width: 560px;
+    margin: 0;
+    padding: 0;
+    border: var(--border-thin);
+    border-bottom: 0;
+    list-style: none;
+  }
+
+  .not-found__sheet {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    min-height: 56px;
+    padding: 0 var(--space-4);
+    border-bottom: var(--border-thin);
+    color: var(--color-ink);
+    font-family: var(--font-mono);
+    font-size: var(--size-label);
+    letter-spacing: 0.04em;
+    text-decoration: none;
+  }
+
+  .not-found__number {
+    color: var(--color-muted);
+    font-size: var(--size-micro);
+  }
+
+  .not-found__arrow {
+    margin-left: auto;
+    color: var(--color-line);
+  }
+
+  .not-found__sheet:hover {
+    background: var(--color-ink);
+    color: var(--color-ink-on-fill);
+  }
+
+  .not-found__sheet:hover .not-found__number,
+  .not-found__sheet:hover .not-found__arrow {
+    color: inherit;
+  }
+</style>

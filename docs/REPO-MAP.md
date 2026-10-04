@@ -55,6 +55,8 @@ line.
 
 - `src/pages/[...lang]/` — every sheet once; `langPaths()` (src/i18n/paths.ts) yields `/x` and `/nl/x`.
 - `src/pages/404.astro`, `src/pages/nl/404.astro` — the only per-language page files; built as `dist/404.html` and `dist/nl/404/index.html`.
+- `src/components/NotFoundSheet.astro` — the 404 sheet both 404 pages render (label, heading, note, `[data-sheet-list]` of the five sheets); `tests/e2e/not-found.spec.ts`.
+- Static host 404: answer unknown URLs with `dist/404.html` and status 404 (nginx `error_page 404 /404.html;`); for Dutch, `location /nl/ { error_page 404 /nl/404/index.html; }`. `astro preview` serves `404.html` for every unknown URL, `/nl/…` included.
 - `src/i18n/paths.ts` — `DEFAULT_LANG`, `localize`, `delocalize`, `alternate`, `langPaths`; `astro.config.ts` i18n reads `LANGS`/`DEFAULT_LANG` from it.
 - `src/i18n/routes.ts` — `SHEETS` (key, number, path) and `projectPath(slug)`.
 - `src/i18n/content.ts` — `t(lang)`, `getLocalized`, `getAllLocalized`, `sharedId`.

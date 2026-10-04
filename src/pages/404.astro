@@ -1,14 +1,7 @@
 ---
-import { t } from '../i18n/content';
-import SheetLayout from '../layouts/SheetLayout.astro';
+import NotFoundSheet from '../components/NotFoundSheet.astro';
 
 // Not under [...lang]/: Astro serves only `src/pages/404.astro` as the 404 page by name.
-const lang = 'en';
-const ui = await t(lang);
 ---
 
-<SheetLayout lang={lang} title={ui.seo.notFound.title}>
-  <section class="sheet-panel">
-    <h1>{ui.notFound.heading}</h1>
-  </section>
-</SheetLayout>
+<NotFoundSheet lang="en" />
