@@ -105,3 +105,46 @@ test('on a tablet the five tabs stay in one row, without horizontal scroll', asy
     expect(scroll, `no horizontal scroll at ${width}px`).toBeLessThanOrEqual(width);
   }
 });
+
+// PR-67: a tab name never breaks inside a word and never spills out of its cell, at any desktop
+// or tablet width (the same per-word check as display-headings.spec.ts).
+const TAB_WIDTHS = [768, ...Array.from({ length: (1440 - 770) / 10 + 1 }, (_, i) => 770 + i * 10)];
+
+function tabFaults(): string[] {
+  const faults: string[] = [];
+  for (const tab of document.querySelectorAll<HTMLElement>('header nav .sheet-tab')) {
+    const box = tab.getBoundingClientRect();
+    const name = tab.textContent?.replace(/\s+/g, ' ').trim() ?? '';
+    if (tab.scrollWidth > tab.clientWidth + 1) faults.push(`"${name}" overflows its cell`);
+    const walker = document.createTreeWalker(tab, NodeFilter.SHOW_TEXT);
+    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+      const text = node.textContent ?? '';
+      for (const match of text.matchAll(/\S+/g)) {
+        const range = document.createRange();
+        range.setStart(node, match.index);
+        range.setEnd(node, match.index + match[0].length);
+        const rects = [...range.getClientRects()].filter((r) => r.width > 0);
+        const tops = new Set(rects.map((r) => Math.round(r.top)));
+        if (tops.size > 1) faults.push(`"${name}": "${match[0]}" breaks across lines`);
+        if (rects.some((r) => r.left < box.left - 1 || r.right > box.right + 1))
+          faults.push(`"${name}": "${match[0]}" sits outside its cell`);
+      }
+    }
+  }
+  return faults;
+}
+
+for (const { lang, prefix } of LANGS) {
+  test(`no tab name breaks a word or leaves its cell, 768–1440 px (${lang})`, async ({
+    page,
+  }, testInfo) => {
+    test.skip(testInfo.project.name !== 'chromium-desktop', 'a width sweep: one browser is enough');
+    await page.goto(url(prefix, '/'));
+    const faults: string[] = [];
+    for (const width of TAB_WIDTHS) {
+      await page.setViewportSize({ width, height: 900 });
+      faults.push(...(await page.evaluate(tabFaults)).map((fault) => `${width} px: ${fault}`));
+    }
+    expect(faults).toEqual([]);
+  });
+}

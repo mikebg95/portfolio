@@ -212,14 +212,15 @@ const otherLang = LANGS.find((code) => code !== lang) ?? lang;
     letter-spacing: 0.04em;
   }
 
-  /* SheetTab: SHEET 0n (10 px muted) over the name (12 px mono), 1 px ink rule on the right. */
+  /* SheetTab: SHEET 0n (10 px muted) over the name (12 px mono), 1 px ink rule on the right. A tab
+     never shrinks below its name (min-width stays auto, the name never wraps): the long one
+     ("Certifications", NL "Certificeringen") takes its width from the shorter tabs instead. */
   .sheet-tab {
     display: flex;
     flex: 1 1 140px;
     flex-direction: column;
     justify-content: center;
     gap: 3px;
-    min-width: 0;
     padding: var(--space-3) 18px;
     border-right: var(--border-thin);
   }
@@ -233,7 +234,7 @@ const otherLang = LANGS.find((code) => code !== lang) ?? lang;
   .sheet-tab__name {
     position: relative;
     align-self: flex-start;
-    overflow-wrap: anywhere;
+    white-space: nowrap;
   }
 
   .sheet-tab__name::after {
