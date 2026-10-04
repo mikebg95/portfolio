@@ -72,7 +72,7 @@ queue.
 
 ### Hardening
 
-- [ ] **PR-52 Performance budget**
+- [x] **PR-52 Performance budget**
   - Done when: Lighthouse CI (`@lhci/cli`, mobile preset, against `npm run preview`) runs on `/`, `/experience`, `/projects/jamigos`, `/education`, `/nl/` with assertions perf ≥ 0.95, a11y = 1, best-practices = 1, SEO = 1; a size test asserts each page's JS ≤ 60 KB gz and fonts preloaded only where used; fixes whatever fails; `lhci` added to `verify`.
   - Spec: SPEC §7
   - Out of scope: —
