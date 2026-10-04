@@ -1,0 +1,91 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+import { formatSpan, type DateWords } from '../../dates';
+
+// The small hatched block between two detail blocks (copy.md Sheet 02 "Sabbatical"; not drawn):
+// the detail block's two columns, a dashed hatched swatch — the timeline's sabbatical bar — in
+// place of the number, and one line of context.
+interface Props {
+  entry: CollectionEntry<'experience'>['data'];
+  dates: DateWords;
+}
+
+const { entry, dates } = Astro.props;
+---
+
+<article class="experience-break" id={entry.id}>
+  <div class="experience-break__meta">
+    <span class="experience-break__swatch" aria-hidden="true"></span>
+    <span>{formatSpan(entry, dates, ' — ')}</span>
+    <span class="experience-break__caps">{entry.place}</span>
+  </div>
+  <div class="experience-break__body">
+    <h2 class="experience-break__title">{entry.role}</h2>
+    <p class="experience-break__context">{entry.context}</p>
+  </div>
+</article>
+
+<style>
+  .experience-break {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-7);
+    padding: var(--space-5) var(--sheet-content-padding);
+  }
+
+  .experience-break__meta {
+    display: flex;
+    flex: 0 1 220px;
+    flex-direction: column;
+    gap: var(--space-2);
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+
+  .experience-break__swatch {
+    width: 72px;
+    height: 24px;
+    border: 1.5px dashed var(--color-ink);
+    background-image: repeating-linear-gradient(
+      -45deg,
+      color-mix(in srgb, var(--color-ink) 50%, transparent) 0 1px,
+      transparent 1px 7px
+    );
+  }
+
+  .experience-break__caps,
+  .experience-break__title {
+    text-transform: uppercase;
+  }
+
+  .experience-break__body {
+    display: flex;
+    flex: 999 1 520px;
+    flex-direction: column;
+    gap: var(--space-2);
+    min-width: 0;
+  }
+
+  .experience-break__title {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--size-label);
+    font-weight: 600;
+    letter-spacing: var(--size-label-letter-spacing);
+  }
+
+  .experience-break__context {
+    margin: 0;
+    color: var(--color-text-2);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 767px) {
+    .experience-break {
+      padding: var(--space-5) var(--sheet-content-padding-phone);
+    }
+  }
+</style>

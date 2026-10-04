@@ -80,10 +80,8 @@ test('a bar leads to its detail block', async ({ page }) => {
     .getByRole('link', { name: 'DJI · Full-Stack Java Engineer · JAN 2024 – JAN 2026' })
     .click();
   await expect(page).toHaveURL(/\/experience#dji$/);
-  // Scrolled to it: its top edge is on screen.
-  const top = await page.locator('#dji').evaluate((el) => el.getBoundingClientRect().top);
-  expect(top).toBeGreaterThanOrEqual(0);
-  expect(top).toBeLessThan(page.viewportSize()?.height ?? 0);
+  await expect(page.locator('#dji')).toBeInViewport();
+  await expect(page.locator('#dji h2')).toHaveText('DJI — Full-Stack Java Engineer');
 });
 
 test('the Dutch sheet draws the same timeline', async ({ page }) => {
@@ -93,4 +91,68 @@ test('the Dutch sheet draws the same timeline', async ({ page }) => {
   await expect(
     page.getByRole('link', { name: 'OptieCon · Full-Stack Java Engineer · JUN 2026 – NOW' }),
   ).toHaveAttribute('href', '#optiecon');
+});
+
+// Detail blocks (SPEC §4.2; copy.md Sheet 02; components.md ExperienceDetail).
+const BLOCKS = [
+  [
+    'optiecon',
+    '02.1',
+    'OptieCon — Full-Stack Java Engineer',
+    'JUN 2026 — NOW',
+    'CONSPECT · ALMERE',
+  ],
+  ['dji', '02.2', 'DJI — Full-Stack Java Engineer', 'JAN 2024 — JAN 2026', 'CONSPECT · VEENHUIZEN'],
+  [
+    'linkpizza',
+    '02.3',
+    'LinkPizza — Full-Stack Java Developer',
+    'FEB 2021 — OCT 2023',
+    'LINKPIZZA · AMSTERDAM',
+  ],
+] as const;
+
+test('detail blocks run newest first, the sabbatical between 02.1 and 02.2', async ({ page }) => {
+  await page.goto('/experience');
+  const blocks = page.locator('.experience-details > article');
+  expect(await blocks.evaluateAll((as) => as.map((a) => a.id))).toEqual([
+    'optiecon',
+    'sabbatical',
+    'dji',
+    'linkpizza',
+  ]);
+  for (const [id, number, title, dates, meta] of BLOCKS) {
+    const block = page.locator(`#${id}`);
+    await expect(block.locator('h2')).toHaveText(title);
+    await expect(block.locator('.experience-detail__meta > span')).toHaveText(
+      [number, dates, meta],
+      {
+        useInnerText: true,
+      },
+    );
+  }
+
+  await expect(page.locator('#dji .revision-note')).toHaveText(
+    'REV. NOTE △ From an empty repository to a handed-over production app — as the only developer on it.',
+  );
+  await expect(page.locator('.revision-note')).toHaveCount(1);
+  await expect(page.locator('#optiecon .experience-detail__stack')).toHaveText(
+    'Java 21 · Spring Boot 3.5 · Spring Security · Entra ID · Angular 20 · PostgreSQL · Docker',
+  );
+  await expect(page.locator('#dji li')).toHaveCount(3);
+
+  const sabbatical = page.locator('#sabbatical');
+  await expect(sabbatical.locator('h2')).toHaveText('Sabbatical');
+  await expect(sabbatical).toContainText('JAN 2026 — MAY 2026');
+  await expect(sabbatical).toContainText('A Muay Thai camp, backpacking and surfing.');
+  await expectNoAxeViolations(page);
+});
+
+test('a detail block is two columns on desktop and one on phone', async ({ page }) => {
+  await page.goto('/experience');
+  const meta = await page.locator('#dji .experience-detail__meta').boundingBox();
+  const body = await page.locator('#dji .experience-detail__body').boundingBox();
+  if (!meta || !body) throw new Error('detail block not rendered');
+  const phone = (page.viewportSize()?.width ?? 0) < 768;
+  expect(body.y >= meta.y + meta.height).toBe(phone);
 });

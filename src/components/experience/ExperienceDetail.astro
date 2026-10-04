@@ -1,0 +1,137 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+import { formatSpan, type DateWords } from '../../dates';
+import DisplayHeading from '../drawing/DisplayHeading.astro';
+import RevisionNote from '../drawing/RevisionNote.astro';
+
+// components.md ExperienceDetail, drawn in experience-default-light-1440: a left column (number,
+// dates, employer · place) and a right one (title, context, bullets, optional revision note, stack
+// line). Its id is the entry's, the target of the timeline bar and the Overview's links.
+interface Props {
+  entry: CollectionEntry<'experience'>['data'];
+  /** `02.1` */
+  number: string;
+  dates: DateWords;
+}
+
+const { entry, number, dates } = Astro.props;
+---
+
+<article class="experience-detail" id={entry.id}>
+  <div class="experience-detail__meta">
+    <span class="experience-detail__number">{number}</span>
+    <span>{formatSpan(entry, dates, ' — ')}</span>
+    <span class="experience-detail__caps">
+      {entry.employer} · {entry.place}
+    </span>
+  </div>
+  <div class="experience-detail__body">
+    <DisplayHeading as="h2" size="m" class="experience-detail__title">
+      {entry.client ?? entry.employer} — {entry.role}
+    </DisplayHeading>
+    <p class="experience-detail__context">{entry.context}</p>
+    {entry.bullets.length > 0 && (
+      <ul class="experience-detail__bullets">
+        {entry.bullets.map((bullet) => (
+          <li>{bullet}</li>
+        ))}
+      </ul>
+    )}
+    {entry.note && <RevisionNote text={entry.note} />}
+    {entry.stack.length > 0 && (
+      <p class="experience-detail__stack">
+        {entry.stack.map((item, i) => (
+          <>
+            {i > 0 && ' · '}
+            <span>{item}</span>
+          </>
+        ))}
+      </p>
+    )}
+  </div>
+</article>
+
+<style>
+  .experience-detail {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-7);
+    padding: var(--space-7) var(--sheet-content-padding);
+  }
+
+  .experience-detail__meta {
+    display: flex;
+    flex: 0 1 220px;
+    flex-direction: column;
+    gap: var(--space-2);
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+
+  .experience-detail__number {
+    color: var(--color-line);
+    font-size: 34px;
+    font-weight: 600;
+  }
+
+  .experience-detail__caps {
+    text-transform: uppercase;
+  }
+
+  .experience-detail__body {
+    display: flex;
+    flex: 999 1 520px;
+    flex-direction: column;
+    gap: 14px;
+    min-width: 0;
+  }
+
+  .experience-detail .experience-detail__title {
+    font-size: clamp(24px, 3vw, 30px);
+    font-weight: 800;
+    font-stretch: 112%;
+  }
+
+  .experience-detail__context {
+    margin: 0;
+    color: var(--color-text-2);
+    font-size: var(--size-body);
+    line-height: var(--size-body-line-height);
+  }
+
+  .experience-detail__bullets {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin: 0;
+    padding-left: 20px;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .experience-detail__stack {
+    margin: 0;
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.8;
+  }
+
+  /* Wrap between items, never inside one ("Spring Security"). */
+  .experience-detail__stack span {
+    white-space: nowrap;
+  }
+
+  @media (max-width: 767px) {
+    .experience-detail {
+      gap: var(--space-4);
+      padding: var(--space-6) var(--sheet-content-padding-phone);
+    }
+
+    .experience-detail__number {
+      font-size: 28px;
+    }
+  }
+</style>

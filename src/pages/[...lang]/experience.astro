@@ -1,9 +1,12 @@
 ---
 import DisplayHeading from '../../components/drawing/DisplayHeading.astro';
 import SheetLabel from '../../components/drawing/SheetLabel.astro';
+import ExperienceBreak from '../../components/experience/ExperienceBreak.astro';
+import ExperienceDetail from '../../components/experience/ExperienceDetail.astro';
 import Timeline from '../../components/experience/Timeline.astro';
 import { getAllLocalized, t } from '../../i18n/content';
 import { langPaths, type Lang } from '../../i18n/paths';
+import { SHEETS } from '../../i18n/routes';
 import SheetLayout from '../../layouts/SheetLayout.astro';
 
 export function getStaticPaths() {
@@ -16,7 +19,12 @@ interface Props {
 
 const { lang } = Astro.props;
 const ui = await t(lang);
-const entries = await getAllLocalized('experience', lang);
+const entries = (await getAllLocalized('experience', lang)).map((e) => e.data);
+
+// Newest first (`order`); roles numbered 02.1, 02.2 … — the sabbatical sits between, unnumbered.
+const sheet = String(SHEETS.find((s) => s.key === 'experience')?.number).padStart(2, '0');
+const roles = entries.filter((e) => e.kind === 'role');
+const number = (entry: (typeof entries)[number]) => `${sheet}.${roles.indexOf(entry) + 1}`;
 ---
 
 <SheetLayout lang={lang} sheet="experience" title={ui.seo.experience.title}>
@@ -28,11 +36,14 @@ const entries = await getAllLocalized('experience', lang);
     </DisplayHeading>
     <Timeline lang={lang} />
   </section>
-  <section class="sheet-panel">
-    {/* Targets of the timeline bars and the Overview's in-progress link; PR-20's detail blocks take the ids over. */}
-    {entries.map((entry) => (
-      <div id={entry.data.id} />
-    ))}
+  <section class="sheet-panel experience-details">
+    {entries.map((entry) =>
+      entry.kind === 'break' ? (
+        <ExperienceBreak entry={entry} dates={ui.dates} />
+      ) : (
+        <ExperienceDetail entry={entry} number={number(entry)} dates={ui.dates} />
+      ),
+    )}
   </section>
 </SheetLayout>
 
@@ -49,5 +60,14 @@ const entries = await getAllLocalized('experience', lang);
 
   .experience-head :global(.timeline) {
     margin-top: var(--space-7);
+  }
+
+  /* The blocks pad themselves; 1 px rules between them, as drawn. */
+  .experience-details {
+    padding: 0 0 var(--space-4);
+  }
+
+  .experience-details > :global(* + *) {
+    border-top: 1px solid var(--color-rule);
   }
 </style>
