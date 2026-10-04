@@ -436,3 +436,15 @@ History, not a queue.
   - Done when: §M4 with GSAP ScrollTrigger lazy-loaded only on `/experience`: ruler draws with ticks, bars extrude scrubbed to scroll, durations count with the bar, hatching slides, OptieCon arrow pulses twice, sticky timeline with scale cursor on desktop ≥ 1024 marking the role in view; no stickiness on phone; reduced motion → final state; JS weight budget respected; e2e scrolls and asserts final widths.
   - Spec: design/motion.md §M4
   - Out of scope: —
+
+
+## Pruned from the queue
+
+1 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### Motion
+
+- [x] **PR-44 Education exploded-view scroll animation**
+  - Done when: §M5: starts assembled (6 px gaps, balloons hidden), explodes scrubbed by scroll (top plate first, axis draws, leaders + balloons appear as plates arrive, CKAD dashed outline fades in last); phone plays a one-off 1.2 s timeline on enter; selection (PR-35) keeps working at any scroll position; reduced motion → exploded final state; e2e scrolls through and asserts final positions.
+  - Spec: design/motion.md §M5
+  - Out of scope: —
