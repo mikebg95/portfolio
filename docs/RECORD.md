@@ -550,3 +550,16 @@ lines read as "not in final state"). Blueprint colour is `--color-ink` (#e6eefa)
 screenshots in `.e2e/pr59/` against `--color-line` (#9dc1f5), which read flatter and less like a lit
 face. Instead of: swapping the text with JS (flashes the wrong one before the script, nothing
 without JS).
+
+## 2026-10-04 — Conspect is an experience entry; DJI, the sabbatical and OptieCon are its assignments
+Who: agent (PR-60), from Michael's correction the same day. The experience schema gains
+`kind: employer`, `parent` (the employer entry's id) and `engagement` (how an assignment sits in it:
+`Client assignment (secondment)`, `Internal Conspect product, between client assignments`). The
+Conspect line moves out of `profile.employers` (dropped) into `experience/<lang>/conspect.yaml`:
+one source for the timeline's dimension line, its note and the 02.1 block. Assignments carry no
+`employer` of their own (the parent's is theirs). Numbering: top-level entries `02.n` by `order`,
+assignments `02.na`, `02.nb` … newest first — the sabbatical is numbered now (02.1b), being part of
+the Conspect years. The heading reads `Java Consultant — Conspect` (role first, as the CV does for
+an employer); assignments keep `client — role` as h3s. The timeline keeps its drawn dimension line
+(copy.md `CONSPECT · NOV 2023 – NOW`), now a link to `#conspect` with extension lines down to the
+bars, so the three sub-bars read as one assembly.

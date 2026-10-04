@@ -124,9 +124,11 @@ Drawing: `experience-default-light-1440.png`. Sheet label "EXPERIENCE · ELEVATI
 YEARS, DRAWN TO SCALE". Timeline: year ruler 2021–2026 (columns to Jan 2027), bars positioned by
 month (LinkPizza Feb 2021–Oct 2023, DJI Jan 2024–Jan 2026, sabbatical Jan–May 2026 hatched, OptieCon
 Jun 2026–now with an open end), a Conspect dimension line above (Nov 2023–now), durations under bars.
-Bars link to their detail block. Detail blocks 02.1 OptieCon, 02.2 DJI, 02.3 LinkPizza (newest first)
-with dates, employer, place, context paragraph, bullets, stack line, optional revision note. Then a
-sabbatical block (small, hatched). Phone: the timeline becomes vertical (years down the left).
+Bars link to their detail block. Detail blocks newest first: 02.1 Java Consultant — Conspect (the
+employer, Nov 2023–now) with its assignments nested inside — 02.1a OptieCon (internal product),
+02.1b the sabbatical (small, hatched), 02.1c DJI (client assignment, secondment) — then 02.2
+LinkPizza; each with dates, employer or engagement, place, context paragraph, bullets, stack line,
+optional revision note (PR-60). Phone: the timeline becomes vertical (years down the left).
 
 ### 4.3 Sheet 03 — Projects (`/projects`)
 Drawing: `projects-default-light-1440.png`. "DRAWING REGISTER", heading "DESIGNED FIRST. THEN

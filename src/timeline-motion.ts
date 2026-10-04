@@ -134,7 +134,7 @@ function pinWithCursor(timeline: HTMLElement, bars: readonly Bar[]) {
     const block = id ? document.getElementById(id) : null;
     return block ? [{ bar, block }] : [];
   });
-  const details = blocks[0]?.block.parentElement;
+  const details = blocks[0]?.block.closest('section');
   if (!details) return;
   const root = document.documentElement;
   root.style.setProperty(

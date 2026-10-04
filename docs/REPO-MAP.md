@@ -61,7 +61,7 @@ line.
 - TRAP: `astro:content` imports fine under Vitest but its store is empty — `getEntry` returns undefined, `getCollection` []; mock it with `fakeAstroContent`.
 - `src/portrait.ts` — `PORTRAIT` (paper) and `PORTRAIT_DARK` (blueprint; density inverted), `docs/source/ascii-portrait{,-dark}.txt` inlined via `?raw` at build time; the only copies.
 - `tests/unit/profile-content.test.ts` — parses design/copy.md Sheet 01 and compares it with the EN profile; a copy.md wording change fails it.
-- `tests/unit/experience-content.test.ts` — the same for Sheet 02 (`### … (id `…`)` blocks) plus ordering/overlap and the Conspect line in `profile.employers`.
+- `tests/unit/experience-content.test.ts` — the same for Sheet 02 (`### … (id `…`)` blocks) plus ordering/overlap and the Conspect employer entry (`kind: employer`) owning OptieCon, the sabbatical and DJI (`parent`).
 - `tests/unit/project-content.test.ts` — Sheet 03 register table in copy.md vs EN `projects`; 251-test sum; scans `src/` and `public/` for any jamigos domain link.
 - `tests/unit/certification-content.test.ts` — Sheet 04 `- C-0n …` lines in copy.md vs EN `certifications` (ids `spring` `psm` `oca` `ckad`); verify URLs must equal cv.md's link list; `verifyLabel` is stored without the ↗ (Link/Button draw it).
 - `tests/unit/education-content.test.ts` — Sheet 05 balloons, parts-list rows and `n. **Title** — meta — `body`` panels in copy.md vs EN `education` (`part-1`…`part-5`); `part`/`supplier`/`years` are the parts-list cells, `detail.title`/`meta` the panel; part 3 rows sum to 30 EC.
@@ -115,8 +115,8 @@ line.
 
 ## Sheet 02 — Experience
 
-- `src/pages/[...lang]/experience.astro` — label + heading (`ui.experience`), the timeline, then the entries newest first: `ExperienceDetail` per role (numbered `02.n` from `SHEETS`), `ExperienceBreak` for the sabbatical; each block's id is the entry id (bar and Overview targets).
-- `src/components/experience/Timeline.astro` — ruler, employer dimension (`profile.employers`), bars, durations, legend; positions as `--start`/`--span` %, left/width ≥ 1024 px and top/height (8 px a month) below — one markup.
+- `src/pages/[...lang]/experience.astro` — label + heading (`ui.experience`), the timeline, then top-level entries newest first (`02.n`); an employer's assignments (`parent`) are the slot of its `ExperienceDetail`, numbered `02.na` under a bracket, h3s; `ExperienceBreak` for the sabbatical; each block's id is the entry id (bar and Overview targets).
+- `src/components/experience/Timeline.astro` — ruler, employer dimension (the `kind: employer` entry, a link to its block; never a bar), bars, durations, legend; positions as `--start`/`--span` %, left/width ≥ 1024 px and top/height (8 px a month) below — one markup.
 - `src/dates.ts` — `formatMonth` / `formatSpan` with `ui.dates` words; the only place a `YYYY-MM` becomes `NOV 2023`.
 - `src/timeline-motion.ts` — §M4 (lazy, GSAP): one sweep drives every bar, intro vs scrub, pin + scale cursor ≥ 1024×640; `src/scrub.ts` — `startScrub`, `data-scrub` states, `tokenEase`; `tests/e2e/experience-motion.spec.ts`.
 - TRAP: GSAP's pin wraps `.timeline` in a `.pin-spacer` div; select the timeline by class, never as a direct child of `.experience-head`. Detail blocks get `scroll-margin-top: var(--timeline-pinned)` so a bar link lands clear of the pinned strip.

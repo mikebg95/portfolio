@@ -19,9 +19,14 @@ test('the sheet shows its label, heading and the drawn timeline', async ({ page 
   expect(years[0]).toBe('2021');
   expect(Number(years.at(-1))).toBeGreaterThanOrEqual(2026);
 
-  await expect(timeline.locator('.timeline__employer')).toHaveText('CONSPECT · NOV 2023 – NOW', {
-    useInnerText: true,
-  });
+  await expect(timeline.locator('.timeline__employer-label')).toHaveText(
+    'CONSPECT · NOV 2023 – NOW',
+    { useInnerText: true },
+  );
+  // The dimension line is the employer's own bar: it leads to the Conspect block.
+  await expect(
+    page.getByRole('link', { name: 'Conspect · NOV 2023 – NOW · Java Consultant' }),
+  ).toHaveAttribute('href', '#conspect');
   await expect(timeline.locator('.timeline__employer-note')).toHaveText(
     'Conspect — IT consultancy in agile software development and data analytics.',
   );
@@ -84,7 +89,7 @@ test('a bar leads to its detail block', async ({ page }) => {
     .click();
   await expect(page).toHaveURL(/\/experience#dji$/);
   await expect(page.locator('#dji')).toBeInViewport();
-  await expect(page.locator('#dji h2')).toHaveText('DJI — Full-Stack Java Engineer');
+  await expect(page.locator('#dji h3')).toHaveText('DJI — Full-Stack Java Engineer');
 });
 
 test('the Dutch sheet draws the same timeline', async ({ page }) => {
@@ -99,44 +104,72 @@ test('the Dutch sheet draws the same timeline', async ({ page }) => {
   ).toHaveAttribute('href', '#optiecon');
 });
 
-// Detail blocks (SPEC §4.2; copy.md Sheet 02; components.md ExperienceDetail).
+// Detail blocks (SPEC §4.2; copy.md Sheet 02; components.md ExperienceDetail): Conspect is the
+// employer, its assignments nest in its block (PR-60).
 const BLOCKS = [
   [
     'optiecon',
-    '02.1',
+    '02.1a',
     'OptieCon — Full-Stack Java Engineer',
     'JUN 2026 — NOW',
-    'CONSPECT · ALMERE',
+    'INTERNAL CONSPECT PRODUCT, BETWEEN CLIENT ASSIGNMENTS',
+    'ALMERE',
   ],
-  ['dji', '02.2', 'DJI — Full-Stack Java Engineer', 'JAN 2024 — JAN 2026', 'CONSPECT · VEENHUIZEN'],
   [
-    'linkpizza',
-    '02.3',
-    'LinkPizza — Full-Stack Java Developer',
-    'FEB 2021 — OCT 2023',
-    'LINKPIZZA · AMSTERDAM',
+    'dji',
+    '02.1c',
+    'DJI — Full-Stack Java Engineer',
+    'JAN 2024 — JAN 2026',
+    'CLIENT ASSIGNMENT (SECONDMENT)',
+    'VEENHUIZEN',
   ],
 ] as const;
 
-test('detail blocks run newest first, the sabbatical between 02.1 and 02.2', async ({ page }) => {
+test('Conspect is the employer; its assignments nest in its block, newest first', async ({
+  page,
+}) => {
   await page.goto('/experience');
-  const blocks = page.locator('.experience-details > article');
-  expect(await blocks.evaluateAll((as) => as.map((a) => a.id))).toEqual([
+  const top = page.locator('.experience-details > article');
+  expect(await top.evaluateAll((as) => as.map((a) => a.id))).toEqual(['conspect', 'linkpizza']);
+
+  // The employer heading is the visible h2; the assignments are h3s under it.
+  const conspect = page.locator('#conspect');
+  await expect(
+    page.getByRole('heading', { level: 2, name: 'Java Consultant — Conspect' }),
+  ).toBeVisible();
+  await expect(conspect.locator('> .experience-detail__meta > span')).toHaveText(
+    ['02.1', 'NOV 2023 — NOW', 'CONSPECT · ALMERE'],
+    { useInnerText: true },
+  );
+  await expect(conspect.locator('> .experience-detail__body > p').first()).toHaveText(
+    'IT consultancy in agile software development and data analytics.',
+  );
+  const nested = conspect.locator('.experience-detail__assignments > article');
+  expect(await nested.evaluateAll((as) => as.map((a) => a.id))).toEqual([
     'optiecon',
     'sabbatical',
     'dji',
-    'linkpizza',
   ]);
-  for (const [id, number, title, dates, meta] of BLOCKS) {
+
+  for (const [id, number, title, dates, engagement, place] of BLOCKS) {
     const block = page.locator(`#${id}`);
-    await expect(block.locator('h2')).toHaveText(title);
+    await expect(block.getByRole('heading', { level: 3 })).toHaveText(title);
     await expect(block.locator('.experience-detail__meta > span')).toHaveText(
-      [number, dates, meta],
-      {
-        useInnerText: true,
-      },
+      [number, dates, engagement, place],
+      { useInnerText: true },
     );
   }
+  // DJI reads as a client assignment, not an employer.
+  await expect(page.locator('#dji .experience-detail__engagement')).toBeVisible();
+  await expect(page.locator('#dji')).not.toContainText('CONSPECT · VEENHUIZEN', {
+    useInnerText: true,
+  });
+
+  await expect(page.locator('#linkpizza h2')).toHaveText('LinkPizza — Full-Stack Java Developer');
+  await expect(page.locator('#linkpizza .experience-detail__meta > span')).toHaveText(
+    ['02.2', 'FEB 2021 — OCT 2023', 'LINKPIZZA · AMSTERDAM'],
+    { useInnerText: true },
+  );
 
   await expect(page.locator('#dji .revision-note')).toHaveText(
     'REV. NOTE △ The only developer on a new application inside a running system — from first design to knowledge sessions and a thorough handover.',
@@ -148,10 +181,22 @@ test('detail blocks run newest first, the sabbatical between 02.1 and 02.2', asy
   await expect(page.locator('#dji li')).toHaveCount(3);
 
   const sabbatical = page.locator('#sabbatical');
-  await expect(sabbatical.locator('h2')).toHaveText('Sabbatical');
+  await expect(sabbatical.locator('h3')).toHaveText('Sabbatical');
+  await expect(sabbatical).toContainText('02.1b');
   await expect(sabbatical).toContainText('JAN 2026 — MAY 2026');
   await expect(sabbatical).toContainText('A Muay Thai camp, backpacking and surfing.');
   await expectNoAxeViolations(page);
+});
+
+test('the Dutch sheet names Conspect as employer and DJI a secondment', async ({ page }) => {
+  await page.goto('/nl/experience');
+  await expect(page.locator('#conspect h2')).toHaveText('Java Consultant — Conspect');
+  await expect(page.locator('#dji .experience-detail__engagement')).toHaveText(
+    'Klantopdracht (gedetacheerd bij DJI)',
+  );
+  await expect(page.locator('#optiecon .experience-detail__engagement')).toContainText(
+    'tussen klantopdrachten',
+  );
 });
 
 test('a detail block is two columns on desktop and one on phone', async ({ page }) => {

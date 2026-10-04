@@ -8,27 +8,54 @@ import RevisionNote from '../drawing/RevisionNote.astro';
 // components.md ExperienceDetail, drawn in experience-default-light-1440: a left column (number,
 // dates, employer · place) and a right one (title, context, bullets, optional revision note, stack
 // line). Its id is the entry's, the target of the timeline bar and the Overview's links.
+// An employer (Conspect) titles itself `role — employer` and nests its assignments, passed as the
+// slot, under a bracket; an assignment's h3 meta names its engagement instead of the employer.
 interface Props {
   entry: CollectionEntry<'experience'>['data'];
-  /** `02.1` */
+  /** `02.1`, `02.1a` */
   number: string;
   dates: DateWords;
 }
 
 const { entry, number, dates } = Astro.props;
+const assignment = entry.parent !== undefined;
+const title =
+  entry.kind === 'employer'
+    ? `${entry.role} — ${entry.employer}`
+    : `${entry.client ?? entry.employer} — ${entry.role}`;
+const assignments = Astro.slots.has('default');
 ---
 
-<article class="experience-detail" id={entry.id}>
+<article
+  class:list={['experience-detail', { 'experience-detail--assignment': assignment }]}
+  id={entry.id}
+>
   <div class="experience-detail__meta" data-reveal="ink">
     <span class="experience-detail__number">{number}</span>
     <span>{formatSpan(entry, dates, ' — ')}</span>
-    <span class="experience-detail__caps">
-      {entry.employer} · {entry.place}
-    </span>
+    {assignment ? (
+      <>
+        {entry.engagement && (
+          <span class="experience-detail__caps experience-detail__engagement">
+            {entry.engagement}
+          </span>
+        )}
+        <span class="experience-detail__caps">{entry.place}</span>
+      </>
+    ) : (
+      <span class="experience-detail__caps">
+        {entry.employer} · {entry.place}
+      </span>
+    )}
   </div>
   <div class="experience-detail__body">
-    <DisplayHeading as="h2" size="m" class="experience-detail__title" data-reveal="wipe">
-      {entry.client ?? entry.employer} — {entry.role}
+    <DisplayHeading
+      as={assignment ? 'h3' : 'h2'}
+      size="m"
+      class="experience-detail__title"
+      data-reveal="wipe"
+    >
+      {title}
     </DisplayHeading>
     <p class="experience-detail__context" data-reveal="ink">
       {entry.context}
@@ -54,6 +81,14 @@ const { entry, number, dates } = Astro.props;
       </p>
     )}
   </div>
+  {assignments && (
+    <div class="experience-detail__assignments">
+      <span class="experience-detail__bracket" aria-hidden="true">
+        <span class="experience-detail__bracket-label">{entry.employer}</span>
+      </span>
+      <slot />
+    </div>
+  )}
 </article>
 
 <style>
@@ -128,7 +163,65 @@ const { entry, number, dates } = Astro.props;
     white-space: nowrap;
   }
 
+  .experience-detail--assignment .experience-detail__title {
+    font-size: clamp(20px, 2.4vw, 26px);
+  }
+
+  /* The employer's engagement (client assignment, internal product) reads in line colour. */
+  .experience-detail__engagement {
+    color: var(--color-line);
+  }
+
+  /* Assignments nest under the employer's block: a bracket in line colour down their left side,
+     ticks at both ends (the timeline's dimension line, turned), its name along it. */
+  .experience-detail__assignments {
+    position: relative;
+    flex: 1 1 100%;
+    padding-left: var(--space-7);
+  }
+
+  .experience-detail__bracket {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 12px;
+    border: solid var(--color-line);
+    border-width: 1px 0 1px 1px;
+  }
+
+  .experience-detail__bracket-label {
+    position: absolute;
+    top: var(--space-7);
+    left: 6px;
+    padding: 4px 0;
+    background: var(--color-paper);
+    color: var(--color-line);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    writing-mode: vertical-rl;
+    transform: translateX(-50%) rotate(180deg);
+  }
+
+  .experience-detail__assignments > :global(article) {
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .experience-detail__assignments > :global(article + article) {
+    border-top: 1px dashed var(--color-rule);
+  }
+
+  .experience-detail__assignments > :global(article:last-child) {
+    padding-bottom: 0;
+  }
+
   @media (max-width: 767px) {
+    .experience-detail__assignments {
+      padding-left: var(--space-5);
+    }
+
     .experience-detail {
       gap: var(--space-4);
       padding: var(--space-6) var(--sheet-content-padding-phone);

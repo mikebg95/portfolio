@@ -70,18 +70,22 @@ itself, in the same voice: first person, short sentences, concrete nouns, no hyp
 - Label `SHEET 02 — EXPERIENCE · ELEVATION` · Heading `FIVE YEARS, DRAWN TO SCALE`
 - Timeline labels: `LINKPIZZA · FULL-STACK JAVA DEVELOPER` · `DJI · FULL-STACK JAVA ENGINEER` · `OPTIECON →` · `CONSPECT · NOV 2023 – NOW` · durations `2 Y 8 M`, `2 Y 0 M` · `HATCHED: SABBATICAL` / `MUAY THAI · SURFING`
 
-### 02.1 OptieCon — Full-Stack Java Engineer (id `optiecon`)
-JUN 2026 — NOW · CONSPECT · ALMERE
+### 02.1 Java Consultant — Conspect (id `conspect`, employer: its assignments nest inside)
+NOV 2023 — NOW · CONSPECT · ALMERE
+Context: `IT consultancy in agile software development and data analytics.`
+
+#### 02.1a OptieCon — Full-Stack Java Engineer (id `optiecon`)
+JUN 2026 — NOW · INTERNAL CONSPECT PRODUCT, BETWEEN CLIENT ASSIGNMENTS · ALMERE
 Context: `Conspect's internal product for employee share schemes: an Angular single-page app on a Spring Boot API. I built its sign-in and security layer.`
 - Built single sign-on with Microsoft Entra ID (OAuth2 / OIDC with PKCE): MSAL in Angular, Spring Security as resource server.
 - Wrote ~30 security tests covering tokens, authorisation and CORS.
 Stack: Java 21 · Spring Boot 3.5 · Spring Security · Microsoft Entra ID · Angular 20 · PostgreSQL · Docker
 
-### Sabbatical (id `sabbatical`, small hatched block)
+#### 02.1b Sabbatical (id `sabbatical`, small hatched block)
 JAN 2026 — MAY 2026 · SOUTH-EAST ASIA — `A Muay Thai camp, backpacking and surfing.`
 
-### 02.2 DJI — Full-Stack Java Engineer (id `dji`)
-JAN 2024 — JAN 2026 · CONSPECT · VEENHUIZEN
+#### 02.1c DJI — Full-Stack Java Engineer (id `dji`)
+JAN 2024 — JAN 2026 · CLIENT ASSIGNMENT (SECONDMENT) · VEENHUIZEN
 Context: `The Dutch Custodial Institutions Agency (Dienst Justitiële Inrichtingen). An Agile DevOps team moving a modular Spring monolith to Spring Boot microservices on OpenShift.`
 - Sole developer of a new application replacing part of the legacy JSF system — designed and built its JWT authentication and authorisation and its Vue.js frontend from scratch, plus much of its REST API on the existing Spring backend.
 - Day-to-day full-stack work, mostly backend: features, bug fixes, TDD with JUnit and Mockito, code reviews; worked with operations on the application's deployment.
@@ -89,7 +93,7 @@ Context: `The Dutch Custodial Institutions Agency (Dienst Justitiële Inrichting
 Note: `REV. NOTE △ The only developer on a new application inside a running system — from first design to knowledge sessions and a thorough handover.`
 Stack: Java · Spring · PostgreSQL · JPA/Hibernate · JUnit · Mockito · Vue.js 3 · JSF · Maven · Git/GitLab
 
-### 02.3 LinkPizza — Full-Stack Java Developer (id `linkpizza`)
+### 02.2 LinkPizza — Full-Stack Java Developer (id `linkpizza`)
 FEB 2021 — OCT 2023 · LINKPIZZA · AMSTERDAM
 Context: `Influencer-marketing platform, team of 3–4 developers. A JSF monolith on WildFly being migrated to Quarkus microservices on Kubernetes; every change went from Bitbucket through Jenkins pipelines to WildFly test and production servers.`
 - Built the Media Kit — a public influencer profile page designed to turn visitors into sign-ups, and the pilot for moving from JSF to Angular. Developed the Angular frontend and much of the backend: business logic, data access and REST endpoints (JAX-RS). When the company stayed on JSF, rebuilt the frontend in JSF/PrimeFaces; it is still in use. Also shaped its concept and design.
@@ -97,7 +101,7 @@ Context: `Influencer-marketing platform, team of 3–4 developers. A JSF monolit
 - Full-stack features and bug fixes end to end, from JSF/PrimeFaces UI and backing beans to services and persistence.
 Stack: Java 11 & 17 · Jakarta EE · WildFly · JAX-RS · JSF/PrimeFaces · Ajax · Angular 14 · PostgreSQL · JPA/Hibernate · JDBC · Maven · Git/Bitbucket · Jenkins
 
-Employer description line (under the Conspect dimension, small): `Conspect — IT consultancy in agile software development and data analytics.`
+Employer description line (under the Conspect dimension, small; the 02.1 context): `Conspect — IT consultancy in agile software development and data analytics.`
 
 ## Sheet 03 — Projects
 - Label `SHEET 03 — PROJECTS · DRAWING REGISTER` · Heading `DESIGNED FIRST. THEN BUILT.` · Intro `Each project has its own detail sheet: the architecture, the decisions, the tests and the repository.`

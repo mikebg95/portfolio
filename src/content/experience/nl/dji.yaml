@@ -1,7 +1,8 @@
 id: dji
-order: 3
+order: 4
+parent: conspect
+engagement: Klantopdracht (gedetacheerd bij DJI)
 role: Full-Stack Java Engineer
-employer: Conspect
 client: DJI
 place: Veenhuizen
 start: '2024-01'

@@ -81,7 +81,7 @@ describe('corrected claims stay corrected', () => {
     for (const [where, body] of [
       ['experience/en/dji', text(en)],
       ['experience/nl/dji', text(nl)],
-      ['copy.md 02.2 DJI', section('### 02.2 DJI')],
+      ['copy.md 02.1c DJI', section('#### 02.1c DJI')],
     ] as const) {
       expect(body, where).not.toMatch(banned);
     }
@@ -93,7 +93,7 @@ describe('corrected claims stay corrected', () => {
     for (const [where, body] of [
       ['experience/en/optiecon', text(en)],
       ['experience/nl/optiecon', text(nl)],
-      ['copy.md 02.1 OptieCon', section('### 02.1 OptieCon')],
+      ['copy.md 02.1a OptieCon', section('#### 02.1a OptieCon')],
     ] as const) {
       expect(body, where).not.toMatch(banned);
     }

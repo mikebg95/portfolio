@@ -5,25 +5,30 @@ import { formatSpan, type DateWords } from '../../dates';
 
 // The small hatched block between two detail blocks (copy.md Sheet 02 "Sabbatical"; not drawn):
 // the detail block's two columns, a dashed hatched swatch — the timeline's sabbatical bar — in
-// place of the number, and one line of context.
+// place of the number, and one line of context. Inside an employer's years (Conspect) it is one of
+// its assignments: numbered (`02.1b`) and titled h3, under the employer's h2.
 interface Props {
   entry: CollectionEntry<'experience'>['data'];
+  /** `02.1b`, when the break is an assignment */
+  number?: string;
   dates: DateWords;
 }
 
-const { entry, dates } = Astro.props;
+const { entry, number, dates } = Astro.props;
+const Title = entry.parent === undefined ? 'h2' : 'h3';
 ---
 
 <article class="experience-break" id={entry.id}>
   <div class="experience-break__meta" data-reveal="ink">
+    {number && <span class="experience-break__number">{number}</span>}
     <span class="experience-break__swatch" aria-hidden="true"></span>
     <span>{formatSpan(entry, dates, ' — ')}</span>
     <span class="experience-break__caps">{entry.place}</span>
   </div>
   <div class="experience-break__body">
-    <h2 class="experience-break__title" data-reveal="wipe">
+    <Title class="experience-break__title" data-reveal="wipe">
       {entry.role}
-    </h2>
+    </Title>
     <p class="experience-break__context" data-reveal="ink">
       {entry.context}
     </p>
@@ -46,6 +51,12 @@ const { entry, dates } = Astro.props;
     color: var(--color-muted);
     font-family: var(--font-mono);
     font-size: 12px;
+  }
+
+  .experience-break__number {
+    color: var(--color-line);
+    font-size: 20px;
+    font-weight: 600;
   }
 
   .experience-break__swatch {

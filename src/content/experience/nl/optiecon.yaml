@@ -1,7 +1,8 @@
 id: optiecon
-order: 1
+order: 2
+parent: conspect
+engagement: Intern Conspect-product, tussen klantopdrachten
 role: Full-Stack Java Engineer
-employer: Conspect
 client: OptieCon
 place: Almere
 start: '2026-06'

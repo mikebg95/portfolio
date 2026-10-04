@@ -21,10 +21,14 @@ const { lang } = Astro.props;
 const ui = await t(lang);
 const entries = (await getAllLocalized('experience', lang)).map((e) => e.data);
 
-// Newest first (`order`); roles numbered 02.1, 02.2 … — the sabbatical sits between, unnumbered.
+// Newest first (`order`). Top-level entries are numbered 02.1, 02.2 …; an employer's assignments
+// (`parent`) nest in its block as 02.1a, 02.1b … (docs/RECORD.md 2026-10-04, PR-60).
+type Entry = (typeof entries)[number];
 const sheet = String(SHEETS.find((s) => s.key === 'experience')?.number).padStart(2, '0');
-const roles = entries.filter((e) => e.kind === 'role');
-const number = (entry: (typeof entries)[number]) => `${sheet}.${roles.indexOf(entry) + 1}`;
+const top = entries.filter((e) => e.parent === undefined);
+const assignmentsOf = (entry: Entry) => entries.filter((e) => e.parent === entry.id);
+const number = (entry: Entry) => `${sheet}.${top.indexOf(entry) + 1}`;
+const letter = (i: number) => String.fromCharCode(97 + i);
 ---
 
 <SheetLayout
@@ -42,11 +46,29 @@ const number = (entry: (typeof entries)[number]) => `${sheet}.${roles.indexOf(en
     <Timeline lang={lang} />
   </section>
   <section class="sheet-panel experience-details">
-    {entries.map((entry) =>
+    {top.map((entry) =>
       entry.kind === 'break' ? (
         <ExperienceBreak entry={entry} dates={ui.dates} />
-      ) : (
+      ) : entry.kind === 'role' ? (
         <ExperienceDetail entry={entry} number={number(entry)} dates={ui.dates} />
+      ) : (
+        <ExperienceDetail entry={entry} number={number(entry)} dates={ui.dates}>
+          {assignmentsOf(entry).map((assignment, i) =>
+            assignment.kind === 'break' ? (
+              <ExperienceBreak
+                entry={assignment}
+                number={`${number(entry)}${letter(i)}`}
+                dates={ui.dates}
+              />
+            ) : (
+              <ExperienceDetail
+                entry={assignment}
+                number={`${number(entry)}${letter(i)}`}
+                dates={ui.dates}
+              />
+            ),
+          )}
+        </ExperienceDetail>
       ),
     )}
   </section>
@@ -77,7 +99,7 @@ const number = (entry: (typeof entries)[number]) => `${sheet}.${roles.indexOf(en
   }
 
   /* A bar's link lands its block clear of the pinned timeline (src/timeline-motion.ts sets it). */
-  .experience-details > :global(*) {
+  .experience-details :global(article) {
     scroll-margin-top: var(--timeline-pinned, 0px);
   }
 </style>

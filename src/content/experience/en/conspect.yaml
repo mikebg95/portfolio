@@ -1,0 +1,11 @@
+id: conspect
+order: 1
+kind: employer
+role: Java Consultant
+employer: Conspect
+place: Almere
+start: '2023-11'
+end: null
+context: IT consultancy in agile software development and data analytics.
+lang: en
+translated: true

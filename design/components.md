@@ -71,7 +71,9 @@ dashed border. Positions by month. Duration dimension under each bar. Bars are l
 ## ExperienceDetail
 Two columns: left 220 px (number "02.n" mono 34 px line colour, dates, employer · place) and right
 (display-m title, context paragraph, bullet list, optional RevisionNote, stack line mono 12 muted).
-Separated by 1 px rules.
+Separated by 1 px rules. An employer (Conspect, PR-60) titles itself "role — employer" and nests
+its assignments ("02.na", h3, title 20–26 px) under a line-colour bracket with its name along it,
+dashed rules between them; an assignment's left column reads dates, engagement (line colour), place.
 
 ## ProjectCard
 1.5 px ink border, paper-raised, square. Top: label (P-0n · KIND). Middle: mini diagram of `.box`
