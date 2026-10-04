@@ -657,3 +657,16 @@ History, not a queue.
   - Done when: (1) content: a `conspect` employer entry — **Java Consultant · Conspect · Almere · Nov 2023 – now**, "IT consultancy in agile software development and data analytics." — owns three assignments in order: **DJI (client assignment / secondment, Jan 2024 – Jan 2026)**, **Sabbatical (Jan – May 2026)**, **OptieCon (internal Conspect product, Jun 2026 – now, between client assignments)**; LinkPizza stays a separate employer; schema change in its own commit (CLAUDE.md contract); EN + NL (NL may say "gedetacheerd bij DJI"; never "op de bank" — EN wording "between client assignments"); (2) timeline: a Conspect employer bar spanning Nov 2023 – now drawn as the outer assembly, with DJI, the hatched sabbatical and OptieCon as sub-bars inside/under it (drawing language: a bracket or dimension line labelled CONSPECT), LinkPizza as its own bar; (3) detail blocks: one 02.1 block "Java Consultant — Conspect" with nested assignment blocks 02.1a OptieCon, 02.1b Sabbatical, 02.1c DJI (newest first), each keeping its existing content; 02.2 LinkPizza; (4) Overview "In progress" and any other mention name Conspect as employer; (5) e2e asserts Conspect is the visible employer heading and DJI is labelled a client assignment; screenshots both themes, desktop + phone.
   - Spec: SPEC §4.2; design/copy.md Sheet 02; docs/source/cv.md
   - Out of scope: other sheets' layout.
+
+
+## Pruned from the queue
+
+1 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### Hardening
+
+- [x] **PR-61 The name never breaks inside a word, at any width**
+  - Michael, 2026-10-04: on small screens the hero showed "MICHAE / L / GOLDMA / N" — *"this should NEVER HAPPEN. as soon as it doesnt fit on the same lines then the font should be smaller."*
+  - Done when: every display heading (DisplayHeading xl/l/m/s and any uppercase Archivo title) never breaks inside a word: `overflow-wrap: normal; word-break: keep-all; hyphens: none`, and the hero name is sized from its container so the longest word ("GOLDMAN", also NL) always fits on one line — `font-size: min(<token clamp>, <container-width>/<measured em-width of the longest word>)` via container query units (`cqi`) with the ratio measured once from the font, plus a JS-free fallback; long section/project titles may wrap only between words; a Playwright test at every width from 280 to 1440 px in 10 px steps (both languages) asserts each heading word sits on one line (bounding-box check per word span) and no heading overflows its box.
+  - Spec: design/tokens.json size; design/README.md Responsive
+  - Out of scope: other typography.
