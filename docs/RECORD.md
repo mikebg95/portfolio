@@ -393,3 +393,23 @@ and every phone (§M5), plays the same progress once as the 1.2 s phone timeline
 (short windows) is scrubbed from "top 80 %" to "bottom bottom" (0.6 s smoothing) and stays
 exploded once done. Plates move by the `translate` property so the selection's `transform` lift
 keeps working mid-explosion.
+
+## 2026-10-04 — Sheet transitions: inline opt-in, own fill layer, a scrolled page leaves whole
+
+PR-45 (agent). §M2 built on cross-document View Transitions (src/styles/transitions.css,
+src/view-transitions.ts). Three choices the spec left open:
+- **The opt-in is an inline `<style>` in SheetLayout's head**, not in the bundled CSS. Measured in
+  headless Chromium: with `@view-transition` in the external stylesheet, about one navigation in six
+  (most under parallel load) arrived without a transition and logged "ViewTransition opt-in
+  disabled"; inline, 0 of 80. Kept under `prefers-reduced-motion: no-preference`, so reduced motion
+  navigates plainly.
+- **The active tab's ink fill is its own `<span class="sheet-tab__fill">`**, not the tab's
+  background, so it can carry `view-transition-name: active-tab` and slide under the header's text
+  (the header group sits above it, z-index 1); the §M1 first-view wipe now animates that span.
+- **A page left while scrolled (`scrollY > 0`) drops the chrome's names** in `pageswap`
+  (`html[data-swap='scrolled']`): otherwise frame, header and content morph in from their
+  scrolled-off positions (a 2000 px fly). The old page then fades as the root while the new chrome
+  fades in and the content still enters from below. Project title/figure names are kept, so a card
+  clicked below the fold still morphs. The chrome groups (`sheet`, `sheet-header`, `sheet-content`,
+  `title-block`) never morph their boxes — they "stay put" by having no group animation; project
+  titles or figures with no twin on the other page leave/enter with the content (`:only-child`).

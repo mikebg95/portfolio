@@ -4,6 +4,7 @@
 @import './fonts.css';
 @import './motion.css';
 @import './plotting.css';
+@import './transitions.css';
 
 *,
 *::before,

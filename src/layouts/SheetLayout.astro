@@ -65,6 +65,16 @@ const ogImage = new URL(ogImagePath(lang, path), SITE_URL).href;
         // Storage blocked: no way to tell, so never replay the plotting on every page.
       }
     </script>
+    <!-- design/motion.md §M2: cross-document View Transitions (src/styles/transitions.css). Inline,
+         so the new page has the opt-in when it is revealed even if the stylesheet is still loading
+         (Chromium then drops the transition: "ViewTransition opt-in disabled"). -->
+    <style is:inline>
+      @media (prefers-reduced-motion: no-preference) {
+        @view-transition {
+          navigation: auto;
+        }
+      }
+    </style>
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
     {noindex && <meta name="robots" content="noindex" />}
@@ -103,8 +113,10 @@ const ogImage = new URL(ogImagePath(lang, path), SITE_URL).href;
 
 <script>
   import { reveal } from '../motion';
+  import { markScrolledSwaps } from '../view-transitions';
 
   reveal();
+  markScrolledSwaps();
 </script>
 
 <style>

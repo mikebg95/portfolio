@@ -55,6 +55,7 @@ const PANEL_ID = 'sheet-index-panel';
         href={localize(lang, path)}
         aria-current={key === sheet ? 'page' : undefined}
       >
+        {key === sheet && <span class="sheet-tab__fill" aria-hidden="true" />}
         <span class="sheet-tab__number">
           {ui.sheet} {pad(number)}
         </span>
@@ -358,9 +359,19 @@ const PANEL_ID = 'sheet-index-panel';
     background-size: 100% 1px;
   }
 
+  /* The ink fill is its own layer under the text, so it can slide between sheets (motion.md §M2,
+     src/styles/transitions.css) and wipe in on the first view (§M1, plotting.css). */
   .sheet-header .sheet-tab[aria-current='page'] {
-    background: var(--color-ink);
+    position: relative;
+    isolation: isolate;
     color: var(--color-ink-on-fill);
+  }
+
+  .sheet-tab__fill {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--color-ink);
   }
 
   .sheet-tab[aria-current='page'] .sheet-tab__number {

@@ -15,6 +15,7 @@ import { langPaths, localize, type Lang } from '../../../i18n/paths';
 import { projectPath, SHEETS, sheetPath } from '../../../i18n/routes';
 import SheetLayout from '../../../layouts/SheetLayout.astro';
 import { detailLabel, detailMeta, neighbours } from '../../../project-detail';
+import { projectMorph } from '../../../view-transitions';
 
 export async function getStaticPaths() {
   const paths = await Promise.all(
@@ -68,7 +69,13 @@ const pending = data.status === 'in-progress' ? text.status['in-progress'] : und
           {text.back}
         </Link>
         <SheetLabel data-plot="label">{label}</SheetLabel>
-        <DisplayHeading as="h1" size="l" class="detail-head__title" data-plot="heading">
+        <DisplayHeading
+          as="h1"
+          size="l"
+          class="detail-head__title"
+          data-plot="heading"
+          style={projectMorph(data.slug, 'title')}
+        >
           {data.title}
         </DisplayHeading>
         <p class="detail-head__summary" data-plot="hero">
@@ -89,6 +96,7 @@ const pending = data.status === 'in-progress' ? text.status['in-progress'] : und
       label={text.figure.replace('{n}', '1').replace('{title}', data.figures[0].title)}
       data-figure="1"
       data-reveal="figure"
+      style={projectMorph(data.slug, 'figure')}
     >
       <DetailFigure slug={data.slug} n={1} labels={data.figures[0].labels} />
     </Figure>

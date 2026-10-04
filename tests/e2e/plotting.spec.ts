@@ -50,7 +50,7 @@ test('the first view plays the timeline with the preview timings', async ({ page
   expect(await timing('.sheet__plot-edge--left')).toBe('reveal-draw 0.5s 0.75s');
   expect(await timing('.sheet__plot-grid')).toBe('reveal-fade 0.9s 0.15s');
   expect(await timing('.sheet-header__mark')).toBe('plot-drop 0.45s 0.5s');
-  expect(await timing(".sheet-tab[aria-current='page']", '::before')).toBe('reveal-draw 0.5s 0.9s');
+  expect(await timing('.sheet-tab__fill')).toBe('reveal-draw 0.5s 0.9s');
   expect(await timing('.hero .sheet-label')).toBe('reveal-rise 0.7s 0.6s');
   expect(await timing('.hero__name-line + .hero__name-line')).toBe('reveal-wipe 0.8s 0.85s');
   expect(await timing('.hero__rule')).toBe('reveal-draw 0.5s 1.05s');

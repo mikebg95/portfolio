@@ -1,0 +1,120 @@
+/* design/motion.md §M2: moving between sheets is a cross-document View Transition. The frame, the
+   header and the title block keep their names and stay put; the active tab's ink fill slides to
+   the new tab; the sheet content leaves up (180 ms) and the new one enters from below (320 ms,
+   ease-out); a project card's title and mini diagram morph into the detail heading and FIG. 1
+   (names per slug, src/view-transitions.ts). Reduced motion: no opt-in, plain navigation; browsers
+   without support ignore all of it. Every page loads this (src/styles/base.css); the opt-in itself
+   is inline in SheetLayout's head. */
+
+.sheet {
+  view-transition-name: sheet;
+}
+
+/* A name makes its element a stacking context, so the header's phone panel (z-index 5 inside it)
+   would paint under the named content that follows; the header is lifted above it. */
+.sheet-header {
+  position: relative;
+  z-index: 1;
+  view-transition-name: sheet-header;
+}
+
+.sheet-tab__fill {
+  view-transition-name: active-tab;
+}
+
+#main {
+  view-transition-name: sheet-content;
+}
+
+.title-block {
+  view-transition-name: title-block;
+}
+
+/* The old page left scrolled (src/view-transitions.ts): its chrome would morph in from far off
+   screen, so it leaves as one picture (the root's fade) and the new chrome fades in. */
+[data-swap='scrolled'] :is(.sheet, .sheet-header, .sheet-tab__fill, #main, .title-block) {
+  view-transition-name: none;
+}
+
+/* The chrome stays put: no morph of its box. The frame is the same drawing on both pages, so the
+   new one shows at once; header and title block cross-fade only what differs. */
+::view-transition-group(sheet),
+::view-transition-group(sheet-header),
+::view-transition-group(sheet-content),
+::view-transition-group(title-block) {
+  animation: none;
+}
+
+::view-transition-old(sheet) {
+  animation: none;
+  opacity: 0;
+}
+
+::view-transition-new(sheet) {
+  animation: none;
+}
+
+/* The header's tab text sits over the sliding fill. */
+::view-transition-group(sheet-header) {
+  z-index: 1;
+}
+
+::view-transition-old(sheet-header),
+::view-transition-old(title-block) {
+  animation: sheet-fade-out 320ms var(--motion-ease-out) both;
+}
+
+::view-transition-new(sheet-header),
+::view-transition-new(title-block),
+::view-transition-new(sheet):only-child,
+::view-transition-new(active-tab):only-child {
+  animation: sheet-fade-in 320ms var(--motion-ease-out) both;
+}
+
+::view-transition-group(active-tab) {
+  animation-duration: 320ms;
+  animation-timing-function: var(--motion-ease-plot);
+}
+
+/* Laying a new drawing on the table: the old content slides up 24 px and fades, the new slides in
+   from 24 px below. A project title or figure with no twin on the other page goes with it. */
+::view-transition-old(sheet-content),
+::view-transition-old(*.project-morph):only-child {
+  animation: sheet-content-leave 180ms var(--motion-ease-plot) both;
+}
+
+::view-transition-new(sheet-content),
+::view-transition-new(*.project-morph):only-child {
+  animation: sheet-content-enter 320ms var(--motion-ease-out) both;
+}
+
+::view-transition-group(*.project-morph) {
+  animation-duration: 320ms;
+  animation-timing-function: var(--motion-ease-out);
+}
+
+@keyframes sheet-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes sheet-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes sheet-content-leave {
+  to {
+    opacity: 0;
+    transform: translateY(-24px);
+  }
+}
+
+@keyframes sheet-content-enter {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}

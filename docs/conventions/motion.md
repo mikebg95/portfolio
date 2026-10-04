@@ -78,6 +78,15 @@ never a second system.
   (transforms only) once per frame. Shown only for `(hover: hover) and (pointer: fine)` without
   reduced motion — enforced in both the script and CSS. Its 45 % is a `color-mix` colour, not
   opacity, so `notInFinalState` needs no exception.
+- **Sheet transitions (§M2):** cross-document View Transitions. The opt-in is the inline `<style>`
+  in SheetLayout's head (never move it into a bundle — docs/RECORD.md 2026-10-04); names and
+  pseudo-element animations live in `src/styles/transitions.css`, the one place a chrome name is
+  given. A name must be unique on every rendered page (`tests/e2e/view-transitions.spec.ts` checks
+  every route); per-item names come from a helper (`projectMorph(slug, part)` in
+  src/view-transitions.ts) and carry a `view-transition-class` so one rule animates them all. The
+  names also join any same-document transition: the theme switch (§M7) must give its transition a
+  type and, under `:active-view-transition-type(…)`, clear or override these groups — otherwise
+  its root reveal leaves the named sheet, header and content cross-fading on their own.
 - **Tests:** `tests/e2e/motion.spec.ts` checks every route under reduced motion and without JS with
   `notInFinalState` (tests/e2e/helpers/motion.ts). An element whose opacity < 1 or clip-path IS its
   drawn final state goes on that helper's exception list, with a reason.

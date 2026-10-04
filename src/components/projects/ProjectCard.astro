@@ -4,6 +4,7 @@ import type { CollectionEntry } from 'astro:content';
 import DisplayHeading from '../drawing/DisplayHeading.astro';
 import SheetLabel from '../drawing/SheetLabel.astro';
 import MiniDiagram from './MiniDiagram.astro';
+import { projectMorph } from '../../view-transitions';
 
 // components.md ProjectCard: one register card, the whole card one link to its detail sheet.
 // Label (P-0n · KIND, the in-progress one in redline), mini diagram, title, summary, then a
@@ -36,11 +37,16 @@ const inProgress = project.status === 'in-progress';
     </SheetLabel>
     {project.tag && <span class="project-card__tag">{project.tag}</span>}
   </div>
-  <div class="project-card__diagram">
+  <div class="project-card__diagram" style={projectMorph(project.slug, 'figure')}>
     <MiniDiagram slug={project.slug} labels={project.diagram} />
   </div>
   <div class="project-card__body">
-    <DisplayHeading as={headingLevel} size={flagship ? 'm' : 's'} class="project-card__title">
+    <DisplayHeading
+      as={headingLevel}
+      size={flagship ? 'm' : 's'}
+      class="project-card__title"
+      style={projectMorph(project.slug, 'title')}
+    >
       {project.title}
     </DisplayHeading>
     <p class="project-card__summary">{project.cardSummary}</p>

@@ -132,20 +132,8 @@
     }
   }
 
-  /* 0.90–1.40 the active tab's ink fill wipes in left → right, under its text. `html` outranks
-     SheetHeader's scoped fill rule, which ties with it otherwise and loads later. */
-  html.js.first-view .sheet-header .sheet-tab[aria-current='page'] {
-    position: relative;
-    isolation: isolate;
-    background: none;
-  }
-
-  .js.first-view .sheet-tab[aria-current='page']::before {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: var(--color-ink);
-    content: '';
+  /* 0.90–1.40 the active tab's ink fill (its own layer under the text) wipes in left → right. */
+  .js.first-view .sheet-tab__fill {
     animation: reveal-draw 500ms var(--motion-ease-plot) 900ms backwards;
   }
 
