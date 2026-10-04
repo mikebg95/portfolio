@@ -715,3 +715,13 @@ best practices 1 on every URL. Desktop is untouched (it was 12 px already). Inst
 callouts on phones (their 112 px label column would wrap Dutch compounds further) or the title
 block (shared chrome, its 9–11 px is the drawing's look). Seen while measuring: at 320–340 px in
 EN the table is 251 px in a 228 px frame, so it scrolls inside its frame — before this change too.
+
+## 2026-10-05 — Parts list below 360 px: 4 px cells, 10 px type below 340 px (QA-66)
+Who: agent (QA-66). At 320–340 px the EN parts list scrolled inside its frame (251 px table in a
+228 px frame at 320): Chromium has no English hyphenation dictionary (`hyphens: auto` breaks Dutch,
+never English), so "Programming" and "Foundation" are unbreakable and set the PART and SUPPLIER
+columns. Fix: below 360 px the cells' side padding is 4 px (11 px type fits from 327 px), below
+340 px the type is 10 px (EN min-content 219 px in the 228 px frame). Measured at 320–412 px in EN
+and NL: the table fills its frame exactly. Instead of: `overflow-wrap: anywhere` (Chromium then
+re-balances the columns and splits "progres s)" with no hyphen); soft hyphens in the content
+(changes the buttons' text and accessible names); 10.5 px or 3 px padding (fits by under 2 px).

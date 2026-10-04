@@ -116,18 +116,32 @@ const rows = [...parts].sort((a, b) => b.item - a.item);
   /* A phone keeps all four columns: tighter cells, the year may break after its dash, and long
      words (Dutch LEVERANCIER, Politicologie) hyphenate so the table fits a 320 px sheet without scrolling its frame. */
   @media (max-width: 767px) {
+    .parts-list {
+      --cell-x: 6px;
+    }
+
     th,
     td {
-      padding: 8px 6px;
+      padding: 8px var(--cell-x);
       hyphens: auto;
     }
   }
 
-  /* 11 px only where 12 px no longer fits (a 320 px sheet); from 360 px the table keeps 12 px,
-     legible text by Lighthouse's measure (QA-65). */
+  /* Smaller only where 12 px no longer fits; from 360 px the table keeps 12 px, legible text by
+     Lighthouse's measure (QA-65). Chromium has no English hyphenation dictionary, so "Programming"
+     and "Foundation" never break: below 360 px the cells tighten to 4 px and the type is 11 px,
+     below 340 px 10 px (QA-66). */
   @media (max-width: 359px) {
     .parts-list {
+      --cell-x: 4px;
+
       font-size: 11px;
+    }
+  }
+
+  @media (max-width: 339px) {
+    .parts-list {
+      font-size: 10px;
     }
   }
 
@@ -146,10 +160,10 @@ const rows = [...parts].sort((a, b) => b.item - a.item);
   @media (max-width: 767px) {
     .parts-list__select {
       display: block;
-      width: calc(100% + 12px);
+      width: calc(100% + 2 * var(--cell-x));
       min-height: 44px;
-      margin: -8px -6px;
-      padding: 8px 6px;
+      margin: -8px calc(-1 * var(--cell-x));
+      padding: 8px var(--cell-x);
       hyphens: auto;
     }
   }

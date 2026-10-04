@@ -83,7 +83,7 @@ test('plates sit on one axis, top to bottom, never overlapping the next one', as
 });
 
 for (const prefix of ['', '/nl']) {
-  for (const width of [320, 390, 768]) {
+  for (const width of [320, 340, 390, 768]) {
     test(`${prefix}/education: the assembly scales and the sheet fits ${width} px without scrolling sideways`, async ({
       page,
     }) => {
@@ -101,6 +101,10 @@ for (const prefix of ['', '/nl']) {
           .evaluateAll((els) => els.filter((el) => el.scrollWidth > el.clientWidth).length),
       ).toBe(0);
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(width);
+      // QA-66: the parts list fits its frame too, not just the page (Chromium cannot hyphenate EN).
+      expect(
+        await page.locator('.parts-list-frame').evaluate((el) => el.scrollWidth - el.clientWidth),
+      ).toBeLessThanOrEqual(0);
     });
   }
 
