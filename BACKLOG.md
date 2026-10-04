@@ -65,7 +65,7 @@ queue.
   - Spec: SPEC §4.4; design/screens/html/project-detail-jamigos-default-light-1440.html
   - Out of scope: per-project figures (PR-25…29).
 
-- [ ] **PR-25 Jamigos detail sheet**
+- [x] **PR-25 Jamigos detail sheet**
   - Done when: Jamigos detail content (summary, meta, spec rows, note) from copy.md; FIG. 1 container view and FIG. 2 PipelineRoute exactly as drawn; no live link; e2e asserts figures and repo link `https://github.com/mikebg95/jamigos`.
   - Spec: design/copy.md 03.1; docs/source/research-repos.md P-01
   - Out of scope: other projects.
