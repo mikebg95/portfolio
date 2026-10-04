@@ -511,3 +511,18 @@ Who: agent (PR-62). Why: PR-62 allowed S-08 only "if it fits without a layout ch
 `profile` schema pins `specs` to exactly seven rows (`src/content/schemas.ts`), and CLAUDE.md makes a
 schema change its own task. Scrum (PSM I) already shows on Sheet 04. Instead of: widening the schema
 inside a content task. A later task may add S-08 by changing the schema first.
+
+## 2026-10-04 — Facts audit: an e2e spec over `dist/`, with a reasoned allowlist
+Who: agent (PR-54). The audit is `tests/e2e/facts.spec.ts`, not a unit test: `verify` runs the unit
+suite before the build, and the Playwright web server builds first, so the spec always reads a fresh
+`dist/`. It checks EN pages only (the task's scope); NL text is a translation of the same facts.
+"Proper noun" is approximated as every capitalised or camelCase word, matched whole-word and
+case-insensitively against cv.md, briefing.md and research-repos.md (NFKC, so cv.md's `ﬁ` ligatures
+match). What the sources lack is in `tests/e2e/facts-allowlist.yaml`, grouped under a reason; facts
+there come from the public repos, checked on this date: subscription-tracker test split 2/22/25/14
+(@Test counts per class), Scentify min/target SDK 21/29 (app/build.gradle), CS50-Psets has Python,
+SQL and HTML sets, Recipe Book and Journal started in July 2026 (first commits 2026-07-03 and
+2026-07-22), journal ADR files 0001–0007. No invented fact was found, so no copy changed. The phone
+check reads the number from cv.md at run time so it is never written in the repo a second time.
+Instead of: a per-word reason for plain words (a reason per group reads better); network checks of
+GitHub URLs at test time (flaky; the allowlist records what was checked).

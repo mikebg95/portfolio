@@ -1,0 +1,191 @@
+# PR-54 facts audit (SPEC §3.7), read by tests/e2e/facts.spec.ts.
+#
+# Every number, month-year date, proper noun and outbound URL on the built EN pages must appear in
+# docs/source/ (cv.md, briefing.md, research-repos.md). What does not is listed here, grouped under
+# the reason it may stay: drawing-sheet vocabulary, plain English words, or a fact checked in a
+# public repo under github.com/mikebg95 (the evidence is in the group's reason). Reviewed against
+# the sources and the repos on 2026-10-04.
+#
+# Never add a fact here because a test failed: find it in the sources or a repo first, or remove
+# it from the page. An entry the pages no longer need, or the sources now state, fails the test.
+
+numbers:
+  'Sheet chrome: item numbers on the register, parts list, skill rows, detail views (02.1 … 03.5, S-06, S-07, 3.2, 3.3), the drawing scale 2:1 and the title-block revision REV 2026.10':
+    [
+      '02.1',
+      '02.2',
+      '02.3',
+      '03.1',
+      '03.2',
+      '03.3',
+      '03.4',
+      '03.5',
+      '06',
+      '07',
+      '3.2',
+      '3.3',
+      '2:1',
+      '2026.10',
+    ]
+  'Experience timeline: the axis tick between 2021 and 2023, and the 0 in "2 Y 0 M" (Jan 2024 – Jan 2026, cv.md)':
+    ['2022', '0']
+  'journal repo, docs/architecture/adr/: ADR files 0001 … 0007':
+    ['0001', '0002', '0003', '0004', '0005', '0006', '0007']
+  'subscription-tracker repo, backend/src/test: SubscriptionDaoIT has 22 @Test (pyramid: 2 end-to-end + 22 DAO + 25 web + 14 unit = 63)':
+    ['22']
+  'Scentify repo, app/build.gradle: minSdkVersion 21, targetSdkVersion 29': ['29']
+
+dates:
+  'recipe-book repo: commits 2026-07-03 … 2026-07-20; journal repo: first commit 2026-07-22 (gh api repos/mikebg95/<repo>/commits)':
+    ['jul 2026']
+
+urls:
+  'CS50-Psets repo (research-repos.md names it; public, checked with gh api repos/mikebg95/CS50-Psets)':
+    ['https://github.com/mikebg95/CS50-Psets']
+  'journal repo, docs/architecture/adr/ (checked with gh api repos/mikebg95/journal/contents/docs/architecture/adr)':
+    - 'https://github.com/mikebg95/journal/blob/main/docs/architecture/adr/0001-hexagonal-at-p3.md'
+    - 'https://github.com/mikebg95/journal/blob/main/docs/architecture/adr/0002-synchronous-ai-processing.md'
+    - 'https://github.com/mikebg95/journal/blob/main/docs/architecture/adr/0003-spring-ai.md'
+    - 'https://github.com/mikebg95/journal/blob/main/docs/architecture/adr/0004-no-cascade-to-tags.md'
+    - 'https://github.com/mikebg95/journal/blob/main/docs/architecture/adr/0005-graceful-degradation.md'
+    - 'https://github.com/mikebg95/journal/blob/main/docs/architecture/adr/0006-tag-data-contract.md'
+    - 'https://github.com/mikebg95/journal/blob/main/docs/architecture/adr/0007-optimistic-locking.md'
+
+names:
+  'Sheet chrome: drawing titles, title block, register, parts list, inspection record, figure and note labels, the MG monogram, the theme and language switches':
+    - ARRANGEMENT
+    - ASSEMBLED
+    - ASSEMBLY
+    - BLUEPRINT
+    - C-01
+    - C-02
+    - C-03
+    - C-04
+    - CHECKED
+    - DOWNLOAD
+    - DRAWING
+    - ELEVATION
+    - EN
+    - EXPLODED
+    - FIG
+    - FLOW
+    - FOUND
+    - GENERAL
+    - HATCHED
+    - INSPECTED
+    - INSPECTION
+    - ITEM
+    - LANG
+    - LAYERS
+    - MG
+    - NEXT
+    - NOTE
+    - NOTES
+    - Overview
+    - PAPER
+    - PENDING
+    - PORTS
+    - PREVIOUS
+    - PYRAMID
+    - Parts
+    - QUESTION
+    - RECORD
+    - RECORDS
+    - REGISTER
+    - REV
+    - ROUTE
+    - S-01
+    - S-02
+    - S-03
+    - S-04
+    - S-05
+    - S-06
+    - S-07
+    - SCALE
+    - SCENTS
+    - SEE
+    - SET
+    - SHEETS
+    - SIGNED
+    - SPECIFICATION
+    - SUPPLIER
+    - VERIFIED
+  'Section labels on the project detail sheets':
+    ['CONCURRENCY', 'DELIVERY', 'INTEGRITY', 'MATCHING', 'QUERIES']
+  'Units: years and months of a role (Y, M), YRS on the 5+ years badge (cv.md "5+ years")':
+    ['Y', 'M', 'YRS']
+  'Plain English words, capitalised at the start of a sentence, a label or a link':
+    - Answer
+    - Building
+    - Designing
+    - Doesn't
+    - Email
+    - Every
+    - Halfway
+    - I'm
+    - My
+    - Named
+    - Off-sheet
+    - Pre-university
+    - Re-ordering
+    - Secure
+    - Skip
+    - Spent
+    - Studied
+    - Switch
+    - THEN
+    - Track
+    - Trains
+    - Try
+  'Course and certification names the sources state in short (cv.md "Harvard CS50: Introduction to Computer Science", "University of Amsterdam", "Oracle Certified Associate, Java SE 8", "Professional Scrum Master I", CKAD) and their syllabus topics':
+    [
+      'CS',
+      'Intro',
+      'UvA',
+      'OOP',
+      'Core',
+      'APIs',
+      'Empiricism',
+      'Facilitation',
+      'Pods',
+      'Config',
+      'Probes',
+    ]
+  'The English name of Dienst Justitiële Inrichtingen (cv.md): the Custodial Institutions Agency':
+    ['Agency', 'Custodial', 'Institutions']
+  'CS50-Psets repo: Pset6 and Pset7 are Python, Pset7 SQL, Pset8 HTML': ['Python']
+  'Scentify repo: README and app/build.gradle (AndroidX AppCompat, Material Components, ConstraintLayout, SDK 21/29, XML layouts), QuestionActivity.java (HashMap of answers, Intent extras), PerfumeActivity, PerfumeAdapter':
+    [
+      'AndroidX',
+      'AppCompat',
+      'Components',
+      'ConstraintLayout',
+      'HashMap',
+      'Intent',
+      'Intents',
+      'Material',
+      'PerfumeActivity',
+      'PerfumeAdapter',
+      'QuestionActivity',
+      'SDK',
+      'XML',
+    ]
+  'subscription-tracker repo: SubscriptionDaoImpl (RowMappers), V2__make_name_case_insensitive_unique.sql (LOWER(name)), README (Bean Validation)':
+    ['Bean', 'LOWER', 'RowMappers']
+  'recipe-book repo: backend/README.md (Ingredient, controllers), RecipeRepositoryIT (RecipeSummary projection), V1 migration (ON DELETE CASCADE)':
+    ['Controllers', 'DELETE', 'Ingredient', 'RecipeSummary']
+  'journal repo: README and application/port/in (EntryUseCases, EntryStore, TagStore, EntryEnricher; domain Entry, Tag, Todo; ADR-0001 … ADR-0007)':
+    [
+      'ADR-0001',
+      'ADR-0002',
+      'ADR-0003',
+      'ADR-0004',
+      'ADR-0005',
+      'ADR-0006',
+      'ADR-0007',
+      'EntryEnricher',
+      'EntryStore',
+      'EntryUseCases',
+      'TagStore',
+      'Todo',
+    ]

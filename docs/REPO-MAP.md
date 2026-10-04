@@ -24,6 +24,7 @@ line.
 - `tests/e2e/performance.spec.ts` — 60 KB gz JS budget per built page (static closure over `_astro/` chunks, lazy imports included) and "preload only fonts the page renders".
 - `tests/e2e/responsive.spec.ts` — every route + 404 at 320…2560 px (chromium-desktop only): page scroll, heading/label overlap, text spilling out of its box, table frames; screenshots in `.e2e/responsive/`. A designed spill goes in `SPILL_EXCEPTIONS` with its reason, never a looser check.
 - `src/pages/favicon.svg.ts` + `src/favicon.ts` — the site icon from token colours; without the `<link rel="icon">` Chrome asks for `/favicon.ico`, logs a 404 and Lighthouse best practices drops to 0.96.
+- `tests/e2e/facts.spec.ts` + `tests/e2e/facts-allowlist.yaml` — facts audit (SPEC §3.7) over the built EN pages: every number, month-year date, capitalised/camelCase word and outbound URL must be in `docs/source/` or the allowlist (grouped by reason + evidence). New copy with a fact the sources lack fails here: source it or drop it; an allowlist entry no page needs fails too. Also: phone number (read from cv.md) in no HTML, Jamigos has no live link.
 - `tests/e2e/helpers/axe.ts` — `expectNoAxeViolations(page)`, WCAG 2.2 AA tags; every page's e2e calls it.
 
 ## Styles
