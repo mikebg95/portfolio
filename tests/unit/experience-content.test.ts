@@ -116,3 +116,37 @@ describe('experience (EN) against design/copy.md', () => {
     expect(ui.dates).toEqual({ months: MONTHS, now: 'NOW' });
   });
 });
+
+describe('experience schema: employers and their assignments', () => {
+  const base = {
+    id: 'x',
+    order: 1,
+    role: 'Engineer',
+    place: 'Almere',
+    start: '2024-01',
+    end: null,
+    context: 'Context.',
+    lang: 'en',
+  };
+
+  it('takes an employer entry and an assignment that names it as parent', () => {
+    expect(
+      experienceSchema.safeParse({ ...base, kind: 'employer', employer: 'Conspect' }).success,
+    ).toBe(true);
+    expect(
+      experienceSchema.safeParse({ ...base, parent: 'conspect', engagement: 'Client assignment' })
+        .success,
+    ).toBe(true);
+  });
+
+  it('refuses a role with neither employer nor parent, a nested employer, a loose engagement', () => {
+    expect(experienceSchema.safeParse(base).success).toBe(false);
+    expect(
+      experienceSchema.safeParse({ ...base, kind: 'employer', employer: 'A', parent: 'b' }).success,
+    ).toBe(false);
+    expect(
+      experienceSchema.safeParse({ ...base, employer: 'A', engagement: 'Client assignment' })
+        .success,
+    ).toBe(false);
+  });
+});

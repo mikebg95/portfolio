@@ -23,8 +23,15 @@ export const experienceSchema = z
   .strictObject({
     id: text,
     order: z.number().int().nonnegative(),
-    /** `break` is a gap between roles (the sabbatical): drawn hatched, no employer. */
-    kind: z.enum(['role', 'break']).default('role'),
+    /**
+     * `employer` owns assignments (Conspect): the timeline's dimension line, the detail block they
+     * nest in. `break` is a gap between roles (the sabbatical): drawn hatched, no employer.
+     */
+    kind: z.enum(['employer', 'role', 'break']).default('role'),
+    /** The id of the `employer` entry this role or break is an assignment of. */
+    parent: text.optional(),
+    /** How the assignment sits in its employer (`Client assignment (secondment)`). */
+    engagement: text.optional(),
     role: text,
     employer: text.optional(),
     client: text.optional(),
@@ -39,9 +46,17 @@ export const experienceSchema = z
     lang,
     translated,
   })
-  .refine((e) => e.kind === 'break' || e.employer !== undefined, {
-    message: 'a role needs an employer',
+  .refine((e) => e.kind === 'break' || e.parent !== undefined || e.employer !== undefined, {
+    message: 'a role needs an employer or a parent',
     path: ['employer'],
+  })
+  .refine((e) => e.kind !== 'employer' || e.parent === undefined, {
+    message: 'an employer is no assignment',
+    path: ['parent'],
+  })
+  .refine((e) => e.engagement === undefined || e.parent !== undefined, {
+    message: 'only an assignment has an engagement',
+    path: ['engagement'],
   })
   .refine((e) => e.end === null || e.end >= e.start, {
     message: 'end is before start',
