@@ -11,6 +11,9 @@ HTML/CSS each PNG was rendered from — copy values from it rather than measurin
 | project-detail-jamigos-default-light-1440.png | Sheet 03.1 Project detail (§4.4) | /projects/jamigos | default | paper | 1440 |
 | certifications-default-light-1440.png | Sheet 04 Certifications (§4.5) | /certifications | default | paper | 1440 |
 | education-default-light-1440.png | Sheet 05 Education (§4.6) | /education | part 3 selected | paper | 1440 |
+| overview-default-light-390.png | Sheet 01 phone (§4.1) | / | default (tab bar is FIXED to the screen bottom) | paper | 390 |
+| experience-default-light-390.png | Sheet 02 phone (§4.2) | /experience | default | paper | 390 |
+| education-part3-sheet-light-390.png | Sheet 05 phone (§4.6) | /education | part 3 open in bottom sheet | paper | 390 |
 | html/motion-preview.dc.html | Motion reference for §M1 (design/motion.md) | / | first load | paper | 1440 |
 
 Notes on the drawings:
