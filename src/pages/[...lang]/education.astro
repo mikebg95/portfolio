@@ -26,7 +26,7 @@ const partName = (part: (typeof parts)[number]) =>
 ---
 
 <SheetLayout lang={lang} sheet="education" title={ui.seo.education.title}>
-  <section class="sheet-panel education">
+  <section class="sheet-panel education" data-education>
     <div class="education__head">
       <SheetLabel>{ui.education.label}</SheetLabel>
       <DisplayHeading as="h1" size="l">
@@ -49,7 +49,7 @@ const partName = (part: (typeof parts)[number]) =>
               part={part}
               lang={lang}
               strings={ui.education}
-              hidden={part.item !== DEFAULT_PART}
+              data-selected={String(part.item === DEFAULT_PART)}
             />
           ))}
         </div>
@@ -58,6 +58,76 @@ const partName = (part: (typeof parts)[number]) =>
     </div>
   </section>
 </SheetLayout>
+
+<script>
+  import { partFromHash, partHash } from '../../assembly';
+
+  // SPEC §4.6 / motion.md §M5: a plate, balloon or parts-list row selects its part. Every control
+  // carrying `data-part` follows the selection; the URL hash `#part-n` records it and is read on
+  // load. Until the first selection the sheet stays as drawn (part 3, nothing dimmed).
+  const root = document.querySelector<HTMLElement>('[data-education]');
+  if (root) {
+    const assembly = root.querySelector<HTMLElement>('.assembly');
+    const panels = [...root.querySelectorAll<HTMLElement>('.detail-panel')];
+    const items = panels.map((panel) => Number(panel.dataset.part));
+
+    const select = (item: number, wipe: boolean) => {
+      const part = String(item);
+      assembly?.setAttribute('data-active', '');
+      for (const el of root.querySelectorAll<HTMLElement>('button[data-part]')) {
+        el.setAttribute('aria-pressed', String(el.dataset.part === part));
+        if (el.classList.contains('balloon__mark') && !el.matches('.balloon__mark--pending')) {
+          el.classList.toggle('balloon__mark--active', el.dataset.part === part);
+        }
+      }
+      for (const el of root.querySelectorAll<HTMLElement>('.assembly__callout')) {
+        el.classList.toggle('assembly__callout--selected', el.dataset.part === part);
+      }
+      for (const el of root.querySelectorAll<HTMLElement>('tr[data-part]')) {
+        el.classList.toggle('parts-list__row--selected', el.dataset.part === part);
+      }
+      for (const panel of panels) {
+        const on = panel.dataset.part === part;
+        const shown = panel.dataset.selected === 'true';
+        panel.dataset.selected = String(on);
+        if (on && !shown && wipe) {
+          panel.classList.remove('detail-panel--wipe');
+          void panel.offsetWidth;
+          panel.classList.add('detail-panel--wipe');
+        }
+      }
+    };
+
+    root.addEventListener('click', (event) => {
+      const target = (event.target as Element).closest<HTMLElement>(
+        'button[data-part], tr[data-part]',
+      );
+      if (!target) return;
+      const item = Number(target.dataset.part);
+      select(item, true);
+      history.replaceState(history.state, '', partHash(item));
+    });
+
+    root.addEventListener('animationend', (event) => {
+      (event.target as Element).classList.remove('detail-panel--wipe');
+    });
+
+    // Hovering a row previews its plate's lift.
+    for (const row of root.querySelectorAll<HTMLElement>('tr[data-part]')) {
+      const plate = root.querySelector(`.plate[data-part="${row.dataset.part}"]`);
+      row.addEventListener('mouseenter', () => plate?.classList.add('plate--preview'));
+      row.addEventListener('mouseleave', () => plate?.classList.remove('plate--preview'));
+    }
+
+    const fromHash = () => {
+      const item = partFromHash(location.hash, items);
+      if (item !== undefined) select(item, false);
+    };
+    fromHash();
+    addEventListener('hashchange', fromHash);
+    requestAnimationFrame(() => assembly?.setAttribute('data-ready', ''));
+  }
+</script>
 
 <style>
   .education {

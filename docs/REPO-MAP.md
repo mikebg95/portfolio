@@ -121,7 +121,9 @@ line.
 - `src/assembly.ts` — plate geometry in drawing units (`layout`, `diamond`, `DEFAULT_PART`); pure, unit-tested.
 - `src/components/education/ExplodedAssembly.astro` — plates (`.plate[data-part]`) and Balloon buttons (`.balloon__mark[data-part]`), both `aria-pressed`; sizes are `calc(n * var(--u))`, `--u` = min(1 px, column minus `--labels` over the drawing width).
 - TRAP: `--u` uses `cqi`, so it must be declared below the `container-type` element (`.assembly__drawing`, not `.assembly`); on the container itself `cqi` resolves against the next container up.
-- `src/components/education/DetailPanel.astro` — one `<article id="part-n">` per part, all five rendered, the unselected `hidden` (its `display: flex` needs the `[hidden]` rule).
-- `src/components/education/PartsList.astro` — a real `<table>`, 5 → 1; each row's PART cell is the `aria-pressed` button (`.parts-list__select[data-part]`); a click on the rest of the row is PR-35's JS.
+- `src/components/education/DetailPanel.astro` — one `<article id="part-n" data-selected>` per part; `@media (scripting: enabled)` hides the unselected, so without JS all five stack.
+- `src/pages/[...lang]/education.astro` `<script>` — selection: one delegated click on `[data-education]` (`button[data-part]`, `tr[data-part]`), syncs aria-pressed/classes/panel, `#part-n` via `replaceState`, `hashchange`; sets `.assembly[data-active]` (dim + lift) on the first selection and `[data-ready]` (transitions) after a frame.
+- TRAP: transitions on `.plate` must wait for `.assembly[data-ready]`; a stylesheet landing after a first style pass made the plates animate into their tilt on load (flaky e2e overlap, plates 329 px wide).
+- `src/components/education/PartsList.astro` — a real `<table>`, 5 → 1; each row's PART cell is the `aria-pressed` button (`.parts-list__select[data-part]`); the page script makes the whole row clickable and previews the plate lift on hover.
 - TRAP: at 320 px the four columns fit only with 11 px type and 6 px cell padding (≤ 767 px); a `nowrap` year or wider padding pushes the table past the frame.
-- `tests/e2e/education.spec.ts` — sheet strings, five plates + balloons with names and pressed state, one axis without overlap, default detail, parts rows, layout per viewport, fits 320/390/768 px.
+- `tests/e2e/education.spec.ts` — sheet strings, five plates + balloons with names and pressed state, one axis without overlap, default detail, parts rows, layout per viewport, fits 320/390/768 px; selection by mouse/keyboard/hash, hover preview, wipe vs reduced motion, no-JS stacked.

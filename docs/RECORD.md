@@ -281,3 +281,10 @@ rows; the button selecting a part is the PART cell's text (its name = the visibl
 the table keeps its semantics. ITEM/PART/SUPPLIER/YEAR, `DETAIL {n} · SCALE 2:1`, `{n} EC` and
 `NOTE:` are `ui.education` (additive). Side by side from 1024 px: assembly `1fr`, panel column
 ≤ 460 px.
+
+## 2026-10-04 — Education part selection
+Who: agent (PR-35). The sheet opens as drawn: part 3 pressed, nothing dimmed or lifted. The §M5
+selected look (plate lifted 12 px, filled line colour at 25 % over paper — CKAD too, "fills
+ink-blue" — others at 60 %) starts with the first selection or a `#part-n` hash. The hash is
+written with `history.replaceState`, so selecting parts does not stack history entries. No-JS
+stacking uses `@media (scripting: enabled)` rather than a `js` class, which PR-39 has not added yet.

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { AXIS_OVERRUN, diamond, layout, PLATE_GAP } from './assembly';
+import { AXIS_OVERRUN, diamond, layout, partFromHash, partHash, PLATE_GAP } from './assembly';
 
 // The five education parts as in src/content/education/en (PR-32).
 const PARTS = [
@@ -47,5 +47,20 @@ describe('layout', () => {
     expect(a.plates.every((p) => p.right < a.balloon)).toBe(true);
     expect(a.plates[0]?.top).toBe(AXIS_OVERRUN);
     expect(a.height - (a.plates.at(-1)?.bottom ?? 0)).toBeCloseTo(AXIS_OVERRUN);
+  });
+});
+
+describe('partFromHash', () => {
+  const items = [1, 2, 3, 4, 5];
+
+  it('reads the part a #part-n hash names, and round-trips partHash', () => {
+    expect(partFromHash('#part-4', items)).toBe(4);
+    expect(partFromHash(partHash(1), items)).toBe(1);
+  });
+
+  it('ignores other hashes and parts that do not exist', () => {
+    for (const hash of ['', '#', '#part-', '#part-6', '#part-0', '#part-3x', '#ckad', 'part-3']) {
+      expect(partFromHash(hash, items)).toBeUndefined();
+    }
   });
 });

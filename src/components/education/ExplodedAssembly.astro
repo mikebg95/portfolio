@@ -5,7 +5,8 @@ import { layout, TILT_DEG } from '../../assembly';
 import Balloon from '../drawing/Balloon.astro';
 
 // components.md ExplodedAssembly (SPEC §4.6): the five education plates on a dashed centre axis,
-// each with a leader and balloon. Plates and balloons are buttons named `name(part)`;
+// each with a leader and balloon. Plates, balloons and callouts carry `data-part`; plates and
+// balloons are buttons named `name(part)`;
 // `selected` is drawn pressed (balloon filled, label bold). Geometry in drawing units from
 // src/assembly.ts, scaled by `--u` so the drawing fits the column beside a fixed label width.
 interface Props {
@@ -49,6 +50,7 @@ const fill = (item: number) => `var(--color-${FILLS[item - 1] ?? 'paper'})`;
             part.pending && 'assembly__callout--pending',
           ]}
           style={`--x: ${right}; --y: ${cy}; --leader: ${assembly.balloon - right}`}
+          data-part={part.item}
         >
           <Balloon
             as="button"
@@ -103,7 +105,7 @@ const fill = (item: number) => `var(--color-${FILLS[item - 1] ?? 'paper'})`;
     padding: 0;
     border: var(--border-normal);
     background: var(--fill);
-    transform: rotateX(var(--tilt)) rotateZ(-45deg);
+    transform: translateY(var(--lift, 0px)) rotateX(var(--tilt)) rotateZ(-45deg);
     cursor: pointer;
   }
 
@@ -114,6 +116,42 @@ const fill = (item: number) => `var(--color-${FILLS[item - 1] ?? 'paper'})`;
   .plate--dashed {
     border: var(--border-dashed-note);
     background: var(--color-redline-tint);
+  }
+
+  /* motion.md §M5: once a part is chosen (data-active, set by the page script) its plate lifts
+     12 px and fills, the other parts dim; hovering a parts-list row previews the lift. */
+  .plate--preview,
+  .assembly[data-active] .plate[aria-pressed='true'] {
+    --lift: -12px;
+  }
+
+  .assembly[data-active] .plate[aria-pressed='true'] {
+    background: color-mix(in srgb, var(--color-line) 25%, var(--color-paper));
+  }
+
+  .assembly[data-active] .plate[aria-pressed='false'],
+  .assembly[data-active] .assembly__callout:not(.assembly__callout--selected) {
+    opacity: 0.6;
+  }
+
+  /* Transitions only once the page script marks the drawing ready: the stylesheets can land after
+     a first style pass, and the plates would otherwise animate into their tilt on load. */
+  .assembly[data-ready] .plate {
+    transition:
+      transform var(--motion-normal) var(--motion-ease-out),
+      background-color var(--motion-normal) var(--motion-ease-out),
+      opacity var(--motion-normal) var(--motion-ease-out);
+  }
+
+  .assembly[data-ready] .assembly__callout {
+    transition: opacity var(--motion-normal) var(--motion-ease-out);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .assembly[data-ready] .plate,
+    .assembly[data-ready] .assembly__callout {
+      transition: none;
+    }
   }
 
   .assembly__callout {

@@ -8,8 +8,8 @@ import Link from '../drawing/Link.astro';
 import SheetLabel from '../drawing/SheetLabel.astro';
 
 // components.md DetailPanel (SPEC §4.6): one education part at "scale 2:1" — label, title, meta,
-// body, optional sub-rows (code · text · EC), NOTE and link. Its id is `part-n`. Internal link
-// hrefs are localized; an http(s) link opens in a new tab.
+// body, optional sub-rows (code · text · EC), NOTE and link. Its id is `part-n`; pass
+// `data-selected="true|false"`. Internal link hrefs are localized; an http(s) link opens in a new tab.
 type Props = Omit<HTMLAttributes<'article'>, 'part' | 'lang'> & {
   part: CollectionEntry<'education'>['data'];
   lang: Lang;
@@ -73,8 +73,32 @@ const fill = (pattern: string, n: number) => pattern.replace('{n}', String(n));
     background: var(--color-paper-raised);
   }
 
-  .detail-panel[hidden] {
-    display: none;
+  /* With scripts, only the selected part's panel shows; without, all five stack (SPEC §4.6). */
+  @media (scripting: enabled) {
+    .detail-panel[data-selected='false'] {
+      display: none;
+    }
+  }
+
+  /* motion.md §M5: a newly selected panel wipes in left → right. */
+  .detail-panel--wipe {
+    animation: detail-panel-wipe var(--motion-normal) var(--motion-ease-plot);
+  }
+
+  @keyframes detail-panel-wipe {
+    from {
+      clip-path: inset(0 100% 0 0);
+    }
+
+    to {
+      clip-path: inset(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .detail-panel--wipe {
+      animation: none;
+    }
   }
 
   .detail-panel :global(.detail-panel__label) {

@@ -88,3 +88,12 @@ export function layout<P extends PlateInput>(parts: readonly P[]): Assembly<P> {
   const balloon = widest + LEADER;
   return { plates, axis, balloon, width: balloon, height: y - PLATE_GAP + AXIS_OVERRUN };
 }
+
+/** `#part-4` → 4 when 4 is one of `items`; anything else → undefined. */
+export function partFromHash(hash: string, items: readonly number[]): number | undefined {
+  const match = /^#part-(\d+)$/.exec(hash);
+  const item = match ? Number(match[1]) : undefined;
+  return item !== undefined && items.includes(item) ? item : undefined;
+}
+
+export const partHash = (item: number) => `#part-${item}`;

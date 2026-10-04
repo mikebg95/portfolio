@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 
 import { expectNoAxeViolations } from './helpers/axe';
 
@@ -138,4 +138,116 @@ test('the panel and parts list sit beside the assembly on desktop, below it othe
     expect(panel.y).toBeGreaterThanOrEqual(assembly.y + assembly.height);
   }
   expect(table.y).toBeGreaterThanOrEqual(panel.y + panel.height);
+});
+
+/** The part the sheet shows as selected: pressed controls, row, panel and hash agree on it. */
+async function expectSelected(page: Page, item: number) {
+  const pressed = page.locator('button[data-part][aria-pressed="true"]');
+  await expect(pressed).toHaveCount(3);
+  for (const el of await pressed.all()) await expect(el).toHaveAttribute('data-part', `${item}`);
+  await expect(page.locator('.parts-list__row--selected')).toHaveAttribute('data-part', `${item}`);
+  await expect(page.locator('.detail-panel:visible')).toHaveCount(1);
+  await expect(page.locator('.detail-panel:visible')).toHaveId(`part-${item}`);
+  await expect(page).toHaveURL(new RegExp(`#part-${item}$`));
+}
+
+const plate = (page: Page, item: number) => page.locator(`.plate[data-part="${item}"]`);
+/** A plate's top in page coordinates, so scrolling to reach a row does not move it. */
+const top = (page: Page, item: number) =>
+  plate(page, item).evaluate((el) => el.getBoundingClientRect().top + scrollY);
+
+test('clicking a plate, a balloon or a row selects that part', async ({ page }) => {
+  await page.goto('/education');
+  const restingTop = await top(page, 5);
+
+  await plate(page, 5).click();
+  await expectSelected(page, 5);
+  await expect(page.locator('#part-5')).toContainText('CKAD (to be fitted)');
+  // The chosen plate lifts 12 px and the others dim to 60 %.
+  await expect.poll(async () => restingTop - (await top(page, 5))).toBeCloseTo(12, 0);
+  await expect(plate(page, 1)).toHaveCSS('opacity', '0.6');
+  await expect(plate(page, 5)).toHaveCSS('opacity', '1');
+
+  await page.locator('.balloon__mark[data-part="2"]').click();
+  await expectSelected(page, 2);
+  await expect(page.locator('#part-2 .detail-panel__note')).toHaveText(
+    'NOTE: part 2 is load-bearing.',
+  );
+
+  // Anywhere on a row, not only its part name.
+  await page.locator('tr[data-part="4"] td').last().click();
+  await expectSelected(page, 4);
+  await expect(page.locator('#part-4 a')).toHaveAttribute(
+    'href',
+    'https://github.com/mikebg95/CS50-Psets',
+  );
+  await expectNoAxeViolations(page);
+});
+
+test('Enter and Space on a balloon, plate or row select its part', async ({ page }) => {
+  await page.goto('/education');
+  await page.locator('.balloon__mark[data-part="1"]').focus();
+  await page.keyboard.press('Enter');
+  await expectSelected(page, 1);
+
+  await plate(page, 4).focus();
+  await page.keyboard.press('Space');
+  await expectSelected(page, 4);
+
+  await page.getByRole('button', { name: 'BSc Political Science', exact: true }).focus();
+  await page.keyboard.press('Enter');
+  await expectSelected(page, 2);
+  await expect(page.locator('.parts-list__select[data-part="2"]')).toBeFocused();
+});
+
+test('a #part-n hash is honoured on load and on change', async ({ page }) => {
+  await page.goto('/education#part-5');
+  await expectSelected(page, 5);
+  await page.evaluate(() => (location.hash = '#part-1'));
+  await expectSelected(page, 1);
+  // An unknown part leaves the default.
+  await page.goto('/nl/education#part-9');
+  await expect(page.locator('.detail-panel:visible')).toHaveId('part-3');
+});
+
+test('hovering a parts-list row previews the lift on its plate', async ({ page }) => {
+  test.skip((page.viewportSize()?.width ?? 0) < 1024, 'hover is a desktop pointer');
+  await page.goto('/education');
+  const resting = await top(page, 1);
+  await page.locator('tr[data-part="1"]').hover();
+  await expect.poll(async () => resting - (await top(page, 1))).toBeCloseTo(12, 0);
+  await page.mouse.move(0, 0);
+  await expect.poll(() => top(page, 1)).toBeCloseTo(resting, 0);
+});
+
+test('the panel wipes in on selection, instantly under reduced motion', async ({ page }) => {
+  await page.goto('/education');
+  await page.locator('.balloon__mark[data-part="5"]').click();
+  expect(
+    await page
+      .locator('#part-5')
+      .evaluate((el) => el.getAnimations().map((a) => (a as CSSAnimation).animationName)),
+  ).toEqual(['detail-panel-wipe']);
+
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.locator('.balloon__mark[data-part="1"]').click();
+  await expectSelected(page, 1);
+  expect(await page.locator('#part-1').evaluate((el) => el.getAnimations().length)).toBe(0);
+  await expect(plate(page, 1)).toHaveCSS('transition-duration', '0s');
+});
+
+test.describe('without JavaScript', () => {
+  test.use({ javaScriptEnabled: false });
+
+  test('all five details render stacked', async ({ page }) => {
+    await page.goto('/education');
+    await expect(page.locator('.detail-panel:visible')).toHaveCount(5);
+    await expect(page.locator('.detail-panel h2')).toHaveText([
+      'VWO',
+      'BSc Political Science',
+      'Minor Programming',
+      'Harvard CS50',
+      'CKAD (to be fitted)',
+    ]);
+  });
 });
