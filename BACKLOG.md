@@ -72,7 +72,7 @@ queue.
 
 ### Hardening
 
-- [ ] **QA-64 Certification stamps test fails on webkit-iphone**
+- [x] **QA-64 Certification stamps test fails on webkit-iphone**
   - Seen by PR-63b's agent, 2026-10-04, and it fails on 43466df too (before ClientRouter): `npx playwright test tests/e2e/motion.spec.ts --project=webkit-iphone -g "slam in card order"`. Its first `.stamp` sits below the fold on iPhone 14 (top ≈ 731 px, viewport 664), so it never gets `is-revealed` and the wait times out.
   - Done when: the test passes on all three projects. If the test is wrong, fix the test (for example by scrolling the stamp into view first) without loosening what it asserts. If the reveal is wrong, fix the reveal.
   - Out of scope: the stamp's look.
