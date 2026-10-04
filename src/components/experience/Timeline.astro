@@ -128,11 +128,14 @@ const name = (entry: (typeof entries)[number]) => entry.client ?? entry.employer
 </div>
 
 <script>
+  import { onPage } from '../../router';
   import { SCRUB_ATTR, startScrub } from '../../scrub';
 
-  for (const timeline of document.querySelectorAll<HTMLElement>(`.timeline[${SCRUB_ATTR}]`)) {
-    startScrub(timeline, () => import('../../timeline-motion'));
-  }
+  onPage((signal) => {
+    for (const timeline of document.querySelectorAll<HTMLElement>(`.timeline[${SCRUB_ATTR}]`)) {
+      startScrub(timeline, () => import('../../timeline-motion'), signal);
+    }
+  });
 </script>
 
 <style>

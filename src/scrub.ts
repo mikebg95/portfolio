@@ -18,18 +18,22 @@ export const setScrubState = (element: HTMLElement, state: ScrubState) =>
 
 /**
  * Loads a set piece's module and runs it on `element` — never under reduced motion, where the
- * piece is `done` at once (its final state). A module that fails to load also ends `done`.
+ * piece is `done` at once (its final state). A module that fails to load also ends `done`. The
+ * piece ends its timelines and triggers when `signal` aborts (the page is swapped out).
  */
 export function startScrub(
   element: HTMLElement,
-  load: () => Promise<{ default: (element: HTMLElement) => void }>,
+  load: () => Promise<{ default: (element: HTMLElement, signal?: AbortSignal) => void }>,
+  signal?: AbortSignal,
 ): void {
   if (prefersReducedMotion()) {
     setScrubState(element, 'done');
     return;
   }
   load()
-    .then((piece) => piece.default(element))
+    .then((piece) => {
+      if (!signal?.aborted) piece.default(element, signal);
+    })
     .catch(() => setScrubState(element, 'done'));
 }
 

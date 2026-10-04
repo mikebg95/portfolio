@@ -169,7 +169,21 @@ function pinWithCursor(timeline: HTMLElement, bars: readonly Bar[]) {
   };
 }
 
-export default function animateTimeline(timeline: HTMLElement): void {
+/** Draws `timeline` until `signal` aborts, which ends its tweens, triggers and pin. */
+export default function animateTimeline(timeline: HTMLElement, signal?: AbortSignal): void {
+  const media = gsap.matchMedia();
+  const context = gsap.context(() => drawTimeline(timeline, media));
+  signal?.addEventListener(
+    'abort',
+    () => {
+      media.revert();
+      context.kill();
+    },
+    { once: true },
+  );
+}
+
+function drawTimeline(timeline: HTMLElement, media: gsap.MatchMedia): void {
   const horizontal = window.matchMedia(DESKTOP).matches;
   const bars = [...timeline.querySelectorAll<HTMLElement>('.timeline__entry')]
     .map(readBar)
@@ -231,5 +245,5 @@ export default function animateTimeline(timeline: HTMLElement): void {
     });
   }
 
-  gsap.matchMedia().add(PIN_MEDIA, () => pinWithCursor(timeline, bars));
+  media.add(PIN_MEDIA, () => pinWithCursor(timeline, bars));
 }

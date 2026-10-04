@@ -46,8 +46,9 @@ const { labels, howIWork, aiNote } = (await getLocalized('profile', 'profile', l
 
 <script>
   import { rails } from '../../rail';
+  import { onPage } from '../../router';
 
-  rails();
+  onPage((signal) => rails(document, signal));
 </script>
 
 <style>

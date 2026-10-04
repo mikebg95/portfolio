@@ -113,9 +113,10 @@ function show(element: HTMLElement) {
 /**
  * Reveals every `[data-reveal]` element under `root` once, as it scrolls into view (§M3), and counts
  * up every `[data-count]` one (§M6). Under reduced motion or without IntersectionObserver everything
- * is revealed at once and nothing counts.
+ * is revealed at once and nothing counts. `signal` (src/router.ts `onPage`) stops watching when the
+ * page is swapped out.
  */
-export function reveal(root: ParentNode = document): void {
+export function reveal(root: ParentNode = document, signal?: AbortSignal): void {
   const pending = new Set(
     root.querySelectorAll<HTMLElement>(`:is([data-reveal], [data-count]):not(.${REVEALED_CLASS})`),
   );
@@ -159,5 +160,10 @@ export function reveal(root: ParentNode = document): void {
 
   pending.forEach((element) => observer.observe(element));
   window.addEventListener('scroll', onScroll, { passive: true });
+  signal?.addEventListener('abort', () => {
+    observer.disconnect();
+    window.removeEventListener('scroll', onScroll);
+    cancelAnimationFrame(frame);
+  });
   onScroll();
 }

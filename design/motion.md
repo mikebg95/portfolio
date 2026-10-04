@@ -48,6 +48,8 @@ Other sheets on first load: frame + grid + header (same timing), then their head
 elements in ≤ 1.2 s.
 
 ## M2 — Moving between sheets (View Transitions API, cross-document)
+_Since PR-63b the same transitions run same-document through Astro's ClientRouter (no reload); the
+cross-document opt-in remains for visits without JS._
 `@view-transition { navigation: auto; }`. Named elements: the sheet frame, the header and the title
 block **stay put** (shared names → they morph in place, so the "table" is constant); the active tab's
 ink fill **slides** from the old tab to the new one (shared `view-transition-name: active-tab`).

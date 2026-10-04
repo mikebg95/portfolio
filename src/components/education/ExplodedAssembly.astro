@@ -79,11 +79,14 @@ const fill = (item: number) => `var(--color-${FILLS[item - 1] ?? 'paper'})`;
 </div>
 
 <script>
+  import { onPage } from '../../router';
   import { SCRUB_ATTR, startScrub } from '../../scrub';
 
-  for (const assembly of document.querySelectorAll<HTMLElement>(`.assembly[${SCRUB_ATTR}]`)) {
-    startScrub(assembly, () => import('../../assembly-motion'));
-  }
+  onPage((signal) => {
+    for (const assembly of document.querySelectorAll<HTMLElement>(`.assembly[${SCRUB_ATTR}]`)) {
+      startScrub(assembly, () => import('../../assembly-motion'), signal);
+    }
+  });
 </script>
 
 <style>

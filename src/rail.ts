@@ -25,8 +25,9 @@ export function railIndex(
 /**
  * Wires every `[data-rail]` list: marks the indicator's current bar, and makes the list a tab
  * stop only while it actually scrolls (desktop shows it as a grid, where a stop would be noise).
+ * `signal` (src/router.ts `onPage`) unwires it when the page is swapped out.
  */
-export function rails(root: ParentNode = document): void {
+export function rails(root: ParentNode = document, signal?: AbortSignal): void {
   for (const rail of root.querySelectorAll<HTMLElement>('[data-rail]')) {
     const index = rail.nextElementSibling?.matches('[data-rail-index]')
       ? [...rail.nextElementSibling.children]
@@ -51,8 +52,10 @@ export function rails(root: ParentNode = document): void {
       frame ||= requestAnimationFrame(update);
     };
 
-    rail.addEventListener('scroll', schedule, { passive: true });
-    new ResizeObserver(schedule).observe(rail);
+    rail.addEventListener('scroll', schedule, { passive: true, signal });
+    const resize = new ResizeObserver(schedule);
+    resize.observe(rail);
+    signal?.addEventListener('abort', () => resize.disconnect());
     update();
   }
 }

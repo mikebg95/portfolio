@@ -12,8 +12,9 @@
 
 <script>
   import { crosshair } from '../crosshair';
+  import { onPage } from '../router';
 
-  crosshair();
+  onPage((signal) => crosshair(document, signal));
 </script>
 
 <style>

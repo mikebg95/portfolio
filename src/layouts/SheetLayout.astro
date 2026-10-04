@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from 'astro:transitions';
 import FontPreload from '../components/FontPreload.astro';
 import SheetFrame from '../components/SheetFrame.astro';
 import SheetHeader from '../components/SheetHeader.astro';
@@ -68,8 +69,9 @@ const ogImage = new URL(ogImagePath(lang, path), SITE_URL).href;
         // Storage blocked: no way to tell, so never replay the plotting on every page.
       }
     </script>
-    <!-- design/motion.md §M2: cross-document View Transitions (src/styles/transitions.css). Inline,
-         so the new page has the opt-in when it is revealed even if the stylesheet is still loading
+    <!-- design/motion.md §M2: with JS the router swaps sheets in place (below); without it a
+         cross-document View Transition still plays (src/styles/transitions.css). Inline, so the
+         new page has the opt-in when it is revealed even if the stylesheet is still loading
          (Chromium then drops the transition: "ViewTransition opt-in disabled"). -->
     <style is:inline>
       @media (prefers-reduced-motion: no-preference) {
@@ -102,6 +104,9 @@ const ogImage = new URL(ogImagePath(lang, path), SITE_URL).href;
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={ogImage} />
     <slot name="head" />
+    <!-- PR-63b: sheet changes swap the page in place, never reload it (src/router.ts). Browsers
+         without View Transitions swap with no animation (motion.md §M2 "plain navigation"). -->
+    <ClientRouter fallback="swap" />
     <FontPreload fonts={preloadFonts} />
   </head>
   <body>
@@ -122,9 +127,11 @@ const ogImage = new URL(ogImagePath(lang, path), SITE_URL).href;
 <script>
   import { reveal } from '../motion';
   import { registerServiceWorker } from '../offline';
+  import { onPage, startRouter } from '../router';
   import { markScrolledSwaps } from '../view-transitions';
 
-  reveal();
+  startRouter();
+  onPage((signal) => reveal(document, signal));
   markScrolledSwaps();
   if (import.meta.env.PROD) registerServiceWorker();
 </script>
@@ -153,7 +160,10 @@ const ogImage = new URL(ogImagePath(lang, path), SITE_URL).href;
     transform: none;
   }
 
-  main:focus {
+  /* Focus lands on <main> by the skip link, on its h1 after a sheet change (src/router.ts): both
+     are targets, not controls. */
+  main:focus,
+  main :global(h1[tabindex='-1']:focus) {
     outline: none;
   }
 </style>

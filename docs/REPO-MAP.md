@@ -97,6 +97,9 @@ line.
 ## Sheet chrome
 
 - `src/layouts/SheetLayout.astro` — the page shell: `<html lang>`, theme-init inline script, skip link, `SheetFrame` with `SheetHeader`, `<main id="main" tabindex="-1">` and `TitleBlock`; props `lang`, `title`, `sheet`.
+- `src/router.ts` — ClientRouter glue: `onPage` (per-page init + abort signal), `startRouter` (carries `js`/`data-theme` onto the new `<html>`, `morph`s the persisted header/tab bar/title block, skips the transition under reduced motion, focuses `main h1`); `tests/e2e/router.spec.ts` (no reload, chrome kept, focus, Back scroll, once-per-page scripts).
+- TRAP: a component `<script>` runs once per visit under the router. Symptom: a feature works on the first sheet opened and is dead after a tab click — wire it through `onPage`. Bound inside `onPage` on a persisted header element instead: it fires twice (theme flips back).
+- TRAP: the router replaces `<html>`'s attributes on each swap. Symptom: theme or `js` class lost after a tab click — carry it in `startRouter`'s `astro:before-swap`.
 - `src/components/SheetFrame.astro` — desk, paper + grid, double frame, zone strip 1–8 (desktop only, `aria-hidden`).
 - `src/components/Crosshair.astro` + `src/crosshair.ts` — the §M6 crosshair, `.sheet`'s first child (so `.sheet` is `position: relative`; find the inner frame by `.sheet__inner`, not `firstElementChild`); `tests/e2e/crosshair.spec.ts`.
 - `src/theme.ts` — `THEMES`, `THEME_STORAGE_KEY`, `effectiveTheme`, `otherTheme`; the head script and the theme switch both read them.

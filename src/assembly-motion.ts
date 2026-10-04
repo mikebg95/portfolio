@@ -64,7 +64,13 @@ function readPart(assembly: HTMLElement, plate: HTMLElement): Part {
   };
 }
 
-export default function animateAssembly(assembly: HTMLElement): void {
+/** Runs the explosion on `assembly` until `signal` aborts, which ends its tweens and triggers. */
+export default function animateAssembly(assembly: HTMLElement, signal?: AbortSignal): void {
+  const context = gsap.context(() => explode(assembly));
+  signal?.addEventListener('abort', () => context.kill(), { once: true });
+}
+
+function explode(assembly: HTMLElement): void {
   const axis = assembly.querySelector<HTMLElement>('.assembly__axis');
   const parts = [...assembly.querySelectorAll<HTMLElement>('.plate')].map((plate) =>
     readPart(assembly, plate),

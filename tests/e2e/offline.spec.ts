@@ -58,10 +58,12 @@ for (const lang of ['en', 'nl']) {
     await expect(page.locator('[data-sheet-list] a')).toHaveCount(5);
     await expectNoAxeViolations(page);
 
-    // Its links lead to stored sheets.
+    // Its links lead to stored sheets, swapped in by the router (PR-63b): no reload.
+    await page.evaluate(() => Object.assign(window, { routerMarker: true }));
     await page.locator('[data-sheet-list] a').nth(1).click();
     await expect(page).not.toHaveTitle(copy.seo.offline.title);
     await expect(page.locator('h1')).toHaveCount(1);
+    expect(await page.evaluate(() => 'routerMarker' in window)).toBe(true);
   });
 }
 

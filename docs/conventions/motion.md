@@ -89,14 +89,27 @@ never a second system.
   (transforms only) once per frame. Shown only for `(hover: hover) and (pointer: fine)` without
   reduced motion — enforced in both the script and CSS. Its 45 % is a `color-mix` colour, not
   opacity, so `notInFinalState` needs no exception.
-- **Sheet transitions (§M2):** cross-document View Transitions. The opt-in is the inline `<style>`
-  in SheetLayout's head (never move it into a bundle — docs/RECORD.md 2026-10-04); names and
-  pseudo-element animations live in `src/styles/transitions.css`, the one place a chrome name is
-  given. A name must be unique on every rendered page (`tests/e2e/view-transitions.spec.ts` checks
-  every route); per-item names come from a helper (`projectMorph(slug, part)` in
+- **Sheet transitions (§M2):** Astro's `<ClientRouter fallback="swap" />` (SheetLayout head) swaps
+  each sheet in place as a same-document View Transition — never a reload. The inline
+  `@view-transition` opt-in stays in SheetLayout's head (never move it into a bundle — docs/RECORD.md
+  2026-10-04) so a no-JS visit still gets the cross-document one. Names and pseudo-element
+  animations live in `src/styles/transitions.css`, the one place a chrome name is given; they apply
+  to both kinds. A name must be unique on every rendered page (`tests/e2e/view-transitions.spec.ts`
+  checks every route); per-item names come from a helper (`projectMorph(slug, part)` in
   src/view-transitions.ts) and carry a `view-transition-class` so one rule animates them all. The
   names also join any same-document transition, so one marks `<html>` while it runs and clears
-  the names under that mark — as the theme switch does.
+  the names under that mark — as the theme switch does. Reduced motion: `startRouter` skips the
+  transition (instant swap).
+- **Page scripts under the router (src/router.ts):** a component `<script>` runs ONCE per visit, not
+  per page. Anything that wires a page's markup goes through `onPage((signal) => …)`: it runs now
+  and after every swap, once per page; give `signal` to every listener on `window`/`document`,
+  observer, GSAP context/matchMedia (`startScrub(el, load, signal)` passes it to the piece) so they
+  end with the page. Listeners for an element inside the persisted chrome (header, tab bar, title
+  block — `transition:persist`) are bound once, delegated on `document` (the theme switch), never
+  in `onPage`, or they double. `<html>`'s attributes are replaced on every swap: `startRouter`
+  carries `js` and `data-theme`; anything else a script sets on `<html>` is lost (`first-view`
+  on purpose). The persisted chrome is brought up to date by `morph` (attributes/text in place);
+  a class a script adds to it for state survives only if it is in `KEPT_CLASSES`.
 - **Theme switch (§M7):** `revealTheme(update, button)` (src/view-transitions.ts) runs the swap as
   a same-document transition with `html[data-theme-switching]` set: every name is dropped (one
   picture) and `::view-transition-new(root)` grows a `clip-path` circle from `--theme-x/-y` to

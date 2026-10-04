@@ -429,6 +429,8 @@ const folds = [
 </style>
 
 <script>
+  import { onPage } from '../../router';
+
   // The phone cards' READ MORE: opens or closes its card in place; a link to a card (the
   // Overview's `#optiecon`) arrives with it open.
   const OPEN = 'experience-detail--open';
@@ -438,21 +440,24 @@ const folds = [
     button.closest('.experience-detail')?.classList.toggle(OPEN, open);
   };
 
-  const toggles = document.querySelectorAll<HTMLButtonElement>('.experience-detail__toggle');
-  for (const button of toggles) {
-    button.addEventListener('click', () =>
-      setOpen(button, button.getAttribute('aria-expanded') !== 'true'),
-    );
-  }
+  onPage((signal) => {
+    const toggles = document.querySelectorAll<HTMLButtonElement>('.experience-detail__toggle');
+    if (toggles.length === 0) return;
+    for (const button of toggles) {
+      button.addEventListener('click', () =>
+        setOpen(button, button.getAttribute('aria-expanded') !== 'true'),
+      );
+    }
 
-  const openTarget = () => {
-    const id = decodeURIComponent(location.hash.slice(1));
-    const target = id ? document.getElementById(id) : null;
-    const button = target?.querySelector<HTMLButtonElement>(
-      ':scope > .experience-detail__body > .experience-detail__toggle',
-    );
-    if (button) setOpen(button, true);
-  };
-  openTarget();
-  window.addEventListener('hashchange', openTarget);
+    const openTarget = () => {
+      const id = decodeURIComponent(location.hash.slice(1));
+      const target = id ? document.getElementById(id) : null;
+      const button = target?.querySelector<HTMLButtonElement>(
+        ':scope > .experience-detail__body > .experience-detail__toggle',
+      );
+      if (button) setOpen(button, true);
+    };
+    openTarget();
+    window.addEventListener('hashchange', openTarget, { signal });
+  });
 </script>

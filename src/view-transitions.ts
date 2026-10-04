@@ -1,4 +1,5 @@
-// design/motion.md §M2: moving between sheets with cross-document View Transitions; §M7: the
+// design/motion.md §M2: moving between sheets with View Transitions (Astro's ClientRouter, a
+// cross-document one where the router does not run); §M7: the
 // theme switch's circular reveal. The chrome's names and the animations are
 // src/styles/transitions.css; this holds what markup and the page scripts need.
 import { prefersReducedMotion } from './motion';
@@ -17,17 +18,20 @@ export function projectMorph(slug: string, part: 'title' | 'figure'): string {
   return `view-transition-name: project-${part}-${slug}; view-transition-class: ${PROJECT_MORPH_CLASS};`;
 }
 
-/** Marks a page leaving scrolled (see `SWAP_ATTRIBUTE`), and clears the mark when the page comes
- * back from the back/forward cache. */
+/** Marks a page leaving scrolled (see `SWAP_ATTRIBUTE`). Under the router (src/router.ts) the mark
+ * is set before the old picture is taken and the swap drops it with the old page's root
+ * attributes; a plain cross-document navigation (no JS run by the router) marks in `pageswap`, and
+ * a page back from the back/forward cache clears it. */
 export function markScrolledSwaps(): void {
+  const root = document.documentElement;
+  document.addEventListener('astro:after-preparation', () => {
+    if (window.scrollY > 0) root.setAttribute(SWAP_ATTRIBUTE, 'scrolled');
+  });
+  document.addEventListener('astro:page-load', () => root.removeAttribute(SWAP_ATTRIBUTE));
   window.addEventListener('pageswap', (event) => {
-    if (event.viewTransition && window.scrollY > 0) {
-      document.documentElement.setAttribute(SWAP_ATTRIBUTE, 'scrolled');
-    }
+    if (event.viewTransition && window.scrollY > 0) root.setAttribute(SWAP_ATTRIBUTE, 'scrolled');
   });
-  window.addEventListener('pageshow', () => {
-    document.documentElement.removeAttribute(SWAP_ATTRIBUTE);
-  });
+  window.addEventListener('pageshow', () => root.removeAttribute(SWAP_ATTRIBUTE));
 }
 
 /** On `<html>` while the theme reveal runs: transitions.css then captures the page as one picture

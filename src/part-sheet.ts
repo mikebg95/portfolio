@@ -42,6 +42,8 @@ interface Options {
   items: readonly number[];
   /** What should stay in view above the sheet for a part (its plate). */
   keep?: (item: number) => Element | null;
+  /** Aborts when the page is swapped out (src/router.ts `onPage`). */
+  signal?: AbortSignal;
 }
 
 export interface PartSheet {
@@ -56,7 +58,15 @@ export interface PartSheet {
 export const scrollToKeep = (top: number, height: number, room: number) =>
   Math.round(top + height / 2 - room / 2);
 
-export function partSheet({ dialog, content, step, name, items, keep }: Options): PartSheet {
+export function partSheet({
+  dialog,
+  content,
+  step,
+  name,
+  items,
+  keep,
+  signal,
+}: Options): PartSheet {
   const home = content.parentElement;
   const anchor = content.nextSibling;
   const body = dialog.querySelector<HTMLElement>('[data-sheet-body]');
@@ -225,9 +235,13 @@ export function partSheet({ dialog, content, step, name, items, keep }: Options)
   head?.addEventListener('pointercancel', release);
 
   // Grown past the phone breakpoint while open: the details belong inline again.
-  matchMedia(PHONE_QUERY).addEventListener('change', (event) => {
-    if (!event.matches && dialog.open) dialog.close();
-  });
+  matchMedia(PHONE_QUERY).addEventListener(
+    'change',
+    (event) => {
+      if (!event.matches && dialog.open) dialog.close();
+    },
+    { signal },
+  );
 
   return {
     open,

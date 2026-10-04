@@ -19,7 +19,7 @@ const ui = await t(lang);
 const pad = (n: number) => String(n).padStart(2, '0');
 ---
 
-<nav class="tab-bar" aria-label={ui.tabBar.label}>
+<nav class="tab-bar" aria-label={ui.tabBar.label} transition:persist="tab-bar">
   <span class="tab-bar__ground" aria-hidden="true"></span>
   {SHEETS.map(({ key, number, path }) => (
     <a

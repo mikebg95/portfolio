@@ -71,13 +71,15 @@ const partName = (part: (typeof parts)[number]) =>
 <script>
   import { partFromHash, partHash } from '../../assembly';
   import { PHONE_QUERY, partSheet } from '../../part-sheet';
+  import { onPage } from '../../router';
 
   // SPEC §4.6 / motion.md §M5: a plate, balloon or parts-list row selects its part. Every control
   // carrying `data-part` follows the selection; the URL hash `#part-n` records it and is read on
   // load. Until the first selection the sheet stays as drawn (part 3, nothing dimmed). On a phone
   // a selection (or a #part-n link) also opens the detail in the bottom sheet (PR-62d).
-  const root = document.querySelector<HTMLElement>('[data-education]');
-  if (root) {
+  onPage((signal) => {
+    const root = document.querySelector<HTMLElement>('[data-education]');
+    if (!root) return;
     const assembly = root.querySelector<HTMLElement>('.assembly');
     const panels = [...root.querySelectorAll<HTMLElement>('.detail-panel')];
     const items = panels.map((panel) => Number(panel.dataset.part));
@@ -132,6 +134,7 @@ const partName = (part: (typeof parts)[number]) =>
             name: (item) => names.get(item) ?? '',
             items,
             keep: (item) => root.querySelector(`.plate[data-part="${item}"]`),
+            signal,
           })
         : undefined;
 
@@ -163,9 +166,9 @@ const partName = (part: (typeof parts)[number]) =>
       if (phone.matches) sheet?.open(item, root.querySelector(`.plate[data-part="${item}"]`));
     };
     fromHash();
-    addEventListener('hashchange', fromHash);
+    addEventListener('hashchange', fromHash, { signal });
     requestAnimationFrame(() => assembly?.setAttribute('data-ready', ''));
-  }
+  });
 </script>
 
 <style>

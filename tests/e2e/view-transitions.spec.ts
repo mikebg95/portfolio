@@ -2,89 +2,74 @@ import { expect, test, type Page } from '@playwright/test';
 
 import { ROUTES } from './helpers/routes';
 
-// design/motion.md §M2: moving between sheets is a cross-document View Transition — the frame,
-// header and title block stay put, the active tab's fill slides, the content leaves up (180 ms)
-// and enters from below (320 ms), a project card's title and diagram morph into the detail sheet.
-// Chromium only: the assertions read Chromium's transition pseudo-elements; desktop only: the
-// header tabs show from 768 px.
+// design/motion.md §M2: moving between sheets is a View Transition, run by Astro's ClientRouter as
+// a same-document one (PR-63b) — the frame, header and title block stay put, the active tab's fill
+// slides, the content leaves up (180 ms) and enters from below (320 ms), a project card's title
+// and diagram morph into the detail sheet. Chromium only: the assertions read Chromium's
+// transition pseudo-elements; desktop only: the header tabs show from 768 px.
 test.use({ reducedMotion: 'no-preference' });
 
 test.beforeEach(({ browserName }, testInfo) => {
-  test.skip(browserName !== 'chromium', 'Chromium runs cross-document View Transitions');
+  test.skip(browserName !== 'chromium', 'Chromium runs the View Transitions read here');
   test.skip(testInfo.project.name !== 'chromium-desktop', 'the header tabs show from 768 px');
 });
 
-const SWAP_KEY = 'e2e-view-transition-swap';
-
 interface Recorded {
-  /** The old page's `pageswap` carried a transition (it opted in and Chromium started one). */
-  swapped: string | null;
-  /** This page's `pagereveal` carried one. */
+  /** The swap ran as a transition (false: skipped, or none started). */
   transition: boolean | null;
   finished: boolean;
   animations: { pseudo: string; name: string; duration: number }[];
 }
 
-/** Records, on every page the context opens, whether it left and arrived with a View Transition and
- * the transition's pseudo-element animations. */
+/** Records every swap the router makes on the page: whether it ran as a View Transition and the
+ * transition's pseudo-element animations. */
 async function record(page: Page) {
-  await page.addInitScript((key) => {
-    const recorded: Recorded = {
-      swapped: sessionStorage.getItem(key),
-      transition: null,
-      finished: false,
-      animations: [],
-    };
-    sessionStorage.removeItem(key);
-    Object.assign(window, { recorded });
-    window.addEventListener('pageswap', (event) => {
-      sessionStorage.setItem(key, String(Boolean(event.viewTransition)));
-    });
-    window.addEventListener('pagereveal', (event) => {
+  await page.addInitScript(() => {
+    const swaps: Recorded[] = [];
+    Object.assign(window, { swaps });
+    document.addEventListener('astro:before-swap', (event) => {
+      const recorded: Recorded = { transition: null, finished: false, animations: [] };
+      swaps.push(recorded);
       const transition = event.viewTransition;
-      recorded.transition = Boolean(transition);
-      void transition?.ready.then(() => {
-        recorded.animations = document.getAnimations().flatMap((animation) => {
-          const effect = animation.effect as KeyframeEffect | null;
-          const pseudo = effect?.pseudoElement ?? '';
-          return pseudo.startsWith('::view-transition')
-            ? [
-                {
-                  pseudo,
-                  name: (animation as CSSAnimation).animationName,
-                  duration: Number(effect?.getTiming().duration),
-                },
-              ]
-            : [];
-        });
-      });
-      void transition?.finished.then(() => (recorded.finished = true));
+      void transition.ready.then(
+        () => {
+          recorded.transition = true;
+          recorded.animations = document.getAnimations().flatMap((animation) => {
+            const effect = animation.effect as KeyframeEffect | null;
+            const pseudo = effect?.pseudoElement ?? '';
+            return pseudo.startsWith('::view-transition')
+              ? [
+                  {
+                    pseudo,
+                    name: (animation as CSSAnimation).animationName,
+                    duration: Number(effect?.getTiming().duration),
+                  },
+                ]
+              : [];
+          });
+        },
+        () => (recorded.transition = false),
+      );
+      void transition.finished.finally(() => (recorded.finished = true));
     });
-  }, SWAP_KEY);
-}
-
-/** What the page now showing recorded; waits for its transition to end if it had one. */
-async function recorded(page: Page): Promise<Recorded> {
-  await page.waitForFunction(() => {
-    const r = (window as unknown as { recorded?: Recorded }).recorded;
-    return r && r.transition !== null && (!r.transition || r.finished);
   });
-  return page.evaluate(() => (window as unknown as { recorded: Recorded }).recorded);
 }
 
-/** Opens `from`, does `act` (which navigates) and returns what the new page recorded; the old page
- * must have started a transition. */
+const swapCount = (page: Page) =>
+  page.evaluate(() => (window as unknown as { swaps: Recorded[] }).swaps.length);
+
+/** Opens `from`, does `act` (which navigates) and returns what the swap recorded, once its
+ * transition has ended. */
 async function navigate(page: Page, from: string, act: (page: Page) => Promise<void>) {
-  // Already there: a goto would be a reload, which Chromium logs as an aborted transition.
   if (new URL(page.url()).pathname !== from) await page.goto(from);
-  // A click before the page's own reveal starts no transition.
-  await recorded(page);
-  const url = page.url();
+  const before = await swapCount(page);
   await act(page);
-  await page.waitForURL((next) => next.href !== url);
-  const r = await recorded(page);
-  expect(r.swapped, `${from} → ${page.url()}`).toBe('true');
-  return r;
+  await page.waitForFunction((n) => {
+    const swaps = (window as unknown as { swaps: Recorded[] }).swaps;
+    const r = swaps[n];
+    return r && r.transition !== null && r.finished;
+  }, before);
+  return page.evaluate((n) => (window as unknown as { swaps: Recorded[] }).swaps[n]!, before);
 }
 
 /** Console errors and uncaught exceptions for the whole test. */
@@ -102,6 +87,7 @@ const animation = (r: Recorded, pseudo: string) => r.animations.find((a) => a.ps
 const tab = (name: string) => (page: Page) =>
   page.locator('header nav .sheet-tab', { hasText: name }).click();
 
+// Without JS the router does not run: the inline opt-in still gives a cross-document transition.
 test('every page opts in to cross-document transitions under no-preference only', async ({
   page,
 }) => {
@@ -249,12 +235,8 @@ test.describe('reduced motion', () => {
   test('navigation has no transition', async ({ page }) => {
     const errors = collectErrors(page);
     await record(page);
-    await page.goto('/');
-    await recorded(page);
-    await tab('Experience')(page);
+    const r = await navigate(page, '/', tab('Experience'));
     await expect(page).toHaveURL(/\/experience$/);
-    const r = await recorded(page);
-    expect(r.swapped).toBe('false');
     expect(r.transition).toBe(false);
     expect(errors).toEqual([]);
   });

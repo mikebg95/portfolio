@@ -673,3 +673,22 @@ blocks service workers for every spec but `tests/e2e/offline.spec.ts`, or each f
 download the whole precache and answer requests `page.route` cannot see. The offline sheet reuses
 the 404 sheet's layout (`NotFoundSheet kind="offline"`); its copy is new (copy.md "Offline").
 Instead of: Workbox (a dependency for ~100 lines); precaching the demo (2.5 MB of a 3 MB budget).
+
+## 2026-10-04 — Sheet changes through ClientRouter: persisted chrome brought up to date in place
+Who: agent (PR-63b). Michael asked that moving between sheets stop feeling like a refresh.
+Choices: `<ClientRouter fallback="swap" />` — a browser without View Transitions swaps with no
+animation (§M2 "plain navigation"), not Astro's `animate` fallback, which only knows its own
+`transition:animate` styles. The header, tab bar and title block carry `transition:persist`, but
+each page renders them differently (current tab and its fill, language links, sheet number, other
+language), so on `astro:before-swap` `morph` (src/router.ts) updates the kept element from the new
+page's twin — attributes and text in place, fresh children only where the shape differs. A title
+block already revealed keeps `is-revealed`, so its counts no longer replay on every sheet. Reduced
+motion skips the transition rather than relying on Astro's CSS. The inline `@view-transition`
+opt-in is kept for no-JS visits; the scrolled-page mark moved to `astro:after-preparation` (set
+before the old picture is taken; the swap drops it with the old root attributes). Focus moves to
+`main h1` (tabindex −1, no ring) after every swap; the title is announced by Astro's own live
+region. Page scripts re-run through `onPage`, with an AbortSignal that ends window listeners,
+observers and the GSAP contexts of the old page. Instead of: not persisting (the chrome would be
+re-created each swap; the brief asked for persist); a generic DOM-diff library (a 30-line morph
+covers three small trees).
+

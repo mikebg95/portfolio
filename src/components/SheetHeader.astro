@@ -32,7 +32,7 @@ const langLinks = LANGS.map((code) => ({
 const otherLang = LANGS.find((code) => code !== lang) ?? lang;
 ---
 
-<header class="sheet-header">
+<header class="sheet-header" transition:persist="sheet-header">
   <a class="sheet-header__mark" href={localize(lang, '/')}>
     <span class="sheet-header__monogram">{ui.monogram.initials}</span>
     <span class="sheet-header__set">
@@ -132,22 +132,23 @@ const otherLang = LANGS.find((code) => code !== lang) ?? lang;
 
   // SPEC §3.3: every theme button flips paper ↔ blueprint and remembers
   // the choice; until then the theme follows the system (tokens.css), as the head script left it.
-  // motion.md §M7: the new theme washes in as a circle growing from the button.
+  // motion.md §M7: the new theme washes in as a circle growing from the button. Listened for once,
+  // on the document: the header persists across sheet changes (src/router.ts).
   const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
-  for (const button of document.querySelectorAll('[data-theme-switch]')) {
-    button.addEventListener('click', () => {
-      const root = document.documentElement;
-      const next = otherTheme(effectiveTheme(root.dataset.theme, systemDark.matches));
-      revealTheme(() => {
-        root.dataset.theme = next;
-      }, button);
-      try {
-        localStorage.setItem(THEME_STORAGE_KEY, next);
-      } catch {
-        // Storage blocked: the choice holds for this page only.
-      }
-    });
-  }
+  document.addEventListener('click', (event) => {
+    const button = event.target instanceof Element && event.target.closest('[data-theme-switch]');
+    if (!button) return;
+    const root = document.documentElement;
+    const next = otherTheme(effectiveTheme(root.dataset.theme, systemDark.matches));
+    revealTheme(() => {
+      root.dataset.theme = next;
+    }, button);
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, next);
+    } catch {
+      // Storage blocked: the choice holds for this visit only.
+    }
+  });
 </script>
 
 <style>

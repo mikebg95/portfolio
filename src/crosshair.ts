@@ -19,9 +19,10 @@ export function formatReadout(x: number, y: number): string {
 
 /**
  * Wires every `[data-crosshair]` overlay to the sheet it sits in (its offset parent). The overlay
- * is shown only while the pointer is over the sheet; moves are throttled to one per frame.
+ * is shown only while the pointer is over the sheet; moves are throttled to one per frame. `signal`
+ * (src/router.ts `onPage`) unwires it when the page is swapped out.
  */
-export function crosshair(root: ParentNode = document): void {
+export function crosshair(root: ParentNode = document, signal?: AbortSignal): void {
   const fine = window.matchMedia(CROSSHAIR_MEDIA);
   for (const overlay of root.querySelectorAll<HTMLElement>('[data-crosshair]')) {
     const sheet = overlay.parentElement;
@@ -50,15 +51,23 @@ export function crosshair(root: ParentNode = document): void {
       frame ||= requestAnimationFrame(draw);
     };
 
-    sheet.addEventListener('pointermove', (event) => {
-      pointer = { x: event.clientX, y: event.clientY };
-      schedule();
-    });
-    sheet.addEventListener('pointerleave', () => {
-      pointer = null;
-      schedule();
-    });
+    sheet.addEventListener(
+      'pointermove',
+      (event) => {
+        pointer = { x: event.clientX, y: event.clientY };
+        schedule();
+      },
+      { signal },
+    );
+    sheet.addEventListener(
+      'pointerleave',
+      () => {
+        pointer = null;
+        schedule();
+      },
+      { signal },
+    );
     // The sheet scrolls under a still pointer: its sheet coordinates change.
-    window.addEventListener('scroll', () => pointer && schedule(), { passive: true });
+    window.addEventListener('scroll', () => pointer && schedule(), { passive: true, signal });
   }
 }
