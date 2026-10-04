@@ -80,13 +80,6 @@ queue.
 
 ### QA walk, 2026-10-05
 
-- [x] **QA-68 /experience#<entry> (desktop) — arriving from another page lands the entry under the pinned timeline**
-  - Route: `/experience#optiecon` (also `#dji`, and `/nl/experience#optiecon`), desktop 1440 × 900, Chromium, motion on.
-  - Did: on `/`, clicked the "In progress" link "OptieCon — security and sign-in, at Conspect →" (`href="/experience#optiecon"`); separately typed `/experience#optiecon` and `/experience#dji` in the address bar. Waited 2.5 s.
-  - Happened: the page scrolls the article to the top of the viewport (heading "OPTIECON — FULL-STACK JAVA ENGINEER" at y ≈ 40), and the pinned timeline is drawn over it — `document.elementFromPoint` at the heading returns an element inside `.timeline`; the screen shows the timeline, then 02.1b Sabbatical and 02.1c DJI, never the OptieCon entry the link promised. `--timeline-pinned` is 270px by then, but it is set by `src/timeline-motion.ts` (lazy GSAP) after the browser has already done the initial hash scroll, so the article's `scroll-margin-top` is still 0 at that moment. Clicking the OptieCon bar on the page itself lands it clear (heading at y ≈ 310), so only arrivals with a hash are wrong.
-  - Should: an arrival with a hash shows that entry's heading below the pinned timeline, exactly as the on-page bar link does.
-  - Done when: an e2e test in `tests/e2e/experience.spec.ts` (chromium-desktop, motion on) opens `/experience#optiecon` directly and also via the Overview "In progress" link, and asserts the `#optiecon` heading is in the viewport and not covered by `.timeline` (`elementFromPoint` at its box is inside `#optiecon`); `/experience#dji` the same; the phone behaviour of `experience-phone.spec.ts` (hash opens the card) is unchanged.
-
 - [ ] **QA-69 /education (< 768 px, mouse) — clicking the part sheet's handle does not close the sheet**
   - Route: `/education` (and `/nl/education`) at a width under 768 px with a mouse pointer — e.g. a desktop browser window 390 or 700 px wide; Chromium and WebKit both.
   - Did: Playwright context `{ viewport: { width: 390, height: 844 } }` (no touch), waited 3 s, clicked the parts-list row button `.parts-list__select[data-part="3"]` (the bottom sheet opens), then clicked the handle `[data-sheet-close]` ("Close") with the mouse and waited 1.2 s.

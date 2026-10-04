@@ -874,3 +874,17 @@ History, not a queue.
   - Happened: `archivo-latin-wdth-normal.woff2` and `ibm-plex-sans-latin-400-normal.woff2` are each requested twice — once by the `<link rel="preload" … crossorigin>` in mode `cors`, then again by the `@font-face` in mode `no-cors` (WebKit fetches same-origin fonts without CORS, so the preload is not matched). The console then shows two warnings: "The resource http://localhost:4321/fonts/archivo-latin-wdth-normal.woff2 was preloaded using link preload but not used within a few seconds from the window's load event" and the same for `ibm-plex-sans-latin-400-normal.woff2`. Chromium (Pixel 7, desktop) requests each face once with no warning.
   - Should: every visitor's browser, Safari included, uses the preloaded file — each preloaded face is fetched once, and the console is clean.
   - Done when: in Playwright WebKit (webkit-iphone project) and in Chromium, `/` and `/experience` request each preloaded face exactly once and log no "preloaded … but not used" warning, asserted by an e2e test (e.g. in `tests/e2e/performance.spec.ts`) that runs on both engines; if no markup serves both engines, the measurement and the chosen trade-off are in `docs/RECORD.md` and the test asserts the chosen behaviour.
+
+
+## Pruned from the queue
+
+1 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### QA walk, 2026-10-05
+
+- [x] **QA-68 /experience#<entry> (desktop) — arriving from another page lands the entry under the pinned timeline**
+  - Route: `/experience#optiecon` (also `#dji`, and `/nl/experience#optiecon`), desktop 1440 × 900, Chromium, motion on.
+  - Did: on `/`, clicked the "In progress" link "OptieCon — security and sign-in, at Conspect →" (`href="/experience#optiecon"`); separately typed `/experience#optiecon` and `/experience#dji` in the address bar. Waited 2.5 s.
+  - Happened: the page scrolls the article to the top of the viewport (heading "OPTIECON — FULL-STACK JAVA ENGINEER" at y ≈ 40), and the pinned timeline is drawn over it — `document.elementFromPoint` at the heading returns an element inside `.timeline`; the screen shows the timeline, then 02.1b Sabbatical and 02.1c DJI, never the OptieCon entry the link promised. `--timeline-pinned` is 270px by then, but it is set by `src/timeline-motion.ts` (lazy GSAP) after the browser has already done the initial hash scroll, so the article's `scroll-margin-top` is still 0 at that moment. Clicking the OptieCon bar on the page itself lands it clear (heading at y ≈ 310), so only arrivals with a hash are wrong.
+  - Should: an arrival with a hash shows that entry's heading below the pinned timeline, exactly as the on-page bar link does.
+  - Done when: an e2e test in `tests/e2e/experience.spec.ts` (chromium-desktop, motion on) opens `/experience#optiecon` directly and also via the Overview "In progress" link, and asserts the `#optiecon` heading is in the viewport and not covered by `.timeline` (`elementFromPoint` at its box is inside `#optiecon`); `/experience#dji` the same; the phone behaviour of `experience-phone.spec.ts` (hash opens the card) is unchanged.
