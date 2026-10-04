@@ -724,3 +724,15 @@ History, not a queue.
   - Done when, below 768 px: the exploded assembly scaled to the screen; tapping a part opens a **bottom sheet** (drag handle, swipe down to close, ‹ › to step parts, focus-trapped, Escape closes) with the detail; parts list below; without JS the detail degrades to inline details; reduced motion; screenshots both themes; e2e for bottom sheet open/step/close. Note: the tab bar (z-index 4, fixed) must sit under the sheet's backdrop.
   - Spec: design/screens education 390, design/components.md, design/motion.md
   - Out of scope: desktop layout.
+
+
+## Pruned from the queue
+
+1 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### Hardening
+
+- [x] **PR-62e Phone Projects and Certifications card language** (rest of PR-62, items 6–7)
+  - Done when, below 768 px: Projects and Certifications (and project details) use the same card language as the new phone drawings (full-width cards, title-block strips) without new drawings; 44 px+ targets everywhere, no horizontal page scroll at 320 px; Playwright phone screenshots of EVERY page in both themes saved to `.e2e/` and compared by eye against the drawings.
+  - Spec: design/screens (390 drawings), design/components.md
+  - Out of scope: desktop layout.

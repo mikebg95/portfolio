@@ -72,11 +72,6 @@ queue.
 
 ### Hardening
 
-- [x] **PR-62e Phone Projects and Certifications card language** (rest of PR-62, items 6–7)
-  - Done when, below 768 px: Projects and Certifications (and project details) use the same card language as the new phone drawings (full-width cards, title-block strips) without new drawings; 44 px+ targets everywhere, no horizontal page scroll at 320 px; Playwright phone screenshots of EVERY page in both themes saved to `.e2e/` and compared by eye against the drawings.
-  - Spec: design/screens (390 drawings), design/components.md
-  - Out of scope: desktop layout.
-
 - [ ] **PR-63 App-like navigation, preloading and offline**
   - Michael, 2026-10-04: *"when i click to other parts of the app it seems to do a refresh … when my internet is slow that means it will take really long … without internet it will just crash?!"* Keep static per-page HTML (fast first load, SEO, works without JS) and add:
   - Done when: (1) Astro's `<ClientRouter />` (view transitions router) on every page so sheet changes swap content without a full reload, keeping the header/tab bar/title block persistent (`transition:persist`), the motion system's per-page init re-runs on `astro:page-load` (no double-binding; the first-load plotting still runs once per session), scroll restores correctly, focus moves to the new `<main>` h1 and the route change is announced; (2) prefetch: all sheet links prefetched on viewport (`prefetch: { prefetchAll: true, defaultStrategy: 'viewport' }`), project detail pages on hover/tap; (3) **offline**: a small hand-written service worker (no Workbox dependency needed) precaches every built HTML page, CSS, JS, font, icon and the CV PDF at install (manifest generated at build from `dist/` with content hashes; total size logged and asserted < 3 MB), serves cache-first for hashed assets and stale-while-revalidate for HTML, cleans old caches on activate, and serves a drawn "SHEET OFFLINE" page for anything uncached; registered only in production; (4) tests: Playwright navigates between sheets and asserts no full document reload (a window marker survives), then goes offline (`context.setOffline(true)`) after the first load and asserts every sheet and project page still opens; reduced motion and no-JS still work; Lighthouse PWA/perf budgets still pass.
