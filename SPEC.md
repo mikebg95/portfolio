@@ -91,7 +91,8 @@ commit it. No invented numbers, clients, dates, users or results. Test counts: 6
 Jamigos hosting is retired: never show a live-demo link.
 
 ### 3.8 SEO and sharing
-Per page: `<title>` ("Experience — Michael Goldman, Java software engineer"), meta description,
+Per page: `<title>` ("Michael Goldman — Portfolio" on Sheet 01, "Experience · Michael Goldman —
+Portfolio" elsewhere), favicon set (the MG monogram cell), meta description,
 canonical URL, `hreflang` en/nl alternates, Open Graph + Twitter card with a generated 1200×630 image
 per sheet (a mini sheet with the sheet title, rendered at build time). `sitemap.xml`, `robots.txt`.
 JSON-LD `Person` on `/` (name, jobTitle, url, sameAs LinkedIn + GitHub; no phone, no address beyond

@@ -3,13 +3,20 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { expect, test } from '@playwright/test';
 import { load } from 'js-yaml';
 
-import { PERSON_ADDRESS, PRIMITIVES_PATH, SITE_URL, SITEMAP_PATH } from '../../src/config';
+import {
+  ICONS,
+  PERSON_ADDRESS,
+  PRIMITIVES_PATH,
+  SITE_SHORT_NAME,
+  SITE_URL,
+  SITEMAP_PATH,
+} from '../../src/config';
 import { OG_HEIGHT, OG_WIDTH, ogImagePath } from '../../src/og';
 
 // PR-37, SPEC §3.8: every built page's head — title and description (EN from design/copy.md's SEO
 // table, NL from the content), canonical, hreflang en/nl/x-default, Open Graph text — plus the
 // sitemap, robots.txt and the JSON-LD Person on Sheet 01. PR-38: every built page's Open Graph
-// image exists and is 1200×630. The head is the same at every viewport,
+// image exists and is 1200×630. PR-58: the tab title and the MG icon set. The head is the same at every viewport,
 // so this runs in one project.
 test.skip(({ browserName, isMobile }) => browserName !== 'chromium' || isMobile, 'head only');
 
@@ -212,4 +219,70 @@ test('every built page has an Open Graph image: an existing 1200×630 PNG', asyn
       height: OG_HEIGHT,
     });
   }
+});
+
+// PR-58, Michael 2026-10-04: the tab reads "Michael Goldman — Portfolio" on Sheet 01, and
+// "<Page> · Michael Goldman — Portfolio" everywhere else, in both languages.
+const SITE_TITLE = 'Michael Goldman — Portfolio';
+
+test('every built page has the portfolio tab title', async ({ request }) => {
+  for (const page of builtPages()) {
+    const html = await (await request.get(page)).text();
+    const title = /<title>([^<]*)<\/title>/.exec(html)?.[1];
+    if (page === '/' || page === '/nl') expect(title, page).toBe(SITE_TITLE);
+    else expect(title, page).toMatch(new RegExp(`^[^·]+ · ${SITE_TITLE}$`));
+  }
+});
+
+const pngSize = (png: Buffer) => ({ width: png.readUInt32BE(16), height: png.readUInt32BE(20) });
+
+test('the head links the MG icon set, and every icon exists at its size', async ({
+  page,
+  request,
+}) => {
+  await page.goto('/experience');
+  const head = page.locator('head');
+  await expect(head.locator('link[rel="icon"][type="image/svg+xml"]')).toHaveAttribute(
+    'href',
+    ICONS.svg,
+  );
+  await expect(head.locator('link[rel="icon"][sizes="32x32"]')).toHaveAttribute('href', ICONS.ico);
+  await expect(head.locator('link[rel="apple-touch-icon"]')).toHaveAttribute(
+    'href',
+    ICONS.appleTouch,
+  );
+  await expect(head.locator('link[rel="manifest"]')).toHaveAttribute('href', ICONS.manifest);
+
+  const get = async (path: string) => {
+    const response = await request.get(path);
+    expect(response.status(), path).toBe(200);
+    return response.body();
+  };
+  const svg = (await get(ICONS.svg)).toString();
+  expect(svg).toMatch(/^<svg [^>]*viewBox="0 0 32 32"/);
+  expect(svg).toContain('prefers-color-scheme:dark');
+
+  const ico = await get(ICONS.ico);
+  expect(ico.readUInt16LE(4)).toBe(3);
+  const entries = [0, 1, 2].map((i) => [ico[6 + 16 * i], ico[7 + 16 * i]]);
+  expect(entries).toEqual([
+    [16, 16],
+    [32, 32],
+    [48, 48],
+  ]);
+
+  for (const [path, px] of [
+    [ICONS.appleTouch, 180],
+    [ICONS.any, 512],
+    [ICONS.maskable, 512],
+  ] as const) {
+    expect(pngSize(await get(path)), path).toEqual({ width: px, height: px });
+  }
+
+  const manifest = JSON.parse((await get(ICONS.manifest)).toString());
+  expect(manifest).toMatchObject({ name: SITE_TITLE, short_name: SITE_SHORT_NAME });
+  expect(manifest.icons.map((i: { src: string; purpose: string }) => [i.src, i.purpose])).toEqual([
+    [ICONS.any, 'any'],
+    [ICONS.maskable, 'maskable'],
+  ]);
 });

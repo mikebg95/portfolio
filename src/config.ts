@@ -28,5 +28,16 @@ export const SITEMAP_PATH = '/sitemap.xml';
 /** Open Graph images (SPEC §3.8): one PNG per page and language, rendered by `src/pages/og/`. */
 export const OG_IMAGE_DIR = '/og';
 
-/** The site icon, rendered by `src/pages/favicon.svg.ts` from the design tokens. */
-export const FAVICON_PATH = '/favicon.svg';
+/** The site icons and the web app manifest, rendered from one source (`src/favicon.ts`) by the
+ * endpoints of the same names in `src/pages/`; SheetLayout links them. */
+export const ICONS = {
+  svg: '/favicon.svg',
+  ico: '/favicon.ico',
+  appleTouch: '/apple-touch-icon.png',
+  any: '/icon-512.png',
+  maskable: '/icon-512-maskable.png',
+  manifest: '/site.webmanifest',
+} as const;
+
+/** The manifest's `short_name` (a home-screen label); its `name` is the EN Sheet 01 title. */
+export const SITE_SHORT_NAME = 'M. Goldman';

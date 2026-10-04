@@ -66,7 +66,7 @@ test('the Dutch sheet is written in Dutch', async ({ page }) => {
   );
   await expect(page.locator('#main')).toContainText('Ik ontwerp het systeem voordat ik het bouw');
   await expect(page.getByRole('link', { name: 'BEKIJK PROJECTEN →' })).toBeVisible();
-  await expect(page).toHaveTitle('Michael Goldman — Java software engineer, Amsterdam');
+  await expect(page).toHaveTitle('Michael Goldman — Portfolio');
   await expect(page.locator('head meta[name="description"]')).toHaveAttribute(
     'content',
     /Op weg naar Kubernetes en DevOps\.$/,

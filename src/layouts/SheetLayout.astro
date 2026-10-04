@@ -3,7 +3,7 @@ import FontPreload from '../components/FontPreload.astro';
 import SheetFrame from '../components/SheetFrame.astro';
 import SheetHeader from '../components/SheetHeader.astro';
 import TitleBlock from '../components/TitleBlock.astro';
-import { FAVICON_PATH, SITE_URL } from '../config';
+import { ICONS, SITE_URL } from '../config';
 import { FIRST_VIEW_CLASS, FIRST_VIEW_KEY, JS_CLASS } from '../motion';
 import type { SheetKey } from '../content/schemas';
 import { t } from '../i18n/content';
@@ -78,7 +78,10 @@ const ogImage = new URL(ogImagePath(lang, path), SITE_URL).href;
       }
     </style>
     <title>{title}</title>
-    <link rel="icon" href={FAVICON_PATH} type="image/svg+xml" />
+    <link rel="icon" href={ICONS.ico} sizes="32x32" />
+    <link rel="icon" href={ICONS.svg} type="image/svg+xml" />
+    <link rel="apple-touch-icon" href={ICONS.appleTouch} />
+    <link rel="manifest" href={ICONS.manifest} />
     {description && <meta name="description" content={description} />}
     {noindex && <meta name="robots" content="noindex" />}
     {canonical && <link rel="canonical" href={canonical} />}

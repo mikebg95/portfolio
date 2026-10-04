@@ -19,13 +19,13 @@ itself, in the same voice: first person, short sentences, concrete nouns, no hyp
 ## SEO
 | Page | title | description |
 |---|---|---|
-| / | Michael Goldman — Java software engineer, Amsterdam | Java software engineer in Amsterdam: Spring Boot and Jakarta EE backends with Angular and Vue frontends, secure by design and test-first. Moving into Kubernetes and DevOps. |
-| /experience | Experience — Michael Goldman | Five years of full-stack Java — at LinkPizza, then for Conspect at DJI and on OptieCon — drawn to scale. |
-| /projects | Projects — Michael Goldman | Jamigos and the Spring Persistence & Architecture series: designed first, then built and tested. |
-| /projects/<slug> | <Title> — Projects — Michael Goldman | <project summary> |
-| /certifications | Certifications — Michael Goldman | Spring Certified Professional, PSM I, Oracle Certified Associate Java SE 8 — CKAD in progress. Every one verifiable. |
-| /education | Education — Michael Goldman | Political science, a programming minor with Harvard CS50, and how they assembled into a software engineer. |
-| /404 | Sheet not found — Michael Goldman | — |
+| / | Michael Goldman — Portfolio | Java software engineer in Amsterdam: Spring Boot and Jakarta EE backends with Angular and Vue frontends, secure by design and test-first. Moving into Kubernetes and DevOps. |
+| /experience | Experience · Michael Goldman — Portfolio | Five years of full-stack Java — at LinkPizza, then for Conspect at DJI and on OptieCon — drawn to scale. |
+| /projects | Projects · Michael Goldman — Portfolio | Jamigos and the Spring Persistence & Architecture series: designed first, then built and tested. |
+| /projects/<slug> | <Title> · Michael Goldman — Portfolio | <project summary> |
+| /certifications | Certifications · Michael Goldman — Portfolio | Spring Certified Professional, PSM I, Oracle Certified Associate Java SE 8 — CKAD in progress. Every one verifiable. |
+| /education | Education · Michael Goldman — Portfolio | Political science, a programming minor with Harvard CS50, and how they assembled into a software engineer. |
+| /404 | Sheet not found · Michael Goldman — Portfolio | — |
 
 ## Sheet 01 — Overview
 - Label: `SHEET 01 — GENERAL ARRANGEMENT`

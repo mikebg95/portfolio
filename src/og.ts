@@ -2,12 +2,11 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 import { Resvg } from '@resvg/resvg-js';
-import { create, type Font } from 'fontkit';
-import { decompress } from 'wawoff2';
+import type { Font } from 'fontkit';
 
 import { OG_IMAGE_DIR } from './config';
+import { openWoff2, run } from './glyphs';
 import type { Lang } from './i18n/paths';
-import { FONT_DIR } from './styles/fonts';
 
 // SPEC §3.8, design/README.md "Not drawn": the Open Graph image of a page, rendered at build time
 // as a mini sheet — desk, paper + grid, double frame, zone strip, the sheet label, the page's
@@ -91,15 +90,6 @@ interface Faces {
   monoMedium: Font;
 }
 
-async function openWoff2(file: string, variation?: Record<string, number>): Promise<Font> {
-  // Paths from the project root: `astro build` and Vitest both run there.
-  const woff2 = readFileSync(join(process.cwd(), 'public', FONT_DIR, file));
-  // fontkit reads WOFF2 but cannot apply a variation to it; a TTF it can.
-  const font = create(Buffer.from(await decompress(woff2)));
-  if (!('getVariation' in font)) throw new Error(`${file} is a font collection`);
-  return variation ? font.getVariation(variation) : font;
-}
-
 let faces: Promise<Faces> | undefined;
 const loadFaces = () =>
   (faces ??= (async () => ({
@@ -111,31 +101,6 @@ const loadFaces = () =>
     mono: await openWoff2('ibm-plex-mono-latin-400-normal.woff2'),
     monoMedium: await openWoff2('ibm-plex-mono-latin-500-normal.woff2'),
   }))());
-
-interface Run {
-  /** SVG path data, the baseline's left end at (x, y). */
-  d: string;
-  width: number;
-}
-
-/** `text` as glyph outlines at `size` px, `tracking` em added after each glyph (CSS letter-spacing). */
-function run(font: Font, text: string, size: number, x = 0, y = 0, tracking = 0): Run {
-  const scale = size / font.unitsPerEm;
-  const { glyphs, positions } = font.layout(text);
-  let pen = x;
-  let d = '';
-  glyphs.forEach((glyph, i) => {
-    // A missing glyph would be drawn as a box: fail the build instead.
-    if (glyph.id === 0) throw new Error(`${font.familyName} has no glyph for "${text}"`);
-    const position = positions[i]!;
-    d += glyph.path
-      .scale(scale, -scale)
-      .translate(pen + position.xOffset * scale, y - position.yOffset * scale)
-      .toSVG();
-    pen += position.xAdvance * scale + tracking * size;
-  });
-  return { d, width: pen - x - (glyphs.length > 0 ? tracking * size : 0) };
-}
 
 /** Greedy word wrap of each given line to `maxWidth`. */
 export function wrap(

@@ -526,3 +526,15 @@ SQL and HTML sets, Recipe Book and Journal started in July 2026 (first commits 2
 check reads the number from cv.md at run time so it is never written in the repo a second time.
 Instead of: a per-word reason for plain words (a reason per group reads better); network checks of
 GitHub URLs at test time (flaky; the allowlist records what was checked).
+
+## 2026-10-04 — Tab title and the MG icon set (PR-58)
+Who: Michael (title wording, MG monogram, no ASCII portrait in any icon); agent (the rest).
+Sheet 01 is "Michael Goldman — Portfolio" in both languages (it was "… — Java software engineer,
+Amsterdam"; the description still says it); other pages "<Page> · Michael Goldman — Portfolio",
+project details "<Title> · …" (the "— Projects" middle part was dropped to keep one separator).
+Icons are build-time Astro endpoints rendering one SVG (`src/favicon.ts`), as the OG cards are —
+no separate script or committed binaries. "MG" is drawn wider in the icons (70 % of the cell)
+than in the header (≈ 55 %) so it still reads at 16 px. Apple-touch sits on paper with a 15 %
+margin (iOS rounds corners); maskable puts a 50 % cell inside the 40 %-radius safe zone; manifest
+`display: browser` (a portfolio, not an app), theme and background colour = light paper.
+Replaces PR-52's framed-sheet/registration-mark favicon.

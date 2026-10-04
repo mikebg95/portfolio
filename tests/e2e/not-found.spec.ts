@@ -15,7 +15,7 @@ for (const { url, lang, prefix, title, label, heading, note, names } of [
     url: '/no-such-sheet',
     lang: 'en',
     prefix: '',
-    title: 'Sheet not found — Michael Goldman',
+    title: 'Sheet not found · Michael Goldman — Portfolio',
     label: 'SHEET ?? — NOT IN SET',
     heading: 'SHEET NOT FOUND',
     note: "REV. NOTE △ This sheet isn't in the set. Try one of these:",

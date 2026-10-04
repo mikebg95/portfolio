@@ -33,22 +33,22 @@ titleBlock:
   github: GitHub
 seo:
   overview:
-    title: Michael Goldman — Java software engineer, Amsterdam
+    title: Michael Goldman — Portfolio
     description: 'Java software engineer in Amsterdam: Spring Boot and Jakarta EE backends with Angular and Vue frontends, secure by design and test-first. Moving into Kubernetes and DevOps.'
   experience:
-    title: Experience — Michael Goldman
+    title: Experience · Michael Goldman — Portfolio
     description: Five years of full-stack Java — at LinkPizza, then for Conspect at DJI and on OptieCon — drawn to scale.
   projects:
-    title: Projects — Michael Goldman
+    title: Projects · Michael Goldman — Portfolio
     description: 'Jamigos and the Spring Persistence & Architecture series: designed first, then built and tested.'
   certifications:
-    title: Certifications — Michael Goldman
+    title: Certifications · Michael Goldman — Portfolio
     description: Spring Certified Professional, PSM I, Oracle Certified Associate Java SE 8 — CKAD in progress. Every one verifiable.
   education:
-    title: Education — Michael Goldman
+    title: Education · Michael Goldman — Portfolio
     description: Political science, a programming minor with Harvard CS50, and how they assembled into a software engineer.
-  project: { title: '{title} — Projects — Michael Goldman' }
-  notFound: { title: Sheet not found — Michael Goldman }
+  project: { title: '{title} · Michael Goldman — Portfolio' }
+  notFound: { title: Sheet not found · Michael Goldman — Portfolio }
 notFound:
   label: SHEET ?? — NOT IN SET
   heading: SHEET NOT FOUND
