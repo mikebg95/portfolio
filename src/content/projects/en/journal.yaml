@@ -1,21 +1,23 @@
-# Placeholder so the build passes — PR-21 replaces it with the copy from design/copy.md.
+# Register fields from design/copy.md Sheet 03 (PR-21); summary, figures and note are the detail
+# sheet's — PR-28 replaces those placeholders.
 slug: journal
 code: P-04
-kind: 'Placeholder (PR-21)'
+kind: 'HEXAGONAL · IN PROGRESS'
 order: 4
 title: Journal
-cardSummary: 'Placeholder (PR-21)'
-summary: 'Placeholder (PR-21)'
-period: 'Placeholder (PR-21)'
+cardSummary: 'Rich domain model, 7 written design decisions, and an AI step that summarises each entry.'
+summary: 'Placeholder (PR-28)'
+period: 'JUL 2026 – NOW'
 status: in-progress
 repo: https://github.com/mikebg95/journal
+tests: 79
 facts:
-  - { label: 'Placeholder (PR-21)', value: 'Placeholder (PR-21)' }
-  - { label: 'Placeholder (PR-21)', value: 'Placeholder (PR-21)' }
-  - { label: 'Placeholder (PR-21)', value: 'Placeholder (PR-21)' }
+  - { label: TESTS, value: '79' }
+  - { label: ADRS, value: '7' }
+  - { label: STATUS, value: 'Building' }
 figures:
-  - { title: 'Placeholder (PR-21)' }
-  - { title: 'Placeholder (PR-21)' }
-note: 'Placeholder (PR-21)'
+  - { title: 'Placeholder (PR-28)' }
+  - { title: 'Placeholder (PR-28)' }
+note: 'Placeholder (PR-28)'
 lang: en
 translated: true

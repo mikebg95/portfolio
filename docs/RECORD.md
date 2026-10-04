@@ -159,3 +159,13 @@ is ~66 px, too short for `OPTIECON →`, and an ellipsis lost the name. Followin
 closed roles get a duration; the sabbatical bar is a link too (to `#sabbatical`, name in sr-only
 text) since components.md makes every bar a link. The Conspect description line (copy.md, not
 drawn) sits under the dimension line, flush with its end.
+
+## 2026-10-04 — Project register content: what PR-21 filled and left
+Who: agent (PR-21). The EN `projects` entries hold copy.md's Sheet 03 table: `kind` is the words
+after the code (`LAYERED · JDBC`), `cardSummary` the card text, `facts` split as UPPERCASE label +
+value, `period` the date part of the detail meta (`AUG 2025 – NOV 2025`, `JUL 2026 – NOW`) stored as
+displayed text, not months. `tests` only where the card has a TESTS fact (P-02..P-04, sum 251):
+Jamigos and Scentify have no count in the sources. `summary`, `figures` and `note` are detail fields
+and stay `Placeholder (PR-2n)` for the detail-sheet task named in each file. The Jamigos card's
+right-hand tag `SECURITY · CI/CD` is drawn but absent from copy.md and from the schema — left to
+PR-22, which needs a field (schema change) or a decision to drop it.

@@ -1,21 +1,22 @@
-# Placeholder so the build passes — PR-21 replaces it with the copy from design/copy.md.
+# Register fields from design/copy.md Sheet 03 (PR-21); summary, figures and note are the detail
+# sheet's — PR-29 replaces those placeholders.
 slug: scentify
 code: P-05
-kind: 'Placeholder (PR-21)'
+kind: 'ORIGIN'
 order: 5
 title: Scentify
-cardSummary: 'Placeholder (PR-21)'
-summary: 'Placeholder (PR-21)'
-period: 'Placeholder (PR-21)'
+cardSummary: 'My first real app: an Android fragrance recommender in Java, built at the end of the programming minor.'
+summary: 'Placeholder (PR-29)'
+period: 'NOV 2020 – JAN 2021'
 status: done
 repo: https://github.com/mikebg95/Scentify
 facts:
-  - { label: 'Placeholder (PR-21)', value: 'Placeholder (PR-21)' }
-  - { label: 'Placeholder (PR-21)', value: 'Placeholder (PR-21)' }
-  - { label: 'Placeholder (PR-21)', value: 'Placeholder (PR-21)' }
+  - { label: YEAR, value: '2020' }
+  - { label: STACK, value: 'Android' }
+  - { label: LANG, value: 'Java' }
 figures:
-  - { title: 'Placeholder (PR-21)' }
-  - { title: 'Placeholder (PR-21)' }
-note: 'Placeholder (PR-21)'
+  - { title: 'Placeholder (PR-29)' }
+  - { title: 'Placeholder (PR-29)' }
+note: 'Placeholder (PR-29)'
 lang: en
 translated: true

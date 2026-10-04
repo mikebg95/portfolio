@@ -69,6 +69,7 @@ queue.
   - Done when: `ProjectCard` per design/components.md (flagship spanning 2 columns, in-progress dashed variant, title-block strip, whole card one link, hover/focus lift) with a per-project mini diagram component (Jamigos container chain, Scentify 4 questions → 52 scents, Subscription Tracker 3 stacked layers, Recipe Book OpenAPI ↓ generates → Recipe ⟶ Steps, Journal hexagon) built from `.box` HTML; `/_primitives` shows all five.
   - Spec: SPEC §4.3; design/screens/html/projects-default-light-1440.html
   - Out of scope: page layout (PR-23).
+  - Note (PR-21): the drawn Jamigos card tag `SECURITY · CI/CD` has no copy.md string and no schema field — see docs/RECORD.md 2026-10-04.
 
 - [ ] **PR-23 Projects register page**
   - Done when: `/projects` shows label, heading, intro, row 1 (Jamigos wide + Scentify), the series assembly line with `251 TESTS · ALL TEST-FIRST`, row 2 (P-02, P-03, P-04) exactly as drawn; 1 column on phone, 2 on tablet; every card links to `/projects/<slug>`; e2e asserts five cards and their links.

@@ -1,21 +1,22 @@
-# Placeholder so the build passes — PR-21 replaces it with the copy from design/copy.md.
+# Register fields from design/copy.md Sheet 03 (PR-21); summary, figures and note are the detail
+# sheet's — PR-25 replaces those placeholders.
 slug: jamigos
 code: P-01
-kind: 'Placeholder (PR-21)'
+kind: 'FLAGSHIP'
 order: 1
 title: Jamigos
-cardSummary: 'Placeholder (PR-21)'
-summary: 'Placeholder (PR-21)'
-period: 'Placeholder (PR-21)'
+cardSummary: 'A full-stack app built to practise production-grade security and delivery — sign-in, roles, ownership checks and audit logging, shipped by its own GitHub Actions pipeline.'
+summary: 'Placeholder (PR-25)'
+period: 'AUG 2025 – NOV 2025'
 status: retired-hosting
 repo: https://github.com/mikebg95/jamigos
 facts:
-  - { label: 'Placeholder (PR-21)', value: 'Placeholder (PR-21)' }
-  - { label: 'Placeholder (PR-21)', value: 'Placeholder (PR-21)' }
-  - { label: 'Placeholder (PR-21)', value: 'Placeholder (PR-21)' }
+  - { label: STACK, value: 'Spring Boot · Vue' }
+  - { label: CHECKED, value: 'Unit · slice · security · IT' }
+  - { label: PIPELINE, value: 'GitHub Actions → GHCR' }
 figures:
-  - { title: 'Placeholder (PR-21)' }
-  - { title: 'Placeholder (PR-21)' }
-note: 'Placeholder (PR-21)'
+  - { title: 'Placeholder (PR-25)' }
+  - { title: 'Placeholder (PR-25)' }
+note: 'Placeholder (PR-25)'
 lang: nl
 translated: false

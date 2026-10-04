@@ -1,21 +1,23 @@
-# Placeholder so the build passes — PR-21 replaces it with the copy from design/copy.md.
+# Register fields from design/copy.md Sheet 03 (PR-21); summary, figures and note are the detail
+# sheet's — PR-26 replaces those placeholders.
 slug: subscription-tracker
 code: P-02
-kind: 'Placeholder (PR-21)'
+kind: 'LAYERED · JDBC'
 order: 2
 title: Subscription Tracker
-cardSummary: 'Placeholder (PR-21)'
-summary: 'Placeholder (PR-21)'
-period: 'Placeholder (PR-21)'
+cardSummary: 'Hand-written SQL, clean error responses, C4 model and schema designed up front.'
+summary: 'Placeholder (PR-26)'
+period: 'JUN 2026'
 status: done
 repo: https://github.com/mikebg95/subscription-tracker
+tests: 63
 facts:
-  - { label: 'Placeholder (PR-21)', value: 'Placeholder (PR-21)' }
-  - { label: 'Placeholder (PR-21)', value: 'Placeholder (PR-21)' }
-  - { label: 'Placeholder (PR-21)', value: 'Placeholder (PR-21)' }
+  - { label: TESTS, value: '63' }
+  - { label: API, value: 'Code-first' }
+  - { label: STATUS, value: 'Backend done' }
 figures:
-  - { title: 'Placeholder (PR-21)' }
-  - { title: 'Placeholder (PR-21)' }
-note: 'Placeholder (PR-21)'
+  - { title: 'Placeholder (PR-26)' }
+  - { title: 'Placeholder (PR-26)' }
+note: 'Placeholder (PR-26)'
 lang: nl
 translated: false
