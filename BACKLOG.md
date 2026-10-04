@@ -68,7 +68,7 @@ queue.
 
 ### Motion
 
-- [ ] **PR-45 Sheet-to-sheet View Transitions**
+- [x] **PR-45 Sheet-to-sheet View Transitions**
   - Done when: §M2: cross-document view transitions enabled; frame, header and title block keep shared names and stay put; the active-tab fill slides between tabs; content leaves up/fades (180 ms) and enters from below (320 ms); project card title + mini diagram morph into the detail heading + FIG. 1 (per-slug names, unique per page); no transition under reduced motion; graceful in browsers without support; e2e (chromium) navigates between sheets without console errors and with `document.startViewTransition`/`@view-transition` present.
   - Spec: design/motion.md §M2
   - Out of scope: theme switch.
