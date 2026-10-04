@@ -72,11 +72,6 @@ queue.
 
 ### Hardening
 
-- [x] **QA-63 Dashed borders lose their sides in WebKit on a 3× phone**
-  - Seen by PR-62e's agent, 2026-10-04: in Playwright `webkit-iphone` (iPhone 14, DPR 3) a 1.5 px dashed border computes to 1.33 px and its left/right sides are not drawn at all (top/bottom are). Seen on the RevisionNote (`--border-dashed-note`; `/`, `/projects/jamigos`) and the Experience sabbatical card (`/experience`, `#sabbatical`). 1 px and 2 px draw. PR-62e worked round it for the pending cert and in-progress project cards only (1 px below 768 px). Reproduce: `npm run build && npm run preview`, WebKit iPhone 14, screenshot a 30 px wide clip at the note's left edge.
-  - Done when: every dashed border on every page shows all four sides in `webkit-iphone` (a Playwright check that clips each dashed element's left edge and finds its colour), in both themes, without hard-coding a colour or changing the desktop look.
-  - Out of scope: solid borders.
-
 - [ ] **QA-64 Certification stamps test fails on webkit-iphone**
   - Seen by PR-63b's agent, 2026-10-04, and it fails on 43466df too (before ClientRouter): `npx playwright test tests/e2e/motion.spec.ts --project=webkit-iphone -g "slam in card order"`. Its first `.stamp` sits below the fold on iPhone 14 (top ≈ 731 px, viewport 664), so it never gets `is-revealed` and the wait times out.
   - Done when: the test passes on all three projects. If the test is wrong, fix the test (for example by scrolling the stamp into view first) without loosening what it asserts. If the reveal is wrong, fix the reveal.

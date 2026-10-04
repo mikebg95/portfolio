@@ -776,3 +776,15 @@ History, not a queue.
   - Done when: no header tab name (EN + NL) breaks inside a word at any width from 768 to 1440 px in 10 px steps (same per-word range check as `tests/e2e/display-headings.spec.ts`), by shrinking/fitting the tab text or the tab layout per the drawing, not by abbreviating copy; no tab text overflows its cell.
   - Spec: design/components.md SheetHeader; design/screens overview-default-light-1440
   - Out of scope: the phone header (PR-62).
+
+
+## Pruned from the queue
+
+1 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### Hardening
+
+- [x] **QA-63 Dashed borders lose their sides in WebKit on a 3× phone**
+  - Seen by PR-62e's agent, 2026-10-04: in Playwright `webkit-iphone` (iPhone 14, DPR 3) a 1.5 px dashed border computes to 1.33 px and its left/right sides are not drawn at all (top/bottom are). Seen on the RevisionNote (`--border-dashed-note`; `/`, `/projects/jamigos`) and the Experience sabbatical card (`/experience`, `#sabbatical`). 1 px and 2 px draw. PR-62e worked round it for the pending cert and in-progress project cards only (1 px below 768 px). Reproduce: `npm run build && npm run preview`, WebKit iPhone 14, screenshot a 30 px wide clip at the note's left edge.
+  - Done when: every dashed border on every page shows all four sides in `webkit-iphone` (a Playwright check that clips each dashed element's left edge and finds its colour), in both themes, without hard-coding a colour or changing the desktop look.
+  - Out of scope: solid borders.
