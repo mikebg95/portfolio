@@ -480,3 +480,16 @@ WebKit (it tabs to links only with an OS setting). Nothing failed: 0 axe violati
 control reached and ringed. Measured from tokens: muted on fill-3 in blueprint is 4.46:1 and
 muted/redline on fill-2 are below 4.5:1 in both themes — no text uses those pairs today (axe
 passes); the unit test pins only muted/redline on paper and redline on fill-1/fill-3.
+
+## 2026-10-04 — Performance budget measured (PR-52)
+
+Who: agent (PR-52). Lighthouse CI 0.15.1 (Lighthouse 12.6.1, mobile, system Chrome, local Mac)
+on `/`, `/experience`, `/projects/jamigos`, `/education`, `/nl/`: performance 0.97–0.99,
+accessibility, best practices and SEO 1. Before the fix best practices was 0.96 on every page:
+no favicon, so Chrome requested `/favicon.ico` and logged a 404 — added an SVG favicon (framed sheet
+with a registration mark, token colours, dark set under `prefers-color-scheme`); no favicon was
+specified anywhere, so this was the agent's call. JS gzipped, counted as the static closure of every
+module script including lazily imported chunks (stricter than what loads at first paint):
+Overview 3.7 KB, project detail 3.5 KB, Experience 49.8 KB, Education 49.9 KB (GSAP) — budget 60 KB.
+The 404 sheets preloaded IBM Plex Sans 400 but render no body text; they now preload Archivo only.
+Reports are written to `.lighthouseci/` on disk, never uploaded to temporary public storage.

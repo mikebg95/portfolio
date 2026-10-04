@@ -1,7 +1,14 @@
 ---
 import { PRELOAD_FONTS } from '../styles/fonts';
+
+interface Props {
+  /** Only fonts the page renders above the fold: a preload the page never uses is wasted bytes. */
+  fonts?: readonly string[];
+}
+
+const { fonts = PRELOAD_FONTS } = Astro.props;
 ---
 
-{PRELOAD_FONTS.map((href) => (
+{fonts.map((href) => (
   <link rel="preload" href={href} as="font" type="font/woff2" crossorigin />
 ))}

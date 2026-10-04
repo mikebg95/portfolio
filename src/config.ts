@@ -27,3 +27,6 @@ export const SITEMAP_PATH = '/sitemap.xml';
 
 /** Open Graph images (SPEC §3.8): one PNG per page and language, rendered by `src/pages/og/`. */
 export const OG_IMAGE_DIR = '/og';
+
+/** The site icon, rendered by `src/pages/favicon.svg.ts` from the design tokens. */
+export const FAVICON_PATH = '/favicon.svg';

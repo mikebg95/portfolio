@@ -4,6 +4,7 @@ node_modules/
 .e2e/
 test-results/
 playwright-report/
+.lighthouseci/
 package-lock.json
 
 # Authored specification and sources: never reformatted.

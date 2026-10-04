@@ -3,6 +3,7 @@ import { t } from '../i18n/content';
 import { localize, type Lang } from '../i18n/paths';
 import { SHEETS } from '../i18n/routes';
 import SheetLayout from '../layouts/SheetLayout.astro';
+import { DISPLAY_FONT } from '../styles/fonts';
 import DisplayHeading from './drawing/DisplayHeading.astro';
 import RevisionNote from './drawing/RevisionNote.astro';
 import SheetLabel from './drawing/SheetLabel.astro';
@@ -10,6 +11,7 @@ import SheetLabel from './drawing/SheetLabel.astro';
 // SPEC §3.9 / §4.7 (not drawn): sheet label, display heading, the redline revision note and the
 // five sheets as a sheet index list — one row per sheet, number + name, like SheetIndexPanel.
 // Shared by `src/pages/404.astro` and `src/pages/nl/404.astro`, the only per-language pages.
+// No paragraph here: the body face never renders, so only the heading's face is preloaded.
 interface Props {
   lang: Lang;
 }
@@ -19,7 +21,7 @@ const ui = await t(lang);
 const pad = (n: number) => String(n).padStart(2, '0');
 ---
 
-<SheetLayout lang={lang} title={ui.seo.notFound.title} noindex>
+<SheetLayout lang={lang} title={ui.seo.notFound.title} noindex preloadFonts={[DISPLAY_FONT]}>
   <section class="sheet-panel not-found">
     <SheetLabel data-plot="label">{ui.notFound.label}</SheetLabel>
     <DisplayHeading as="h1" size="l" class="not-found__heading" data-plot="heading">

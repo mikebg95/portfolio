@@ -13,6 +13,7 @@ export default defineConfig(
       '.e2e/',
       'test-results/',
       'playwright-report/',
+      '.lighthouseci/',
       'design/',
       'docs/',
       '.orchestrator/',
