@@ -78,6 +78,15 @@ queue.
   - Done when: `gh run list --workflow ci.yml --branch main` shows the latest run `success`; if a job fails, open its log (`gh run view <id> --log-failed`) and fix the cause (docs/RECORD.md 2026-10-05 PR-56 lists the jobs). Likeliest risks on a Linux runner: Lighthouse performance ≥ 0.95 on a slower machine, the Chrome sandbox for LHCI on ubuntu-24.04, font-metric differences in `tests/e2e/responsive.spec.ts`. Never loosen a budget to pass.
   - Out of scope: `.github/workflows/pages.yml`.
 
+### QA walk, 2026-10-05
+
+- [ ] **QA-67 every sheet (WebKit/iPhone) — the two preloaded fonts download twice and the console warns "preloaded … but not used"**
+  - Route: every sheet using SheetLayout's default `PRELOAD_FONTS`, e.g. `/` and `/experience`; seen in WebKit only (Playwright `webkit`, iPhone 14 and 1440 px desktop), with and without JS.
+  - Did: `npm run build && npm run preview -- --ignore-lock`, open `http://localhost:4321/experience` in Playwright WebKit (`serviceWorkers: 'block'`), log every request under `/fonts/` with its `sec-fetch-mode` header and the console, wait 4 s.
+  - Happened: `archivo-latin-wdth-normal.woff2` and `ibm-plex-sans-latin-400-normal.woff2` are each requested twice — once by the `<link rel="preload" … crossorigin>` in mode `cors`, then again by the `@font-face` in mode `no-cors` (WebKit fetches same-origin fonts without CORS, so the preload is not matched). The console then shows two warnings: "The resource http://localhost:4321/fonts/archivo-latin-wdth-normal.woff2 was preloaded using link preload but not used within a few seconds from the window's load event" and the same for `ibm-plex-sans-latin-400-normal.woff2`. Chromium (Pixel 7, desktop) requests each face once with no warning.
+  - Should: every visitor's browser, Safari included, uses the preloaded file — each preloaded face is fetched once, and the console is clean.
+  - Done when: in Playwright WebKit (webkit-iphone project) and in Chromium, `/` and `/experience` request each preloaded face exactly once and log no "preloaded … but not used" warning, asserted by an e2e test (e.g. in `tests/e2e/performance.spec.ts`) that runs on both engines; if no markup serves both engines, the measurement and the chosen trade-off are in `docs/RECORD.md` and the test asserts the chosen behaviour.
+
 ---
 
 ## TODO-MANUAL
