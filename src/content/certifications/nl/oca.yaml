@@ -3,13 +3,12 @@ name: Oracle Certified Associate, Java SE 8 Programmer
 issuer: Oracle
 date: '2024-06'
 status: verified
-stamp: [VERIFIED, '2024', ORACLE]
+stamp: [GEKEURD, '2024', ORACLE]
 verifyUrl: https://brm-certview.oracle.com/ords/certview/ecertificate?ssn=OC4839429&trackId=OCAJSE8&key=a4669f3d2385dfeeba797cb811e7aa1124657ed0
-verifyLabel: VERIFY ON ORACLE
-learned: 'The Java language itself, exactly: types, object orientation, exceptions and the core APIs.'
+verifyLabel: CONTROLEER OP ORACLE
+learned: "De taal Java zelf, tot in detail: types, objectoriëntatie, exceptions en de core API's."
 skills:
   - Java SE
   - OOP
-  - Core APIs
+  - Core API's
 lang: nl
-translated: false

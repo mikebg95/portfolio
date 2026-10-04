@@ -1,6 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 
 import { expectNoAxeViolations } from './helpers/axe';
+import { certification } from './helpers/content';
 
 // Sheet 04 inspection record (SPEC §4.5; copy.md Sheet 04; drawing
 // certifications-default-light-1440): four certificate cards, three verified with a link to the
@@ -14,6 +15,12 @@ const VERIFY = [
     'https://brm-certview.oracle.com/ords/certview/ecertificate?ssn=OC4839429&trackId=OCAJSE8&key=a4669f3d2385dfeeba797cb811e7aa1124657ed0',
   ],
 ];
+const STAMPS = [
+  'VERIFIED2025BROADCOM',
+  'VERIFIED2025SCRUM.ORG',
+  'VERIFIED2024ORACLE',
+  'PENDINGCKADIN PROGRESS',
+];
 
 test('the sheet shows its label, heading and intro', async ({ page }) => {
   await page.goto('/certifications');
@@ -26,7 +33,10 @@ test('the sheet shows its label, heading and intro', async ({ page }) => {
   );
 });
 
-for (const prefix of ['', '/nl']) {
+for (const [prefix, lang] of [
+  ['', 'en'],
+  ['/nl', 'nl'],
+] as const) {
   test(`${prefix}/certifications: four cards with ids, stamps and three verify links`, async ({
     page,
   }) => {
@@ -34,20 +44,19 @@ for (const prefix of ['', '/nl']) {
     const cards = page.locator('.cert-card');
     await expect(cards).toHaveCount(4);
     expect(await cards.evaluateAll((els) => els.map((el) => el.id))).toEqual(IDS);
-    await expect(cards.locator('.stamp')).toHaveText([
-      'VERIFIED2025BROADCOM',
-      'VERIFIED2025SCRUM.ORG',
-      'VERIFIED2024ORACLE',
-      'PENDINGCKADIN PROGRESS',
-    ]);
+    // EN verbatim (copy.md); NL as its content files hold it.
+    const stamps = IDS.map((id) => certification(lang, id).stamp.join(''));
+    if (lang === 'en') expect(stamps).toEqual(STAMPS);
+    await expect(cards.locator('.stamp')).toHaveText(stamps);
     await expect(cards.locator('.stamp--pending')).toHaveCount(1);
     await expect(page.locator('#ckad .stamp--pending')).toBeVisible();
 
     const links = cards.locator('a');
     await expect(links).toHaveCount(3);
-    for (const [i, [label, href]] of VERIFY.entries()) {
+    for (const [i, [enLabel, href]] of VERIFY.entries()) {
+      const label = lang === 'en' ? enLabel! : certification(lang, IDS[i]!).verifyLabel!;
       const link = links.nth(i);
-      await expect(link).toHaveAccessibleName(label!);
+      await expect(link).toHaveAccessibleName(label);
       await expect(link).toHaveText(`${label} ↗`);
       await expect(link).toHaveAttribute('href', href!);
       await expect(link).toHaveAttribute('target', '_blank');
@@ -97,11 +106,22 @@ async function brokenWords(page: Page, selector: string): Promise<string[]> {
   );
 }
 
-for (const width of [320, 390]) {
-  test(`no heading breaks a word at ${width} px`, async ({ page }) => {
-    await page.setViewportSize({ width, height: 900 });
-    await page.goto('/certifications');
-    expect(await brokenWords(page, 'h1, .cert-card h2')).toEqual([]);
+for (const prefix of ['', '/nl']) {
+  for (const width of [320, 390]) {
+    test(`${prefix}/certifications: no heading breaks a word at ${width} px`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto(`${prefix}/certifications`);
+      expect(await brokenWords(page, 'h1, .cert-card h2')).toEqual([]);
+    });
+  }
+
+  test(`${prefix}/certifications: every stamp line fits inside its ring`, async ({ page }) => {
+    await page.goto(`${prefix}/certifications`);
+    // The 96 px stamp's inner ring leaves about 80 px for the top and bottom lines.
+    const widths = await page
+      .locator('.stamp > span, .stamp > strong')
+      .evaluateAll((els) => els.map((el) => [el.textContent, (el as HTMLElement).offsetWidth]));
+    for (const [text, width] of widths) expect(width, `${text}`).toBeLessThanOrEqual(80);
   });
 }
 

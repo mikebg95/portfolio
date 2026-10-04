@@ -61,7 +61,8 @@ const certs = (await getAllLocalized('certifications', lang)).sort((a, b) =>
     padding-bottom: 64px;
   }
 
-  /* The display size, capped by the sheet's width so INSPECTED never breaks mid-word on a phone. */
+  /* The display size, capped by the sheet's width so the longest word (INSPECTED, Dutch AFGETEKEND)
+     never breaks mid-word on a phone. */
   .record__head {
     container-type: inline-size;
     display: flex;
@@ -70,7 +71,7 @@ const certs = (await getAllLocalized('certifications', lang)).sort((a, b) =>
   }
 
   .record__head :global(h1) {
-    font-size: min(var(--size-display-l), 13cqi);
+    font-size: min(var(--size-display-l), 11.5cqi);
   }
 
   .record__line {

@@ -6,11 +6,11 @@ client: DJI
 place: Veenhuizen
 start: '2024-01'
 end: '2026-01'
-context: The Dutch Custodial Institutions Agency (Dienst Justitiële Inrichtingen). An Agile DevOps team moving a modular Spring monolith to Spring Boot microservices on OpenShift.
+context: De Dienst Justitiële Inrichtingen. Een agile DevOps-team dat een modulaire Spring-monoliet omzet naar Spring Boot-microservices op OpenShift.
 bullets:
-  - Sole developer of a new application replacing part of the legacy JSF system — designed and built its JWT authentication and authorisation and its Vue.js frontend from scratch, plus much of its REST API on the existing Spring backend.
-  - "Day-to-day full-stack work, mostly backend: features, bug fixes, TDD with JUnit and Mockito, code reviews; worked with operations on the application's deployment."
-  - Gave knowledge sessions on the app's authentication and on client-side rendering; thorough handover.
+  - Enige ontwikkelaar van een nieuwe applicatie die een deel van het legacy JSF-systeem vervangt — ontwierp en bouwde vanaf nul de JWT-authenticatie en -autorisatie en de Vue.js-frontend, plus een groot deel van de REST API op de bestaande Spring-backend.
+  - 'Dagelijks full-stackwerk, vooral backend: features, bugfixes, TDD met JUnit en Mockito, code reviews; werkte met operations aan de deployment van de applicatie.'
+  - Gaf kennissessies over de authenticatie van de app en over client-side rendering; zorgvuldige overdracht.
 stack:
   - Java
   - Spring
@@ -22,6 +22,5 @@ stack:
   - JSF
   - Maven
   - Git/GitLab
-note: REV. NOTE △ From an empty repository to a handed-over production app — as the only developer on it.
+note: REV. NOTITIE △ Van een lege repository tot een overgedragen productie-app — als enige ontwikkelaar.
 lang: nl
-translated: false

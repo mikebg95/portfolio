@@ -447,3 +447,12 @@ certificate: "in voorbereiding"), paper/blueprint → PAPIER/BLAUWDRUK. Dates lo
 engineer", "full-stack", "test-first", "Test first" and "Secure by design" titles, SECURITY,
 BACKEND, DATA, FRONTEND, DEVOPS, "Clean code", every product name. Hero and SEO titles keep the
 English job title. Instead of: Dutch coinages for the technical terms (beveiliging, testen vooraf).
+
+## 2026-10-04 — Dutch experience and certifications
+Who: agent (PR-49). Job titles and employer/client names stay English, as on the hero; places are
+Dutch (Zuidoost-Azië). Stamps: VERIFIED → GEKEURD (the sheet's own "GEKEURD EN AFGETEKEND"),
+PENDING / IN PROGRESS → LOPEND / IN STUDIE; verify links → CONTROLEER OP CREDLY / ORACLE (the
+intro's "controleren"). A stamp line must stay ≤ 80 px (e2e). Certificate names, issuers and most
+skill chips stay English (Pods & deployments, Core API's). The Sheet 04 heading cap went from
+`13cqi` to `11.5cqi` so AFGETEKEND does not break at 320 px. Instead of: IN UITVOERING on the stamp
+(91 px, past the ring); GEVERIFIEERD (12 letters).

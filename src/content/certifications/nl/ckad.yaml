@@ -3,12 +3,11 @@ name: Certified Kubernetes Application Developer (CKAD)
 issuer: The Linux Foundation
 date: null
 status: pending
-stamp: [PENDING, CKAD, IN PROGRESS]
-learned: 'Designing, deploying and running applications on Kubernetes — the next step after Docker and CI/CD.'
+stamp: [LOPEND, CKAD, IN STUDIE]
+learned: 'Applicaties ontwerpen, deployen en draaien op Kubernetes — de volgende stap na Docker en CI/CD.'
 skills:
   - Pods & deployments
   - Config & secrets
   - Probes
   - Services
 lang: nl
-translated: false

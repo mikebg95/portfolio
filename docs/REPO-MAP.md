@@ -132,7 +132,7 @@ line.
 
 ## Sheet 04 — Certifications
 
-- `src/pages/[...lang]/certifications.astro` — label + heading + intro (`ui.certifications`), then a `CertCard` per entry in code order; 1 column, 2 from 768 px; heading capped at `13cqi` so INSPECTED fits a 320 px phone.
+- `src/pages/[...lang]/certifications.astro` — label + heading + intro (`ui.certifications`), then a `CertCard` per entry in code order; 1 column, 2 from 768 px; heading capped at `11.5cqi` so INSPECTED and Dutch AFGETEKEND fit a 320 px phone.
 - `src/components/certifications/CertCard.astro` — card id = entry id (`#ckad` is the Overview's target); the Stamp floats in the head with `shape-outside: circle()` so code/name/issuer wrap round it.
 - TRAP: card names need `overflow-wrap: normal` — with DisplayHeading's `break-word` a word too long to sit beside a float is split ("PROFESSIO NAL") instead of dropping below it.
 - `tests/e2e/certifications.spec.ts` — four cards, ids, stamps, three verify links (exact cv.md URLs), CKAD none; `brokenWords` helper catches mid-word heading breaks at 320/390 px.

@@ -5,11 +5,11 @@ employer: LinkPizza
 place: Amsterdam
 start: '2021-02'
 end: '2023-10'
-context: Influencer-marketing platform, team of 3–4 developers. A JSF monolith on WildFly, being migrated to Quarkus microservices on Kubernetes.
+context: Influencer-marketingplatform, team van 3–4 ontwikkelaars. Een JSF-monoliet op WildFly, in migratie naar Quarkus-microservices op Kubernetes.
 bullets:
-  - Built the Media Kit — a public influencer profile page designed to turn visitors into sign-ups, and the pilot for moving from JSF to Angular. Developed the Angular frontend and much of the backend. When the company stayed on JSF, rebuilt the frontend in JSF/PrimeFaces; it is still in use. Also shaped its concept and design.
-  - 'Backend development in Jakarta EE: business logic in services; data access with JPA/Hibernate and hand-written JDBC, DTOs per use case.'
-  - Full-stack features and bug fixes end to end, from JSF/PrimeFaces UI and backing beans to services and persistence.
+  - Bouwde de Media Kit — een openbare profielpagina voor influencers, ontworpen om bezoekers aanmeldingen te laten worden, en de pilot voor de overstap van JSF naar Angular. Ontwikkelde de Angular-frontend en een groot deel van de backend. Toen het bedrijf bij JSF bleef, bouwde ik de frontend opnieuw in JSF/PrimeFaces; die is nog steeds in gebruik. Gaf ook mee vorm aan het concept en het ontwerp.
+  - "Backendontwikkeling in Jakarta EE: businesslogica in services; datatoegang met JPA/Hibernate en handgeschreven JDBC, DTO's per use case."
+  - Full-stack features en bugfixes van begin tot eind, van JSF/PrimeFaces-UI en backing beans tot services en persistentie.
 stack:
   - Java 11 & 17
   - Jakarta EE
@@ -24,4 +24,3 @@ stack:
   - Maven
   - Git/Bitbucket
 lang: nl
-translated: false

@@ -3,14 +3,13 @@ name: Professional Scrum Master I (PSM I)
 issuer: Scrum.org
 date: '2025-01'
 status: verified
-stamp: [VERIFIED, '2025', SCRUM.ORG]
+stamp: [GEKEURD, '2025', SCRUM.ORG]
 verifyUrl: https://www.credly.com/badges/7a034eee-0a8c-44f4-97ca-47a0debf8019
-verifyLabel: VERIFY ON CREDLY
-learned: 'How Scrum teams really work: accountabilities, events and artefacts, and the empiricism behind them — useful every sprint in an agile DevOps team.'
+verifyLabel: CONTROLEER OP CREDLY
+learned: 'Hoe Scrumteams echt werken: verantwoordelijkheden, events en artefacten, en het empirisme erachter — elke sprint nuttig in een agile DevOps-team.'
 skills:
   - Scrum
   - Agile
-  - Empiricism
-  - Facilitation
+  - Empirisme
+  - Facilitatie
 lang: nl
-translated: false

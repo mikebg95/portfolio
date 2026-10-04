@@ -24,5 +24,12 @@ interface Profile {
   current: { text: string; href: string }[];
 }
 
+interface Certification {
+  stamp: [string, string, string];
+  verifyLabel?: string;
+}
+
 export const ui = (lang: string) => yaml(`ui/${lang}/ui.yaml`) as Ui;
 export const profile = (lang: string) => yaml(`profile/${lang}/profile.yaml`) as Profile;
+export const certification = (lang: string, id: string) =>
+  yaml(`certifications/${lang}/${id}.yaml`) as Certification;

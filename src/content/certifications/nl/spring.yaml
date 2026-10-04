@@ -3,17 +3,16 @@ name: Spring Certified Professional
 issuer: VMware by Broadcom
 date: '2025-08'
 status: verified
-stamp: [VERIFIED, '2025', BROADCOM]
+stamp: [GEKEURD, '2025', BROADCOM]
 verifyUrl: https://www.credly.com/badges/9136d66e-6e50-49ca-bcb6-794f9d291ecf
-verifyLabel: VERIFY ON CREDLY
-learned: 'How Spring works underneath: configuration and auto-configuration, transactions and data access, Spring MVC and REST, security, Actuator and testing Spring Boot applications properly.'
+verifyLabel: CONTROLEER OP CREDLY
+learned: 'Hoe Spring onder de motorkap werkt: configuratie en auto-configuratie, transacties en datatoegang, Spring MVC en REST, security, Actuator en het goed testen van Spring Boot-applicaties.'
 skills:
   - Spring Boot
   - Spring Security
-  - Data & transactions
+  - Data & transacties
   - MVC & REST
   - AOP
   - Actuator
-  - Boot testing
+  - Boot-testen
 lang: nl
-translated: false
