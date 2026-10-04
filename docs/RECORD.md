@@ -505,3 +505,9 @@ columns, 16 px panel padding and hyphenate; the detail title is `min(display-s, 
 titles are, so PROGRAMMEREN never breaks mid-word; the phone timeline legend wraps; portrait callout
 text is `min-width: min-content` so Dutch "gecertificeerd" stays inside its 10ch box. Instead of:
 headings-only overlap checks; hyphenating the detail title.
+
+## 2026-10-04 — No S-08 WAY OF WORKING row in the Specification
+Who: agent (PR-62). Why: PR-62 allowed S-08 only "if it fits without a layout change"; the
+`profile` schema pins `specs` to exactly seven rows (`src/content/schemas.ts`), and CLAUDE.md makes a
+schema change its own task. Scrum (PSM I) already shows on Sheet 04. Instead of: widening the schema
+inside a content task. A later task may add S-08 by changing the schema first.

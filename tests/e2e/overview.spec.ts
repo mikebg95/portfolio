@@ -200,13 +200,13 @@ test('specification S-01…S-07 and general notes 1–6, side by side on desktop
     /^S-07\s*DESIGN$/,
   ]);
   await expect(rows.locator('dd')).toHaveText([
-    'Java 21 · Spring Boot 3 · Jakarta EE · REST · OpenAPI · Maven',
+    'Java 17 / 21 / 25+ · Spring Framework · Spring Boot 3 & 4 · Spring MVC · Jakarta EE · JAX-RS · WildFly · REST · OpenAPI · Maven',
     'Spring Security · OAuth2 / OIDC · Keycloak · Microsoft Entra ID · JWT',
-    'PostgreSQL · JPA / Hibernate · Spring Data JPA · JDBC · Flyway',
-    'Test-first · JUnit · Mockito · Testcontainers · ArchUnit',
-    'Angular · Vue · TypeScript · JSF',
-    'Docker · Docker Compose · GitHub Actions · CI/CD · GitLab · Kubernetes — CKAD in progress',
-    'Layered & hexagonal architecture · DDD · Clean code · ADRs',
+    'PostgreSQL · SQL · JPA / Hibernate · Spring Data JPA · JDBC / JdbcTemplate · Flyway · MongoDB',
+    'TDD · JUnit · Mockito · Testcontainers · ArchUnit · Unit & integration tests',
+    'Angular · Vue · TypeScript · JSF / PrimeFaces · HTML / CSS',
+    'Docker · Docker Compose · GitHub Actions · CI/CD · Git · GitLab · Bitbucket · Kubernetes — CKAD in progress',
+    'Layered & hexagonal architecture · DDD · Clean code · C4 models · ADRs · Design-first APIs',
   ]);
   // Only Kubernetes is in redline.
   const pending = spec.locator('.spec-notes__pending');

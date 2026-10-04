@@ -45,13 +45,13 @@ itself, in the same voice: first person, short sentences, concrete nouns, no hyp
 - AI note (mono, under the four): `ON AI — I build with AI coding agents every day, with tests, architecture rules and review as the guardrails, and I label what was AI-built. The portfolio series and its tests are written by hand.`
 
 ### Specification (label `SPECIFICATION`)
-- S-01 BACKEND — Java 21 · Spring Boot 3 · Jakarta EE · REST · OpenAPI · Maven
+- S-01 BACKEND — Java 17 / 21 / 25+ · Spring Framework · Spring Boot 3 & 4 · Spring MVC · Jakarta EE · JAX-RS · WildFly · REST · OpenAPI · Maven
 - S-02 SECURITY — Spring Security · OAuth2 / OIDC · Keycloak · Microsoft Entra ID · JWT
-- S-03 DATA — PostgreSQL · JPA / Hibernate · Spring Data JPA · JDBC · Flyway
-- S-04 TESTING — Test-first · JUnit · Mockito · Testcontainers · ArchUnit
-- S-05 FRONTEND — Angular · Vue · TypeScript · JSF
-- S-06 DEVOPS — Docker · Docker Compose · GitHub Actions · CI/CD · GitLab · *Kubernetes — CKAD in progress* (redline)
-- S-07 DESIGN — Layered & hexagonal architecture · DDD · Clean code · ADRs
+- S-03 DATA — PostgreSQL · SQL · JPA / Hibernate · Spring Data JPA · JDBC / JdbcTemplate · Flyway · MongoDB
+- S-04 TESTING — TDD · JUnit · Mockito · Testcontainers · ArchUnit · Unit & integration tests
+- S-05 FRONTEND — Angular · Vue · TypeScript · JSF / PrimeFaces · HTML / CSS
+- S-06 DEVOPS — Docker · Docker Compose · GitHub Actions · CI/CD · Git · GitLab · Bitbucket · *Kubernetes — CKAD in progress* (redline)
+- S-07 DESIGN — Layered & hexagonal architecture · DDD · Clean code · C4 models · ADRs · Design-first APIs
 
 ### General notes (label `GENERAL NOTES`)
 1. Dutch and American, based in Amsterdam.

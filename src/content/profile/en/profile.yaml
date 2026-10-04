@@ -31,26 +31,38 @@ aiNote: ON AI — I build with AI coding agents every day, with tests, architect
 specs:
   - code: S-01
     label: BACKEND
-    items: [Java 21, Spring Boot 3, Jakarta EE, REST, OpenAPI, Maven]
+    items:
+      [
+        Java 17 / 21 / 25+,
+        Spring Framework,
+        Spring Boot 3 & 4,
+        Spring MVC,
+        Jakarta EE,
+        JAX-RS,
+        WildFly,
+        REST,
+        OpenAPI,
+        Maven,
+      ]
   - code: S-02
     label: SECURITY
     items: [Spring Security, OAuth2 / OIDC, Keycloak, Microsoft Entra ID, JWT]
   - code: S-03
     label: DATA
-    items: [PostgreSQL, JPA / Hibernate, Spring Data JPA, JDBC, Flyway]
+    items: [PostgreSQL, SQL, JPA / Hibernate, Spring Data JPA, JDBC / JdbcTemplate, Flyway, MongoDB]
   - code: S-04
     label: TESTING
-    items: [Test-first, JUnit, Mockito, Testcontainers, ArchUnit]
+    items: [TDD, JUnit, Mockito, Testcontainers, ArchUnit, Unit & integration tests]
   - code: S-05
     label: FRONTEND
-    items: [Angular, Vue, TypeScript, JSF]
+    items: [Angular, Vue, TypeScript, JSF / PrimeFaces, HTML / CSS]
   - code: S-06
     label: DEVOPS
-    items: [Docker, Docker Compose, GitHub Actions, CI/CD, GitLab]
+    items: [Docker, Docker Compose, GitHub Actions, CI/CD, Git, GitLab, Bitbucket]
     pending: Kubernetes — CKAD in progress
   - code: S-07
     label: DESIGN
-    items: [Layered & hexagonal architecture, DDD, Clean code, ADRs]
+    items: [Layered & hexagonal architecture, DDD, Clean code, C4 models, ADRs, Design-first APIs]
 generalNotes:
   - Dutch and American, based in Amsterdam.
   - Native Dutch and English. Italian C1, Portuguese B2, Spanish, French and German B1.
