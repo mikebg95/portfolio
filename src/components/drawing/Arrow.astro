@@ -3,22 +3,46 @@ import type { HTMLAttributes } from 'astro/types';
 
 // components.md Arrow: the flow between two Boxes, a mono arrow with an optional label above
 // ("JWT"). The arrow itself is decoration; a label is read. `mini` is the register card's: a short
-// arrow at text size, and a vertical one leads its label ("↓ generates").
+// arrow at text size, and a vertical one leads its label ("↓ generates"). `turns` is a right arrow
+// that points down below 768 px, where a figure's row becomes a column.
 type Props = HTMLAttributes<'span'> & {
   direction?: 'right' | 'down' | 'left' | 'up';
   label?: string;
   mini?: boolean;
+  turns?: boolean;
 };
 
 const GLYPHS = { right: '⟶', down: '↓', left: '⟵', up: '↑' } as const;
 const MINI_GLYPHS = { right: '→', down: '↓', left: '←', up: '↑' } as const;
 
-const { direction = 'right', label, mini = false, class: className, ...rest } = Astro.props;
+const {
+  direction = 'right',
+  label,
+  mini = false,
+  turns = false,
+  class: className,
+  ...rest
+} = Astro.props;
+const glyphs = mini ? MINI_GLYPHS : GLYPHS;
 ---
 
-<span class:list={['arrow', `arrow--${direction}`, mini && 'arrow--mini', className]} {...rest}>
+<span
+  class:list={['arrow', `arrow--${turns ? 'turns' : direction}`, mini && 'arrow--mini', className]}
+  {...rest}
+>
   {label && <span class="arrow__label">{label}</span>}
-  <span aria-hidden="true">{(mini ? MINI_GLYPHS : GLYPHS)[direction]}</span>
+  {turns ? (
+    <>
+      <span class="arrow__glyph--wide" aria-hidden="true">
+        {glyphs.right}
+      </span>
+      <span class="arrow__glyph--narrow" aria-hidden="true">
+        {glyphs.down}
+      </span>
+    </>
+  ) : (
+    <span aria-hidden="true">{glyphs[direction]}</span>
+  )}
 </span>
 
 <style>
@@ -37,6 +61,25 @@ const { direction = 'right', label, mini = false, class: className, ...rest } = 
   .arrow--up {
     flex-direction: row;
     gap: var(--space-2);
+  }
+
+  .arrow__glyph--narrow {
+    display: none;
+  }
+
+  @media (max-width: 767px) {
+    .arrow--turns {
+      flex-direction: row;
+      gap: var(--space-2);
+    }
+
+    .arrow__glyph--wide {
+      display: none;
+    }
+
+    .arrow__glyph--narrow {
+      display: inline;
+    }
   }
 
   .arrow--mini.arrow--right,

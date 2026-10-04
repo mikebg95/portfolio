@@ -48,6 +48,12 @@ export const experienceSchema = z
     path: ['end'],
   });
 
+const figure = z.strictObject({
+  title: text,
+  caption: text.optional(),
+  labels: z.array(text).default([]),
+});
+
 export const projectSchema = z.strictObject({
   slug: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, 'expected a kebab-case slug'),
   code: z.string().regex(/^P-\d{2}$/, 'expected P-nn'),
@@ -77,11 +83,12 @@ export const projectSchema = z.strictObject({
     z.strictObject({ label: text, value: text }),
   ]),
   spec: z.array(z.strictObject({ label: text, text })).default([]),
-  /** FIG. 1 and FIG. 2 of the detail sheet. */
-  figures: z.tuple([
-    z.strictObject({ title: text, caption: text.optional() }),
-    z.strictObject({ title: text, caption: text.optional() }),
-  ]),
+  /**
+   * FIG. 1 and FIG. 2 of the detail sheet. `labels` are the drawing's words in drawing order (a box's
+   * first line is its title, a `\n` breaks a line); the layout is per slug and says how many it reads
+   * (`src/components/projects/DetailFigure.astro`).
+   */
+  figures: z.tuple([figure, figure]),
   note: text,
   lang,
   translated,

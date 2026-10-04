@@ -9,6 +9,7 @@ import DimensionLine from '../components/drawing/DimensionLine.astro';
 import DisplayHeading from '../components/drawing/DisplayHeading.astro';
 import Figure from '../components/drawing/Figure.astro';
 import Link from '../components/drawing/Link.astro';
+import PipelineRoute from '../components/drawing/PipelineRoute.astro';
 import RevisionNote from '../components/drawing/RevisionNote.astro';
 import SheetLabel from '../components/drawing/SheetLabel.astro';
 import SpecRow from '../components/drawing/SpecRow.astro';
@@ -162,7 +163,12 @@ const projects = await getAllLocalized('projects', DEFAULT_LANG);
     <Figure label="FIG. 2 — BARE" bare>
       <div class="specimen__flow">
         <Box title="Unframed">sits in its own panel</Box>
+        <Arrow label="turns" turns />
+        <Box title="Main" main>
+          more air
+        </Box>
       </div>
+      <PipelineRoute stations={['detect\nchanges', 'build\n& test', 'image\n→ GHCR', 'deploy']} />
     </Figure>
   </section>
 

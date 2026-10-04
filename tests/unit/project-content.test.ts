@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 
 import { projectSchema, uiSchema } from '../../src/content/schemas';
+import { detailMeta } from '../../src/project-detail';
 import { readCollection } from './helpers/content';
 
 // PR-21: the EN project entries hold design/copy.md's Sheet 03 register table verbatim. Expected
@@ -25,10 +26,16 @@ const rows = sheet03
       .map((c) => c.trim()),
   );
 
+/** A detail sheet's paragraph in copy.md (`**03.1 Jamigos** — …`). */
+const detailLine = (title: string) =>
+  sheet03.find((l) => l.startsWith(`**03.`) && l.includes(` ${title}** — `)) ?? '';
+
+/** The backticked value after `key ` in a detail paragraph (`summary `…``). */
+const quoted = (line: string, key: string) => new RegExp(`${key} \`([^\`]+)\``).exec(line)?.[1];
+
 /** The period in front of the detail sheet's meta line (`meta `AUG 2025 – NOV 2025 · …``). */
 function period(title: string): string | undefined {
-  const line = sheet03.find((l) => l.startsWith(`**03.`) && l.includes(` ${title}** — `));
-  return /meta `([^`·]+?) ·/.exec(line ?? '')?.[1];
+  return /meta `([^`·]+?)( ·|`)/.exec(detailLine(title))?.[1];
 }
 
 const STATUS: Record<string, string> = {
@@ -113,5 +120,44 @@ describe('Jamigos has no live URL anywhere', () => {
       .filter((f) => /\.(astro|ts|js|yaml|md|html|css|json|svg|txt)$/.test(f))
       .filter((f) => LIVE.test(readFileSync(join(root, f), 'utf8')));
     expect(hits).toEqual([]);
+  });
+});
+
+describe('detail sheets (EN) against design/copy.md', () => {
+  const ui = uiSchema.parse(readCollection('ui').find((f) => f.path === 'en/ui')?.data);
+
+  it('holds the common detail strings in ui', () => {
+    const common = sheet03.find((l) => l.startsWith('Common: ')) ?? '';
+    const strings = [...common.matchAll(/`([^`]+)`/g)].map((m) => m[1]);
+    const text = ui.projects.detail;
+    expect(strings).toEqual([
+      `← ${text.back}`,
+      text.label.replace('{sheet}', '03').replace('{n}', 'n').replace('{code}', 'P-0n'),
+      `${text.repo} ↗`,
+      `← ${text.previous}`,
+      `${text.next} →`,
+    ]);
+  });
+
+  // PR-26…29 add their titles here as they write their sheets.
+  it.each(['Jamigos'])('holds %s verbatim', (title) => {
+    const line = detailLine(title);
+    const entry = entries.find((e) => e.title === title);
+
+    expect(entry?.summary).toBe(quoted(line, 'summary'));
+    expect(entry && detailMeta(entry, entries, ui.projects.detail)).toBe(quoted(line, 'meta'));
+    expect(entry?.figures.map((f) => f.title)).toEqual([
+      quoted(line, 'FIG. 1'),
+      quoted(line, 'FIG. 2'),
+    ]);
+    expect(entry?.note).toBe(quoted(line, 'Note'));
+    const specRows = /Spec rows: (.+?) · FIG\. 2/.exec(line)?.[1];
+    if (specRows) {
+      const rows = [...specRows.matchAll(/([A-Z]+) `([^`]+)`/g)].map(([, label, text]) => ({
+        label,
+        text,
+      }));
+      expect(entry?.spec).toEqual(rows);
+    }
   });
 });

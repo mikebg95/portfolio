@@ -1,0 +1,71 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+// components.md PipelineRoute: a horizontal line through 14 px stations, a mono 11 px label under
+// each, the final station filled. An ordered list: the stations are read in order, the line and
+// circles are decoration. A `\n` in a label breaks the line.
+type Props = HTMLAttributes<'ol'> & {
+  stations: string[];
+};
+
+const { stations, class: className, ...rest } = Astro.props;
+---
+
+<ol class:list={['pipeline-route', className]} style={`--stations: ${stations.length}`} {...rest}>
+  {stations.map((station) => (
+    <li class="pipeline-route__station">
+      <span class="pipeline-route__dot" aria-hidden="true"></span>
+      <span class="pipeline-route__label">{station}</span>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .pipeline-route {
+    position: relative;
+    display: flex;
+    gap: var(--space-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* The route: from the first station's centre to the last's (each station is 1 / n wide). */
+  .pipeline-route::before {
+    content: '';
+    position: absolute;
+    top: 6px;
+    right: calc(50% / var(--stations, 4));
+    left: calc(50% / var(--stations, 4));
+    height: 1.5px;
+    background: var(--color-ink);
+  }
+
+  .pipeline-route__station {
+    position: relative;
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+    min-width: 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.35;
+    text-align: center;
+    white-space: pre-line;
+  }
+
+  .pipeline-route__dot {
+    display: block;
+    width: 14px;
+    height: 14px;
+    border: 1.5px solid var(--color-ink);
+    border-radius: 50%;
+    background: var(--color-paper);
+  }
+
+  .pipeline-route__station:last-child .pipeline-route__dot {
+    background: var(--color-ink);
+  }
+</style>

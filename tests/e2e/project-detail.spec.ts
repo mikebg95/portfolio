@@ -98,3 +98,58 @@ test('the specification sits beside FIG. 2 on desktop and above it below 1024 px
     expect(aside!.y).toBeGreaterThanOrEqual(spec!.y + spec!.height - 1);
   }
 });
+
+test('Jamigos: container view, pipeline route and no live link (copy.md 03.1)', async ({
+  page,
+}) => {
+  await page.goto('/projects/jamigos');
+  const fig1 = page.locator('[data-figure="1"]');
+  await expect(fig1.locator('figcaption')).toHaveText('FIG. 1 — CONTAINER VIEW');
+  await expect(fig1.locator('.box__title')).toHaveText([
+    'Browser · Vue 3',
+    'Spring Boot API',
+    'PostgreSQL',
+    'MongoDB',
+    'Keycloak',
+  ]);
+  await expect(fig1.locator('.box--main')).toContainText('@PreAuthorize · @RequireOwner');
+  await expect(fig1.locator('.box--external')).toContainText('Keycloak');
+  await expect(fig1.locator('.arrow__label')).toHaveText('JWT');
+
+  const fig2 = page.locator('[data-figure="2"]');
+  await expect(fig2.locator('figcaption')).toHaveText('FIG. 2 — PIPELINE ROUTE');
+  const stations = fig2.locator('.pipeline-route > li');
+  await expect(stations).toHaveCount(4);
+  await expect(stations.last()).toHaveText('deploy');
+  // The final station is filled, the others open.
+  const fill = (i: number) =>
+    stations
+      .nth(i)
+      .locator('.pipeline-route__dot')
+      .evaluate((d) => getComputedStyle(d).backgroundColor);
+  expect(await fill(3)).not.toBe(await fill(0));
+
+  await expect(page.locator('.detail-body .spec-row dt')).toHaveText([
+    'SECURITY',
+    'DATA',
+    'TESTING',
+    'FRONTEND',
+    'DELIVERY',
+  ]);
+  await expect(page.locator('.detail-body .revision-note')).toContainText(
+    'The jamigos.app domain is retired.',
+  );
+  await expect(page.getByRole('link', { name: /^REPOSITORY ON GITHUB/ })).toHaveAttribute(
+    'href',
+    'https://github.com/mikebg95/jamigos',
+  );
+  const hrefs = await page
+    .locator('a[href]')
+    .evaluateAll((as) => as.map((a) => a.getAttribute('href')));
+  expect(hrefs.filter((h) => /jamigos\.(app|com|dev|io|nl)/i.test(h ?? ''))).toEqual([]);
+
+  // Phone: the container view's row stacks, so nothing overflows the figure.
+  const box = await fig1.boundingBox();
+  const row = await fig1.locator('.detail-figure__row').boundingBox();
+  expect(row!.x + row!.width).toBeLessThanOrEqual(box!.x + box!.width + 1);
+});

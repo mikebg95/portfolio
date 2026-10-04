@@ -1,0 +1,93 @@
+---
+import Arrow from '../drawing/Arrow.astro';
+import Box from '../drawing/Box.astro';
+import PipelineRoute from '../drawing/PipelineRoute.astro';
+
+// The drawing inside a detail sheet's FIG. 1 or FIG. 2 (SPEC §4.4), one layout per project and
+// figure. Words come from the entry's `figures[n - 1].labels`, in drawing order; LABELS says how
+// many each layout reads. A box label's first line is its title. A project without a layout here
+// draws nothing yet (PR-26…29 add theirs).
+interface Props {
+  slug: string;
+  n: 1 | 2;
+  labels: string[];
+}
+
+const LABELS: Record<string, readonly [number, number]> = {
+  jamigos: [6, 4],
+};
+
+const { slug, n, labels } = Astro.props;
+const expected = LABELS[slug]?.[n - 1];
+if (expected === undefined && labels.length > 0) {
+  throw new Error(`no FIG. ${n} layout for project ${slug}, but it has labels`);
+}
+if (expected !== undefined && labels.length !== expected) {
+  throw new Error(`FIG. ${n} of ${slug} draws ${expected} labels, got ${labels.length}`);
+}
+// A box label: the first line is the title, the rest the body, one line each.
+const box = (label = '') => {
+  const [title = '', ...lines] = label.split('\n');
+  return { title, lines };
+};
+const [a = '', b = '', , d = '', e = '', f = ''] = labels;
+const api = box(labels[2]);
+const layout = `${slug}-${n}`;
+---
+
+{layout === 'jamigos-1' && (
+  <div class="detail-figure">
+    <div class="detail-figure__row">
+      <Box title={box(a).title}>{box(a).lines[0]}</Box>
+      <Arrow label={b} turns />
+      <Box title={api.title} main>
+        {api.lines.map((line, i) => (
+          <>
+            {i > 0 && <br />}
+            {line}
+          </>
+        ))}
+      </Box>
+      <Arrow turns />
+      <div class="detail-figure__stack">
+        <Box title={box(d).title}>{box(d).lines[0]}</Box>
+        <Box title={box(e).title}>{box(e).lines[0]}</Box>
+      </div>
+    </div>
+    <Box title={box(f).title} external>
+      {box(f).lines[0]}
+    </Box>
+  </div>
+)}
+{layout === 'jamigos-2' && <PipelineRoute stations={labels} />}
+
+<style>
+  .detail-figure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-5);
+  }
+
+  .detail-figure__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+  }
+
+  .detail-figure__stack {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  /* Phone: the row becomes a column; its arrows turn down (Arrow `turns`). */
+  @media (max-width: 767px) {
+    .detail-figure__row {
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+  }
+</style>

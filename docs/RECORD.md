@@ -199,3 +199,13 @@ how it gets there (an additive field, not a hard-coded slug). Previous/next wrap
 `NEXT SHEET` — the drawing does not show the pager, so it is a ruled panel above the title block.
 FIG. 2 sits unframed in its panel as drawn: a `bare` variant of `Figure` (on `/_primitives`), not a
 page-level restyle. Arrows (← →) are drawn by the page, `aria-hidden`, so link names stay words.
+
+## 2026-10-04 — Detail figures: `figures[n].labels` + `DetailFigure`
+Who: agent (PR-25). A figure's words live in content as `figures[n].labels` (additive, default
+[]), in drawing order, as the register's `diagram` does; a box label's first line is its title. The
+layouts are per slug and figure in `src/components/projects/DetailFigure.astro` (`LABELS` = count per
+figure; a wrong count, or labels without a layout, throws at build). Jamigos FIG. 2 has four stations
+as drawn ("image → GHCR" one station), not copy.md's five-arrow shorthand. New primitive
+`PipelineRoute` (an `<ol>`, components.md); Box `main` at full size is 2.5 px with more air and
+regular weight as drawn (600 weight stays on the mini variant); Arrow `turns` points down below
+768 px, where the container view stacks. Instead of: words hard-coded in the figure component.

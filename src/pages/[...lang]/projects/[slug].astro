@@ -9,6 +9,7 @@ import RevisionNote from '../../../components/drawing/RevisionNote.astro';
 import SheetLabel from '../../../components/drawing/SheetLabel.astro';
 import SpecRow from '../../../components/drawing/SpecRow.astro';
 import SpecTable from '../../../components/drawing/SpecTable.astro';
+import DetailFigure from '../../../components/projects/DetailFigure.astro';
 import { getAllLocalized, sharedId, t } from '../../../i18n/content';
 import { langPaths, localize, type Lang } from '../../../i18n/paths';
 import { projectPath, SHEETS, sheetPath } from '../../../i18n/routes';
@@ -36,7 +37,7 @@ interface Props {
 }
 
 // A project detail sheet (SPEC §4.4; drawing project-detail-jamigos-default-light-1440), the
-// template all five share. The figures' drawings are per project (PR-25…29) and go in the slots.
+// template all five share. The figures' drawings are per project, in DetailFigure.
 const { lang, project, projects } = Astro.props;
 const ui = await t(lang);
 const text = ui.projects.detail;
@@ -78,7 +79,9 @@ const href = (slug: string) => localize(lang, projectPath(slug));
     <Figure
       label={text.figure.replace('{n}', '1').replace('{title}', data.figures[0].title)}
       data-figure="1"
-    />
+    >
+      <DetailFigure slug={data.slug} n={1} labels={data.figures[0].labels} />
+    </Figure>
   </section>
   <section class="sheet-panel detail-body">
     <div class="detail-body__spec">
@@ -96,7 +99,9 @@ const href = (slug: string) => localize(lang, projectPath(slug));
         bare
         label={text.figure.replace('{n}', '2').replace('{title}', data.figures[1].title)}
         data-figure="2"
-      />
+      >
+        <DetailFigure slug={data.slug} n={2} labels={data.figures[1].labels} />
+      </Figure>
       <RevisionNote text={data.note} />
     </div>
   </section>
