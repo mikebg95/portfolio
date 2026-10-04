@@ -14,7 +14,7 @@ import { getAllLocalized, sharedId, t } from '../../../i18n/content';
 import { langPaths, localize, type Lang } from '../../../i18n/paths';
 import { projectPath, SHEETS, sheetPath } from '../../../i18n/routes';
 import SheetLayout from '../../../layouts/SheetLayout.astro';
-import { detailMeta, neighbours } from '../../../project-detail';
+import { detailLabel, detailMeta, neighbours } from '../../../project-detail';
 
 export async function getStaticPaths() {
   const paths = await Promise.all(
@@ -42,11 +42,7 @@ const { lang, project, projects } = Astro.props;
 const ui = await t(lang);
 const text = ui.projects.detail;
 const data = project.data;
-const sheet = String(SHEETS.find((s) => s.key === 'projects')?.number ?? 0).padStart(2, '0');
-const label = text.label
-  .replace('{sheet}', sheet)
-  .replace('{n}', String(data.order))
-  .replace('{code}', data.code);
+const label = detailLabel(data, SHEETS.find((s) => s.key === 'projects')?.number ?? 0, text);
 const { previous, next } = neighbours(projects, data.slug);
 const href = (slug: string) => localize(lang, projectPath(slug));
 // The meta line ends with the status; "in progress" is drawn in redline (design/README.md).

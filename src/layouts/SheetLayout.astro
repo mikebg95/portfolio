@@ -7,13 +7,15 @@ import { SITE_URL } from '../config';
 import type { SheetKey } from '../content/schemas';
 import { t } from '../i18n/content';
 import type { Lang } from '../i18n/paths';
+import { OG_HEIGHT, ogImagePath, OG_WIDTH } from '../og';
 import { absoluteUrl, alternates, neutralPath } from '../seo';
 import { THEME_STORAGE_KEY, THEMES } from '../theme';
 import '../styles/base.css';
 
 // The page shell every route uses: theme before paint, skip link, the sheet frame, the header and
-// the title block footer. SPEC §3.8: title, description, canonical, hreflang and Open Graph text
-// in the head; a page adds more (Sheet 01's JSON-LD) through the `head` slot.
+// the title block footer. SPEC §3.8: title, description, canonical, hreflang, Open Graph text and
+// image (src/pages/og/) and the Twitter card in the head; a page adds more (Sheet 01's JSON-LD)
+// through the `head` slot.
 interface Props {
   lang: Lang;
   title: string;
@@ -30,6 +32,7 @@ const { lang, title, description, sheet, noindex = false } = Astro.props;
 const ui = await t(lang);
 const { path } = neutralPath(Astro.url.pathname);
 const canonical = noindex ? undefined : absoluteUrl(SITE_URL, lang, path);
+const ogImage = new URL(ogImagePath(lang, path), SITE_URL).href;
 ---
 
 <html lang={lang}>
@@ -58,6 +61,12 @@ const canonical = noindex ? undefined : absoluteUrl(SITE_URL, lang, path);
     <meta property="og:title" content={title} />
     {description && <meta property="og:description" content={description} />}
     {canonical && <meta property="og:url" content={canonical} />}
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content={String(OG_WIDTH)} />
+    <meta property="og:image:height" content={String(OG_HEIGHT)} />
+    <meta property="og:image:alt" content={title} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={ogImage} />
     <slot name="head" />
     <FontPreload />
   </head>

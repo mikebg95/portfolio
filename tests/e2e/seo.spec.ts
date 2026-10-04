@@ -4,10 +4,12 @@ import { expect, test } from '@playwright/test';
 import { load } from 'js-yaml';
 
 import { PERSON_ADDRESS, PRIMITIVES_PATH, SITE_URL, SITEMAP_PATH } from '../../src/config';
+import { OG_HEIGHT, OG_WIDTH, ogImagePath } from '../../src/og';
 
 // PR-37, SPEC §3.8: every built page's head — title and description (EN from design/copy.md's SEO
 // table, NL from the content), canonical, hreflang en/nl/x-default, Open Graph text — plus the
-// sitemap, robots.txt and the JSON-LD Person on Sheet 01. The head is the same at every viewport,
+// sitemap, robots.txt and the JSON-LD Person on Sheet 01. PR-38: every built page's Open Graph
+// image exists and is 1200×630. The head is the same at every viewport,
 // so this runs in one project.
 test.skip(({ browserName, isMobile }) => browserName !== 'chromium' || isMobile, 'head only');
 
@@ -113,6 +115,13 @@ for (const { lang, path, title, description } of [...EN, ...NL]) {
       description,
     );
     await expect(head.locator('meta[property="og:url"]')).toHaveAttribute('content', own);
+    const image = new URL(ogImagePath(lang, path), SITE_URL).href;
+    await expect(head.locator('meta[property="og:image"]')).toHaveAttribute('content', image);
+    await expect(head.locator('meta[name="twitter:card"]')).toHaveAttribute(
+      'content',
+      'summary_large_image',
+    );
+    await expect(head.locator('meta[name="twitter:image"]')).toHaveAttribute('content', image);
     await expect(head.locator('meta[name="robots"]')).toHaveCount(0);
     const jsonLd = head.locator('script[type="application/ld+json"]');
     await expect(jsonLd).toHaveCount(path === '/' ? 1 : 0);
@@ -173,4 +182,31 @@ test('robots.txt allows crawling and points at the sitemap', async ({ request })
   expect(text).toContain('User-agent: *');
   expect(text).not.toMatch(/Disallow: \/\s*$/m);
   expect(text).toContain(`Sitemap: ${SITE_URL}${SITEMAP_PATH}`);
+});
+
+/** Every HTML file of the build, as the path it is served at. */
+const builtPages = (dir = new URL('../../dist/', import.meta.url).pathname): string[] =>
+  readdirSync(dir, { recursive: true, encoding: 'utf8' })
+    .filter((f) => f.endsWith('.html'))
+    .map((f) => `/${f.replace(/(^|\/)index\.html$/, '').replace(/\.html$/, '')}`)
+    .filter((p) => !p.startsWith(PRIMITIVES_PATH));
+
+test('every built page has an Open Graph image: an existing 1200×630 PNG', async ({ request }) => {
+  const pages = builtPages();
+  // 20 sheets and project details, plus the two 404 sheets.
+  expect(pages.length).toBe(EN.length + NL.length + 2);
+  for (const page of pages) {
+    const html = await (await request.get(page)).text();
+    const image = /<meta property="og:image" content="([^"]+)"/.exec(html)?.[1];
+    expect(image, page).toBeTruthy();
+    expect(new URL(image!).origin, page).toBe(SITE_URL);
+    const response = await request.get(new URL(image!).pathname);
+    expect(response.status(), image).toBe(200);
+    expect(response.headers()['content-type'], image).toBe('image/png');
+    const png = await response.body();
+    expect({ width: png.readUInt32BE(16), height: png.readUInt32BE(20) }, image).toEqual({
+      width: OG_WIDTH,
+      height: OG_HEIGHT,
+    });
+  }
 });

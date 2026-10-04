@@ -41,3 +41,14 @@ export function detailMeta(
   if (project.status !== 'done') parts.push(text.status[project.status]);
   return parts.join(' · ');
 }
+
+/** The detail sheet's label: `DETAIL SHEET 03.1 — P-01` from `{sheet}`, `{n}` and `{code}`. */
+export const detailLabel = (
+  project: Pick<Project, 'order' | 'code'>,
+  sheetNumber: number,
+  text: Pick<DetailText, 'label'>,
+) =>
+  text.label
+    .replace('{sheet}', String(sheetNumber).padStart(2, '0'))
+    .replace('{n}', String(project.order))
+    .replace('{code}', project.code);

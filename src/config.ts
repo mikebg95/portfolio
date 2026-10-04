@@ -24,3 +24,6 @@ export const PERSON_ADDRESS = { locality: 'Amsterdam', country: 'NL' } as const;
 
 /** Built by `src/pages/sitemap.xml.ts`; `robots.txt` points at it. */
 export const SITEMAP_PATH = '/sitemap.xml';
+
+/** Open Graph images (SPEC §3.8): one PNG per page and language, rendered by `src/pages/og/`. */
+export const OG_IMAGE_DIR = '/og';

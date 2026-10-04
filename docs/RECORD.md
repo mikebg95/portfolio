@@ -301,3 +301,15 @@ contract. Open Graph text tags (type, site_name, title, description, url) are in
 twitter:card are PR-38's; no og:locale (would need a territory the sources don't give). Sitemap and
 robots are hand-written endpoints, not `@astrojs/sitemap` (it names its output `sitemap-index.xml`
 and adds a dependency for twenty URLs).
+
+## 2026-10-04 — Open Graph images: fontkit outlines + resvg, not satori or Playwright
+Who: agent (PR-38). `src/pages/og/[...card].png.ts` renders one 1200×630 PNG per sheet, project
+detail and 404 sheet in both languages (22) during `astro build`, ~150 ms each. The SVG is built by
+hand (`src/og.ts`) with every text run turned into glyph outlines by fontkit from the site's own
+woff2 files, then rasterised by `@resvg/resvg-js`. Refused: satori — it reads no WOFF2 and no
+variable fonts, so the display heading could not be Archivo at weight 850 / stretch 118 %;
+Playwright screenshots — the build (and PR-55's Docker build stage) would need a browser. fontkit
+cannot apply a variation to a WOFF2 font, so `wawoff2` decompresses each file to TTF first. Paper
+theme only (a link preview has no theme). The 404 sheets get a card too, so every page carries
+og:image. Title block on the card: PROJECT and SHEET cells from `ui.titleBlock`, then the host from
+`SITE_URL` with no caption (copy.md has none). Twitter: `summary_large_image` + `twitter:image`.
