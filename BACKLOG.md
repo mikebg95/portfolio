@@ -72,7 +72,7 @@ queue.
 
 ### Hardening
 
-- [ ] **PR-63 Content pass: Experience texts — accurate claims, more substance**
+- [x] **PR-63 Content pass: Experience texts — accurate claims, more substance**
   - Michael, 2026-10-04: the DJI revision note is false (read the private briefing); "I own its security end to end" overstates OptieCon; the LinkPizza Media Kit bullet hides the backend work, and LinkPizza is where his code went through a real CI/CD pipeline to production — the strongest honest production proof he has.
   - Done when: **OptieCon** context ends `I built its sign-in and security layer.` (not "own its security end to end"); stack says `Microsoft Entra ID`. **DJI** note `REV. NOTE △ The only developer on a new application inside a running system — from first design to knowledge sessions and a thorough handover.`; nothing on the DJI block says production, go-live, empty repository or greenfield, and no detail goes beyond `cv.md`. **LinkPizza** context `Influencer-marketing platform, team of 3–4 developers. A JSF monolith on WildFly being migrated to Quarkus microservices on Kubernetes; every change went from Bitbucket through Jenkins pipelines to WildFly test and production servers.`; Media Kit bullet uses the CV wording `…Developed the Angular frontend and much of the backend: business logic, data access and REST endpoints (JAX-RS). When the company stayed on JSF, rebuilt the frontend in JSF/PrimeFaces; it is still in use. Also shaped its concept and design.`; stack adds `Jenkins`; never imply he built the pipeline or the Quarkus services. NL twins; Sheet 02 screenshots at 390 and 1440 show no overflow; tests green.
   - Spec: design/copy.md Sheet 02; docs/source/cv.md; docs/source/briefing.md; docs/source/private/briefing-private.md
