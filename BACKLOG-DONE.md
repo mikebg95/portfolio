@@ -207,3 +207,15 @@ History, not a queue.
   - Done when: detail blocks 02.1 OptieCon, 02.2 DJI, 02.3 LinkPizza (+ small hatched sabbatical block between 02.1 and 02.2) exactly as drawn, newest first, with ids, DJI revision note, stack lines, Conspect employer line; stacks to one column on phone; e2e asserts each block's title and dates.
   - Spec: SPEC §4.2; design/copy.md Sheet 02; design/components.md ExperienceDetail
   - Out of scope: motion.
+
+
+## Pruned from the queue
+
+1 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### Sheet 03 — Projects
+
+- [x] **PR-21 Project content (EN) — register fields**
+  - Done when: `projects` EN entries for the five projects with slug, code, order, title, summary, period, status, repo URL, tests, the three card facts, and kind label from design/copy.md; Vitest asserts tests sum to 251 for P-02..P-04 and Jamigos has no live URL anywhere.
+  - Spec: design/copy.md Sheet 03; docs/source/research-repos.md; SPEC §3.7
+  - Out of scope: detail fields (PR-25…).

@@ -60,11 +60,6 @@ queue.
 
 ### Sheet 03 — Projects
 
-- [x] **PR-21 Project content (EN) — register fields**
-  - Done when: `projects` EN entries for the five projects with slug, code, order, title, summary, period, status, repo URL, tests, the three card facts, and kind label from design/copy.md; Vitest asserts tests sum to 251 for P-02..P-04 and Jamigos has no live URL anywhere.
-  - Spec: design/copy.md Sheet 03; docs/source/research-repos.md; SPEC §3.7
-  - Out of scope: detail fields (PR-25…).
-
 - [ ] **PR-22 ProjectCard and mini diagrams**
   - Done when: `ProjectCard` per design/components.md (flagship spanning 2 columns, in-progress dashed variant, title-block strip, whole card one link, hover/focus lift) with a per-project mini diagram component (Jamigos container chain, Scentify 4 questions → 52 scents, Subscription Tracker 3 stacked layers, Recipe Book OpenAPI ↓ generates → Recipe ⟶ Steps, Journal hexagon) built from `.box` HTML; `/_primitives` shows all five.
   - Spec: SPEC §4.3; design/screens/html/projects-default-light-1440.html
