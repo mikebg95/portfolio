@@ -19,13 +19,13 @@ labels:
   current: IN UITVOERING
 howIWork:
   - title: Eerst ontwerpen, dan bouwen
-    body: Requirements, een C4-model, een databaseschema en een API-contract komen eerst, en ik leg de afwegingen vast die ik maak. Daarna volgt de code de tekening.
+    body: 'Requirements, een C4-model, een databaseschema en een API-contract komen eerst, met de afwegingen vastgelegd als decision records. Daarna volgt de code de tekening — in elk project van mijn Spring-serie, en voor de authenticatie en de frontend die ik bij DJI ontwierp.'
   - title: Test first
-    body: 'De test komt vóór de code: unit, slice, integratie tegen echte databases met Testcontainers, en architectuurregels met ArchUnit. 251 handgeschreven tests in mijn portfolioserie.'
+    body: 'De test komt vóór de code: unit, slice, integratie tegen echte databases met Testcontainers, en architectuurregels met ArchUnit. TDD met JUnit en Mockito in mijn dagelijkse werk bij DJI; 251 handgeschreven tests in mijn Spring-serie.'
   - title: Secure by design
-    body: 'Inloggen en rechten zijn waar ik het diepst op inga: single sign-on met Microsoft Entra ID en Keycloak, OAuth2 / OIDC, JWT, method security — en tests die het bewijzen.'
-  - title: Eigenaar tot in productie
-    body: Bij DJI was ik de enige developer van een nieuwe applicatie, van het eerste ontwerp tot de uitrol met operations en een volledige overdracht. Docker en CI/CD horen bij het werk, niet bij dat van een ander.
+    body: 'Inloggen en rechten zijn waar ik het diepst op inga: single sign-on met Microsoft Entra ID bij OptieCon, JWT-authenticatie en -autorisatie bij DJI, Keycloak met OAuth2 / OIDC in Jamigos — en tests die het bewijzen, zoals de ~30 securitytests bij OptieCon.'
+  - title: Eigenaar van begin tot eind
+    body: 'Bij DJI was ik de enige developer van een nieuwe applicatie binnen een draaiend systeem: van het eerste ontwerp tot kennissessies en een grondige overdracht. Bij LinkPizza bracht ik de Media Kit van concept tot de versie die nog steeds in gebruik is. Docker en CI/CD-pipelines bouw ik in mijn eigen projecten; Kubernetes is de volgende stap.'
 aiNote: OVER AI — Ik bouw elke dag met AI-coding-agents, met tests, architectuurregels en review als vangrails, en ik vermeld wat door AI is gebouwd. De portfolioserie en de tests ervan schrijf ik met de hand.
 specs:
   - code: S-01

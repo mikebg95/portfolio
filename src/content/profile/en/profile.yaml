@@ -20,13 +20,13 @@ labels:
   current: IN PROGRESS
 howIWork:
   - title: Design before build
-    body: Requirements, a C4 model, a database schema and an API contract come first, and I write down the trade-offs I make. Then the code follows the drawing.
+    body: 'Requirements, a C4 model, a database schema and an API contract come first, with the trade-offs written down as decision records. Then the code follows the drawing — in every project of my Spring series, and for the authentication and frontend I designed at DJI.'
   - title: Test first
-    body: 'The test comes before the code: unit, slice, integration against real databases with Testcontainers, and architecture rules with ArchUnit. 251 hand-written tests across my portfolio series.'
+    body: 'The test comes before the code: unit, slice, integration against real databases with Testcontainers, and architecture rules with ArchUnit. TDD with JUnit and Mockito in my day-to-day work at DJI; 251 hand-written tests across my Spring series.'
   - title: Secure by design
-    body: 'Sign-in and permissions are where I go deepest: single sign-on with Microsoft Entra ID and Keycloak, OAuth2 / OIDC, JWT, method security — and tests that prove it.'
-  - title: Own it to production
-    body: At DJI I was the only developer on a new application, from the first design to deployment with operations and a full handover. Docker and CI/CD are part of the job, not someone else's.
+    body: 'Sign-in and permissions are where I go deepest: Microsoft Entra ID single sign-on at OptieCon, JWT authentication and authorisation at DJI, Keycloak with OAuth2 / OIDC in Jamigos — and tests that prove it, like the ~30 security tests at OptieCon.'
+  - title: Own it end to end
+    body: 'At DJI I was the only developer on a new application inside a running system: from first design to knowledge sessions and a thorough handover. At LinkPizza I took the Media Kit from concept to the version that is still in use. Docker and CI/CD pipelines I build in my own projects; Kubernetes is next.'
 aiNote: ON AI — I build with AI coding agents every day, with tests, architecture rules and review as the guardrails, and I label what was AI-built. The portfolio series and its tests are written by hand.
 specs:
   - code: S-01

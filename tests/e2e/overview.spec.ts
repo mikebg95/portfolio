@@ -162,7 +162,7 @@ test('how I work: four numbered principles in a 4 / 2 / 1 column grid, then the 
     'Design before build',
     'Test first',
     'Secure by design',
-    'Own it to production',
+    'Own it end to end',
   ]);
   await expect(panel.locator('.how-i-work__number')).toHaveText(['01', '02', '03', '04']);
   await expect(panel.locator('.how-i-work__ai')).toHaveText(
