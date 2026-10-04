@@ -370,3 +370,15 @@ History, not a queue.
   - Done when: a build step renders a 1200×630 PNG per sheet and per project in both languages (mini sheet: frame, grid, sheet label, display heading, small title block with michaelgoldman.dev) using satori/resvg or Playwright at build time; og:image and twitter:card tags point at them; test asserts every page has an existing og:image file of 1200×630.
   - Spec: SPEC §3.8; design/README.md "Not drawn"
   - Out of scope: —
+
+
+## Pruned from the queue
+
+1 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### Motion
+
+- [x] **PR-39 Motion foundation**
+  - Done when: an inline head script adds `js` to `<html>`; CSS custom properties for the three easings and durations; a tiny `motion.ts` with `reveal()` (IntersectionObserver, threshold 0.2, once, `data-reveal="ink|rise|wipe|stamp|draw|cards"`, stagger via `data-reveal-delay`), a sessionStorage first-visit flag (try/catch), and global guards so reduced motion and no-JS show final states; documented in `docs/conventions/motion.md` and indexed in CLAUDE.md; Playwright tests: reduced motion → no element with opacity < 1 or non-none clip-path after load; JS disabled → all content visible.
+  - Spec: design/motion.md principles, §M3
+  - Out of scope: the specific animations.
