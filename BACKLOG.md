@@ -80,7 +80,7 @@ queue.
 
 ### QA walk, 2026-10-05
 
-- [ ] **QA-67 every sheet (WebKit/iPhone) — the two preloaded fonts download twice and the console warns "preloaded … but not used"**
+- [x] **QA-67 every sheet (WebKit/iPhone) — the two preloaded fonts download twice and the console warns "preloaded … but not used"**
   - Route: every sheet using SheetLayout's default `PRELOAD_FONTS`, e.g. `/` and `/experience`; seen in WebKit only (Playwright `webkit`, iPhone 14 and 1440 px desktop), with and without JS.
   - Did: `npm run build && npm run preview -- --ignore-lock`, open `http://localhost:4321/experience` in Playwright WebKit (`serviceWorkers: 'block'`), log every request under `/fonts/` with its `sec-fetch-mode` header and the console, wait 4 s.
   - Happened: `archivo-latin-wdth-normal.woff2` and `ibm-plex-sans-latin-400-normal.woff2` are each requested twice — once by the `<link rel="preload" … crossorigin>` in mode `cors`, then again by the `@font-face` in mode `no-cors` (WebKit fetches same-origin fonts without CORS, so the preload is not matched). The console then shows two warnings: "The resource http://localhost:4321/fonts/archivo-latin-wdth-normal.woff2 was preloaded using link preload but not used within a few seconds from the window's load event" and the same for `ibm-plex-sans-latin-400-normal.woff2`. Chromium (Pixel 7, desktop) requests each face once with no warning.
