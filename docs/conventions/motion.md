@@ -84,9 +84,13 @@ never a second system.
   given. A name must be unique on every rendered page (`tests/e2e/view-transitions.spec.ts` checks
   every route); per-item names come from a helper (`projectMorph(slug, part)` in
   src/view-transitions.ts) and carry a `view-transition-class` so one rule animates them all. The
-  names also join any same-document transition: the theme switch (§M7) must give its transition a
-  type and, under `:active-view-transition-type(…)`, clear or override these groups — otherwise
-  its root reveal leaves the named sheet, header and content cross-fading on their own.
+  names also join any same-document transition, so one marks `<html>` while it runs and clears
+  the names under that mark — as the theme switch does.
+- **Theme switch (§M7):** `revealTheme(update, button)` (src/view-transitions.ts) runs the swap as
+  a same-document transition with `html[data-theme-switching]` set: every name is dropped (one
+  picture) and `::view-transition-new(root)` grows a `clip-path` circle from `--theme-x/-y` to
+  `--theme-r`. Reduced motion or no API → `update()` at once. Storage is written in the click
+  handler, not in `update`.
 - **Tests:** `tests/e2e/motion.spec.ts` checks every route under reduced motion and without JS with
   `notInFinalState` (tests/e2e/helpers/motion.ts). An element whose opacity < 1 or clip-path IS its
   drawn final state goes on that helper's exception list, with a reason.

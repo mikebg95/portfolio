@@ -1,6 +1,7 @@
-// design/motion.md §M2: moving between sheets with cross-document View Transitions. The opt-in,
-// the chrome's names and the animations are src/styles/transitions.css; this holds what markup
-// and the page script need.
+// design/motion.md §M2: moving between sheets with cross-document View Transitions; §M7: the
+// theme switch's circular reveal. The chrome's names and the animations are
+// src/styles/transitions.css; this holds what markup and the page scripts need.
+import { prefersReducedMotion } from './motion';
 
 /** Set on the old page's `<html>` when it leaves scrolled; transitions.css then drops the chrome's
  * names, so the frame, header and content never fly in from their scrolled-away place: the old
@@ -26,5 +27,39 @@ export function markScrolledSwaps(): void {
   });
   window.addEventListener('pageshow', () => {
     document.documentElement.removeAttribute(SWAP_ATTRIBUTE);
+  });
+}
+
+/** On `<html>` while the theme reveal runs: transitions.css then captures the page as one picture
+ * (no chrome names) and plays the circle from `--theme-x/-y` out to `--theme-r`. */
+export const THEME_SWITCH_ATTRIBUTE = 'data-theme-switching';
+
+const REVEAL_PROPERTIES = ['--theme-x', '--theme-y', '--theme-r'];
+
+let latest: ViewTransition | undefined;
+
+/** §M7: runs `update` (the theme swap) as a View Transition whose new picture grows as a circle
+ * from the middle of `origin`, out to the farthest viewport corner. Reduced motion or no support:
+ * `update` at once. */
+export function revealTheme(update: () => void, origin: Element): void {
+  if (typeof document.startViewTransition !== 'function' || prefersReducedMotion()) {
+    update();
+    return;
+  }
+  const { left, top, width, height } = origin.getBoundingClientRect();
+  const x = left + width / 2;
+  const y = top + height / 2;
+  const r = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+  const root = document.documentElement;
+  [x, y, r].forEach((value, i) => root.style.setProperty(REVEAL_PROPERTIES[i]!, `${value}px`));
+  root.setAttribute(THEME_SWITCH_ATTRIBUTE, '');
+
+  const transition = document.startViewTransition(update);
+  latest = transition;
+  // A second click skips this one and starts its own: only the latest clears the marks.
+  void transition.finished.finally(() => {
+    if (latest !== transition) return;
+    root.removeAttribute(THEME_SWITCH_ATTRIBUTE);
+    REVEAL_PROPERTIES.forEach((property) => root.style.removeProperty(property));
   });
 }

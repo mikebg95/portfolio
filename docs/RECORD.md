@@ -413,3 +413,12 @@ src/view-transitions.ts). Three choices the spec left open:
   clicked below the fold still morphs. The chrome groups (`sheet`, `sheet-header`, `sheet-content`,
   `title-block`) never morph their boxes — they "stay put" by having no group animation; project
   titles or figures with no twin on the other page leave/enter with the content (`:only-child`).
+
+## 2026-10-04 — Theme switch reveal: a root marker, not a transition type
+
+PR-46 (agent). §M7 runs the theme swap through `document.startViewTransition(update)` with
+`html[data-theme-switching]` set instead of `startViewTransition({ update, types })`: the object
+form throws in Chromium 111–124, and the marker also lets CSS drop every sheet-transition name
+(`!important`, the project morph names are inline) so the page is captured as one picture. The
+circle starts at the clicked button's centre and ends at the farthest viewport corner (`--theme-r`).
+A second click mid-reveal skips the first; only the latest transition clears the marker.
