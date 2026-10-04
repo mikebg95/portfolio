@@ -58,7 +58,7 @@ queue.
 
 ### Sheet 02 — Experience
 
-- [ ] **PR-18 Timeline maths**
+- [x] **PR-18 Timeline maths**
   - Done when: a pure module computes, from start/end months and a ruler range (Jan 2021 – Jan 2027 derived from the data, end extended to the next January after today's build date), each bar's left %/width % and the duration label ("2 Y 8 M"); "now" uses the build date; Vitest covers LinkPizza 1.4%/44.4%, DJI 50%/33.3%, sabbatical 83.3%/6.9%, OptieCon start 90.3%, and duration rounding.
   - Spec: SPEC §4.2
   - Out of scope: rendering.
