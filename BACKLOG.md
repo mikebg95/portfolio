@@ -72,7 +72,7 @@ queue.
 
 ### Hardening
 
-- [ ] **PR-53 Responsive pass 320–2560**
+- [x] **PR-53 Responsive pass 320–2560**
   - Done when: Playwright visits every route at 320, 390, 768, 1024, 1440 and 2560 px wide and asserts no horizontal page scroll, no overlapping text (bounding-box check on headings/labels), tables scroll inside their framed box; screenshots saved as artifacts; fixes applied.
   - Spec: design/README.md "Responsive"; SPEC §7
   - Out of scope: —
