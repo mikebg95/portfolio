@@ -1,0 +1,141 @@
+---
+import type { SheetKey } from '../content/schemas';
+import { getLocalized, t } from '../i18n/content';
+import type { Lang } from '../i18n/paths';
+import { SHEETS } from '../i18n/routes';
+import { formatRev, formatSheet } from '../title-block';
+
+// SPEC §3.2, components.md TitleBlock: the footer cell grid, right-aligned, max 760 px.
+// 4 columns [PROJECT ×2][SCALE][SHEET] / [DRAWN][CHECKED][REV][CONTACT]; 2 columns on phone.
+interface Props {
+  lang: Lang;
+  /** The sheet this page belongs to; undefined on the 404 sheet (`?? / 05`). */
+  sheet: SheetKey | undefined;
+}
+
+const { lang, sheet } = Astro.props;
+const ui = await t(lang);
+const tb = ui.titleBlock;
+const { contact } = (await getLocalized('profile', 'profile', lang)).data;
+const number = SHEETS.find(({ key }) => key === sheet)?.number;
+const cells = [
+  { caption: tb.scale, value: tb.scaleValue },
+  { caption: tb.sheet, value: formatSheet(number, SHEETS.length) },
+  { caption: tb.drawn, value: tb.drawnValue },
+  { caption: tb.checked, value: tb.checkedValue },
+  { caption: tb.rev, value: formatRev(new Date()) },
+];
+const links = [
+  { label: tb.email, href: `mailto:${contact.email}`, external: false },
+  { label: tb.linkedin, href: contact.linkedin, external: true },
+  { label: tb.github, href: contact.github, external: true },
+];
+---
+
+<footer class="title-block">
+  <dl class="title-block__grid">
+    <div class="title-block__cell title-block__cell--project">
+      <dt>{tb.project}</dt>
+      <dd class="title-block__project">{tb.projectValue}</dd>
+    </div>
+    {cells.map(({ caption, value }) => (
+      <div class="title-block__cell">
+        <dt>{caption}</dt>
+        <dd>{value}</dd>
+      </div>
+    ))}
+    <div class="title-block__cell">
+      <dt>{tb.contact}</dt>
+      <dd class="title-block__links">
+        {links.map(({ label, href, external }) => (
+          <a
+            href={href}
+            target={external ? '_blank' : undefined}
+            rel={external ? 'noopener' : undefined}
+          >
+            {label}
+            <span aria-hidden="true">↗</span>
+          </a>
+        ))}
+      </dd>
+    </div>
+  </dl>
+</footer>
+
+<style>
+  .title-block {
+    display: flex;
+    justify-content: flex-end;
+    border-top: var(--border-thin);
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+
+  /* Cells draw their own left and top rules, so any column count stays ruled. The grid sits 1 px
+     up and 1 px left: its top rule is the footer's, and when it spans the sheet its left rule is
+     the frame's. The inner frame closes the right and the bottom. */
+  .title-block__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    width: calc(100% + 1px);
+    max-width: 761px;
+    margin: -1px 0 0 -1px;
+  }
+
+  .title-block__cell {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: 10px 14px;
+    border-top: var(--border-thin);
+    border-left: var(--border-thin);
+  }
+
+  .title-block__cell--project {
+    grid-column: span 2;
+  }
+
+  dt {
+    color: var(--color-muted);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+  }
+
+  dd {
+    margin: 0;
+    color: var(--color-ink);
+  }
+
+  .title-block__project {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: var(--font-display-weight);
+    font-stretch: 112%;
+  }
+
+  .title-block__links {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: var(--space-3);
+  }
+
+  /* components.md Link: line colour, no underline, hover → redline; 24 px tall targets. */
+  .title-block__links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4ch;
+    min-height: 24px;
+    color: var(--color-line);
+    text-decoration: none;
+  }
+
+  .title-block__links a:hover {
+    color: var(--color-redline);
+  }
+
+  @media (max-width: 767px) {
+    .title-block__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

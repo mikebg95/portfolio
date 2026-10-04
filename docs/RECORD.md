@@ -66,3 +66,11 @@ monogram + utilities form row 1 and the tabs a full row 2 (one row down to 768 p
 rule), so DOM/focus order stays monogram → tabs → utilities. The CV is a committed copy at
 `CV_PATH` (`src/config.ts`) and `tests/unit/cv.test.ts` fails if it differs from
 `docs/source/cv.pdf`. Instead of: a build-time copy step (one more script for one static file).
+
+## 2026-10-04 — Title block: REV in UTC, 404 reads `?? / 05`, contact from `profile`
+Who: agent (PR-9). REV is the build month in UTC (`src/title-block.ts`) so a build reads the same
+on any machine. The 404 sheet has no number; its SHEET cell reads `?? / 05`, matching its label
+`SHEET ?? — NOT IN SET`. CONTACT links read `profile.contact` (already holding copy.md's targets)
+rather than a second copy in `src/config.ts`. Email ↗ is drawn as copy.md has it, but only the
+external LinkedIn/GitHub links open a new tab (components.md Link). Instead of: a hidden SHEET
+cell on 404; contact constants in config.

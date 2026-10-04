@@ -2,18 +2,20 @@
 import FontPreload from '../components/FontPreload.astro';
 import SheetFrame from '../components/SheetFrame.astro';
 import SheetHeader from '../components/SheetHeader.astro';
+import TitleBlock from '../components/TitleBlock.astro';
 import type { SheetKey } from '../content/schemas';
 import { t } from '../i18n/content';
 import type { Lang } from '../i18n/paths';
 import { THEME_STORAGE_KEY, THEMES } from '../theme';
 import '../styles/base.css';
 
-// The page shell every route uses: theme before paint, skip link, the sheet frame, the header.
-// Pages fill the `footer` slot until TitleBlock (PR-9) lives here.
+// The page shell every route uses: theme before paint, skip link, the sheet frame, the header and
+// the title block footer.
 interface Props {
   lang: Lang;
   title: string;
-  /** The sheet this page belongs to (its header tab is current); omitted on the 404 sheet. */
+  /** The sheet this page belongs to (its header tab is current, its number in the title block);
+   * omitted on the 404 sheet. */
   sheet?: SheetKey;
 }
 
@@ -46,7 +48,7 @@ const ui = await t(lang);
       <main id="main" tabindex="-1">
         <slot />
       </main>
-      <slot name="footer" slot="footer" />
+      <TitleBlock slot="footer" lang={lang} sheet={sheet} />
     </SheetFrame>
   </body>
 </html>
