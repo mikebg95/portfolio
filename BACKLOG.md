@@ -56,7 +56,7 @@ queue.
 
 ### Sheet 01 — Overview
 
-- [ ] **PR-13 Overview hero and portrait**
+- [x] **PR-13 Overview hero and portrait**
   - Done when: `/` renders the hero exactly as `design/screens/overview-default-light-1440.png` (label, MICHAEL/GOLDMAN display-xl, rule + role line, intro, revision note, VIEW PROJECTS and DOWNLOAD CV buttons) and the portrait block (`<pre aria-hidden>` portrait + sr-only text, horizontal and vertical dimension lines, balloons 1–3 with leaders; balloon 1 links to /certifications); phone layout per design/README.md "Responsive" (balloons become a numbered list under the portrait); e2e checks text, links and no horizontal scroll at 320 px.
   - Spec: SPEC §4.1; design/screens/html/overview-default-light-1440.html
   - Out of scope: motion (PR-41).
