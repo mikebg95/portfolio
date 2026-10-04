@@ -113,33 +113,4 @@ test('the switch still works when storage is blocked', async ({ page }) => {
   expect(errors).toEqual([]);
 });
 
-// Every stub sheet in both themes, with axe (design/README.md rule 10: derived from tokens).
-const PAGES = [
-  '/',
-  '/experience',
-  '/projects',
-  '/projects/jamigos',
-  '/projects/subscription-tracker',
-  '/projects/recipe-book',
-  '/projects/journal',
-  '/projects/scentify',
-  '/certifications',
-  '/education',
-  '/nl/',
-  '/no-such-sheet',
-];
-
-for (const path of PAGES) {
-  test(`${path} renders in paper and in blueprint without axe violations`, async ({ page }) => {
-    for (const theme of ['paper', 'blueprint'] as const) {
-      await page.addInitScript(([key, value]) => localStorage.setItem(key, value), [
-        THEME_STORAGE_KEY,
-        theme,
-      ] as const);
-      await page.goto(path);
-      await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
-      await expectTheme(page, theme);
-      await expectNoAxeViolations(page);
-    }
-  });
-}
+// Every page × both languages × both themes with axe: tests/e2e/accessibility.spec.ts.

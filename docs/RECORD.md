@@ -470,3 +470,13 @@ Science); degrees are Dutch (BSc Politicologie, Minor Programmeren). Long Dutch 
 shrink the EN drawing. Every content entry is now translated; a unit test forbids
 `translated: false`, and `tests/e2e/dutch.spec.ts` greps the built `dist/nl/` for copy.md Global's
 English words (not PROJECT: the Dutch caption is the same word).
+
+## 2026-10-04 — Accessibility pass: one spec, axe matrix moved out of theme.spec
+Who: agent (PR-51). The per-sheet × theme axe loop in `tests/e2e/theme.spec.ts` moved to
+`tests/e2e/accessibility.spec.ts` and widened to every route in both languages plus both 404s
+(it covered EN and `/nl/` only); keeping both would run axe twice per page. The keyboard walk
+treats "logical order" as DOM order of rendered tabbables with no positive tabindex, and skips
+WebKit (it tabs to links only with an OS setting). Nothing failed: 0 axe violations, every
+control reached and ringed. Measured from tokens: muted on fill-3 in blueprint is 4.46:1 and
+muted/redline on fill-2 are below 4.5:1 in both themes — no text uses those pairs today (axe
+passes); the unit test pins only muted/redline on paper and redline on fill-1/fill-3.

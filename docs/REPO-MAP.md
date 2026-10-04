@@ -91,7 +91,8 @@ line.
 - `tests/e2e/sheet-index.spec.ts` — phone panel: open, navigate, Escape, focus trap (Chromium only), outside tap, no-JS `<details>`; skipped at ≥ 768 px.
 - `src/components/TitleBlock.astro` — the footer (rendered by SheetLayout, sheet number from its `sheet` prop); captions from `ui.titleBlock`, contact from `profile.contact`, REV/SHEET formatters in `src/title-block.ts`; cells draw only left+top rules so 2 and 4 columns both stay ruled.
 - `tests/e2e/sheet.spec.ts` — skip link, frame widths/grid, zone strip per viewport, stored theme applied.
-- `tests/e2e/theme.spec.ts` — toggle + reload, dark system, storage blocked, every sheet × both themes with axe.
+- `tests/e2e/theme.spec.ts` — toggle + reload, dark system, storage blocked.
+- `tests/e2e/accessibility.spec.ts` — every route × language (+ both 404s) × both themes: axe + one h1; keyboard walk (Tab order = DOM order of rendered tabbables, 2 px ring on each, Chromium only); phone panel by keyboard. `tests/unit/contrast.test.ts` — muted/redline vs paper from tokens.json.
 - TRAP: Playwright `toHaveText(…, { useInnerText: true })` still includes `.sr-only` text (clip is not "not rendered"); assert the visible label `.sheet-header__theme-label:visible` instead.
 
 ## Sheet 01 — Overview
