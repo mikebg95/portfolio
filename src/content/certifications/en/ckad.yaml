@@ -1,12 +1,14 @@
-# Placeholder so the build passes — PR-30 replaces it with the copy from design/copy.md.
 code: C-04
-name: 'Placeholder (PR-30)'
-issuer: 'Placeholder (PR-30)'
+name: Certified Kubernetes Application Developer (CKAD)
+issuer: The Linux Foundation
 date: null
 status: pending
-stamp: ['Placeholder (PR-30)', 'Placeholder (PR-30)', 'Placeholder (PR-30)']
-learned: 'Placeholder (PR-30)'
+stamp: [PENDING, CKAD, IN PROGRESS]
+learned: 'Designing, deploying and running applications on Kubernetes — the next step after Docker and CI/CD.'
 skills:
-  - 'Placeholder (PR-30)'
+  - Pods & deployments
+  - Config & secrets
+  - Probes
+  - Services
 lang: en
 translated: true

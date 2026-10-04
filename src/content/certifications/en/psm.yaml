@@ -1,0 +1,16 @@
+code: C-02
+name: Professional Scrum Master I (PSM I)
+issuer: Scrum.org
+date: '2025-01'
+status: verified
+stamp: [VERIFIED, '2025', SCRUM.ORG]
+verifyUrl: https://www.credly.com/badges/7a034eee-0a8c-44f4-97ca-47a0debf8019
+verifyLabel: VERIFY ON CREDLY
+learned: 'How Scrum teams really work: accountabilities, events and artefacts, and the empiricism behind them — useful every sprint in an agile DevOps team.'
+skills:
+  - Scrum
+  - Agile
+  - Empiricism
+  - Facilitation
+lang: en
+translated: true
