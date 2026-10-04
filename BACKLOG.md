@@ -72,7 +72,7 @@ queue.
 
 ### Hardening
 
-- [ ] **QA-65 Lighthouse best-practices 0.96 on /education (font size)**
+- [x] **QA-65 Lighthouse best-practices 0.96 on /education (font size)**
   - Seen by PR-63b's agent, 2026-10-04, and the same on 43466df: `npm run build && npm run lhci` fails the `categories.best-practices` minScore 1 assertion on /education (mobile preset). The `font-size` audit flags 11 px callouts and parts list, plus the 9–11 px title block. Everything else passes.
   - Done when: `npm run lhci` passes on every URL without changing `lighthouserc.json`, and the drawing's look at desktop widths is unchanged.
   - Spec: design/tokens.json type sizes; design/screens education-*-390
