@@ -686,3 +686,16 @@ History, not a queue.
   - Done when, below 768 px: name fit-to-width (PR-61, already), portrait in a "FIG. 0 — PORTRAIT · SCALE 1:1" framed card with balloons 1–3 on its right edge and a 3-cell caption strip under it (balloon 1 still links to /certifications), two-button row (projects + CV, 48 px), "How I work" as a horizontal snap-scroll card rail with a position indicator (works without JS: plain overflow scroll; indicator is decoration or JS-enhanced), spec rows stacked label-over-value; 44 px+ targets, no horizontal page scroll at 320 px, reduced motion; Playwright phone screenshots in both themes in `.e2e/` compared by eye; e2e for the rail.
   - Spec: design/screens overview 390, design/components.md, design/motion.md
   - Out of scope: desktop layout; the header/tab bar (PR-62a, done).
+
+
+## Pruned from the queue
+
+1 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### Hardening
+
+- [x] **PR-62c Phone Experience: vertical timeline with expandable cards** (rest of PR-62, item 4)
+  - Drawing: `design/screens/experience-default-light-390.png` (+ html).
+  - Done when, below 768 px: years down a left ruler, the Conspect bracket spanning its assignments, assignment cards beside it (tap expands the full detail in place; without JS the detail is reachable — `<details>` or already open), hatched sabbatical; 44 px+ targets, no horizontal scroll at 320, reduced motion; screenshots both themes; e2e for timeline expand.
+  - Spec: design/screens experience 390; docs/RECORD.md (2026-10-04 Conspect entry)
+  - Out of scope: desktop layout.
