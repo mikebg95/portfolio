@@ -144,3 +144,25 @@ History, not a queue.
   - Done when: `/` renders the hero exactly as `design/screens/overview-default-light-1440.png` (label, MICHAEL/GOLDMAN display-xl, rule + role line, intro, revision note, VIEW PROJECTS and DOWNLOAD CV buttons) and the portrait block (`<pre aria-hidden>` portrait + sr-only text, horizontal and vertical dimension lines, balloons 1–3 with leaders; balloon 1 links to /certifications); phone layout per design/README.md "Responsive" (balloons become a numbered list under the portrait); e2e checks text, links and no horizontal scroll at 320 px.
   - Spec: SPEC §4.1; design/screens/html/overview-default-light-1440.html
   - Out of scope: motion (PR-41).
+
+
+## Pruned from the queue
+
+3 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### Sheet 01 — Overview
+
+- [x] **PR-14 Overview "How I work" panel**
+  - Done when: a panel below the hero (split by 1 px ink rule, label `HOW I WORK`) shows the four numbered principles as a 4-column drawing grid (2 on tablet, 1 on phone) in the drawing language (numbers as mono `01`–`04` in line colour, display-s titles, body text), plus the mono AI note beneath; no rounded corners, no icons; e2e asserts the four titles.
+  - Spec: SPEC §4.1; design/copy.md "How I work"; design/README.md
+  - Out of scope: other panels.
+
+- [x] **PR-15 Overview specification and general notes**
+  - Done when: the two-panel row as drawn: SPECIFICATION S-01…S-07 (S-06 Kubernetes in redline) and GENERAL NOTES 1–6; stacks on phone; e2e asserts all rows.
+  - Spec: SPEC §4.1; design/screens/overview-default-light-1440.png
+  - Out of scope: motion.
+
+- [x] **PR-16 Overview "In progress" strip**
+  - Done when: a panel labelled `IN PROGRESS` lists the three current items as rows (redline ◐ marker, text, → link to the target anchor/page), above the title block; links resolve (anchors exist or are added as ids by their page tasks — if a target page is still a stub, the id is added there now); e2e follows each link.
+  - Spec: SPEC §4.1; design/copy.md "Current work"
+  - Out of scope: —
