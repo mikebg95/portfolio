@@ -103,6 +103,22 @@ for (const prefix of ['', '/nl']) {
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(width);
     });
   }
+
+  // QA-65: from 360 px the parts list keeps 12 px type (Lighthouse's legible size) and still fits
+  // its frame; 412 px is Lighthouse's mobile viewport.
+  for (const width of [360, 412]) {
+    test(`${prefix}/education: at ${width} px the parts list is 12 px and fits its frame`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await open(page, `${prefix}/education`);
+      const table = page.locator('.parts-list');
+      expect(await table.evaluate((el) => getComputedStyle(el).fontSize)).toBe('12px');
+      expect(
+        await page.locator('.parts-list-frame').evaluate((el) => el.scrollWidth - el.clientWidth),
+      ).toBeLessThanOrEqual(0);
+    });
+  }
 }
 
 test('/nl/education renders the five parts too', async ({ page }) => {

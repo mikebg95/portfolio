@@ -704,3 +704,14 @@ assembly axis sits at 127.75 px on a 390 px phone, on the 2ⁿ trap, so at 3× i
 `repeating-linear-gradient` (3 px dash, 3 px gap) instead of a border. Instead of: 2 px (changes the
 drawing's weight); gradients for every dashed border at 3× (layer juggling in every component for
 boxes that draw fine at 1 px).
+
+## 2026-10-04 — Phone parts list stays 12 px from 360 px (QA-65)
+Who: agent (QA-65). Lighthouse best practices was 0.96 on /education: on a phone the detail panel
+moved into the bottom sheet (PR-62e), so only 51.5 % of the page's rendered text was ≥ 12 px
+(the `font-size` audit needs 60 %). Largest small shares: callouts 11.6 %, parts list 18.2 %, title
+block 6.9 %. Fix: the parts list keeps 12 px down to 360 px (measured: the table fills its frame
+exactly at 360, 375, 390, 412 px in EN and NL) and drops to 11 px only below; now 72 % legible,
+best practices 1 on every URL. Desktop is untouched (it was 12 px already). Instead of: raising the
+callouts on phones (their 112 px label column would wrap Dutch compounds further) or the title
+block (shared chrome, its 9–11 px is the drawing's look). Seen while measuring: at 320–340 px in
+EN the table is 251 px in a 228 px frame, so it scrolls inside its frame — before this change too.
