@@ -68,7 +68,7 @@ queue.
 
 ### Motion
 
-- [ ] **PR-44 Education exploded-view scroll animation**
+- [x] **PR-44 Education exploded-view scroll animation**
   - Done when: §M5: starts assembled (6 px gaps, balloons hidden), explodes scrubbed by scroll (top plate first, axis draws, leaders + balloons appear as plates arrive, CKAD dashed outline fades in last); phone plays a one-off 1.2 s timeline on enter; selection (PR-35) keeps working at any scroll position; reduced motion → exploded final state; e2e scrolls through and asserts final positions.
   - Spec: design/motion.md §M5
   - Out of scope: —
