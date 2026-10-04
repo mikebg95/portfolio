@@ -334,3 +334,15 @@ History, not a queue.
   - Done when: clicking/Enter/Space on a plate, balloon or row selects that part: plate lifts 12 px and fills, others dim to 60%, row highlights, panel content swaps (clip-path wipe 250 ms; instant under reduced motion), URL hash `#part-n` updates and is honoured on load; without JS all five details render stacked (progressive enhancement); hover on a row previews the lift; e2e covers mouse, keyboard and hash.
   - Spec: SPEC §4.6; design/motion.md §M5
   - Out of scope: scroll-scrubbed explode (PR-44).
+
+
+## Pruned from the queue
+
+1 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### 404 and SEO
+
+- [x] **PR-36 404 sheet**
+  - Done when: `/404` and `/nl/404` per SPEC §3.9 / §4.7 and copy.md, built from the sheet primitives, listing the five sheets; static host config notes in docs/REPO-MAP.md; e2e visits an unknown URL in preview and gets this sheet.
+  - Spec: SPEC §3.9, §4.7
+  - Out of scope: —

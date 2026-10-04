@@ -66,11 +66,6 @@ queue.
 
 ### 404 and SEO
 
-- [x] **PR-36 404 sheet**
-  - Done when: `/404` and `/nl/404` per SPEC §3.9 / §4.7 and copy.md, built from the sheet primitives, listing the five sheets; static host config notes in docs/REPO-MAP.md; e2e visits an unknown URL in preview and gets this sheet.
-  - Spec: SPEC §3.9, §4.7
-  - Out of scope: —
-
 - [ ] **PR-37 SEO metadata, sitemap, robots, JSON-LD**
   - Done when: per-page title/description from copy.md SEO table (NL from content), canonical, hreflang en/nl/x-default, sitemap.xml (both languages, excluding `/_primitives` and 404), robots.txt, JSON-LD Person on `/` (no phone/address); a Vitest/e2e test parses each built page's head and asserts all of it.
   - Spec: SPEC §3.8; design/copy.md SEO
