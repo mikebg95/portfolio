@@ -80,7 +80,7 @@ queue.
 
 ### QA walk, 2026-10-05
 
-- [ ] **QA-69 /education (< 768 px, mouse) — clicking the part sheet's handle does not close the sheet**
+- [x] **QA-69 /education (< 768 px, mouse) — clicking the part sheet's handle does not close the sheet**
   - Route: `/education` (and `/nl/education`) at a width under 768 px with a mouse pointer — e.g. a desktop browser window 390 or 700 px wide; Chromium and WebKit both.
   - Did: Playwright context `{ viewport: { width: 390, height: 844 } }` (no touch), waited 3 s, clicked the parts-list row button `.parts-list__select[data-part="3"]` (the bottom sheet opens), then clicked the handle `[data-sheet-close]` ("Close") with the mouse and waited 1.2 s.
   - Happened: `dialog[data-part-sheet]` stays open. The same handle closes the sheet when tapped (Pixel 7 / iPhone 14 `tap()`) or activated with Enter, and Escape and the backdrop close it with the mouse too. Likely cause, from `src/part-sheet.ts`: the head's `pointerdown` calls `head.setPointerCapture(...)`, so a mouse click is dispatched to the captured head rather than to the grip, and the grip's `click` listener never runs.
