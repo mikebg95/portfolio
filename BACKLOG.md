@@ -80,7 +80,7 @@ queue.
 
 ### QA walk, 2026-10-05
 
-- [ ] **QA-68 /experience#<entry> (desktop) — arriving from another page lands the entry under the pinned timeline**
+- [x] **QA-68 /experience#<entry> (desktop) — arriving from another page lands the entry under the pinned timeline**
   - Route: `/experience#optiecon` (also `#dji`, and `/nl/experience#optiecon`), desktop 1440 × 900, Chromium, motion on.
   - Did: on `/`, clicked the "In progress" link "OptieCon — security and sign-in, at Conspect →" (`href="/experience#optiecon"`); separately typed `/experience#optiecon` and `/experience#dji` in the address bar. Waited 2.5 s.
   - Happened: the page scrolls the article to the top of the viewport (heading "OPTIECON — FULL-STACK JAVA ENGINEER" at y ≈ 40), and the pinned timeline is drawn over it — `document.elementFromPoint` at the heading returns an element inside `.timeline`; the screen shows the timeline, then 02.1b Sabbatical and 02.1c DJI, never the OptieCon entry the link promised. `--timeline-pinned` is 270px by then, but it is set by `src/timeline-motion.ts` (lazy GSAP) after the browser has already done the initial hash scroll, so the article's `scroll-margin-top` is still 0 at that moment. Clicking the OptieCon bar on the page itself lands it clear (heading at y ≈ 310), so only arrivals with a hash are wrong.
