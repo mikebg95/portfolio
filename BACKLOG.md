@@ -76,7 +76,7 @@ queue.
   - Spec: design/copy.md 03.4; github.com/mikebg95/journal
   - Out of scope: other projects.
 
-- [ ] **PR-29 Scentify detail sheet**
+- [x] **PR-29 Scentify detail sheet**
   - Done when: content from copy.md 03.5 plus spec rows (Android, Java, Activities, custom ArrayAdapter, catalogue of 52, limitations noted honestly); FIG. 1 question flow; FIG. 2 the demo GIF copied from the repo into `public/projects/scentify/` (optimised; `loading="lazy"`, width/height set, alt text, caption, source credited) — paused (static first frame) under reduced motion; e2e asserts the image and caption.
   - Spec: design/copy.md 03.5; github.com/mikebg95/Scentify
   - Out of scope: other projects.
