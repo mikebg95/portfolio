@@ -72,7 +72,7 @@ queue.
 
 ### Hardening
 
-- [ ] **PR-62c Phone Experience: vertical timeline with expandable cards** (rest of PR-62, item 4)
+- [x] **PR-62c Phone Experience: vertical timeline with expandable cards** (rest of PR-62, item 4)
   - Drawing: `design/screens/experience-default-light-390.png` (+ html).
   - Done when, below 768 px: years down a left ruler, the Conspect bracket spanning its assignments, assignment cards beside it (tap expands the full detail in place; without JS the detail is reachable — `<details>` or already open), hatched sabbatical; 44 px+ targets, no horizontal scroll at 320, reduced motion; screenshots both themes; e2e for timeline expand.
   - Spec: design/screens experience 390; docs/RECORD.md (2026-10-04 Conspect entry)
