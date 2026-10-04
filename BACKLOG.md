@@ -58,16 +58,6 @@ queue.
 
 ### Sheet 02 — Experience
 
-- [x] **PR-19 Experience timeline drawing**
-  - Done when: `/experience` shows label, heading and the timeline as drawn (ruler, Conspect dimension line, bars with links to `#<id>`, hatched sabbatical with caption, open-ended OptieCon, duration dimensions) using PR-18; on phone the timeline is vertical (years down the left, bars as vertical segments) with the same information; e2e clicks a bar and lands on its detail.
-  - Spec: SPEC §4.2; design/screens/html/experience-default-light-1440.html; design/components.md TimelineRuler/TimelineBar
-  - Out of scope: scroll motion (PR-43).
-
-- [x] **PR-20 Experience detail blocks**
-  - Done when: detail blocks 02.1 OptieCon, 02.2 DJI, 02.3 LinkPizza (+ small hatched sabbatical block between 02.1 and 02.2) exactly as drawn, newest first, with ids, DJI revision note, stack lines, Conspect employer line; stacks to one column on phone; e2e asserts each block's title and dates.
-  - Spec: SPEC §4.2; design/copy.md Sheet 02; design/components.md ExperienceDetail
-  - Out of scope: motion.
-
 ### Sheet 03 — Projects
 
 - [ ] **PR-21 Project content (EN) — register fields**
