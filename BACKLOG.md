@@ -60,7 +60,7 @@ queue.
 
 ### Sheet 03 — Projects
 
-- [ ] **PR-24 Project detail template**
+- [x] **PR-24 Project detail template**
   - Done when: `/projects/[slug]` (static paths from the collection, both languages) renders back link, label `DETAIL SHEET 03.n — P-0n`, title, summary, repo button, meta line, a FIG. 1 slot, specification rows, a FIG. 2 slot, revision note, previous/next links (wrapping), header tab 03 active, footer SHEET 03 / 05; matches `project-detail-jamigos-default-light-1440.png` structure; e2e visits all five slugs.
   - Spec: SPEC §4.4; design/screens/html/project-detail-jamigos-default-light-1440.html
   - Out of scope: per-project figures (PR-25…29).
