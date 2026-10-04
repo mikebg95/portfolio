@@ -1,18 +1,29 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 
+import Button from '../../../components/drawing/Button.astro';
+import DisplayHeading from '../../../components/drawing/DisplayHeading.astro';
+import Figure from '../../../components/drawing/Figure.astro';
+import Link from '../../../components/drawing/Link.astro';
+import RevisionNote from '../../../components/drawing/RevisionNote.astro';
+import SheetLabel from '../../../components/drawing/SheetLabel.astro';
+import SpecRow from '../../../components/drawing/SpecRow.astro';
+import SpecTable from '../../../components/drawing/SpecTable.astro';
 import { getAllLocalized, sharedId, t } from '../../../i18n/content';
-import { langPaths, type Lang } from '../../../i18n/paths';
+import { langPaths, localize, type Lang } from '../../../i18n/paths';
+import { projectPath, SHEETS, sheetPath } from '../../../i18n/routes';
 import SheetLayout from '../../../layouts/SheetLayout.astro';
+import { detailMeta, neighbours } from '../../../project-detail';
 
 export async function getStaticPaths() {
   const paths = await Promise.all(
-    langPaths().map(async ({ params, props }) =>
-      (await getAllLocalized('projects', props.lang)).map((project) => ({
+    langPaths().map(async ({ params, props }) => {
+      const projects = await getAllLocalized('projects', props.lang);
+      return projects.map((project) => ({
         params: { ...params, slug: sharedId(project) },
-        props: { ...props, project },
-      })),
-    ),
+        props: { ...props, project, projects: projects.map((p) => p.data) },
+      }));
+    }),
   );
   return paths.flat();
 }
@@ -20,18 +31,231 @@ export async function getStaticPaths() {
 interface Props {
   lang: Lang;
   project: CollectionEntry<'projects'>;
+  /** Every project in this language, in register order: series part numbers and prev/next. */
+  projects: CollectionEntry<'projects'>['data'][];
 }
 
-const { lang, project } = Astro.props;
+// A project detail sheet (SPEC §4.4; drawing project-detail-jamigos-default-light-1440), the
+// template all five share. The figures' drawings are per project (PR-25…29) and go in the slots.
+const { lang, project, projects } = Astro.props;
 const ui = await t(lang);
+const text = ui.projects.detail;
+const data = project.data;
+const sheet = String(SHEETS.find((s) => s.key === 'projects')?.number ?? 0).padStart(2, '0');
+const label = text.label
+  .replace('{sheet}', sheet)
+  .replace('{n}', String(data.order))
+  .replace('{code}', data.code);
+const { previous, next } = neighbours(projects, data.slug);
+const href = (slug: string) => localize(lang, projectPath(slug));
 ---
 
 <SheetLayout
   lang={lang}
   sheet="projects"
-  title={ui.seo.project.title.replace('{title}', project.data.title)}
+  title={ui.seo.project.title.replace('{title}', data.title)}
 >
-  <section class="sheet-panel">
-    <h1>{project.data.title}</h1>
+  <section class="sheet-panel detail-head">
+    <div class="detail-head__intro">
+      <div class="detail-head__text">
+        <Link class="detail-head__back" href={localize(lang, sheetPath('projects'))}>
+          <span aria-hidden="true">← </span>
+          {text.back}
+        </Link>
+        <SheetLabel>{label}</SheetLabel>
+        <DisplayHeading as="h1" size="l" class="detail-head__title">
+          {data.title}
+        </DisplayHeading>
+        <p class="detail-head__summary">{data.summary}</p>
+      </div>
+      <div class="detail-head__repo">
+        <Button href={data.repo} external>
+          {text.repo}
+        </Button>
+        <p class="detail-head__meta">{detailMeta(data, projects, text)}</p>
+      </div>
+    </div>
+    <Figure
+      label={text.figure.replace('{n}', '1').replace('{title}', data.figures[0].title)}
+      data-figure="1"
+    />
+  </section>
+  <section class="sheet-panel detail-body">
+    <div class="detail-body__spec">
+      <SheetLabel id="specification-label">{text.specification}</SheetLabel>
+      {data.spec.length > 0 && (
+        <SpecTable aria-labelledby="specification-label">
+          {data.spec.map((row) => (
+            <SpecRow label={row.label}>{row.text}</SpecRow>
+          ))}
+        </SpecTable>
+      )}
+    </div>
+    <div class="detail-body__aside">
+      <Figure
+        bare
+        label={text.figure.replace('{n}', '2').replace('{title}', data.figures[1].title)}
+        data-figure="2"
+      />
+      <RevisionNote text={data.note} />
+    </div>
+  </section>
+  <section class="sheet-panel detail-pager">
+    <a class="detail-pager__link" href={href(previous.slug)} rel="prev" data-pager="previous">
+      <span class="detail-pager__direction">
+        <span aria-hidden="true">← </span>
+        {text.previous}
+      </span>{' '}
+      <span class="detail-pager__project">
+        {previous.code} · {previous.title}
+      </span>
+    </a>
+    <a
+      class="detail-pager__link detail-pager__link--next"
+      href={href(next.slug)}
+      rel="next"
+      data-pager="next"
+    >
+      <span class="detail-pager__direction">
+        {text.next}
+        <span aria-hidden="true"> →</span>
+      </span>{' '}
+      <span class="detail-pager__project">
+        {next.code} · {next.title}
+      </span>
+    </a>
   </section>
 </SheetLayout>
+
+<style>
+  .detail-head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    padding-block: var(--space-7);
+  }
+
+  .detail-head__intro {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-5);
+  }
+
+  .detail-head__text {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-width: 0;
+  }
+
+  .detail-head__back {
+    font-family: var(--font-mono);
+    font-size: var(--size-code);
+  }
+
+  .detail-head__summary {
+    max-width: 660px;
+    margin: 0;
+    color: var(--color-text-2);
+    font-size: var(--size-lead);
+    line-height: 1.6;
+  }
+
+  .detail-head__repo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .detail-head__meta {
+    margin: 0;
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: var(--size-code);
+  }
+
+  /* SPECIFICATION beside FIG. 2 + the note from 1024 px, divided by a rule; stacked below. */
+  .detail-body.sheet-panel {
+    display: grid;
+    padding: 0;
+  }
+
+  .detail-body__spec,
+  .detail-body__aside {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    min-width: 0;
+    padding: var(--space-6) var(--sheet-content-padding) var(--space-7);
+  }
+
+  .detail-body__aside {
+    gap: 22px;
+    border-top: var(--border-thin);
+  }
+
+  @media (min-width: 1024px) {
+    .detail-body.sheet-panel {
+      grid-template-columns: minmax(0, 1.85fr) minmax(0, 1fr);
+    }
+
+    .detail-body__aside {
+      padding-inline: var(--space-7);
+      border-top: none;
+      border-left: var(--border-thin);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .detail-body__spec,
+    .detail-body__aside {
+      padding-inline: var(--sheet-content-padding-phone);
+    }
+  }
+
+  .detail-pager {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding-block: var(--space-5);
+  }
+
+  .detail-pager__link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    color: var(--color-line);
+    font-family: var(--font-mono);
+    font-size: var(--size-code);
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    transition: color var(--motion-fast) var(--motion-ease-out);
+  }
+
+  .detail-pager__link:hover {
+    color: var(--color-redline);
+  }
+
+  .detail-pager__link--next {
+    align-items: flex-end;
+    margin-left: auto;
+    text-align: right;
+  }
+
+  .detail-pager__project {
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: 15px;
+    letter-spacing: normal;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .detail-pager__link {
+      transition: none;
+    }
+  }
+</style>

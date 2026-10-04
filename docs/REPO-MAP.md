@@ -96,3 +96,6 @@ line.
 - `src/components/projects/ProjectCard.astro` — one register card (whole card one link, `data-project` = slug); flagship = `order: 1` spans 2 grid columns from 768 px; `in-progress` dashed with a redline label.
 - `src/components/projects/MiniDiagram.astro` — per-slug layouts fed by the entry's `diagram` labels (`LABELS` = count per slug); a new project needs a layout here or the build throws.
 - `src/components/drawing/Box.astro` `mini`/`main`, `Arrow.astro` `mini` — the card-sized variants; `/_primitives` shows all five cards (`tests/e2e/primitives.spec.ts`).
+- `src/pages/[...lang]/projects/[slug].astro` — the detail template: head (back, label, title, summary, repo button, meta), FIG. 1 panel, SPECIFICATION beside FIG. 2 + note (≥ 1024 px), pager; figures are `[data-figure="1|2"]` `Figure`s whose drawings PR-25…29 put in the slot.
+- `src/project-detail.ts` — `neighbours` (prev/next, wrapping) and `detailMeta` (period · SERIES PART n · status) for the detail sheets.
+- `tests/e2e/project-detail.spec.ts` — all five slugs: label, title, repo href, meta, figure captions, note, pager hrefs, tab + footer; NL navigation; spec/FIG. 2 layout per viewport.

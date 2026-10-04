@@ -272,13 +272,28 @@ export const uiSchema = z.strictObject({
   }),
   /**
    * Sheet 03's own strings (copy.md Sheet 03): label, the heading's two drawn lines, intro and the
-   * series line. `{count}` in `series.tests` is the sum of the series entries' `tests`.
+   * series line. `{count}` in `series.tests` is the sum of the series entries' `tests`. `detail`
+   * holds the detail sheets' common strings (copy.md "Detail sheets"); arrows are drawn by the page.
    */
   projects: z.strictObject({
     label: text,
     heading: z.tuple([text, text]),
     intro: text,
     series: z.strictObject({ label: text, tests: text.includes('{count}') }),
+    detail: z.strictObject({
+      back: text,
+      /** `{sheet}` the sheet number (03), `{n}` the project's `order`, `{code}` its code. */
+      label: text.includes('{sheet}').includes('{n}').includes('{code}'),
+      repo: text,
+      /** `{n}` 1 or 2, `{title}` the figure's title. */
+      figure: text.includes('{n}').includes('{title}'),
+      specification: text,
+      previous: text,
+      next: text,
+      /** The meta line after the period: `SERIES PART {n}` for series entries, then the status. */
+      seriesPart: text.includes('{n}'),
+      status: z.strictObject({ 'in-progress': text, 'retired-hosting': text }),
+    }),
   }),
   lang,
   translated,

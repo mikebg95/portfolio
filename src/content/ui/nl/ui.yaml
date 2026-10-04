@@ -67,5 +67,15 @@ projects:
   series:
     label: ASSEMBLY · SPRING PERSISTENCE & ARCHITECTURE SERIES
     tests: '{count} TESTS · ALL TEST-FIRST'
+  detail:
+    back: SHEET 03 · DRAWING REGISTER
+    label: 'DETAIL SHEET {sheet}.{n} — {code}'
+    repo: REPOSITORY ON GITHUB
+    figure: 'FIG. {n} — {title}'
+    specification: SPECIFICATION
+    previous: PREVIOUS SHEET
+    next: NEXT SHEET
+    seriesPart: SERIES PART {n}
+    status: { in-progress: IN PROGRESS, retired-hosting: HOSTING RETIRED }
 lang: nl
 translated: false

@@ -2,15 +2,17 @@
 import type { HTMLAttributes } from 'astro/types';
 
 // components.md Figure: a 1.5 px ink frame on raised paper, captioned "FIG. n — NAME" above the
-// drawing (Boxes and Arrows, or anything else, in the slot).
+// drawing (Boxes and Arrows, or anything else, in the slot). `bare` drops the frame and padding for a
+// figure that sits in its own panel (a detail sheet's FIG. 2).
 type Props = HTMLAttributes<'figure'> & {
   label: string;
+  bare?: boolean;
 };
 
-const { label, class: className, ...rest } = Astro.props;
+const { label, bare = false, class: className, ...rest } = Astro.props;
 ---
 
-<figure class:list={['figure', className]} {...rest}>
+<figure class:list={['figure', bare && 'figure--bare', className]} {...rest}>
   <figcaption class="figure__label">{label}</figcaption>
   <slot />
 </figure>
@@ -27,6 +29,12 @@ const { label, class: className, ...rest } = Astro.props;
     background: var(--color-paper-raised);
   }
 
+  .figure--bare {
+    padding: 0;
+    border: none;
+    background: none;
+  }
+
   .figure__label {
     color: var(--color-line);
     font-family: var(--font-mono);
@@ -36,7 +44,7 @@ const { label, class: className, ...rest } = Astro.props;
   }
 
   @media (max-width: 767px) {
-    .figure {
+    .figure:not(.figure--bare) {
       padding: var(--space-4);
     }
   }

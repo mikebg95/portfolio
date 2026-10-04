@@ -188,3 +188,14 @@ Who: agent (PR-23). Which cards sit in the series row is an explicit `series: tr
 `ui.experience`; the series count is `{count}` in `series.tests`, filled with the series' `tests`
 summed, so the line can never disagree with the cards. The series line is an `<h2>` and its cards'
 titles `<h3>`; Jamigos and Scentify titles stay `<h2>`.
+
+## 2026-10-04 — Project detail template: meta line, pager, bare FIG. 2
+Who: agent (PR-24). The detail sheets' common strings are `ui.projects.detail` (additive). The meta
+line under the repo button is composed, not stored: `period` · `SERIES PART n` (n = place among the
+`series: true` entries in register order) · the status word unless `done` — this yields copy.md's
+lines for 03.1–03.4 exactly. Scentify's `· ANDROID` is not derivable from any field; PR-29 decides
+how it gets there (an additive field, not a hard-coded slug). Previous/next wrap in register
+(`order`) order and show the target's code and title under copy.md's `PREVIOUS SHEET` /
+`NEXT SHEET` — the drawing does not show the pager, so it is a ruled panel above the title block.
+FIG. 2 sits unframed in its panel as drawn: a `bare` variant of `Figure` (on `/_primitives`), not a
+page-level restyle. Arrows (← →) are drawn by the page, `aria-hidden`, so link names stay words.

@@ -49,7 +49,11 @@ test('shows every primitive in both themes, each drawn in its own colours', asyn
     );
     // Borders come from tokens built on a colour: they must follow the column's theme too.
     await expect(column.locator('.box').first()).toHaveCSS('border-top-color', rgb('line', theme));
-    await expect(column.locator('.figure')).toHaveCSS('border-top-color', rgb('ink', theme));
+    await expect(column.locator('.figure:not(.figure--bare)')).toHaveCSS(
+      'border-top-color',
+      rgb('ink', theme),
+    );
+    await expect(column.locator('.figure--bare')).toHaveCSS('border-top-style', 'none');
     await expect(column.locator('.revision-note').first()).toHaveCSS(
       'border-top-color',
       rgb('redline', theme),
