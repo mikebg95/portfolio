@@ -1,0 +1,280 @@
+---
+import type { SheetKey } from '../content/schemas';
+import { CV_PATH, SITE_URL } from '../config';
+import { t } from '../i18n/content';
+import { alternate, LANGS, localize, type Lang } from '../i18n/paths';
+import { SHEETS } from '../i18n/routes';
+
+// SPEC §3.2, components.md SheetHeader/SheetTab: monogram cell, the five sheet tabs, then the
+// utility cluster (language, theme, CV). Not drawn: the utilities sit in their own cell at the
+// right; below 1280 px they share the first row with the monogram and the tabs take a full row.
+interface Props {
+  lang: Lang;
+  /** The sheet this page belongs to; undefined on the 404 sheet (no tab is current). */
+  sheet: SheetKey | undefined;
+}
+
+const { lang, sheet } = Astro.props;
+const ui = await t(lang);
+const domain = new URL(SITE_URL).host;
+const here = Astro.url.pathname;
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+
+<header class="sheet-header">
+  <a class="sheet-header__mark" href={localize(lang, '/')}>
+    <span class="sheet-header__monogram">{ui.monogram.initials}</span>
+    <span class="sheet-header__set">
+      <span class="sheet-header__set-name">{ui.monogram.set}</span>
+      <span class="sheet-header__domain">{domain}</span>
+    </span>
+  </a>
+
+  <nav class="sheet-header__tabs">
+    {SHEETS.map(({ key, number, path }) => (
+      <a
+        class="sheet-tab"
+        href={localize(lang, path)}
+        aria-current={key === sheet ? 'page' : undefined}
+      >
+        <span class="sheet-tab__number">
+          {ui.sheet} {pad(number)}
+        </span>
+        <span class="sheet-tab__name">{ui.sheets[key]}</span>
+      </a>
+    ))}
+  </nav>
+
+  <div class="sheet-header__utils">
+    <span class="sheet-header__langs">
+      {LANGS.map((code) => (
+        <a
+          class="sheet-header__util sheet-header__lang"
+          href={code === lang ? here : alternate(lang, here)}
+          hreflang={code}
+          lang={code}
+          aria-current={code === lang ? 'true' : undefined}
+        >
+          {ui.languages[code]}
+        </a>
+      ))}
+    </span>
+    <!-- Behaviour (toggle, persistence, labels following the theme) arrives with PR-10. -->
+    <button
+      class="sheet-header__util sheet-header__theme"
+      type="button"
+      data-theme-switch
+      aria-label={ui.theme.toBlueprint}
+    >
+      <span class="sheet-header__swatch" aria-hidden="true"></span>
+      {ui.theme.paper}
+    </button>
+    <a class="sheet-header__util" href={CV_PATH} target="_blank" rel="noopener">
+      {ui.cv}
+    </a>
+  </div>
+</header>
+
+<style>
+  .sheet-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    border-bottom: var(--border-thin);
+    font-family: var(--font-mono);
+  }
+
+  .sheet-header a {
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+
+  /* Monogram cell, as drawn: 38 px square, 2 px ink border, MG in Archivo 800. */
+  .sheet-header__mark {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: 14px;
+    padding: var(--space-4) var(--space-5);
+    border-right: var(--border-thin);
+  }
+
+  .sheet-header__monogram {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border: var(--border-strong);
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-stretch: 112%;
+    font-weight: 800;
+  }
+
+  .sheet-header__set {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+  }
+
+  .sheet-header__set-name {
+    font-weight: 600;
+  }
+
+  .sheet-header__domain {
+    color: var(--color-muted);
+  }
+
+  .sheet-header__tabs {
+    display: flex;
+    flex: 1 1 700px;
+    font-size: var(--size-label);
+    letter-spacing: 0.04em;
+  }
+
+  /* SheetTab: SHEET 0n (10 px muted) over the name (12 px mono), 1 px ink rule on the right. */
+  .sheet-tab {
+    display: flex;
+    flex: 1 1 140px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+    min-width: 0;
+    padding: var(--space-3) 18px;
+    border-right: var(--border-thin);
+  }
+
+  .sheet-tab__number {
+    color: var(--color-muted);
+    font-size: var(--size-micro);
+  }
+
+  /* Hover: an underline draws under the name, left to right (motion.md §M6). */
+  .sheet-tab__name {
+    align-self: flex-start;
+    background: linear-gradient(currentColor, currentColor) left bottom / 0 1px no-repeat;
+    overflow-wrap: anywhere;
+    transition: background-size var(--motion-fast) var(--motion-ease-plot);
+  }
+
+  .sheet-tab:hover .sheet-tab__name {
+    background-size: 100% 1px;
+  }
+
+  .sheet-header .sheet-tab[aria-current='page'] {
+    background: var(--color-ink);
+    color: var(--color-ink-on-fill);
+  }
+
+  .sheet-tab[aria-current='page'] .sheet-tab__number {
+    color: inherit;
+    opacity: 0.7;
+  }
+
+  .sheet-tab[aria-current='page'] .sheet-tab__name {
+    background-size: 0 1px;
+  }
+
+  /* Utility cluster: EN/NL (current one underlined), theme switch with swatch, CV. */
+  .sheet-header__utils {
+    display: flex;
+    flex: none;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-1) var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--size-label);
+    letter-spacing: 0.04em;
+  }
+
+  .sheet-header__langs {
+    display: flex;
+  }
+
+  .sheet-header__util {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0 var(--space-2);
+    border: 0;
+    background: none;
+    color: var(--color-ink);
+    font: inherit;
+    letter-spacing: inherit;
+    cursor: pointer;
+  }
+
+  .sheet-header .sheet-header__lang {
+    color: var(--color-muted);
+  }
+
+  .sheet-header .sheet-header__lang[aria-current='true'] {
+    color: var(--color-ink);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .sheet-header__swatch {
+    width: 10px;
+    height: 10px;
+    border: var(--border-thin);
+    background: var(--color-paper);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sheet-tab__name {
+      transition: none;
+    }
+  }
+
+  /* Monogram + utilities on the first row, the five tabs on their own full row. */
+  @media (max-width: 1279px) {
+    .sheet-header__utils {
+      margin-left: auto;
+    }
+
+    .sheet-header__tabs {
+      flex-basis: 100%;
+      order: 1;
+      border-top: var(--border-thin);
+    }
+
+    .sheet-tab:last-child {
+      border-right: 0;
+    }
+  }
+
+  /* Tablet: the five tabs stay in one row. */
+  @media (max-width: 1023px) {
+    .sheet-tab {
+      flex-basis: 0;
+      padding-inline: var(--space-3);
+    }
+  }
+
+  /* Phone until the sheet index panel (PR-8): tabs wrap, two or three to a row. */
+  @media (max-width: 767px) {
+    .sheet-header__mark {
+      padding: var(--space-3) var(--space-4);
+      border-right: 0;
+    }
+
+    .sheet-header__tabs {
+      flex-wrap: wrap;
+      margin-bottom: -1px;
+    }
+
+    .sheet-tab {
+      flex-basis: 120px;
+      border-bottom: var(--border-thin);
+    }
+  }
+</style>

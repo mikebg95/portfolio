@@ -26,7 +26,11 @@ const { lang, project } = Astro.props;
 const ui = await t(lang);
 ---
 
-<SheetLayout lang={lang} title={ui.seo.project.title.replace('{title}', project.data.title)}>
+<SheetLayout
+  lang={lang}
+  sheet="projects"
+  title={ui.seo.project.title.replace('{title}', project.data.title)}
+>
   <section class="sheet-panel">
     <h1>{project.data.title}</h1>
   </section>

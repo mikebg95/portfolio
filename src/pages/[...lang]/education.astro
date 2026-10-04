@@ -15,7 +15,7 @@ const { lang } = Astro.props;
 const ui = await t(lang);
 ---
 
-<SheetLayout lang={lang} title={ui.seo.education.title}>
+<SheetLayout lang={lang} sheet="education" title={ui.seo.education.title}>
   <section class="sheet-panel">
     <h1>{ui.sheets.education}</h1>
   </section>

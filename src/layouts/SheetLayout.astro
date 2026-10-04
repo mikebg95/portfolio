@@ -1,19 +1,23 @@
 ---
 import FontPreload from '../components/FontPreload.astro';
 import SheetFrame from '../components/SheetFrame.astro';
+import SheetHeader from '../components/SheetHeader.astro';
+import type { SheetKey } from '../content/schemas';
 import { t } from '../i18n/content';
 import type { Lang } from '../i18n/paths';
 import { THEME_STORAGE_KEY, THEMES } from '../theme';
 import '../styles/base.css';
 
-// The page shell every route uses: theme before paint, skip link, the sheet frame and its slots.
-// Pages fill `header`/`footer` slots until SheetHeader (PR-7) and TitleBlock (PR-9) live here.
+// The page shell every route uses: theme before paint, skip link, the sheet frame, the header.
+// Pages fill the `footer` slot until TitleBlock (PR-9) lives here.
 interface Props {
   lang: Lang;
   title: string;
+  /** The sheet this page belongs to (its header tab is current); omitted on the 404 sheet. */
+  sheet?: SheetKey;
 }
 
-const { lang, title } = Astro.props;
+const { lang, title, sheet } = Astro.props;
 const ui = await t(lang);
 ---
 
@@ -38,7 +42,7 @@ const ui = await t(lang);
       {ui.skipLink}
     </a>
     <SheetFrame>
-      <slot name="header" slot="header" />
+      <SheetHeader slot="header" lang={lang} sheet={sheet} />
       <main id="main" tabindex="-1">
         <slot />
       </main>

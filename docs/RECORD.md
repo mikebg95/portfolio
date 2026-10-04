@@ -58,3 +58,11 @@ undefined (→ `/x`) and `nl` (→ `/nl/x`), so a page is never written twice; 4
 built by the pure `src/i18n/paths.ts`, not `astro:i18n`, so they are unit-testable. Four placeholder
 project entries (P-02…P-05, real slug/code/title/repo) were added so every detail route exists;
 PR-21 fills them. Instead of: a TS dictionary of strings, or a page file per language.
+
+## 2026-10-04 — Header utilities in their own cell; CV PDF committed in `public/`
+Who: agent (PR-7). Why: the drawings show no utility cluster, components.md puts it "right". At
+≥ 1280 px monogram, five tabs and utilities share one row (tabs ≥ 140 px as drawn); below that
+monogram + utilities form row 1 and the tabs a full row 2 (one row down to 768 px, SPEC tablet
+rule), so DOM/focus order stays monogram → tabs → utilities. The CV is a committed copy at
+`CV_PATH` (`src/config.ts`) and `tests/unit/cv.test.ts` fails if it differs from
+`docs/source/cv.pdf`. Instead of: a build-time copy step (one more script for one static file).
