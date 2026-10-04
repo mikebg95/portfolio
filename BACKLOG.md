@@ -54,7 +54,7 @@ queue.
 
 ### Sheet chrome
 
-- [ ] **PR-9 TitleBlock footer**
+- [x] **PR-9 TitleBlock footer**
   - Done when: footer title block as drawn (PROJECT ×2, SCALE, SHEET nn / 05, DRAWN, CHECKED 251 TESTS, REV = build year.month, CONTACT email/LinkedIn/GitHub) on every page; 2 columns on phone; sheet number correct per page (project details "03 / 05"); unit test for the REV formatter.
   - Spec: SPEC §3.2; design/components.md TitleBlock; design/copy.md Global
   - Out of scope: anything else in the footer.
