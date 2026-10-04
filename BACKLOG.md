@@ -66,7 +66,7 @@ queue.
 
 ### 404 and SEO
 
-- [ ] **PR-37 SEO metadata, sitemap, robots, JSON-LD**
+- [x] **PR-37 SEO metadata, sitemap, robots, JSON-LD**
   - Done when: per-page title/description from copy.md SEO table (NL from content), canonical, hreflang en/nl/x-default, sitemap.xml (both languages, excluding `/_primitives` and 404), robots.txt, JSON-LD Person on `/` (no phone/address); a Vitest/e2e test parses each built page's head and asserts all of it.
   - Spec: SPEC §3.8; design/copy.md SEO
   - Out of scope: OG images (PR-38).
