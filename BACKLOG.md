@@ -54,7 +54,7 @@ queue.
 
 ### Sheet chrome
 
-- [ ] **PR-10 Paper / Blueprint theme switch**
+- [x] **PR-10 Paper / Blueprint theme switch**
   - Done when: the theme button toggles `data-theme` between paper and blueprint, persists in localStorage (try/catch), follows the system until toggled, labels/aria-labels per copy.md; blueprint values from tokens render correctly on every stub page; axe passes in both themes; e2e covers toggle + reload persistence + system preference.
   - Spec: SPEC §3.3; design/README.md rule 10; design/tokens.json
   - Out of scope: the circular reveal animation (PR-46).
