@@ -670,3 +670,19 @@ History, not a queue.
   - Done when: every display heading (DisplayHeading xl/l/m/s and any uppercase Archivo title) never breaks inside a word: `overflow-wrap: normal; word-break: keep-all; hyphens: none`, and the hero name is sized from its container so the longest word ("GOLDMAN", also NL) always fits on one line — `font-size: min(<token clamp>, <container-width>/<measured em-width of the longest word>)` via container query units (`cqi`) with the ratio measured once from the font, plus a JS-free fallback; long section/project titles may wrap only between words; a Playwright test at every width from 280 to 1440 px in 10 px steps (both languages) asserts each heading word sits on one line (bounding-box check per word span) and no heading overflows its box.
   - Spec: design/tokens.json size; design/README.md Responsive
   - Out of scope: other typography.
+
+
+## Pruned from the queue
+
+2 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### Hardening
+
+- [x] **PR-62a Phone chrome: one-row header + fixed bottom tab bar** (split from PR-62, items 1, 2)
+  - Done: below 768 px the header is one 56 px row (MG · SHEET 0n / 05 + name · EN/NL · theme swatch); the SHEETS panel is replaced by `SheetTabBar` fixed to the screen bottom (5 cells, short names from `ui.tabBar`, current ink-filled, safe-area inset, 62 px, body padded); CV in the title block's CONTACT cell; `tests/e2e/tab-bar.spec.ts`.
+
+- [x] **PR-62b Phone Overview per the drawing** (rest of PR-62, item 3)
+  - Michael, 2026-10-04: *"on mobile the app doesnt look so great. i want to have a more beautiful modern professional creative app layout"*. Drawing: `design/screens/overview-default-light-390.png` (+ `html/overview-default-light-390.html`).
+  - Done when, below 768 px: name fit-to-width (PR-61, already), portrait in a "FIG. 0 — PORTRAIT · SCALE 1:1" framed card with balloons 1–3 on its right edge and a 3-cell caption strip under it (balloon 1 still links to /certifications), two-button row (projects + CV, 48 px), "How I work" as a horizontal snap-scroll card rail with a position indicator (works without JS: plain overflow scroll; indicator is decoration or JS-enhanced), spec rows stacked label-over-value; 44 px+ targets, no horizontal page scroll at 320 px, reduced motion; Playwright phone screenshots in both themes in `.e2e/` compared by eye; e2e for the rail.
+  - Spec: design/screens overview 390, design/components.md, design/motion.md
+  - Out of scope: desktop layout; the header/tab bar (PR-62a, done).

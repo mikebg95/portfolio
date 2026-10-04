@@ -72,15 +72,6 @@ queue.
 
 ### Hardening
 
-- [x] **PR-62a Phone chrome: one-row header + fixed bottom tab bar** (split from PR-62, items 1, 2)
-  - Done: below 768 px the header is one 56 px row (MG · SHEET 0n / 05 + name · EN/NL · theme swatch); the SHEETS panel is replaced by `SheetTabBar` fixed to the screen bottom (5 cells, short names from `ui.tabBar`, current ink-filled, safe-area inset, 62 px, body padded); CV in the title block's CONTACT cell; `tests/e2e/tab-bar.spec.ts`.
-
-- [x] **PR-62b Phone Overview per the drawing** (rest of PR-62, item 3)
-  - Michael, 2026-10-04: *"on mobile the app doesnt look so great. i want to have a more beautiful modern professional creative app layout"*. Drawing: `design/screens/overview-default-light-390.png` (+ `html/overview-default-light-390.html`).
-  - Done when, below 768 px: name fit-to-width (PR-61, already), portrait in a "FIG. 0 — PORTRAIT · SCALE 1:1" framed card with balloons 1–3 on its right edge and a 3-cell caption strip under it (balloon 1 still links to /certifications), two-button row (projects + CV, 48 px), "How I work" as a horizontal snap-scroll card rail with a position indicator (works without JS: plain overflow scroll; indicator is decoration or JS-enhanced), spec rows stacked label-over-value; 44 px+ targets, no horizontal page scroll at 320 px, reduced motion; Playwright phone screenshots in both themes in `.e2e/` compared by eye; e2e for the rail.
-  - Spec: design/screens overview 390, design/components.md, design/motion.md
-  - Out of scope: desktop layout; the header/tab bar (PR-62a, done).
-
 - [ ] **PR-62c Phone Experience: vertical timeline with expandable cards** (rest of PR-62, item 4)
   - Drawing: `design/screens/experience-default-light-390.png` (+ html).
   - Done when, below 768 px: years down a left ruler, the Conspect bracket spanning its assignments, assignment cards beside it (tap expands the full detail in place; without JS the detail is reachable — `<details>` or already open), hatched sabbatical; 44 px+ targets, no horizontal scroll at 320, reduced motion; screenshots both themes; e2e for timeline expand.
