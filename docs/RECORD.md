@@ -737,3 +737,17 @@ compresses on its own, so `npm run build` is untouched. Cache policy: `/_astro/`
 ETag) because their names are fixed and the service worker caches them anyway. Unknown URLs under
 `/nl/` get the Dutch 404 sheet, the rest the English one. Smoke test `scripts/docker-smoke.sh`
 passed against Docker 2026-10-05.
+
+## 2026-10-05 — CI workflow written; its first GitHub run waits for the loop's deploy (PR-56)
+Who: agent (PR-56). `.github/workflows/ci.yml` runs on every push, pull request and by hand, in four
+parallel jobs: check (typecheck, lint, format, unit, build → `dist` artifact), e2e (Playwright with
+the browsers cached by Playwright version; axe runs inside every page's spec → `playwright-report`
+artifact, uploaded even on failure), lighthouse (needs check; runs `npm run lhci` on the downloaded
+`dist` with the runner's preinstalled Chrome → `lighthouse-reports` artifact), docker (buildx, GHA
+layer cache, no push). One concurrency group per workflow + ref, older runs cancelled. Pages
+deploys stay in `pages.yml`. README.md holds only the title and the CI badge until PR-57 writes it.
+The task's "passes on GitHub after push" could not be checked in the iteration: `git push`, even
+to a side branch, is denied to agents in this loop (permission prompt refused), and the loop's
+deploy step is what pushes main. That check is PR-56b (`- [!]`), re-checked after the deploy.
+Not done: running the workflow locally (`act` and actionlint are not installed; installing them
+was refused) — the YAML was parsed with js-yaml and passes Prettier.

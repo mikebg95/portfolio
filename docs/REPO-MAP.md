@@ -33,6 +33,8 @@ line.
 - TRAP: Playwright `scrollIntoViewIfNeeded()` waits for the element to be stable, so on a revealing element it returns after the reveal ended; to inspect a running animation scroll with `el.scrollIntoView()` in `evaluate` (tests/e2e/motion.spec.ts stamps). Symptom: `getAnimations()` is `[]` on chromium-desktop.
 - `astro.config.ts` `prefetch` — every link prefetched on viewport; project cards/pager `data-astro-prefetch="hover"`, CV links `"false"`; `tests/e2e/navigation.spec.ts`.
 - `Dockerfile` + `docker/nginx.conf` + `.dockerignore` — node:22 build → nginx-unprivileged on 8080; a middle stage compiles the brotli_static module; `.gz`/`.br` twins from `scripts/precompress.ts` (image only). `scripts/docker-smoke.sh` builds, runs and curls it (404s, cache headers, encodings, non-root).
+- `.github/workflows/ci.yml` — the full check on GitHub (jobs check, e2e, lighthouse, docker; artifacts `dist`, `playwright-report`, `lighthouse-reports`); deploying is `.github/workflows/pages.yml` only. Results: `gh run list --workflow ci.yml`.
+- TRAP: agents in this loop cannot `git push` (permission denied, any branch); only the loop's deploy step pushes main, so a GitHub-side check can only be read after a deploy.
 - TRAP: `.dockerignore` must keep `docs/source/private` out, but the build reads `design/` and `docs/source/` (tokens, portrait) — excluding all of `docs/` breaks `docker build`.
 
 ## Styles
