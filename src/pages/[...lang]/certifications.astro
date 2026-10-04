@@ -18,5 +18,7 @@ const ui = await t(lang);
 <SheetLayout lang={lang} sheet="certifications" title={ui.seo.certifications.title}>
   <section class="sheet-panel">
     <h1>{ui.sheets.certifications}</h1>
+    {/* Target of the Overview's in-progress link; PR-31 (the CKAD card) takes the id over. */}
+    <div id="ckad"></div>
   </section>
 </SheetLayout>

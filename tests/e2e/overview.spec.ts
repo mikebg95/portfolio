@@ -231,3 +231,39 @@ test('specification S-01…S-07 and general notes 1–6, side by side on desktop
   }
   await expectNoAxeViolations(page);
 });
+
+test('in progress: three redline rows above the title block, each link lands on its target', async ({
+  page,
+}) => {
+  const items = [
+    ['OptieCon — security and sign-in, at Conspect', '/experience#optiecon', '#optiecon'],
+    ['CKAD — Certified Kubernetes Application Developer', '/certifications#ckad', '#ckad'],
+    ['Journal — hexagonal architecture, part 3 of the series', '/projects/journal', 'h1'],
+  ] as const;
+  await page.goto('/');
+  const panel = page.locator('section.in-progress');
+  await expect(panel.getByRole('heading', { level: 2 })).toHaveText('IN PROGRESS');
+  await expect(panel.locator('.in-progress__row')).toHaveCount(3);
+  await expect(panel.locator('.in-progress__marker')).toHaveText(['◐', '◐', '◐']);
+  // The last panel of the sheet: the title block follows it.
+  const strip = await panel.boundingBox();
+  const footer = await page.locator('footer').last().boundingBox();
+  expect(strip && footer && footer.y).toBeGreaterThanOrEqual(
+    (strip?.y ?? 0) + (strip?.height ?? 0),
+  );
+  await expectNoAxeViolations(page);
+
+  for (const [lang, prefix] of [
+    ['en', ''],
+    ['nl', '/nl'],
+  ] as const) {
+    for (const [text, href, target] of items) {
+      await page.goto(lang === 'en' ? '/' : '/nl/');
+      const link = page.locator('section.in-progress').getByRole('link', { name: text });
+      await expect(link).toHaveAttribute('href', prefix + href);
+      await link.click();
+      await expect(page).toHaveURL(new RegExp(`${prefix}${href.replace(/[/#]/g, '\\$&')}$`));
+      await expect(page.locator(target)).toHaveCount(1);
+    }
+  }
+});

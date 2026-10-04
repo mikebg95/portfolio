@@ -1,0 +1,86 @@
+---
+import { getLocalized } from '../../i18n/content';
+import { localize, type Lang } from '../../i18n/paths';
+import Link from '../drawing/Link.astro';
+import SheetLabel from '../drawing/SheetLabel.astro';
+
+// SPEC §4.1 "Current work": one row per active item — redline ◐, the text as a link to its sheet,
+// a typographic →. The last panel above the title block. Not drawn; built from design/README.md.
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const { labels, current } = (await getLocalized('profile', 'profile', lang)).data;
+---
+
+<section class="sheet-panel in-progress">
+  <h2 class="in-progress__label">
+    <SheetLabel as="span">{labels.current}</SheetLabel>
+  </h2>
+  <ul class="in-progress__list">
+    {current.map((item) => (
+      <li class="in-progress__row">
+        <span class="in-progress__marker" aria-hidden="true">
+          ◐
+        </span>
+        <Link class="in-progress__link" href={localize(lang, item.href)}>
+          <span>{item.text}</span>
+          <span class="in-progress__arrow" aria-hidden="true">
+            →
+          </span>
+        </Link>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .in-progress {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .in-progress__label {
+    margin: 0;
+    font: inherit;
+  }
+
+  .in-progress__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .in-progress__row {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .in-progress__row:last-child {
+    border-bottom: none;
+  }
+
+  .in-progress__marker {
+    flex: none;
+    color: var(--color-redline);
+  }
+
+  /* The whole row's text is the target; the arrow sits at the right edge of the sheet. */
+  .in-progress__row :global(.in-progress__link) {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-3) 0;
+    font-size: 15px;
+  }
+
+  .in-progress__arrow {
+    flex: none;
+    font-family: var(--font-mono);
+  }
+</style>

@@ -3,6 +3,7 @@ import { t } from '../../i18n/content';
 import { langPaths, type Lang } from '../../i18n/paths';
 import Hero from '../../components/overview/Hero.astro';
 import HowIWork from '../../components/overview/HowIWork.astro';
+import InProgress from '../../components/overview/InProgress.astro';
 import SpecNotes from '../../components/overview/SpecNotes.astro';
 import SheetLayout from '../../layouts/SheetLayout.astro';
 
@@ -22,4 +23,5 @@ const ui = await t(lang);
   <Hero lang={lang} />
   <HowIWork lang={lang} />
   <SpecNotes lang={lang} />
+  <InProgress lang={lang} />
 </SheetLayout>
