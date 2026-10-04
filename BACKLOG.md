@@ -54,7 +54,7 @@ queue.
 
 ### Sheet chrome
 
-- [ ] **PR-6 SheetFrame and SheetLayout**
+- [x] **PR-6 SheetFrame and SheetLayout**
   - Done when: `SheetLayout.astro` renders desk background → sheet (paper + 16/80 px grid) with the double frame and the desktop zone strip 1–8, slots for header, main and footer, a skip link "Skip to sheet content", `<html lang>` per language, and the theme-init inline head script (SPEC §3.3, no flash); every stub page uses it; matches the frame in `design/screens/overview-default-light-1440.png`; e2e: skip link focuses main.
   - Spec: SPEC §3.1, §3.3; design/components.md SheetFrame, SkipLink; design/screens/html/overview-default-light-1440.html
   - Out of scope: header contents (PR-7), footer (PR-9), motion.
