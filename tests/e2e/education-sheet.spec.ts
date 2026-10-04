@@ -139,6 +139,22 @@ test('the handle, Escape and the backdrop close it; focus returns to the part', 
   await expect(sheet(page)).toBeHidden();
 });
 
+// QA-69: a narrow desktop window, mouse only — the handle is a plain button to a click too.
+test.describe('with a mouse, no touch', () => {
+  test.use({ viewport: { width: 390, height: 844 }, hasTouch: false, isMobile: false });
+
+  test('clicking the handle closes the sheet; focus returns to the row', async ({ page }) => {
+    await open(page);
+    const row = page.locator('.parts-list__select[data-part="3"]');
+    await row.click();
+    await expect(sheet(page)).toBeVisible();
+    await settleAnimations(page);
+    await sheet(page).getByRole('button', { name: strings.close }).click();
+    await expect(sheet(page)).toBeHidden();
+    await expect(row).toBeFocused();
+  });
+});
+
 /** Drags the sheet's handle row down by `dy` px with the mouse (pointer events). */
 async function drag(page: Page, dy: number) {
   const head = (await sheet(page).locator('[data-sheet-head]').boundingBox())!;

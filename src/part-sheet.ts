@@ -205,23 +205,19 @@ export function partSheet({
   });
 
   // Swipe down on the head (handle row) to close; a short drag springs back.
-  let drag: { id: number; y: number; t: number; dy: number } | null = null;
-  head?.addEventListener('pointerdown', (event) => {
-    if ((event.target as Element).closest('[data-sheet-step]')) return;
-    drag = { id: event.pointerId, y: event.clientY, t: event.timeStamp, dy: 0 };
-    dragged = false;
-    head.setPointerCapture(event.pointerId);
-    dialog.classList.add('part-sheet--dragging');
-  });
-  head?.addEventListener('pointermove', (event) => {
+  // The drag follows the pointer on the window, not by pointer capture: a captured mouse click is
+  // sent to the head, never to the handle button, so the handle would not close (QA-69).
+  let drag: { id: number; y: number; t: number; dy: number; stop: AbortController } | null = null;
+  const move = (event: PointerEvent) => {
     if (!drag || event.pointerId !== drag.id) return;
     drag.dy = Math.max(0, event.clientY - drag.y);
     dialog.style.translate = `0 ${drag.dy}px`;
-  });
+  };
   const release = (event: PointerEvent) => {
     if (!drag || event.pointerId !== drag.id) return;
-    const { dy, t } = drag;
+    const { dy, t, stop } = drag;
     drag = null;
+    stop.abort();
     dialog.classList.remove('part-sheet--dragging');
     if (dismisses(dy, event.timeStamp - t, dialog.offsetHeight)) {
       close();
@@ -231,8 +227,18 @@ export function partSheet({
     // A real drag is not also a tap on the handle.
     dragged = dy > 8;
   };
-  head?.addEventListener('pointerup', release);
-  head?.addEventListener('pointercancel', release);
+  head?.addEventListener('pointerdown', (event) => {
+    if ((event.target as Element).closest('[data-sheet-step]')) return;
+    drag?.stop.abort();
+    const stop = new AbortController();
+    drag = { id: event.pointerId, y: event.clientY, t: event.timeStamp, dy: 0, stop };
+    dragged = false;
+    dialog.classList.add('part-sheet--dragging');
+    for (const type of ['pointerup', 'pointercancel'] as const) {
+      addEventListener(type, release, { signal: stop.signal });
+    }
+    addEventListener('pointermove', move, { signal: stop.signal });
+  });
 
   // Grown past the phone breakpoint while open: the details belong inline again.
   matchMedia(PHONE_QUERY).addEventListener(
