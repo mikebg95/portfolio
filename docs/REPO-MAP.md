@@ -111,7 +111,7 @@ line.
 - `tests/e2e/tab-bar.spec.ts` — phone header row + tab bar: cells per language, fixed while scrolling, page clears it, 320 px no clipping, no-JS; skipped at ≥ 768 px.
 - `src/components/TitleBlock.astro` — the footer (rendered by SheetLayout, sheet number from its `sheet` prop); captions from `ui.titleBlock`, contact from `profile.contact`, REV/SHEET formatters in `src/title-block.ts`; cells draw only left+top rules so 2 and 4 columns both stay ruled.
 - `tests/e2e/phone-pages.spec.ts` — every route < 768 px: 44 px targets (assembly drawing exempt: the parts list is the equivalent) + no sideways scroll at 320, full-page shots both themes in `.e2e/phone-pages/`; card strips on Projects, Certifications, details.
-- TRAP: WebKit on a 3× screen draws no dashed SIDES on a 1.5 px dashed border (snaps to 1.33 px; top/bottom still drawn) — use a whole pixel for dashed borders on phone.
+- TRAP: WebKit on a 3× screen draws no dashed SIDES at a fractional width (1.5 px, 0.67 px; top/bottom still drawn), and drops a whole-pixel one where it straddles x = 2ⁿ px (31.5, 63.5, 127.5, 255.5). Rule: docs/conventions/styles.md; check: `tests/e2e/dashed-borders.spec.ts` (photographs each dashed side's middle with and without its colour; corners would hide a missing side).
 - `tests/e2e/sheet.spec.ts` — skip link, frame widths/grid, zone strip per viewport, stored theme applied.
 - `tests/e2e/theme.spec.ts` — toggle + reload, dark system, storage blocked.
 - `tests/e2e/accessibility.spec.ts` — every route × language (+ both 404s) × both themes: axe + one h1; keyboard walk (Tab order = DOM order of rendered tabbables, 2 px ring on each, Chromium only); phone tab bar by keyboard. `tests/unit/contrast.test.ts` — muted/redline vs paper from tokens.json.

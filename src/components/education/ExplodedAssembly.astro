@@ -107,11 +107,13 @@ const fill = (item: number) => `var(--color-${FILLS[item - 1] ?? 'paper'})`;
   }
 
   .assembly__axis {
+    --axis-ink: color-mix(in srgb, var(--color-ink) 45%, transparent);
+
     position: absolute;
     top: 0;
     bottom: 0;
     left: calc(var(--x) * var(--u));
-    border-left: 1.5px dashed color-mix(in srgb, var(--color-ink) 45%, transparent);
+    border-left: 1.5px dashed var(--axis-ink);
     transform-origin: center bottom;
   }
 
@@ -246,6 +248,22 @@ const fill = (item: number) => `var(--color-${FILLS[item - 1] ?? 'paper'})`;
     .assembly__callout {
       gap: 6px;
       font-size: 11px;
+    }
+  }
+
+  /* WebKit draws no dashed sides at a fractional width on a 3× screen (1.5 px snaps to 1.33 px);
+     a whole pixel there. 1× and 2× screens keep the drawn 1.5 px. */
+  @media (min-resolution: 2.5dppx) {
+    /* A whole-pixel dashed side is dropped too where it straddles x = 2ⁿ px (the axis sits at
+       127.75 px on a 390 px phone): the axis's dashes are its background there. */
+    .assembly__axis {
+      width: 1px;
+      border-left: 0;
+      background: repeating-linear-gradient(var(--axis-ink) 0 3px, transparent 3px 6px);
+    }
+
+    .plate--dashed {
+      border-width: 1px;
     }
   }
 </style>

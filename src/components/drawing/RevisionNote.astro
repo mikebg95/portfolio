@@ -43,4 +43,12 @@ const triangle = lead.endsWith('△');
   .revision-note__lead {
     font-weight: 600;
   }
+
+  /* WebKit draws no dashed sides at a fractional width on a 3× screen (1.5 px snaps to 1.33 px);
+     a whole pixel there. 1× and 2× screens keep the drawn 1.5 px. */
+  @media (min-resolution: 2.5dppx) {
+    .revision-note {
+      border-width: 1px;
+    }
+  }
 </style>

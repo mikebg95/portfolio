@@ -151,4 +151,13 @@ const Title = entry.parent === undefined ? 'h2' : 'h3';
       line-height: 1.5;
     }
   }
+
+  /* WebKit draws no dashed sides at a fractional width on a 3× screen (1.5 px snaps to 1.33 px);
+     a whole pixel there. 1× and 2× screens keep the drawn 1.5 px. */
+  @media (min-resolution: 2.5dppx) {
+    .experience-break,
+    .experience-break__swatch {
+      border-width: 1px;
+    }
+  }
 </style>

@@ -149,11 +149,6 @@ const nameId = `${id}-name`;
       padding: 0;
     }
 
-    /* WebKit draws no dashed sides at 1.5 px on a 3× screen (it snaps to 1.33 px): a whole pixel. */
-    .cert-card--pending {
-      border-width: 1px;
-    }
-
     .cert-card__head {
       display: contents;
     }
@@ -244,6 +239,14 @@ const nameId = `${id}-name`;
       float: none;
       margin: 12px 16px 14px 8px;
       shape-outside: none;
+    }
+  }
+
+  /* WebKit draws no dashed sides at a fractional width on a 3× screen (1.5 px snaps to 1.33 px);
+     a whole pixel there. 1× and 2× screens keep the drawn 1.5 px. */
+  @media (min-resolution: 2.5dppx) {
+    .cert-card--pending {
+      border-width: 1px;
     }
   }
 </style>

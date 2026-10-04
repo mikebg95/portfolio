@@ -39,3 +39,8 @@
   the span; never set `overflow-wrap`/`hyphens` on one. A heading that must flow around a float
   passes `fitTo="container"` (CertCard) and needs an inline-size container around it. A new display
   title that is not a DisplayHeading is wrong — use the component.
+- A dashed border is a whole pixel on a 3× screen (QA-63): end the component's style with
+  `@media (min-resolution: 2.5dppx) { .x { border-width: 1px; } }` — WebKit there draws no dashed
+  side at a fractional width. 1× and 2× keep the drawn width. A long vertical dashed line inside a
+  drawing (the assembly axis) is a `repeating-linear-gradient` there instead: a whole-pixel side is
+  still dropped where it straddles x = 2ⁿ px. `tests/e2e/dashed-borders.spec.ts` checks every page.

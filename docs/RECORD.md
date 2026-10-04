@@ -692,3 +692,15 @@ observers and the GSAP contexts of the old page. Instead of: not persisting (the
 re-created each swap; the brief asked for persist); a generic DOM-diff library (a 30-line morph
 covers three small trees).
 
+## 2026-10-04 — Dashed borders on a 3× WebKit screen: a whole pixel, by resolution (QA-63)
+Who: agent (QA-63). Measured in Playwright WebKit, iPhone 14 (DPR 3), quarter-pixel sweep across
+the 390 px width: a dashed side at 1.5 px or 0.67 px is never drawn; at 1, 1.333, 2 or 3 px it is,
+except where the line straddles x = 2ⁿ px (13 of 1014 positions at 1 px). At DPR 1 and 2 (Desktop
+Safari, iPad Mini) 1.5 px draws everywhere. Chosen: `@media (min-resolution: 2.5dppx)` → 1 px on
+every 1.5 px dashed border (notes, balloons, part-detail note, external boxes, dashed plate,
+sabbatical card, pending cert, in-progress project), so desktop is untouched and a landscape iPhone
+(≥ 768 px) is covered too; PR-62e's `max-width: 767px` rules on the two cards moved to it. The
+assembly axis sits at 127.75 px on a 390 px phone, on the 2ⁿ trap, so at 3× it is a 1 px
+`repeating-linear-gradient` (3 px dash, 3 px gap) instead of a border. Instead of: 2 px (changes the
+drawing's weight); gradients for every dashed border at 3× (layer juggling in every component for
+boxes that draw fine at 1 px).
