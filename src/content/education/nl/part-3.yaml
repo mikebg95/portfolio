@@ -8,7 +8,7 @@ plate: { size: full, style: solid }
 detail:
   title: Minor Programmeren
   meta: Universiteit van Amsterdam · 2018 · 30 EC
-  body: 'Halverwege politicologie volgde ik een heel semester programmeren, en vond ik wat ik elke dag wilde doen. Daar leerde ik denken in algoritmes en afwegingen, en een taal leren door er iets mee op te leveren.'
+  body: 'Halverwege politicologie volgde ik een heel semester programmeren, en vond ik wat ik elke dag wilde doen. Daar leerde ik denken in algoritmes en afwegingen, en een taal leren door er iets mee op te leveren. In 2020 leerde ik mezelf een jaar lang Java en Android — Scentify komt uit die tijd — en in 2021 begon ik bij LinkPizza.'
   rows:
     - { code: '3.1', text: 'CS50 — C, geheugen, algoritmes, Python, SQL', ec: 6 }
     - { code: '3.2', text: Android-appontwikkeling in Java, ec: 12 }
