@@ -72,7 +72,7 @@ queue.
 
 ### Hardening
 
-- [ ] **QA-62 Theme-reveal e2e still opens the removed phone sheet index**
+- [x] **QA-62 Theme-reveal e2e still opens the removed phone sheet index**
   - Seen by PR-62c's agent, 2026-10-04: `npx playwright test tests/e2e/theme-reveal.spec.ts` fails on `chromium-phone` (both tests, 30 s timeout) waiting for the button "Open sheet index" (`themeButton`, tests/e2e/theme-reveal.spec.ts:60), which PR-62a removed — the theme switch now sits in the phone header itself. Fails on main without PR-62c's change.
   - Done when: the spec finds the phone header's theme switch directly and passes on all three projects; nothing else in tests/e2e still looks for the sheet index (`grep -rn "sheet index" tests/`).
   - Out of scope: changing the theme switch.
