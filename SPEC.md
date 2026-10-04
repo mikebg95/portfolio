@@ -11,7 +11,7 @@ accounts, no backend.
 
 ### 1.2 Who it is for
 Hiring managers, CTOs, tech leads and recruiters at Amsterdam Java / DevOps employers (consultancies,
-product companies, government — see `docs/source/research-market.md`). They arrive from a CV, LinkedIn
+product companies, government — see `docs/source/private/research-market.md (local only)`). They arrive from a CV, LinkedIn
 or GitHub link, mostly on desktop, often on a phone. They spend 30 seconds to 3 minutes.
 
 ### 1.3 The one thing it must get right
