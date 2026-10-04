@@ -202,7 +202,8 @@ export type SheetKey = (typeof SHEET_KEYS)[number];
 const seoPage = z.strictObject({ title: text, description: text });
 
 /**
- * Strings every page shares (design/copy.md Global, SEO and 404): one `ui` entry per language,
+ * Strings every page shares (design/copy.md Global, SEO and 404) and a sheet's own fixed strings
+ * under its key (`experience`; Sheet 01's live in `profile`): one `ui` entry per language,
  * read with `t(lang)` from `src/i18n/content.ts`.
  */
 export const uiSchema = z.strictObject({
@@ -249,6 +250,17 @@ export const uiSchema = z.strictObject({
     notFound: z.strictObject({ title: text }),
   }),
   notFound: z.strictObject({ label: text, heading: text, note: text }),
+  /** Month words as displayed (`JAN` / `jan`) and the open end (`NOW`); see `src/dates.ts`. */
+  dates: z.strictObject({ months: z.array(text).length(12), now: text }),
+  /**
+   * Sheet 02's own strings (copy.md Sheet 02): label, the heading's two drawn lines and the
+   * sabbatical legend's two lines. Role names and dates come from the `experience` entries.
+   */
+  experience: z.strictObject({
+    label: text,
+    heading: z.tuple([text, text]),
+    legend: z.tuple([text, text]),
+  }),
   lang,
   translated,
 });

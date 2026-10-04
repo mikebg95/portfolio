@@ -1,0 +1,415 @@
+---
+import { formatSpan } from '../../dates';
+import { getAllLocalized, getLocalized, t } from '../../i18n/content';
+import type { Lang } from '../../i18n/paths';
+import { formatDuration, layout, place } from '../../timeline';
+
+// SPEC §4.2 timeline, drawn as experience-default-light-1440 (components.md TimelineRuler /
+// TimelineBar): year ruler, employer dimension line, one bar per entry linking to its detail block,
+// durations under the closed roles, the sabbatical's legend. Positions come from src/timeline.ts as
+// `--start` / `--span` percentages: left/width on a horizontal ruler, top/height on the phone's
+// vertical one, so both read the same markup.
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const ui = await t(lang);
+const entries = (await getAllLocalized('experience', lang)).map((e) => e.data);
+const { employers } = (await getLocalized('profile', 'profile', lang)).data;
+
+const now = new Date();
+const { ruler, bars } = layout(entries, now);
+const months = ruler.end - ruler.start;
+const pos = (start: number, span: number) => `--start: ${start}; --span: ${span}`;
+
+// fill-1 for the older closed roles, fill-2 for the latest closed one, ink for the open one.
+const closed = bars.filter((b) => b.entry.kind === 'role' && !b.open);
+const variant = (bar: (typeof bars)[number]) => {
+  if (bar.entry.kind === 'break') return 'break';
+  if (bar.open) return 'current';
+  return bar === closed.at(-1) ? 'fill-2' : 'fill-1';
+};
+const name = (entry: (typeof entries)[number]) => entry.client ?? entry.employer ?? entry.role;
+---
+
+<div class="timeline" style={`--months: ${months}`}>
+  <div class="timeline__canvas">
+    <ol class="timeline__ruler" aria-hidden="true">
+      {ruler.years.map((year, i) => (
+        <li style={pos((i * 12 * 100) / months, (12 * 100) / months)}>{year}</li>
+      ))}
+    </ol>
+    {employers.map((employer) => {
+      const at = place(employer, ruler, now);
+      return (
+        <p class="timeline__employer" style={pos(at.left, at.width)}>
+          <span class="timeline__tick" aria-hidden="true" />
+          <span class="timeline__rule" aria-hidden="true" />
+          <span class="timeline__employer-label">
+            <span class="timeline__name">{employer.name}</span> · {formatSpan(employer, ui.dates)}
+          </span>
+          <span class="timeline__rule" aria-hidden="true" />
+          <span class="timeline__tick" aria-hidden="true" />
+        </p>
+      );
+    })}
+    <ol class="timeline__bars">
+      {bars.map((bar) => {
+        const { entry } = bar;
+        const kind = variant(bar);
+        const dates = formatSpan(entry, ui.dates);
+        return (
+          <li
+            class:list={['timeline__entry', `timeline__entry--${kind}`]}
+            style={pos(bar.left, bar.width)}
+          >
+            <a class="timeline__bar" href={`#${entry.id}`}>
+              <span class="timeline__segment" aria-hidden="true" />
+              {kind === 'break' ? (
+                <span class="sr-only">
+                  {entry.role} · {dates}
+                </span>
+              ) : bar.open ? (
+                <>
+                  <span class="timeline__label">
+                    <span class="timeline__name">{name(entry)}</span>{' '}
+                    <span aria-hidden="true">→</span>
+                  </span>
+                  <span class="sr-only">
+                    · {entry.role} · {dates}
+                  </span>
+                </>
+              ) : (
+                <>
+                  <span class="timeline__label timeline__name">
+                    {name(entry)} · {entry.role}
+                  </span>
+                  <span class="sr-only">· {dates}</span>
+                </>
+              )}
+            </a>
+            {kind === 'break' && (
+              <p class="timeline__legend">
+                <span>{ui.experience.legend[0]}</span>
+                <span>{ui.experience.legend[1]}</span>
+              </p>
+            )}
+            {kind !== 'break' && !bar.open && (
+              <span class="timeline__duration" aria-hidden="true">
+                <span class="timeline__rule" />
+                <span>{formatDuration(bar.months)}</span>
+                <span class="timeline__rule" />
+              </span>
+            )}
+          </li>
+        );
+      })}
+    </ol>
+  </div>
+  {employers.map((employer) => {
+    const at = place(employer, ruler, now);
+    return (
+      <p class="timeline__employer-note" style={pos(at.left, at.width)}>
+        {employer.name} — {employer.description}
+      </p>
+    );
+  })}
+</div>
+
+<style>
+  .timeline {
+    position: relative;
+    font-family: var(--font-mono);
+  }
+
+  .timeline__canvas {
+    position: relative;
+    height: 230px;
+  }
+
+  .timeline ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .timeline__name {
+    text-transform: uppercase;
+  }
+
+  .timeline__rule {
+    flex: 1;
+    height: 1px;
+    background: currentColor;
+  }
+
+  /* Ruler: a column per year, a 1.5 px tick at each year start, closed at the last January. */
+  .timeline__ruler {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 30px;
+    border-bottom: var(--border-normal);
+    font-size: 11px;
+  }
+
+  .timeline__ruler li {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(var(--start) * 1%);
+    width: calc(var(--span) * 1%);
+    padding-left: 6px;
+    border-left: var(--border-normal);
+  }
+
+  .timeline__ruler li:last-child {
+    border-right: var(--border-normal);
+  }
+
+  /* Employer dimension: end ticks, rules, label in line colour. */
+  .timeline__employer {
+    position: absolute;
+    top: 52px;
+    left: calc(var(--start) * 1%);
+    width: calc(var(--span) * 1%);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    color: var(--color-line);
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+
+  .timeline__tick {
+    width: 1px;
+    height: 14px;
+    background: currentColor;
+  }
+
+  .timeline__employer-note {
+    position: absolute;
+    top: 72px;
+    left: calc(var(--start) * 1%);
+    width: calc(var(--span) * 1%);
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 10.5px;
+    line-height: 1.4;
+    white-space: nowrap;
+    /* Flush with the dimension's end; where the line is shorter than the text, it runs left. */
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  /* Desktop: the entry is no box; its bar, duration and legend sit on the canvas. */
+  .timeline__entry {
+    display: contents;
+  }
+
+  .timeline__bar {
+    position: absolute;
+    top: 96px;
+    left: calc(var(--start) * 1%);
+    width: calc(var(--span) * 1%);
+    height: 44px;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    color: var(--color-ink);
+    font-size: 12px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .timeline__segment {
+    position: absolute;
+    inset: 0;
+    border: var(--border-normal);
+  }
+
+  .timeline__label {
+    position: relative;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .timeline__entry--fill-1 .timeline__segment {
+    background: var(--color-fill-1);
+  }
+
+  .timeline__entry--fill-2 .timeline__segment {
+    background: var(--color-fill-2);
+  }
+
+  .timeline__entry--current .timeline__bar {
+    padding: 0 6px;
+    color: var(--color-ink-on-fill);
+    font-size: 11px;
+  }
+
+  /* Open end: no closing edge — it runs on past the ruler. */
+  .timeline__entry--current .timeline__segment {
+    border-right: none;
+    background: var(--color-ink);
+  }
+
+  .timeline__entry--break .timeline__segment {
+    border-style: dashed;
+    background-image: repeating-linear-gradient(
+      -45deg,
+      color-mix(in srgb, var(--color-ink) 50%, transparent) 0 1px,
+      transparent 1px 7px
+    );
+  }
+
+  .timeline__duration {
+    position: absolute;
+    top: 152px;
+    left: calc(var(--start) * 1%);
+    width: calc(var(--span) * 1%);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--color-muted);
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+
+  /* Ends under the hatched bar's right edge, as drawn. */
+  .timeline__legend {
+    position: absolute;
+    top: 176px;
+    right: calc(100% - (var(--start) + var(--span)) * 1%);
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 10.5px;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+
+  /* Below desktop the ruler turns vertical — years down the left, 8 px a month, bars as vertical
+     segments with their label, duration and legend beside them. Tablet too: at 768 px the open
+     OptieCon bar is ~66 px wide, too short for its label (docs/RECORD.md 2026-10-04). */
+  @media (max-width: 1023px) {
+    .timeline__canvas {
+      height: calc(var(--months) * 8px);
+    }
+
+    .timeline__ruler {
+      inset: 0 auto 0 0;
+      width: 52px;
+      height: auto;
+      border-bottom: none;
+      border-right: var(--border-normal);
+    }
+
+    .timeline__ruler li {
+      top: calc(var(--start) * 1%);
+      right: 0;
+      bottom: auto;
+      left: 0;
+      width: auto;
+      height: calc(var(--span) * 1%);
+      padding: 4px 0 0;
+      border-top: var(--border-normal);
+      border-left: none;
+    }
+
+    .timeline__ruler li:last-child {
+      border-right: none;
+      border-bottom: var(--border-normal);
+    }
+
+    .timeline__employer {
+      top: calc(var(--start) * 1%);
+      left: 62px;
+      width: 14px;
+      height: calc(var(--span) * 1%);
+      flex-direction: column;
+    }
+
+    .timeline__tick {
+      width: 14px;
+      height: 1px;
+    }
+
+    .timeline__employer .timeline__rule {
+      width: 1px;
+      height: auto;
+    }
+
+    .timeline__employer-label {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+    }
+
+    .timeline__employer-note {
+      position: static;
+      width: auto;
+      margin-top: var(--space-4);
+      display: block;
+      white-space: normal;
+    }
+
+    .timeline__entry {
+      position: absolute;
+      top: calc(var(--start) * 1%);
+      right: 0;
+      left: 90px;
+      height: calc(var(--span) * 1%);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding-left: 36px;
+    }
+
+    .timeline__bar,
+    .timeline__entry--current .timeline__bar {
+      position: static;
+      width: auto;
+      height: auto;
+      padding: 0;
+      color: var(--color-ink);
+      white-space: normal;
+    }
+
+    .timeline__segment {
+      right: auto;
+      width: 24px;
+    }
+
+    /* The link box is only its label (none for the sabbatical): ring the segment instead. */
+    .timeline__bar:focus-visible {
+      outline: none;
+    }
+
+    .timeline__bar:focus-visible .timeline__segment {
+      outline: 2px solid var(--color-focus);
+      outline-offset: 2px;
+    }
+
+    .timeline__entry--current .timeline__segment {
+      border-right: var(--border-normal);
+      border-bottom: none;
+    }
+
+    .timeline__label {
+      overflow: visible;
+    }
+
+    .timeline__duration,
+    .timeline__legend {
+      position: static;
+    }
+
+    .timeline__duration .timeline__rule {
+      display: none;
+    }
+  }
+</style>

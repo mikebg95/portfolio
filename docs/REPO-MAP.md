@@ -77,6 +77,13 @@ line.
 - `src/components/overview/Portrait.astro` — `<pre aria-hidden>` portrait + sr-only figcaption, dimension lines, callouts (absolute on desktop, a list < 768 px; the phone font size fills the width via `cqi`).
 - `src/components/overview/HowIWork.astro` — four principles + AI note; panel labels come from `profile.labels` (docs/RECORD.md 2026-10-04).
 - `src/components/overview/SpecNotes.astro` — SPECIFICATION table + GENERAL NOTES; side by side (notes column 380 px) at ≥ 1024, stacked below; S-06's `pending` in redline.
-- `src/components/overview/InProgress.astro` — the IN PROGRESS rows, hrefs from `profile.current` through `localize`; their targets `#optiecon` / `#ckad` are placeholder `<div id>`s in the experience / certifications stubs until PR-20 / PR-31 move the id onto the real block (never two).
+- `src/components/overview/InProgress.astro` — the IN PROGRESS rows, hrefs from `profile.current` through `localize`; their targets `#optiecon` / `#ckad` are placeholder `<div id>`s on the experience page / certifications stub until PR-20 / PR-31 move the id onto the real block (never two).
 - TRAP: Astro compresses the whitespace between two elements on separate lines; text that needs a space between spans needs `{' '}`. Symptom: h1 accessible name "MICHAELGOLDMAN".
 - `tests/e2e/overview.spec.ts` — hero text, links (EN + NL), portrait text vs. its source file, callouts per viewport, 320 px.
+
+## Sheet 02 — Experience
+
+- `src/pages/[...lang]/experience.astro` — label + heading (`ui.experience`), the timeline, then one placeholder `<div id>` per entry (the bars' and Overview's targets) until PR-20's detail blocks.
+- `src/components/experience/Timeline.astro` — ruler, employer dimension (`profile.employers`), bars, durations, legend; positions as `--start`/`--span` %, left/width ≥ 1024 px and top/height (8 px a month) below — one markup.
+- `src/dates.ts` — `formatMonth` / `formatSpan` with `ui.dates` words; the only place a `YYYY-MM` becomes `NOV 2023`.
+- `tests/e2e/experience.spec.ts` — timeline text, bar order/hrefs, scale (month positions) per orientation, bar click → hash.

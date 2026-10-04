@@ -53,4 +53,11 @@ notFound:
   label: SHEET ?? — NOT IN SET
   heading: SHEET NOT FOUND
   note: "REV. NOTE △ This sheet isn't in the set. Try one of these:"
+dates:
+  months: [JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC]
+  now: NOW
+experience:
+  label: SHEET 02 — EXPERIENCE · ELEVATION
+  heading: ['FIVE YEARS,', DRAWN TO SCALE]
+  legend: ['HATCHED: SABBATICAL', MUAY THAI · SURFING]
 lang: en

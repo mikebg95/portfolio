@@ -1,5 +1,8 @@
 ---
-import { t } from '../../i18n/content';
+import DisplayHeading from '../../components/drawing/DisplayHeading.astro';
+import SheetLabel from '../../components/drawing/SheetLabel.astro';
+import Timeline from '../../components/experience/Timeline.astro';
+import { getAllLocalized, t } from '../../i18n/content';
 import { langPaths, type Lang } from '../../i18n/paths';
 import SheetLayout from '../../layouts/SheetLayout.astro';
 
@@ -13,12 +16,38 @@ interface Props {
 
 const { lang } = Astro.props;
 const ui = await t(lang);
+const entries = await getAllLocalized('experience', lang);
 ---
 
 <SheetLayout lang={lang} sheet="experience" title={ui.seo.experience.title}>
+  <section class="sheet-panel experience-head">
+    <SheetLabel>{ui.experience.label}</SheetLabel>
+    <DisplayHeading as="h1" size="l">
+      <span class="experience-head__line">{ui.experience.heading[0]}</span>{' '}
+      <span class="experience-head__line">{ui.experience.heading[1]}</span>
+    </DisplayHeading>
+    <Timeline lang={lang} />
+  </section>
   <section class="sheet-panel">
-    <h1>{ui.sheets.experience}</h1>
-    {/* Target of the Overview's in-progress link; PR-20 (detail block 02.1) takes the id over. */}
-    <div id="optiecon"></div>
+    {/* Targets of the timeline bars and the Overview's in-progress link; PR-20's detail blocks take the ids over. */}
+    {entries.map((entry) => (
+      <div id={entry.data.id} />
+    ))}
   </section>
 </SheetLayout>
+
+<style>
+  .experience-head {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .experience-head__line {
+    display: block;
+  }
+
+  .experience-head :global(.timeline) {
+    margin-top: var(--space-7);
+  }
+</style>

@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 
 import { describe, expect, it } from 'vitest';
 
-import { experienceSchema, profileSchema } from '../../src/content/schemas';
+import { experienceSchema, profileSchema, uiSchema } from '../../src/content/schemas';
 import { readCollection } from './helpers/content';
 
 // PR-17: the EN experience entries hold design/copy.md's Sheet 02 strings verbatim, newest first,
@@ -101,5 +101,18 @@ describe('experience (EN) against design/copy.md', () => {
     for (const e of entries.filter((x) => x.employer === 'Conspect')) {
       expect(e.start >= (conspect?.start ?? '')).toBe(true);
     }
+  });
+
+  it('holds the sheet label, heading, legend and month words in ui', () => {
+    const ui = uiSchema.parse(readCollection('ui').find((f) => f.path === 'en/ui')?.data);
+    const [label, heading] = [
+      ...(sheet02.find((l) => l.startsWith('- Label '))?.matchAll(/`([^`]+)`/g) ?? []),
+    ].map((m) => m[1]);
+    const timeline = sheet02.find((l) => l.startsWith('- Timeline labels:')) ?? '';
+
+    expect(ui.experience.label).toBe(label);
+    expect(ui.experience.heading.join(' ')).toBe(heading);
+    expect(timeline).toContain(`\`${ui.experience.legend[0]}\` / \`${ui.experience.legend[1]}\``);
+    expect(ui.dates).toEqual({ months: MONTHS, now: 'NOW' });
   });
 });

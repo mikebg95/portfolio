@@ -148,3 +148,14 @@ before the next entry starts up to that start (May → Jun: consecutive months, 
 inclusive ends for everything (LinkPizza would be 45.8%, `2 Y 9 M`) and a special case for
 `kind: break`. An open end counts months to the build date rounded to nearest; the ruler ends at
 the January after max(build year, last end year), read in UTC like the title block's REV.
+
+## 2026-10-04 — Sheet 02 strings, month words, and a vertical timeline below desktop
+Who: agent (PR-19). Sheet 02's fixed strings (label, the heading's two drawn lines, the sabbatical
+legend) are `ui.experience`; month words and `NOW` are `ui.dates`, formatted by `src/dates.ts` (EN
+`JAN`, so Dutch can write `jan` — SPEC §3.6). Additive `ui` fields, as PR-17's record left to
+PR-19; Sheet 01's stay in `profile`. Bar labels are `client ?? employer · role` uppercased by CSS,
+not stored. The timeline is vertical below 1024 px, not only on phone: at 768 the open OptieCon bar
+is ~66 px, too short for `OPTIECON →`, and an ellipsis lost the name. Following the drawing, only
+closed roles get a duration; the sabbatical bar is a link too (to `#sabbatical`, name in sr-only
+text) since components.md makes every bar a link. The Conspect description line (copy.md, not
+drawn) sits under the dimension line, flush with its end.
