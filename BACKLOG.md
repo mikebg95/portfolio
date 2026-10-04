@@ -60,7 +60,7 @@ queue.
 
 ### Sheet 03 — Projects
 
-- [ ] **PR-26 Subscription Tracker detail sheet**
+- [x] **PR-26 Subscription Tracker detail sheet**
   - Done when: content from copy.md 03.2 plus 5–6 spec rows written from research-repos.md P-02 and the repo (layering, JDBC/JdbcTemplate, Flyway incl. the case-insensitive index, code-first OpenAPI, RFC 9457 errors, tests); FIG. 1 layers, FIG. 2 test pyramid with the real per-level counts read from the repo (sum 63); e2e asserts 63.
   - Spec: design/copy.md 03.2; github.com/mikebg95/subscription-tracker
   - Out of scope: other projects.
