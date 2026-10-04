@@ -3,6 +3,7 @@ import { t } from '../../i18n/content';
 import { langPaths, type Lang } from '../../i18n/paths';
 import Hero from '../../components/overview/Hero.astro';
 import HowIWork from '../../components/overview/HowIWork.astro';
+import SpecNotes from '../../components/overview/SpecNotes.astro';
 import SheetLayout from '../../layouts/SheetLayout.astro';
 
 export function getStaticPaths() {
@@ -20,4 +21,5 @@ const ui = await t(lang);
 <SheetLayout lang={lang} sheet="overview" title={ui.seo.overview.title}>
   <Hero lang={lang} />
   <HowIWork lang={lang} />
+  <SpecNotes lang={lang} />
 </SheetLayout>

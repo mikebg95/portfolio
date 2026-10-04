@@ -163,3 +163,71 @@ test('how I work: four numbered principles in a 4 / 2 / 1 column grid, then the 
     ).toHaveLength(columns);
   }
 });
+
+test('specification S-01…S-07 and general notes 1–6, side by side on desktop', async ({ page }) => {
+  await page.goto('/');
+  const spec = page.locator('.spec-notes__spec');
+  await expect(spec.getByRole('heading', { level: 2 })).toHaveText('SPECIFICATION');
+  const rows = spec.locator('.spec-row');
+  await expect(rows.locator('dt')).toHaveText([
+    /^S-01\s*BACKEND$/,
+    /^S-02\s*SECURITY$/,
+    /^S-03\s*DATA$/,
+    /^S-04\s*TESTING$/,
+    /^S-05\s*FRONTEND$/,
+    /^S-06\s*DEVOPS$/,
+    /^S-07\s*DESIGN$/,
+  ]);
+  await expect(rows.locator('dd')).toHaveText([
+    'Java 21 · Spring Boot 3 · Jakarta EE · REST · OpenAPI · Maven',
+    'Spring Security · OAuth2 / OIDC · Keycloak · Microsoft Entra ID · JWT',
+    'PostgreSQL · JPA / Hibernate · Spring Data JPA · JDBC · Flyway',
+    'Test-first · JUnit · Mockito · Testcontainers · ArchUnit',
+    'Angular · Vue · TypeScript · JSF',
+    'Docker · Docker Compose · GitHub Actions · CI/CD · GitLab · Kubernetes — CKAD in progress',
+    'Layered & hexagonal architecture · DDD · Clean code · ADRs',
+  ]);
+  // Only Kubernetes is in redline.
+  const pending = spec.locator('.spec-notes__pending');
+  await expect(pending).toHaveText('Kubernetes — CKAD in progress');
+  const redline = await page.evaluate(() =>
+    getComputedStyle(document.documentElement).getPropertyValue('--color-redline').trim(),
+  );
+  const probe = await page.evaluate((colour) => {
+    const el = document.createElement('span');
+    el.style.color = colour;
+    document.body.append(el);
+    const rgb = getComputedStyle(el).color;
+    el.remove();
+    return rgb;
+  }, redline);
+  await expect(pending).toHaveCSS('color', probe);
+  await expect(rows.nth(5).locator('dd')).not.toHaveCSS('color', probe);
+
+  const notes = page.locator('.spec-notes__notes');
+  await expect(notes.getByRole('heading', { level: 2 })).toHaveText('GENERAL NOTES');
+  await expect(notes.locator('ol > li')).toHaveText([
+    'Dutch and American, based in Amsterdam.',
+    'Native Dutch and English. Italian C1, Portuguese B2, Spanish, French and German B1.',
+    'Off-sheet: kickboxing, surfing, guitar, chess, reading.',
+    'Studied political science first — I read stakeholders as carefully as stack traces.',
+    'Spent the first months of 2026 at a Muay Thai camp, backpacking and surfing in South-East Asia.',
+    'All dimensions in years unless stated otherwise.',
+  ]);
+
+  // Side by side from 1024 px, stacked below (notes under the table).
+  for (const [width, beside] of [
+    [1440, true],
+    [900, false],
+    [390, false],
+  ] as const) {
+    await page.setViewportSize({ width, height: 900 });
+    const a = await spec.boundingBox();
+    const b = await notes.boundingBox();
+    expect(
+      a && b && (beside ? b.x >= a.x + a.width - 1 : b.y >= a.y + a.height - 1),
+      `${width} px`,
+    ).toBe(true);
+  }
+  await expectNoAxeViolations(page);
+});

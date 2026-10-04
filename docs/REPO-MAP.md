@@ -74,5 +74,6 @@ line.
 - `src/components/overview/Hero.astro` — label, name, role, intro, note, buttons; reads `profile.hero`; links via `sheetPath(key)` (src/i18n/routes.ts) + `localize`.
 - `src/components/overview/Portrait.astro` — `<pre aria-hidden>` portrait + sr-only figcaption, dimension lines, callouts (absolute on desktop, a list < 768 px; the phone font size fills the width via `cqi`).
 - `src/components/overview/HowIWork.astro` — four principles + AI note; panel labels come from `profile.labels` (docs/RECORD.md 2026-10-04).
+- `src/components/overview/SpecNotes.astro` — SPECIFICATION table + GENERAL NOTES; side by side (notes column 380 px) at ≥ 1024, stacked below; S-06's `pending` in redline.
 - TRAP: Astro compresses the whitespace between two elements on separate lines; text that needs a space between spans needs `{' '}`. Symptom: h1 accessible name "MICHAELGOLDMAN".
 - `tests/e2e/overview.spec.ts` — hero text, links (EN + NL), portrait text vs. its source file, callouts per viewport, 320 px.

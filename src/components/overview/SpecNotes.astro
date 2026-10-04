@@ -1,0 +1,120 @@
+---
+import { getLocalized } from '../../i18n/content';
+import type { Lang } from '../../i18n/paths';
+import SheetLabel from '../drawing/SheetLabel.astro';
+import SpecRow from '../drawing/SpecRow.astro';
+import SpecTable from '../drawing/SpecTable.astro';
+
+// SPEC §4.1: the two-panel row as drawn (overview-default-light-1440) — SPECIFICATION S-01…S-07
+// left, GENERAL NOTES right, split by a 1 px ink rule; stacked below 1024 px.
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const { labels, specs, generalNotes } = (await getLocalized('profile', 'profile', lang)).data;
+---
+
+<section class="sheet-panel spec-notes">
+  <div class="spec-notes__part spec-notes__spec">
+    <h2 class="spec-notes__label">
+      <SheetLabel as="span">{labels.specification}</SheetLabel>
+    </h2>
+    <SpecTable coded>
+      {specs.map((spec) => (
+        <SpecRow code={spec.code} label={spec.label}>
+          {spec.items.join(' · ')}
+          {spec.pending && (
+            <>
+              {' · '}
+              <span class="spec-notes__pending">{spec.pending}</span>
+            </>
+          )}
+        </SpecRow>
+      ))}
+    </SpecTable>
+  </div>
+  <div class="spec-notes__part spec-notes__notes">
+    <h2 class="spec-notes__label">
+      <SheetLabel as="span">{labels.generalNotes}</SheetLabel>
+    </h2>
+    <ol class="spec-notes__list">
+      {generalNotes.map((note) => (
+        <li>{note}</li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  /* The panels carry the padding; the row only splits them. */
+  .spec-notes.sheet-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 380px;
+    padding: 0;
+  }
+
+  .spec-notes__part {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    min-width: 0;
+  }
+
+  .spec-notes__spec {
+    padding: var(--space-6) var(--space-9) var(--space-7);
+    border-right: var(--border-thin);
+  }
+
+  .spec-notes__notes {
+    padding: var(--space-6) var(--space-7) var(--space-7);
+  }
+
+  .spec-notes__label {
+    margin: 0;
+    font: inherit;
+  }
+
+  .spec-notes__pending {
+    color: var(--color-redline);
+  }
+
+  .spec-notes__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin: 0;
+    padding-left: 22px;
+    color: var(--color-text-2);
+    font-size: 14.5px;
+    line-height: 1.55;
+  }
+
+  .spec-notes__list ::marker {
+    color: var(--color-line);
+    font-family: var(--font-mono);
+    font-size: var(--size-code);
+  }
+
+  @media (max-width: 1023px) {
+    .spec-notes.sheet-panel {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .spec-notes__spec {
+      border-right: none;
+      border-bottom: var(--border-thin);
+    }
+
+    .spec-notes__notes {
+      padding: var(--space-6) var(--space-9) var(--space-7);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .spec-notes__spec,
+    .spec-notes__notes {
+      padding: var(--sheet-content-padding-phone);
+    }
+  }
+</style>
