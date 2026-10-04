@@ -24,7 +24,7 @@
 - Dockerfile: multi-stage (node build → nginx-unprivileged serving `dist/`), with sensible cache
   headers and a 404 fallback.
 - GitHub Actions: on push/PR run lint, typecheck, unit, build, e2e, axe, Lighthouse; upload `dist/`
-  as an artifact. No deploy job (hosting decided later).
+  as an artifact. Deploying is `.github/workflows/pages.yml` (GitHub Pages), not ci.yml.
 
 ## Priorities
 1. First impression (the Overview sheet and its plotting animation) and instant readability.

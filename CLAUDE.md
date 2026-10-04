@@ -47,7 +47,7 @@ Installed versions as of PR-1; "(chosen)" = picked by NOTES.md, installed by a l
   @axe-core/playwright 4.13.0; Lighthouse CI budgets (chosen).
 - ESLint 10.12.0 flat config (typescript-eslint 8.71.0, eslint-plugin-astro 3.2.1); Prettier 3.9.9
   with prettier-plugin-astro 1.1.0. Markdown, `design/` and `docs/` are not formatted.
-- Dockerfile multi-stage node → nginx-unprivileged (chosen); GitHub Actions CI, no deploy (chosen).
+- Dockerfile multi-stage node → nginx-unprivileged (chosen); GitHub Actions CI (chosen); deploy is GitHub Pages via `.github/workflows/pages.yml` on push to main.
 
 <!-- Filled in by the first task that chooses it. Do not contradict it; a task
 that genuinely needs something new adds it here in the same commit. -->

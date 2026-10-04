@@ -84,8 +84,10 @@ GATE_TASK_PREFIXES="${GATE_TASK_PREFIXES:-QA|SIMP|REGRESS|UIFIX|VERIFY|DESIGN-FI
 # lock), then DEPLOY_CMD with ORCH_VERIFIED=1 and DEPLOY_GATE_DONE=1 exported
 # so the deployer may skip its own copy of the full check.
 DEPLOY_ON_FINISH="${DEPLOY_ON_FINISH:-1}"
-DEPLOY_CMD="${DEPLOY_CMD:-npm run build}"                       # e.g. "bash scripts/deploy-pi.sh deploy"
-DEPLOY_TARGET="${DEPLOY_TARGET:-local}"   # tailnet name; .local is LAN-only
+# Michael 2026-10-04: live on michaelgoldman.dev via GitHub Pages — pushing main
+# runs .github/workflows/pages.yml, which builds and publishes dist/.
+DEPLOY_CMD="${DEPLOY_CMD:-npm run build && git push origin HEAD:main}"
+DEPLOY_TARGET="${DEPLOY_TARGET:-github-pages}"   # tailnet name; .local is LAN-only
 DEPLOY_RETRIES="${DEPLOY_RETRIES:-4}"              # failures NOT in the full check (network, docker, box)
 DEPLOY_RETRY_SECONDS="${DEPLOY_RETRY_SECONDS:-60 300 900}"  # waits between attempts; last one repeats
 REGRESS_MAX="${REGRESS_MAX:-2}"                    # full-check failures turned into REGRESS- tasks per run

@@ -7,8 +7,8 @@
 - Q: Show "Amsterdam local time" in the header?
   Default: No (it was only in the rejected alternative).
 - Q: Which hosting for michaelgoldman.dev?
-  Default: out of scope for the loop — produce `dist/` + Dockerfile + CI; deployment is done by hand
-  afterwards.
+  Decided 2026-10-04 (Michael): GitHub Pages, deployed by `.github/workflows/pages.yml` on every
+  push to `main`; the loop's release pushes main.
 - Q: Analytics?
   Default: none.
 - Q: Show AI-built side projects (vibecoded repos)?

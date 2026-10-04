@@ -198,13 +198,14 @@ Scentify GIF and any repo images are copied into `public/` with attribution, nev
   768–1023, desktop ≥ 1024.
 - No cookies, no tracking, no personal data beyond the public contact links. Phone number never
   appears in HTML.
-- Hosting: decided later (deployment is out of the loop's scope). The build must produce a plain
+- Hosting: GitHub Pages at michaelgoldman.dev (`public/CNAME`); every push to `main` runs
+  `.github/workflows/pages.yml`, which builds and publishes `dist/`. The build must stay a plain
   `dist/` that any static host can serve, plus a Dockerfile (nginx, non-root) so it can also run in a
   container.
 
 ## 8. Out of scope
 Blog, contact form, CMS, analytics, comments, a terminal emulator, game mechanics, any live demo of
-Jamigos, deploying to a host or changing DNS.
+Jamigos, changing DNS.
 
 ## 9. Glossary
 - **Sheet** — one page of the site, numbered 01–05 (03.n for project details).
