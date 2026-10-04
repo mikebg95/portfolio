@@ -84,7 +84,7 @@ queue.
   - Spec: design/copy.md Sheet 03; docs/source/research-repos.md; docs/source/briefing.md; the repos' READMEs
   - Out of scope: figures and diagrams; Subscription Tracker and Recipe Book (accurate as they are).
 
-- [ ] **PR-65 Content pass: Education closes the gap between the minor and the first job**
+- [x] **PR-65 Content pass: Education closes the gap between the minor and the first job**
   - Michael, 2026-10-04: a recruiter reading 2018 minor → 2019 BSc → 2021 first job sees an unexplained gap; the self-study year that produced Scentify fills it.
   - Done when: the Minor Programming detail body (part 3) ends with `In 2020 I spent a year teaching myself Java and Android — Scentify (P-05) is from then — and in 2021 I started at LinkPizza.` (or the same facts, tighter); NL twin; the Sheet 05 detail panel at 390 and 1440 shows no overflow; tests green.
   - Spec: design/copy.md Sheet 05; docs/source/briefing.md
