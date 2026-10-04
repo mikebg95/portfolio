@@ -72,7 +72,7 @@ queue.
 
 ### Hardening
 
-- [ ] **PR-59 The ASCII portrait uses its dark-background version in the blueprint theme**
+- [x] **PR-59 The ASCII portrait uses its dark-background version in the blueprint theme**
   - Michael, 2026-10-04: the portrait *"looks really good in lightmode but less good in darkmode"*. Cause: ASCII art maps dense glyphs (`@#%`) to dark areas; with light text on navy the light-mode file reads as a photo negative. `docs/source/ascii-portrait-dark.txt` (from his GitHub profile card, density inverted for dark backgrounds) is the fix.
   - Done when: `src/portrait.ts` exports both files; the portrait renders the dark file in the blueprint theme (both `[data-theme="blueprint"]` and system-dark-without-override) and the light file in paper — via two `<pre aria-hidden>` blocks toggled by CSS so it works without JS and never flashes the wrong one; the line-by-line scan-in animation (motion.md §M1) works for whichever is visible; colour in blueprint is tuned (try `--color-ink`/near-white vs `--color-line`) so contrast against the navy paper reads as a portrait, judged by screenshots of both themes saved to `.e2e/`; a test asserts the right file is visible per theme.
   - Spec: SPEC §4.1; design/motion.md §M1
