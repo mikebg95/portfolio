@@ -57,7 +57,7 @@ queue.
   - Spec: NOTES.md "Stack preferences", SPEC §7
   - Out of scope: tests beyond an empty Vitest run (PR-2), styling, pages.
 
-- [ ] **PR-2 Set up Vitest, Playwright and axe**
+- [x] **PR-2 Set up Vitest, Playwright and axe**
   - Done when: Vitest with one passing smoke test; Playwright projects `chromium-desktop` (1440×900), `chromium-phone` (Pixel 7) and `webkit-iphone` (iPhone 14), `webServer` runs `npm run build && npm run preview` on 4321, traces on failure, output under `.e2e/`; `@axe-core/playwright` with a shared `expectNoAxeViolations(page)` helper (WCAG 2.2 AA tags); one passing e2e test loading `/`; `npm run verify` passes.
   - Spec: NOTES.md "Stack preferences", SPEC §7
   - Out of scope: real pages.
