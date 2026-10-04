@@ -84,7 +84,7 @@ queue.
   - Spec: design/copy.md Sheet 01 "How I work"; docs/source/briefing.md; docs/source/private/briefing-private.md
   - Out of scope: card layout and styling; the AI note.
 
-- [ ] **PR-62 Content pass: Specification rows match the CV and the market's keywords**
+- [x] **PR-62 Content pass: Specification rows match the CV and the market's keywords**
   - Michael, 2026-10-04: Spring itself, Spring MVC, JAX-RS, WildFly, SQL and Bitbucket are on his CV but missing here; "Java 21 · Spring Boot 3" undersells (he works with Java 17–26 and Spring Boot 3 and 4); recruiters search for "TDD", not "Test-first". Keep DDD.
   - Done when: S-01 BACKEND `Java 17 / 21 / 25+ · Spring Framework · Spring Boot 3 & 4 · Spring MVC · Jakarta EE · JAX-RS · WildFly · REST · OpenAPI · Maven`; S-02 SECURITY unchanged; S-03 DATA `PostgreSQL · SQL · JPA / Hibernate · Spring Data JPA · JDBC / JdbcTemplate · Flyway · MongoDB`; S-04 TESTING `TDD · JUnit · Mockito · Testcontainers · ArchUnit · Unit & integration tests`; S-05 FRONTEND `Angular · Vue · TypeScript · JSF / PrimeFaces · HTML / CSS`; S-06 DEVOPS `Docker · Docker Compose · GitHub Actions · CI/CD · Git · GitLab · Bitbucket` + the redline `Kubernetes — CKAD in progress`; S-07 DESIGN `Layered & hexagonal architecture · DDD · Clean code · C4 models · ADRs · Design-first APIs`; only if it fits the existing table without a layout change at 390 and 1440, add S-08 WAY OF WORKING `Scrum (PSM I) · Agile DevOps teams · Code review · Knowledge sessions` — otherwise skip S-08 and say so in the commit; every item traceable to `cv.md`, `briefing.md` or a repo; NL twin; tests green.
   - Spec: design/copy.md Sheet 01 Specification; docs/source/cv.md TECHNICAL SKILLS; docs/source/briefing.md
