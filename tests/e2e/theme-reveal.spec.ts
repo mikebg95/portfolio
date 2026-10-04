@@ -56,10 +56,8 @@ async function logTransitions(page: Page) {
 const logged = (page: Page) =>
   page.evaluate(() => (window as unknown as { transitions: Logged[] }).transitions);
 
-async function themeButton(page: Page, phone: boolean) {
-  if (phone) await page.getByRole('button', { name: 'Open sheet index' }).click();
-  return page.locator('[data-theme-switch]:visible');
-}
+// The phone header carries its own theme switch; only one is visible at a time.
+const themeButton = (page: Page) => page.locator('[data-theme-switch]:visible');
 
 function collectErrors(page: Page) {
   const errors: string[] = [];
@@ -73,8 +71,7 @@ function collectErrors(page: Page) {
 test.describe('no-preference', () => {
   test.use({ reducedMotion: 'no-preference', colorScheme: 'light' });
 
-  test('the new theme grows as a circle from the button, twice', async ({ page }, testInfo) => {
-    const phone = testInfo.project.name === 'chromium-phone';
+  test('the new theme grows as a circle from the button, twice', async ({ page }) => {
     const errors = collectErrors(page);
     await logTransitions(page);
     // A later view: on the first the header cells are still dropping in at the second click. Not a
@@ -84,8 +81,7 @@ test.describe('no-preference', () => {
     const html = page.locator('html');
 
     for (const [i, theme] of [[0, 'blueprint'] as const, [1, 'paper'] as const]) {
-      const button = await themeButton(page, phone);
-      await button.click();
+      await themeButton(page).click();
       await expect(html).toHaveAttribute('data-theme', theme);
       await expect.poll(async () => (await logged(page))[i]?.finished).toBe(true);
       const { animations, button: centre } = (await logged(page))[i]!;
@@ -101,7 +97,6 @@ test.describe('no-preference', () => {
       // The marks are cleared once it is done.
       await expect(html).not.toHaveAttribute('data-theme-switching');
       expect(await html.evaluate((root) => root.style.getPropertyValue('--theme-x'))).toBe('');
-      if (phone) await page.keyboard.press('Escape');
     }
     expect(errors).toEqual([]);
   });
@@ -110,11 +105,11 @@ test.describe('no-preference', () => {
 test.describe('reduced motion', () => {
   test.use({ reducedMotion: 'reduce', colorScheme: 'light' });
 
-  test('the theme swaps at once, no transition', async ({ page }, testInfo) => {
+  test('the theme swaps at once, no transition', async ({ page }) => {
     const errors = collectErrors(page);
     await logTransitions(page);
     await page.goto('/');
-    await (await themeButton(page, testInfo.project.name === 'chromium-phone')).click();
+    await themeButton(page).click();
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'blueprint');
     expect(await logged(page)).toEqual([]);
     expect(errors).toEqual([]);

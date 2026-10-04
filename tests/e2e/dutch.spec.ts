@@ -18,7 +18,6 @@ const ENGLISH = [
   'BLUEPRINT',
   'Switch to blueprint theme',
   'Switch to paper theme',
-  'Open sheet index',
   'SHEETS',
   'CLOSE',
   'SCALE',

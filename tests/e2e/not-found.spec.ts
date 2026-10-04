@@ -4,7 +4,7 @@ import { expectNoAxeViolations } from './helpers/axe';
 import { ui } from './helpers/content';
 
 // The 404 sheet (SPEC §3.9 / §4.7; copy.md 404): label, heading, redline note and the five sheets
-// as a sheet index list. `astro preview` answers an unknown URL with `dist/404.html`, as the
+// as a list of links. `astro preview` answers an unknown URL with `dist/404.html`, as the
 // static host does (docs/REPO-MAP.md "Routes and languages"). English is copy.md verbatim; Dutch is
 // its translation in the NL content.
 const PATHS = ['/', '/experience', '/projects', '/certifications', '/education'];
