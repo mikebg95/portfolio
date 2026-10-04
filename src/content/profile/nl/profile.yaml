@@ -1,35 +1,61 @@
-# Placeholder so the build passes — PR-12 replaces it with the copy from design/copy.md.
+# English text until PR-48 translates it (docs/conventions/content.md). Twin of ../en/profile.yaml.
 hero:
-  label: 'Placeholder (PR-12)'
-  name: ['Placeholder (PR-12)', 'Placeholder (PR-12)']
-  role: 'Placeholder (PR-12)'
-  intro: 'Placeholder (PR-12)'
-  revisionNote: 'Placeholder (PR-12)'
-  buttons: { projects: 'Placeholder (PR-12)', cv: 'Placeholder (PR-12)' }
-  dimensions: { horizontal: 'Placeholder (PR-12)', vertical: 'Placeholder (PR-12)' }
+  label: SHEET 01 — GENERAL ARRANGEMENT
+  name: [MICHAEL, GOLDMAN]
+  role: Java software engineer — full-stack, building towards DevOps.
+  intro: 'Five years of Spring Boot applications with Angular and Vue frontends: for a government agency, a scale-up and a consultancy. I draw the system before I build it, write the test before the code, and stay until it runs in production.'
+  revisionNote: 'REV. NOTE △ Every project on these sheets started as a drawing: a C4 model, a database schema and an API contract. Then the tests. Then the code.'
+  buttons: { projects: VIEW PROJECTS →, cv: DOWNLOAD CV (PDF) }
+  dimensions: { horizontal: 5+ YRS FULL-STACK, vertical: JAVA · SPRING }
   balloons:
-    - { text: 'Placeholder (PR-12)' }
-    - { text: 'Placeholder (PR-12)' }
-    - { text: 'Placeholder (PR-12)' }
-  portraitAlt: 'Placeholder (PR-12)'
+    - { text: Spring certified, href: /certifications }
+    - { text: Speaks 7 languages }
+    - { text: Trains Muay Thai }
+  portraitAlt: Portrait of Michael Goldman, drawn in ASCII characters.
 howIWork:
-  - { title: 'Placeholder (PR-12)', body: 'Placeholder (PR-12)' }
-  - { title: 'Placeholder (PR-12)', body: 'Placeholder (PR-12)' }
-  - { title: 'Placeholder (PR-12)', body: 'Placeholder (PR-12)' }
-  - { title: 'Placeholder (PR-12)', body: 'Placeholder (PR-12)' }
-aiNote: 'Placeholder (PR-12)'
+  - title: Design before build
+    body: Requirements, a C4 model, a database schema and an API contract come first, and I write down the trade-offs I make. Then the code follows the drawing.
+  - title: Test first
+    body: 'The test comes before the code: unit, slice, integration against real databases with Testcontainers, and architecture rules with ArchUnit. 251 hand-written tests across my portfolio series.'
+  - title: Secure by design
+    body: 'Sign-in and permissions are where I go deepest: single sign-on with Microsoft Entra ID and Keycloak, OAuth2 / OIDC, JWT, method security — and tests that prove it.'
+  - title: Own it to production
+    body: At DJI I was the only developer on a new application, from the first design to deployment with operations and a full handover. Docker and CI/CD are part of the job, not someone else's.
+aiNote: ON AI — I build with AI coding agents every day, with tests, architecture rules and review as the guardrails, and I label what was AI-built. The portfolio series and its tests are written by hand.
 specs:
-  - { code: S-01, label: 'Placeholder (PR-12)', items: ['Placeholder (PR-12)'] }
-  - { code: S-02, label: 'Placeholder (PR-12)', items: ['Placeholder (PR-12)'] }
-  - { code: S-03, label: 'Placeholder (PR-12)', items: ['Placeholder (PR-12)'] }
-  - { code: S-04, label: 'Placeholder (PR-12)', items: ['Placeholder (PR-12)'] }
-  - { code: S-05, label: 'Placeholder (PR-12)', items: ['Placeholder (PR-12)'] }
-  - { code: S-06, label: 'Placeholder (PR-12)', items: ['Placeholder (PR-12)'] }
-  - { code: S-07, label: 'Placeholder (PR-12)', items: ['Placeholder (PR-12)'] }
+  - code: S-01
+    label: BACKEND
+    items: [Java 21, Spring Boot 3, Jakarta EE, REST, OpenAPI, Maven]
+  - code: S-02
+    label: SECURITY
+    items: [Spring Security, OAuth2 / OIDC, Keycloak, Microsoft Entra ID, JWT]
+  - code: S-03
+    label: DATA
+    items: [PostgreSQL, JPA / Hibernate, Spring Data JPA, JDBC, Flyway]
+  - code: S-04
+    label: TESTING
+    items: [Test-first, JUnit, Mockito, Testcontainers, ArchUnit]
+  - code: S-05
+    label: FRONTEND
+    items: [Angular, Vue, TypeScript, JSF]
+  - code: S-06
+    label: DEVOPS
+    items: [Docker, Docker Compose, GitHub Actions, CI/CD, GitLab]
+    pending: Kubernetes — CKAD in progress
+  - code: S-07
+    label: DESIGN
+    items: [Layered & hexagonal architecture, DDD, Clean code, ADRs]
 generalNotes:
-  - 'Placeholder (PR-12)'
+  - Dutch and American, based in Amsterdam.
+  - Native Dutch and English. Italian C1, Portuguese B2, Spanish, French and German B1.
+  - 'Off-sheet: kickboxing, surfing, guitar, chess, reading.'
+  - Studied political science first — I read stakeholders as carefully as stack traces.
+  - Spent the first months of 2026 at a Muay Thai camp, backpacking and surfing in South-East Asia.
+  - All dimensions in years unless stated otherwise.
 current:
-  - { text: 'Placeholder (PR-12)', href: / }
+  - { text: 'OptieCon — security and sign-in, at Conspect', href: /experience#optiecon }
+  - { text: CKAD — Certified Kubernetes Application Developer, href: /certifications#ckad }
+  - { text: 'Journal — hexagonal architecture, part 3 of the series', href: /projects/journal }
 contact:
   email: mikebgoldman95@gmail.com
   linkedin: https://linkedin.com/in/mikebg95

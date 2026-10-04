@@ -8,7 +8,7 @@
 - Until the Dutch tasks (PR-48–50): an EN content task writes the NL twin with the English text and
   `translated: false`. The Dutch tasks flip it to `true` (or drop it — the default is `true`).
 - `id` (experience) and `slug` (projects) equal the file name.
-- Quote YAML strings containing `: `, `#`, a leading `*`/`&`/`!`, or that look like dates/booleans;
+- Quote YAML strings containing `: `, `#`, a comma inside `{ … }` / `[ … ]` (it splits the item), a leading `*`/`&`/`!`, or that look like dates/booleans;
   `YYYY-MM` months are always quoted (`'2026-06'`).
 - YAML is Prettier-formatted like code (`npx prettier --write <file>`); the checks fail otherwise.
 - Changing a schema is its own task (CLAUDE.md contracts); a content task only fills fields.

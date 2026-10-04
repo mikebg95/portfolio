@@ -100,3 +100,11 @@ site. An integration in astro.config.ts injects the route in `astro dev` or when
 `src/pages/`, so the page lives in `src/dev/`. Both themes show side by side via nested
 `[data-theme]`, which needed tokens.css to re-declare colour-built tokens per theme scope.
 Instead of: a page in every build (it would ship), or screenshots per theme of a one-theme page.
+
+## 2026-10-04 — Profile content: what `profile` holds and what it does not
+Who: agent (PR-12). `hero.revisionNote` keeps its `REV. NOTE △` lead inline, as `ui.notFound.note`
+does; `splitNote` sets it in 600 weight. Hrefs in `profile` (balloon 1, in-progress items) are
+EN paths (`/certifications`, `/experience#optiecon`); pages pass them through `localize`. The panel
+labels (`HOW I WORK`, `SPECIFICATION`, `GENERAL NOTES`, `IN PROGRESS`) are not in `profile` — the
+schema has no field and changing it is its own task; PR-14–16 place them. The portrait is not
+content: `src/portrait.ts` reads `docs/source/ascii-portrait.txt` (the `-dark` variant is unused).
