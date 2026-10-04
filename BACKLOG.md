@@ -72,7 +72,7 @@ queue.
 
 ### Hardening
 
-- [ ] **PR-63b App-like navigation: ClientRouter**
+- [x] **PR-63b App-like navigation: ClientRouter**
   - Michael, 2026-10-04: *"when i click to other parts of the app it seems to do a refresh"*. Split from PR-63: PR-63a shipped prefetch (astro.config.ts `prefetch`) and the offline service worker (src/precache.ts, src/service-worker.js, tests/e2e/offline.spec.ts) — keep both working.
   - Done when: Astro's `<ClientRouter />` (view transitions router) on every page so sheet changes swap content without a full reload, keeping the header/tab bar/title block persistent (`transition:persist`), the motion system's per-page init re-runs on `astro:page-load` (no double-binding; the first-load plotting still runs once per session), scroll restores correctly, focus moves to the new `<main>` h1 and the route change is announced; Playwright navigates between sheets and asserts no full document reload (a window marker survives); offline navigation (offline.spec.ts) still passes through the router; reduced motion and no-JS still work; Lighthouse budgets still pass (`npm run lhci`).
   - Learned in PR-63a: §M2 today is cross-document View Transitions (the inline `@view-transition` opt-in in SheetLayout, `pageswap`/`pageshow` in `markScrolledSwaps`, src/view-transitions.ts; docs/RECORD.md 2026-10-04 "Sheet transitions") — under ClientRouter those events no longer fire, so the scrolled-swap mark and the opt-in must move to the router's events (`astro:before-preparation`/`astro:before-swap`). Every component `<script>` (crosshair, header, timeline, assembly, education sheet, theme switch, `reveal()`) runs once per document today and must be re-run per page. Playwright blocks service workers outside offline.spec.ts (playwright.config.ts).
@@ -89,6 +89,16 @@ queue.
   - Seen by PR-62e's agent, 2026-10-04: in Playwright `webkit-iphone` (iPhone 14, DPR 3) a 1.5 px dashed border computes to 1.33 px and its left/right sides are not drawn at all (top/bottom are). Seen on the RevisionNote (`--border-dashed-note`; `/`, `/projects/jamigos`) and the Experience sabbatical card (`/experience`, `#sabbatical`). 1 px and 2 px draw. PR-62e worked round it for the pending cert and in-progress project cards only (1 px below 768 px). Reproduce: `npm run build && npm run preview`, WebKit iPhone 14, screenshot a 30 px wide clip at the note's left edge.
   - Done when: every dashed border on every page shows all four sides in `webkit-iphone` (a Playwright check that clips each dashed element's left edge and finds its colour), in both themes, without hard-coding a colour or changing the desktop look.
   - Out of scope: solid borders.
+
+- [ ] **QA-64 Certification stamps test fails on webkit-iphone**
+  - Seen by PR-63b's agent, 2026-10-04, and it fails on 43466df too (before ClientRouter): `npx playwright test tests/e2e/motion.spec.ts --project=webkit-iphone -g "slam in card order"`. Its first `.stamp` sits below the fold on iPhone 14 (top ≈ 731 px, viewport 664), so it never gets `is-revealed` and the wait times out.
+  - Done when: the test passes on all three projects. If the test is wrong, fix the test (for example by scrolling the stamp into view first) without loosening what it asserts. If the reveal is wrong, fix the reveal.
+  - Out of scope: the stamp's look.
+
+- [ ] **QA-65 Lighthouse best-practices 0.96 on /education (font size)**
+  - Seen by PR-63b's agent, 2026-10-04, and the same on 43466df: `npm run build && npm run lhci` fails the `categories.best-practices` minScore 1 assertion on /education (mobile preset). The `font-size` audit flags 11 px callouts and parts list, plus the 9–11 px title block. Everything else passes.
+  - Done when: `npm run lhci` passes on every URL without changing `lighthouserc.json`, and the drawing's look at desktop widths is unchanged.
+  - Spec: design/tokens.json type sizes; design/screens education-*-390
 
 ### Delivery
 
