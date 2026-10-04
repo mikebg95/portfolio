@@ -1,0 +1,21 @@
+# Placeholder so the build passes — PR-21 replaces it with the copy from design/copy.md.
+slug: scentify
+code: P-05
+kind: 'Placeholder (PR-21)'
+order: 5
+title: Scentify
+cardSummary: 'Placeholder (PR-21)'
+summary: 'Placeholder (PR-21)'
+period: 'Placeholder (PR-21)'
+status: done
+repo: https://github.com/mikebg95/Scentify
+facts:
+  - { label: 'Placeholder (PR-21)', value: 'Placeholder (PR-21)' }
+  - { label: 'Placeholder (PR-21)', value: 'Placeholder (PR-21)' }
+  - { label: 'Placeholder (PR-21)', value: 'Placeholder (PR-21)' }
+figures:
+  - { title: 'Placeholder (PR-21)' }
+  - { title: 'Placeholder (PR-21)' }
+note: 'Placeholder (PR-21)'
+lang: en
+translated: true

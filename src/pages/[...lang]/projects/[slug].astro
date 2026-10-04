@@ -1,0 +1,31 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+import { getAllLocalized, sharedId, t } from '../../../i18n/content';
+import { langPaths, type Lang } from '../../../i18n/paths';
+import SheetLayout from '../../../layouts/SheetLayout.astro';
+
+export async function getStaticPaths() {
+  const paths = await Promise.all(
+    langPaths().map(async ({ params, props }) =>
+      (await getAllLocalized('projects', props.lang)).map((project) => ({
+        params: { ...params, slug: sharedId(project) },
+        props: { ...props, project },
+      })),
+    ),
+  );
+  return paths.flat();
+}
+
+interface Props {
+  lang: Lang;
+  project: CollectionEntry<'projects'>;
+}
+
+const { lang, project } = Astro.props;
+const ui = await t(lang);
+---
+
+<SheetLayout lang={lang} title={ui.seo.project.title.replace('{title}', project.data.title)}>
+  <h1>{project.data.title}</h1>
+</SheetLayout>

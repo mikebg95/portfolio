@@ -1,0 +1,27 @@
+---
+import FontPreload from '../components/FontPreload.astro';
+import type { Lang } from '../i18n/paths';
+import '../styles/base.css';
+
+// The page shell every route uses. PR-6 draws the sheet frame, header and footer around the slot.
+interface Props {
+  lang: Lang;
+  title: string;
+}
+
+const { lang, title } = Astro.props;
+---
+
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <FontPreload />
+  </head>
+  <body>
+    <main id="main">
+      <slot />
+    </main>
+  </body>
+</html>

@@ -180,6 +180,8 @@ Content collections (§3.6), schema per collection in `src/content/schemas.ts`, 
   rows[] {code, text, ec}}, lang.
 - `profile`: hero, howIWork[4], specs[6], generalNotes[], current[], contact {email, linkedin,
   github}, lang.
+- `ui`: the strings every page shares — header, title block, SEO titles/descriptions, 404 — lang
+  (docs/RECORD.md 2026-10-04).
 
 ## 6. Integrations
 None at runtime. Google Fonts are self-hosted at build (no request to Google from the visitor). The

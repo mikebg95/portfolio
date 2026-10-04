@@ -1,29 +1,10 @@
-import { readdirSync, readFileSync } from 'node:fs';
-import { join, sep } from 'node:path';
-import { fileURLToPath } from 'node:url';
-
-import { load } from 'js-yaml';
 import { describe, expect, it } from 'vitest';
 
-import { findPairingErrors, type ContentFile } from '../../src/content/pairing';
+import { findPairingErrors } from '../../src/content/pairing';
 import { COLLECTIONS, LANGS, schemas } from '../../src/content/schemas';
+import { readCollection } from './helpers/content';
 
-// The build-time content check: every file in every collection, both languages, read from disk
-// the way the glob loader in src/content.config.ts reads it (js-yaml, `<lang>/<id>.yaml`).
-const CONTENT = fileURLToPath(new URL('../../src/content', import.meta.url));
-
-function readCollection(name: string): ContentFile[] {
-  return readdirSync(join(CONTENT, name), { recursive: true, encoding: 'utf8' })
-    .filter((file) => file.endsWith('.yaml'))
-    .map((file) => ({
-      path: file
-        .split(sep)
-        .join('/')
-        .replace(/\.yaml$/, ''),
-      data: load(readFileSync(join(CONTENT, name, file), 'utf8')),
-    }));
-}
-
+// The build-time content check: every file in every collection, both languages.
 describe.each(COLLECTIONS)('content collection %s', (name) => {
   const files = readCollection(name);
 

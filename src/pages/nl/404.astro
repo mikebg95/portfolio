@@ -1,0 +1,12 @@
+---
+import { t } from '../../i18n/content';
+import SheetLayout from '../../layouts/SheetLayout.astro';
+
+// Not under [...lang]/: Astro serves only `src/pages/404.astro` as the 404 page by name.
+const lang = 'nl';
+const ui = await t(lang);
+---
+
+<SheetLayout lang={lang} title={ui.seo.notFound.title}>
+  <h1>{ui.notFound.heading}</h1>
+</SheetLayout>

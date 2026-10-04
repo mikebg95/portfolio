@@ -175,12 +175,77 @@ export const profileSchema = z.strictObject({
   translated,
 });
 
+/** The five sheets of the set, in sheet-number order (SPEC §4). */
+export const SHEET_KEYS = [
+  'overview',
+  'experience',
+  'projects',
+  'certifications',
+  'education',
+] as const;
+export type SheetKey = (typeof SHEET_KEYS)[number];
+
+const seoPage = z.strictObject({ title: text, description: text });
+
+/**
+ * Strings every page shares (design/copy.md Global, SEO and 404): one `ui` entry per language,
+ * read with `t(lang)` from `src/i18n/content.ts`.
+ */
+export const uiSchema = z.strictObject({
+  monogram: z.strictObject({ initials: text, set: text }),
+  /** The word before a sheet number: `SHEET` 01. */
+  sheet: text,
+  sheets: z.strictObject({
+    overview: text,
+    experience: text,
+    projects: text,
+    certifications: text,
+    education: text,
+  }),
+  languages: z.strictObject({ en: text, nl: text }),
+  theme: z.strictObject({ paper: text, blueprint: text, toPaper: text, toBlueprint: text }),
+  cv: text,
+  /** The phone header's sheet index button. */
+  sheetIndex: z.strictObject({ open: text, openLabel: text, close: text }),
+  skipLink: text,
+  titleBlock: z.strictObject({
+    project: text,
+    projectValue: text,
+    scale: text,
+    scaleValue: text,
+    sheet: text,
+    drawn: text,
+    drawnValue: text,
+    checked: text,
+    checkedValue: text,
+    rev: text,
+    contact: text,
+    email: text,
+    linkedin: text,
+    github: text,
+  }),
+  seo: z.strictObject({
+    overview: seoPage,
+    experience: seoPage,
+    projects: seoPage,
+    certifications: seoPage,
+    education: seoPage,
+    /** `{title}` is replaced by the project's title; the description is its summary. */
+    project: z.strictObject({ title: text.includes('{title}') }),
+    notFound: z.strictObject({ title: text }),
+  }),
+  notFound: z.strictObject({ label: text, heading: text, note: text }),
+  lang,
+  translated,
+});
+
 export const schemas = {
   experience: experienceSchema,
   projects: projectSchema,
   certifications: certificationSchema,
   education: educationSchema,
   profile: profileSchema,
+  ui: uiSchema,
 } as const;
 
 export type CollectionName = keyof typeof schemas;

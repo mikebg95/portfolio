@@ -1,0 +1,56 @@
+# Strings every page shares — design/copy.md Global, SEO and 404, verbatim.
+monogram: { initials: MG, set: DRAWING SET }
+sheet: SHEET
+sheets:
+  overview: Overview
+  experience: Experience
+  projects: Projects
+  certifications: Certifications
+  education: Education
+languages: { en: EN, nl: NL }
+theme:
+  paper: PAPER
+  blueprint: BLUEPRINT
+  toPaper: Switch to paper theme
+  toBlueprint: Switch to blueprint theme
+cv: CV
+sheetIndex: { open: SHEETS, openLabel: Open sheet index, close: CLOSE }
+skipLink: Skip to sheet content
+titleBlock:
+  project: PROJECT
+  projectValue: MICHAEL GOLDMAN
+  scale: SCALE
+  scaleValue: '1 : 1'
+  sheet: SHEET
+  drawn: DRAWN
+  drawnValue: M. GOLDMAN
+  checked: CHECKED
+  checkedValue: 251 TESTS
+  rev: REV
+  contact: CONTACT
+  email: Email
+  linkedin: LinkedIn
+  github: GitHub
+seo:
+  overview:
+    title: Michael Goldman — Java software engineer, Amsterdam
+    description: 'Full-stack Java engineer: Spring Boot, secure by design, test-first, shipped through CI/CD. Moving into Kubernetes and DevOps.'
+  experience:
+    title: Experience — Michael Goldman
+    description: Five years of full-stack Java at DJI, Conspect and LinkPizza, drawn to scale.
+  projects:
+    title: Projects — Michael Goldman
+    description: 'Jamigos and the Spring Persistence & Architecture series: designed first, then built and tested.'
+  certifications:
+    title: Certifications — Michael Goldman
+    description: Spring Certified Professional, PSM I, Oracle Certified Associate Java SE 8 — CKAD in progress. Every one verifiable.
+  education:
+    title: Education — Michael Goldman
+    description: Political science, a programming minor with Harvard CS50, and how they assembled into a software engineer.
+  project: { title: '{title} — Projects — Michael Goldman' }
+  notFound: { title: Sheet not found — Michael Goldman }
+notFound:
+  label: SHEET ?? — NOT IN SET
+  heading: SHEET NOT FOUND
+  note: "REV. NOTE △ This sheet isn't in the set. Try one of these:"
+lang: en

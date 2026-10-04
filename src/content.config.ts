@@ -7,6 +7,7 @@ import {
   experienceSchema,
   profileSchema,
   projectSchema,
+  uiSchema,
 } from './content/schemas';
 
 // Astro 6+ reads this file, not `src/content/config.ts` (docs/RECORD.md 2026-10-04).
@@ -29,4 +30,5 @@ export const collections = {
   }),
   education: defineCollection({ loader: files('education'), schema: educationSchema }),
   profile: defineCollection({ loader: files('profile'), schema: profileSchema }),
+  ui: defineCollection({ loader: files('ui'), schema: uiSchema }),
 };
