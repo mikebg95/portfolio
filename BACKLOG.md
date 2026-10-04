@@ -68,7 +68,7 @@ queue.
 
 ### Motion
 
-- [ ] **PR-43 Experience timeline scroll animation**
+- [x] **PR-43 Experience timeline scroll animation**
   - Done when: §M4 with GSAP ScrollTrigger lazy-loaded only on `/experience`: ruler draws with ticks, bars extrude scrubbed to scroll, durations count with the bar, hatching slides, OptieCon arrow pulses twice, sticky timeline with scale cursor on desktop ≥ 1024 marking the role in view; no stickiness on phone; reduced motion → final state; JS weight budget respected; e2e scrolls and asserts final widths.
   - Spec: design/motion.md §M4
   - Out of scope: —
