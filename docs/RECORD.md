@@ -138,3 +138,13 @@ text after `Conspect — `), not on the experience entries: it spans two of them
 Not modelled yet (PR-19 decides): sheet label/heading, timeline labels, `HATCHED: SABBATICAL` /
 `MUAY THAI · SURFING`. DJI ends 2026-01, the month the sabbatical starts: both read JAN 2026 in
 copy.md and cv.md; the test allows the shared month.
+
+## 2026-10-04 — Timeline maths: month starts, and the sabbatical butt-joint
+Who: agent (PR-18). `src/timeline.ts` positions every bar at month starts with `end − start`
+months, which is what the drawing measures: LinkPizza Feb 2021 – Oct 2023 = 32 months = 44.4% and
+`2 Y 8 M`, DJI 24 = 33.3% and `2 Y 0 M`. The drawn sabbatical (6.9% = 5 months, ending at
+OptieCon's 90.3%) fits no single rule with those two, so `layout` draws an entry that ends the month
+before the next entry starts up to that start (May → Jun: consecutive months, no real gap). Refused:
+inclusive ends for everything (LinkPizza would be 45.8%, `2 Y 9 M`) and a special case for
+`kind: break`. An open end counts months to the build date rounded to nearest; the ruler ends at
+the January after max(build year, last end year), read in UTC like the title block's REV.

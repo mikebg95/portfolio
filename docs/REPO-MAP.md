@@ -46,6 +46,7 @@ line.
 - `src/portrait.ts` — `PORTRAIT`, `docs/source/ascii-portrait.txt` inlined via `?raw` at build time; the only copy of the portrait.
 - `tests/unit/profile-content.test.ts` — parses design/copy.md Sheet 01 and compares it with the EN profile; a copy.md wording change fails it.
 - `tests/unit/experience-content.test.ts` — the same for Sheet 02 (`### … (id `…`)` blocks) plus ordering/overlap and the Conspect line in `profile.employers`.
+- `src/timeline.ts` — Sheet 02 timeline geometry (`ruler`, `place`, `layout`, `formatDuration`); pure, build date passed in; the Conspect dimension line uses `place`.
 
 ## Routes and languages
 
