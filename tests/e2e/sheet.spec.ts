@@ -25,7 +25,7 @@ test('the sheet has the double frame, and zone numbers 1–8 on desktop only', a
   await page.goto('/experience');
   const frame = await page.locator('.sheet').evaluate((sheet) => {
     const outer = getComputedStyle(sheet);
-    const inner = getComputedStyle(sheet.firstElementChild as Element);
+    const inner = getComputedStyle(sheet.querySelector('.sheet__inner') as Element);
     return {
       outer: outer.borderTopWidth,
       gap: outer.paddingTop,

@@ -35,6 +35,11 @@ never a second system.
   `--reveal-duration` are not inherited (`@property`), so set them on the element itself.
 - A new reveal kind = a keyframe + a `[data-reveal='x']` rule in motion.css, a specimen on
   `/_primitives` (`[data-motion-specimens]`), and a line here.
+- **Crosshair (§M6):** SheetFrame renders `Crosshair.astro` as `.sheet`'s first child, under the
+  inner frame's content as in the preview; `src/crosshair.ts` moves it by `--crosshair-x/y`
+  (transforms only) once per frame. Shown only for `(hover: hover) and (pointer: fine)` without
+  reduced motion — enforced in both the script and CSS. Its 45 % is a `color-mix` colour, not
+  opacity, so `notInFinalState` needs no exception.
 - **Tests:** `tests/e2e/motion.spec.ts` checks every route under reduced motion and without JS with
   `notInFinalState` (tests/e2e/helpers/motion.ts). An element whose opacity < 1 or clip-path IS its
   drawn final state goes on that helper's exception list, with a reason.

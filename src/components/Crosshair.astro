@@ -1,0 +1,76 @@
+---
+// The drafting crosshair (design/motion.md §M6, components.md Crosshair), rendered by SheetFrame
+// as the sheet's first child. Hidden until src/crosshair.ts sees a fine pointer over the sheet;
+// without JS, on touch and under reduced motion it never shows.
+---
+
+<div class="crosshair" data-crosshair hidden aria-hidden="true">
+  <span class="crosshair__line crosshair__line--h"></span>
+  <span class="crosshair__line crosshair__line--v"></span>
+  <span class="crosshair__readout" data-crosshair-readout></span>
+</div>
+
+<script>
+  import { crosshair } from '../crosshair';
+
+  crosshair();
+</script>
+
+<style>
+  /* Like the preview, it lies under the inner frame's content (positioned, later in the sheet). */
+  .crosshair {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    /* 45 % redline as a colour, not opacity: the overlay itself is in its final state. */
+    --crosshair-ink: color-mix(in srgb, var(--color-redline) 45%, transparent);
+  }
+
+  .crosshair__line {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .crosshair__line--h {
+    right: 0;
+    border-top: 1px dashed var(--crosshair-ink);
+    transform: translateY(var(--crosshair-y, 0));
+  }
+
+  .crosshair__line--v {
+    bottom: 0;
+    border-left: 1px dashed var(--crosshair-ink);
+    transform: translateX(var(--crosshair-x, 0));
+  }
+
+  /* The preview's readout offset: 10 px right of, 8 px below the pointer. */
+  .crosshair__readout {
+    position: absolute;
+    top: 8px;
+    left: 10px;
+    color: var(--color-redline);
+    font-family: var(--font-mono);
+    font-size: var(--size-micro);
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+    transform: translate(var(--crosshair-x, 0), var(--crosshair-y, 0));
+  }
+
+  .crosshair[hidden] {
+    display: none;
+  }
+
+  @media not ((hover: hover) and (pointer: fine)) {
+    .crosshair {
+      display: none !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .crosshair {
+      display: none !important;
+    }
+  }
+</style>

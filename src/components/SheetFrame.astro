@@ -1,4 +1,6 @@
 ---
+import Crosshair from './Crosshair.astro';
+
 // The drawing sheet (SPEC §3.1, components.md SheetFrame): desk → paper with the 16/80 px grid,
 // 2 px outer frame, 10 px gap, 1 px inner frame, zone strip 1–8 on desktop, then the slots.
 const ZONES = [1, 2, 3, 4, 5, 6, 7, 8];
@@ -6,6 +8,7 @@ const ZONES = [1, 2, 3, 4, 5, 6, 7, 8];
 
 <div class="desk">
   <div class="sheet">
+    <Crosshair />
     <div class="sheet__inner">
       <div class="sheet__zones" aria-hidden="true">
         {ZONES.map((zone) => (
@@ -25,6 +28,7 @@ const ZONES = [1, 2, 3, 4, 5, 6, 7, 8];
   }
 
   .sheet {
+    position: relative;
     max-width: var(--sheet-max-width);
     margin: 0 auto;
     padding: var(--sheet-frame-gap);
