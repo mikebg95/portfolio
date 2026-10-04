@@ -72,11 +72,6 @@ queue.
 
 ### Hardening
 
-- [x] **PR-52 Performance budget**
-  - Done when: Lighthouse CI (`@lhci/cli`, mobile preset, against `npm run preview`) runs on `/`, `/experience`, `/projects/jamigos`, `/education`, `/nl/` with assertions perf ≥ 0.95, a11y = 1, best-practices = 1, SEO = 1; a size test asserts each page's JS ≤ 60 KB gz and fonts preloaded only where used; fixes whatever fails; `lhci` added to `verify`.
-  - Spec: SPEC §7
-  - Out of scope: —
-
 - [ ] **PR-53 Responsive pass 320–2560**
   - Done when: Playwright visits every route at 320, 390, 768, 1024, 1440 and 2560 px wide and asserts no horizontal page scroll, no overlapping text (bounding-box check on headings/labels), tables scroll inside their framed box; screenshots saved as artifacts; fixes applied.
   - Spec: design/README.md "Responsive"; SPEC §7
