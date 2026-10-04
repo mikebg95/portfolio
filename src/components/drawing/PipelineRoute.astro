@@ -3,7 +3,9 @@ import type { HTMLAttributes } from 'astro/types';
 
 // components.md PipelineRoute: a horizontal line through 14 px stations, a mono 11 px label under
 // each, the final station filled. An ordered list: the stations are read in order, the line and
-// circles are decoration. A `\n` in a label breaks the line.
+// circles are decoration. A `\n` in a label breaks the line. Motion (§M6, `data-reveal="route"`):
+// on enter a dot travels the route once and each station ticks as it passes; by default it waits
+// for a figure's 400 ms fade (FIGURE_FADE_MS), which a `data-reveal-delay` overrides.
 type Props = HTMLAttributes<'ol'> & {
   stations: string[];
 };
@@ -11,9 +13,15 @@ type Props = HTMLAttributes<'ol'> & {
 const { stations, class: className, ...rest } = Astro.props;
 ---
 
-<ol class:list={['pipeline-route', className]} style={`--stations: ${stations.length}`} {...rest}>
-  {stations.map((station) => (
-    <li class="pipeline-route__station">
+<ol
+  class:list={['pipeline-route', className]}
+  style={`--stations: ${stations.length}`}
+  data-reveal="route"
+  data-reveal-delay="400"
+  {...rest}
+>
+  {stations.map((station, i) => (
+    <li class="pipeline-route__station" style={`--i: ${i}`}>
       <span class="pipeline-route__dot" aria-hidden="true"></span>
       <span class="pipeline-route__label">{station}</span>
     </li>
@@ -39,6 +47,21 @@ const { stations, class: className, ...rest } = Astro.props;
     left: calc(50% / var(--stations, 4));
     height: 1.5px;
     background: var(--color-ink);
+  }
+
+  /* The travelling dot: a box as long as the route, its dot drawn at the left end and centred on
+     the first station; translateX(100%) carries it to the last. Seen only while it travels. */
+  .pipeline-route::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    right: calc(50% / var(--stations, 4) + 4px);
+    left: calc(50% / var(--stations, 4) - 4px);
+    height: 8px;
+    background: radial-gradient(circle, var(--color-redline) 3.5px, transparent 4px) left center /
+      8px 8px no-repeat;
+    opacity: 0;
+    pointer-events: none;
   }
 
   .pipeline-route__station {
@@ -67,5 +90,24 @@ const { stations, class: className, ...rest } = Astro.props;
 
   .pipeline-route__station:last-child .pipeline-route__dot {
     background: var(--color-ink);
+  }
+
+  /* Each station ticks as the dot reaches it (900 ms over the route, src/styles/motion.css). The
+     ol's --reveal-delay is not inherited, so it is passed down as --route-start. */
+  @media (prefers-reduced-motion: no-preference) {
+    .pipeline-route {
+      --route-start: var(--reveal-delay, 0ms);
+    }
+
+    :global(.js) .pipeline-route.is-revealed .pipeline-route__dot {
+      animation: route-tick 300ms var(--motion-ease-pop) backwards;
+      animation-delay: calc(var(--route-start) + var(--i) * 900ms / max(1, var(--stations, 4) - 1));
+    }
+  }
+
+  @keyframes route-tick {
+    40% {
+      transform: scale(1.35);
+    }
   }
 </style>

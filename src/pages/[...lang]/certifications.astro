@@ -40,9 +40,10 @@ const certs = (await getAllLocalized('certifications', lang)).sort((a, b) =>
       </p>
     </div>
     <div class="record__cards" data-reveal="cards">
-      {certs.map((entry) => (
+      {certs.map((entry, i) => (
         <CertCard
           id={sharedId(entry)}
+          index={i}
           cert={entry.data}
           dates={ui.dates}
           pending={ui.certifications.pending}

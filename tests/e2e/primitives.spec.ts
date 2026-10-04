@@ -150,15 +150,20 @@ test('the flagship card spans two columns and a card lifts on hover and focus', 
   const wide = (page.viewportSize()?.width ?? 0) >= 768;
   expect(flagship!.width / other!.width).toBeCloseTo(wide ? 2 : 1, 0);
 
-  await expect(cards.nth(1)).toHaveCSS('box-shadow', 'none');
+  // The 6 px shadow is the card's ::after, clipped to the L outside the card: at rest the clip is
+  // empty (its points sit at -6px), lifted it is the full L.
+  const shadow = (n: number) =>
+    cards.nth(n).evaluate((card) => getComputedStyle(card, '::after').clipPath);
+  const lifted = /^polygon\(calc\(100% - 6px\) 0px, 100% 0px, 100% 100%, 0px 100%/;
+  expect(await shadow(1)).toContain('-6px');
   await cards.nth(1).hover();
-  await expect(cards.nth(1)).toHaveCSS('box-shadow', /6px 6px 0px/);
+  await expect.poll(() => shadow(1)).toMatch(lifted);
   await page.mouse.move(0, 0);
   // After a key press, focus counts as keyboard focus (:focus-visible) — WebKit does not Tab to
   // links by default, so the card is focused directly.
   await page.keyboard.press('Tab');
   await cards.nth(2).focus();
-  await expect(cards.nth(2)).toHaveCSS('box-shadow', /6px 6px 0px/);
+  await expect.poll(() => shadow(2)).toMatch(lifted);
 });
 
 test('every interactive primitive has a 44 px hit area', async ({ page }) => {

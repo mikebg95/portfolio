@@ -3,7 +3,7 @@ import type { HTMLAttributes } from 'astro/types';
 
 // components.md Button: a link when it has an href, a <button> otherwise. Primary is an ink fill,
 // secondary a 1.5 px ink outline; on hover the opposite fill wipes in from the left (motion.md §M6,
-// 200 ms), pressed shifts 1 px. `external` opens in a new tab and ends with " ↗".
+// 200 ms) — on keyboard focus too, beside the ring, which is never animated — pressed shifts 1 px. `external` opens in a new tab and ends with " ↗".
 type Props = Omit<HTMLAttributes<'a'> & HTMLAttributes<'button'>, 'type'> & {
   variant?: 'primary' | 'secondary';
   href?: string;
@@ -94,11 +94,11 @@ const classes = ['button', `button--${variant}`, className];
     transition: color 200ms var(--motion-ease-plot);
   }
 
-  .button:hover::before {
+  .button:is(:hover, :focus-visible)::before {
     transform: scaleX(1);
   }
 
-  .button:hover .button__text {
+  .button:is(:hover, :focus-visible) .button__text {
     color: var(--button-wipe-text);
   }
 

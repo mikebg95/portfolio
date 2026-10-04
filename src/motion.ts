@@ -33,6 +33,7 @@ export const REVEAL_KINDS = [
   'draw',
   'cards',
   'figure',
+  'route',
 ] as const;
 export type RevealKind = (typeof REVEAL_KINDS)[number];
 

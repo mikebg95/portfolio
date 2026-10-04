@@ -12,22 +12,33 @@ import Stamp from '../drawing/Stamp.astro';
 // components.md CertCard: 1.5 px ink border, padding 28, the stamp in the top-right corner; code,
 // name, issuer · date, what I learned, skill chips, then the verify link to the issuer's own
 // record. Pending is dashed redline with no link. The block's id is the entry id (`#ckad`).
+// Motion (§M6): the stamps slam down in card order, 120 ms apart, once the cards have begun to rise.
 interface Props {
   id: string;
+  /** The card's place on the sheet, for the stamp sequence. */
+  index: number;
   cert: CollectionEntry<'certifications'>['data'];
   dates: DateWords;
   /** Shown in place of the date while pending (`ui.certifications.pending`). */
   pending: string;
 }
 
-const { id, cert, dates, pending } = Astro.props;
+const { id, index, cert, dates, pending } = Astro.props;
+const STAMP_START_MS = 300;
+const STAMP_STAGGER_MS = 120;
 const isPending = cert.status === 'pending';
 const nameId = `${id}-name`;
 ---
 
 <article class:list={['cert-card', isPending && 'cert-card--pending']} id={id} data-cert={id}>
   <div class="cert-card__head">
-    <Stamp lines={cert.stamp} state={cert.status} class="cert-card__stamp" />
+    <Stamp
+      lines={cert.stamp}
+      state={cert.status}
+      class="cert-card__stamp"
+      data-reveal="stamp"
+      data-reveal-delay={String(STAMP_START_MS + index * STAMP_STAGGER_MS)}
+    />
     <SheetLabel as="span" class="cert-card__code">
       {cert.code}
     </SheetLabel>

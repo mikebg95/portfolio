@@ -127,6 +127,7 @@ line.
 - `src/components/projects/DetailFigure.astro` `CHAINS` — box→arrow→box rows (each arrow wrapped with its box); `.hexagon` (Journal) — TRAP: padding in %, it resolves against the row's width and squeezes the text to one word per line.
 - `public/projects/scentify/` — Scentify's demo (animated WebP + first-frame still), paths in `SCENTIFY_DEMO` (`src/config.ts`); rebuild steps in docs/RECORD.md.
 - `src/components/drawing/PipelineRoute.astro` — stations `<ol>`, last filled; Arrow `turns` = right ≥ 768 px, down below.
+- TRAP: ProjectCard's lift shadow is its `::after` (clip-path), not `box-shadow`; a test checks `getComputedStyle(card, '::after').clipPath` (tests/e2e/primitives.spec.ts).
 - TRAP: after adding a schema field with a `.default()`, a cached `node_modules/.astro/data-store.json` keeps entries without it; symptom: build "Cannot read properties of undefined" on that field. Delete the file and rebuild.
 
 ## Sheet 04 — Certifications

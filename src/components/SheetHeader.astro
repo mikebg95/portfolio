@@ -351,16 +351,28 @@ const PANEL_ID = 'sheet-index-panel';
     font-size: var(--size-micro);
   }
 
-  /* Hover: an underline draws under the name, left to right (motion.md §M6). */
+  /* Hover and keyboard focus: an underline draws under the name, left to right (motion.md §M6). */
   .sheet-tab__name {
+    position: relative;
     align-self: flex-start;
-    background: linear-gradient(currentColor, currentColor) left bottom / 0 1px no-repeat;
     overflow-wrap: anywhere;
-    transition: background-size var(--motion-fast) var(--motion-ease-plot);
   }
 
-  .sheet-tab:hover .sheet-tab__name {
-    background-size: 100% 1px;
+  .sheet-tab__name::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--motion-fast) var(--motion-ease-plot);
+  }
+
+  .sheet-tab:is(:hover, :focus-visible) .sheet-tab__name::after {
+    transform: scaleX(1);
   }
 
   /* The ink fill is its own layer under the text, so it can slide between sheets (motion.md §M2,
@@ -383,8 +395,8 @@ const PANEL_ID = 'sheet-index-panel';
     opacity: 0.7;
   }
 
-  .sheet-tab[aria-current='page'] .sheet-tab__name {
-    background-size: 0 1px;
+  .sheet-tab[aria-current='page'] .sheet-tab__name::after {
+    display: none;
   }
 
   /* Utility cluster: EN/NL (current one underlined), theme switch with swatch, CV. */
@@ -459,7 +471,7 @@ const PANEL_ID = 'sheet-index-panel';
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .sheet-tab__name {
+    .sheet-tab__name::after {
       transition: none;
     }
   }

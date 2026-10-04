@@ -422,3 +422,14 @@ form throws in Chromium 111–124, and the marker also lets CSS drop every sheet
 (`!important`, the project morph names are inline) so the page is captured as one picture. The
 circle starts at the clicked button's centre and ends at the farthest viewport corner (`--theme-r`).
 A second click mid-reveal skips the first; only the latest transition clears the marker.
+
+## 2026-10-04 — Micro-interactions: clipped shadow, SVG stamp ring, stamp and route timing
+Who: agent (PR-47). The card lift's 6 px shadow is an ink `::after` 6 px down-right of the card,
+clipped to the L outside it; the lift animates that `clip-path` (150 ms), as principle 2 rules out
+animating `box-shadow`, and an unclipped layer would fill the in-progress card's dashed gaps. The
+CKAD stamp's dashed border became an SVG circle (24 dashes) so `stroke-dashoffset` can turn it, as
+§M6 names. Stamps slam from 300 ms after their reveal (the cards are already rising), 120 ms apart
+in card order. The PipelineRoute dot is redline, like the crosshair (markup over ink), and moves
+linearly so it meets each station as it ticks; it starts 400 ms in, after the figure's fade. The
+tab underline moved from an animated `background-size` to a `scaleX` pseudo. Instead of: animating
+`box-shadow`; rotating a dashed-border pseudo with `transform`.

@@ -177,8 +177,18 @@ const lines = ascii.split('\n');
     color: var(--color-redline);
   }
 
+  /* §M6: a link's balloon scales 1.08 on hover and keyboard focus. */
+  .portrait__callout-link :global(.balloon__mark) {
+    transition: transform var(--motion-fast) var(--motion-ease-pop);
+  }
+
+  .portrait__callout-link:is(:hover, :focus-visible) :global(.balloon__mark) {
+    transform: scale(1.08);
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .portrait__callout-link {
+    .portrait__callout-link,
+    .portrait__callout-link :global(.balloon__mark) {
       transition: none;
     }
   }

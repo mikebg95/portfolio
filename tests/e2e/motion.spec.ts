@@ -92,7 +92,7 @@ test.describe('scroll reveals', () => {
   }) => {
     await page.goto(PRIMITIVES_PATH);
     const reveals = page.locator(`${SPECIMENS} [data-reveal]`);
-    await expect(reveals).toHaveCount(14);
+    await expect(reveals).toHaveCount(15);
     for (const element of await reveals.all()) {
       await expect(element).not.toHaveClass(new RegExp(REVEALED_CLASS));
     }
@@ -238,5 +238,48 @@ test.describe('first page view', () => {
     await expect(page.locator('html')).toHaveClass(new RegExp(`\\b${JS_CLASS}\\b`));
     await expect(page.locator('html')).not.toHaveClass(new RegExp(`\\b${FIRST_VIEW_CLASS}\\b`));
     expect(errors).toEqual([]);
+  });
+});
+
+test.describe('certification stamps (§M6)', () => {
+  /** A later view of Sheet 04 once its first stamp is revealed: the first stamp's animations as
+   * `name@delay`, every stamp's reveal delay, and the CKAD ring's iteration counts. */
+  async function stamps(page: Page) {
+    await page.goto('/certifications');
+    await page.goto('/certifications');
+    await expect(page.locator('.stamp').first()).toHaveClass(new RegExp(REVEALED_CLASS));
+    return page.evaluate(() => ({
+      first: document
+        .querySelector('.stamp')!
+        .getAnimations()
+        .map(
+          (a) =>
+            `${(a as CSSAnimation).animationName}@${Math.round(Number(a.effect?.getTiming().delay))}`,
+        ),
+      delays: [...document.querySelectorAll<HTMLElement>('.stamp')].map(
+        (stamp) => stamp.dataset.revealDelay,
+      ),
+      ring: document
+        .querySelector('.stamp__ring circle')!
+        .getAnimations()
+        .map((a) => a.effect?.getTiming().iterations),
+    }));
+  }
+
+  test('slam in card order 120 ms apart, then bleed; the CKAD ring turns forever', async ({
+    page,
+  }) => {
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    const { first, delays, ring } = await stamps(page);
+    expect(first).toEqual(['reveal-stamp@300', 'stamp-bleed@680']);
+    expect(delays).toEqual(['300', '420', '540', '660']);
+    expect(ring).toEqual([Infinity]);
+  });
+
+  test('under reduced motion nothing slams and the ring is still', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    const { first, ring } = await stamps(page);
+    expect(first).toEqual([]);
+    expect(ring).toEqual([]);
   });
 });

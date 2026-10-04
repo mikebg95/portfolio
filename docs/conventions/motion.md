@@ -45,6 +45,8 @@ never a second system.
     change axis/origin. On an SVG `path`/`line`/… it draws the stroke instead — give it
     `pathLength="1"`.
   - `cards` — on the container; each child rises 16 px, staggered 70 ms by column (from layout).
+  - `route` — PipelineRoute carries it (delay 400 = after a figure's fade): nothing is hidden; a
+    dot travels the route once (900 ms, linear) and each station ticks as it passes (§M6).
   - `figure` — on a Figure: the drawing fades in (400 ms), then every `[data-flow]` inside (Arrow
     renders it) wipes in along its direction, 120 ms apart in DOM order — so a figure's markup must
     list its arrows in data-flow order. A down/up/left arrow sets `--reveal-clip`.
@@ -73,6 +75,15 @@ never a second system.
   A piece already above the 80 % line at load plays its progress on its own instead of scrubbing
   (principle 1: no text waits for a scroll); once done it stays done. A spec that measures the
   drawing waits for `settleAnimations` first.
+- **Small interactions (§M6):** every hover state has the same look on `:focus-visible`
+  (`:is(:hover, :focus-visible)`); the focus ring itself never animates. Hover motion is a
+  `transition` on transform or clip-path with its own reduced-motion `transition: none`; a replayed
+  drawing (card arrows) is an `animation` under no-preference, which plays again on each hover.
+  A shadow that grows is a clipped pseudo-element, never an animated `box-shadow` (ProjectCard).
+  `tests/unit/motion-properties.test.ts` fails on any keyframe or transition of a layout property.
+- **Stamps (§M6):** CertCard gives its Stamp `data-reveal="stamp"`, 300 ms + 120 ms per card; the
+  Stamp adds the ink bleed (`scale`, after the slam). The pending ring is an SVG circle whose
+  dash rotates (12 s, infinite, no-preference only) — the one infinite animation.
 - **Crosshair (§M6):** SheetFrame renders `Crosshair.astro` as `.sheet`'s first child, under the
   inner frame's content as in the preview; `src/crosshair.ts` moves it by `--crosshair-x/y`
   (transforms only) once per frame. Shown only for `(hover: hover) and (pointer: fine)` without

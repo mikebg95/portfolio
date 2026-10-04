@@ -3,6 +3,7 @@ import Arrow from '../components/drawing/Arrow.astro';
 import Box from '../components/drawing/Box.astro';
 import DisplayHeading from '../components/drawing/DisplayHeading.astro';
 import Figure from '../components/drawing/Figure.astro';
+import PipelineRoute from '../components/drawing/PipelineRoute.astro';
 import RevisionNote from '../components/drawing/RevisionNote.astro';
 import SheetLabel from '../components/drawing/SheetLabel.astro';
 import SpecRow from '../components/drawing/SpecRow.astro';
@@ -70,6 +71,7 @@ import Specimens from './Specimens.astro';
       <line x1="0" y1="10" x2="200" y2="10" pathLength="1" data-reveal="draw"></line>
     </svg>
     <RevisionNote text="REV. NOTE △ A note stamps down." data-reveal="stamp" />
+    <PipelineRoute stations={['A', 'B', 'C', 'D']} data-reveal-delay="0" />
     <div class="motion-specimens__cards" data-reveal="cards">
       {[1, 2, 3, 4, 5, 6].map((n) => (
         <div class="motion-specimens__card">Card {n}</div>

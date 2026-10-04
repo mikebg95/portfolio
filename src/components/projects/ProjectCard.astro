@@ -9,7 +9,8 @@ import { projectMorph } from '../../view-transitions';
 // components.md ProjectCard: one register card, the whole card one link to its detail sheet.
 // Label (P-0n · KIND, the in-progress one in redline), mini diagram, title, summary, then a
 // title-block strip of the three facts. The flagship spans two grid columns from tablet up; the
-// in-progress card is dashed. Hover/focus lifts it with the hard ink shadow.
+// in-progress card is dashed. Hover/focus lifts it with the hard ink shadow and redraws the mini
+// diagram's arrows (motion.md §M6).
 interface Props {
   project: CollectionEntry<'projects'>['data'];
   href: string;
@@ -63,6 +64,7 @@ const inProgress = project.status === 'in-progress';
 
 <style>
   .project-card {
+    position: relative;
     display: flex;
     flex-direction: column;
     border: var(--border-normal);
@@ -71,9 +73,49 @@ const inProgress = project.status === 'in-progress';
     text-decoration: none;
   }
 
-  .project-card:hover,
-  .project-card:focus-visible {
-    box-shadow: var(--shadow-lift);
+  /* The lift: --shadow-lift (6 px 6 px ink) as an ink box 6 px down-right of the card, clipped to
+     the part outside the card, so the dashed border keeps its gaps. Lifting grows the clip from
+     nothing at the card's corner to the full L (150 ms): clip-path animates, box-shadow would not
+     be cheap (motion.md principle 2). */
+  .project-card::after {
+    content: '';
+    position: absolute;
+    inset: -1.5px;
+    background: var(--color-ink);
+    transform: translate(6px, 6px);
+    clip-path: polygon(
+      calc(100% - 6px) -6px,
+      calc(100% - 6px) -6px,
+      calc(100% - 6px) calc(100% - 6px),
+      -6px calc(100% - 6px),
+      -6px calc(100% - 6px),
+      calc(100% - 6px) calc(100% - 6px)
+    );
+    pointer-events: none;
+    transition: clip-path var(--motion-fast) var(--motion-ease-out);
+  }
+
+  .project-card:is(:hover, :focus-visible)::after {
+    clip-path: polygon(
+      calc(100% - 6px) 0,
+      100% 0,
+      100% 100%,
+      0 100%,
+      0 calc(100% - 6px),
+      calc(100% - 6px) calc(100% - 6px)
+    );
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .project-card:is(:hover, :focus-visible) :global(.arrow) {
+      animation: reveal-wipe 300ms var(--motion-ease-plot) backwards;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .project-card::after {
+      transition: none;
+    }
   }
 
   @media (min-width: 768px) {
