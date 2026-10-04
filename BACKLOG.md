@@ -62,16 +62,6 @@ queue.
 
 ### Sheet 04 — Certifications
 
-- [x] **PR-30 Certification content (EN)**
-  - Done when: `certifications` EN entries C-01…C-04 from copy.md with exact verify URLs from docs/source/cv.md (CKAD none); Vitest asserts URLs and statuses.
-  - Spec: design/copy.md Sheet 04; docs/source/cv.md
-  - Out of scope: NL.
-
-- [x] **PR-31 Certifications page**
-  - Done when: `/certifications` as drawn: label, heading, intro, 2×2 CertCards with Stamp (verified/pending), skill chips, verify links (external ↗); 1 column on phone; ids `spring`, `psm`, `oca`, `ckad`; e2e asserts four cards and three verify links.
-  - Spec: SPEC §4.5; design/screens/html/certifications-default-light-1440.html
-  - Out of scope: stamp motion (PR-47).
-
 ### Sheet 05 — Education
 
 - [ ] **PR-32 Education content (EN)**
