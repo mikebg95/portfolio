@@ -35,6 +35,7 @@ line.
 - `Dockerfile` + `docker/nginx.conf` + `.dockerignore` — node:22 build → nginx-unprivileged on 8080; a middle stage compiles the brotli_static module; `.gz`/`.br` twins from `scripts/precompress.ts` (image only). `scripts/docker-smoke.sh` builds, runs and curls it (404s, cache headers, encodings, non-root).
 - `.github/workflows/ci.yml` — the full check on GitHub (jobs check, e2e, lighthouse, docker; artifacts `dist`, `playwright-report`, `lighthouse-reports`); deploying is `.github/workflows/pages.yml` only. Results: `gh run list --workflow ci.yml`.
 - TRAP: agents in this loop cannot `git push` (permission denied, any branch); only the loop's deploy step pushes main, so a GitHub-side check can only be read after a deploy.
+- `scripts/readme-screenshot.ts` — `npm run screenshot` (after `npm run build`): README's `docs/sheet-01.png`, 1440×900, paper, reduced motion, own preview on port 4329.
 - TRAP: `.dockerignore` must keep `docs/source/private` out, but the build reads `design/` and `docs/source/` (tokens, portrait) — excluding all of `docs/` breaks `docker build`.
 
 ## Styles
