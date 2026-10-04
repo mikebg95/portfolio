@@ -6,9 +6,10 @@ client: OptieCon
 place: Almere
 start: '2026-06'
 end: null
-context: 'Het interne product van Conspect voor aandelenregelingen voor medewerkers: een Angular single-page app op een Spring Boot API. De security ervan is van begin tot eind mijn verantwoordelijkheid.'
+context: 'Het interne product van Conspect voor aandelenregelingen voor medewerkers: een Angular single-page app op een Spring Boot API. Ik bouwde de inlog- en securitylaag ervan.'
 bullets:
   - 'Bouwde single sign-on met Microsoft Entra ID (OAuth2 / OIDC met PKCE): MSAL in Angular, Spring Security als resource server.'
   - Schreef ~30 securitytests voor tokens, autorisatie en CORS.
-stack: [Java 21, Spring Boot 3.5, Spring Security, Entra ID, Angular 20, PostgreSQL, Docker]
+stack:
+  [Java 21, Spring Boot 3.5, Spring Security, Microsoft Entra ID, Angular 20, PostgreSQL, Docker]
 lang: nl

@@ -72,10 +72,10 @@ itself, in the same voice: first person, short sentences, concrete nouns, no hyp
 
 ### 02.1 OptieCon — Full-Stack Java Engineer (id `optiecon`)
 JUN 2026 — NOW · CONSPECT · ALMERE
-Context: `Conspect's internal product for employee share schemes: an Angular single-page app on a Spring Boot API. I own its security end to end.`
+Context: `Conspect's internal product for employee share schemes: an Angular single-page app on a Spring Boot API. I built its sign-in and security layer.`
 - Built single sign-on with Microsoft Entra ID (OAuth2 / OIDC with PKCE): MSAL in Angular, Spring Security as resource server.
 - Wrote ~30 security tests covering tokens, authorisation and CORS.
-Stack: Java 21 · Spring Boot 3.5 · Spring Security · Entra ID · Angular 20 · PostgreSQL · Docker
+Stack: Java 21 · Spring Boot 3.5 · Spring Security · Microsoft Entra ID · Angular 20 · PostgreSQL · Docker
 
 ### Sabbatical (id `sabbatical`, small hatched block)
 JAN 2026 — MAY 2026 · SOUTH-EAST ASIA — `A Muay Thai camp, backpacking and surfing.`
@@ -86,16 +86,16 @@ Context: `The Dutch Custodial Institutions Agency (Dienst Justitiële Inrichting
 - Sole developer of a new application replacing part of the legacy JSF system — designed and built its JWT authentication and authorisation and its Vue.js frontend from scratch, plus much of its REST API on the existing Spring backend.
 - Day-to-day full-stack work, mostly backend: features, bug fixes, TDD with JUnit and Mockito, code reviews; worked with operations on the application's deployment.
 - Gave knowledge sessions on the app's authentication and on client-side rendering; thorough handover.
-Note: `REV. NOTE △ From an empty repository to a handed-over production app — as the only developer on it.`
+Note: `REV. NOTE △ The only developer on a new application inside a running system — from first design to knowledge sessions and a thorough handover.`
 Stack: Java · Spring · PostgreSQL · JPA/Hibernate · JUnit · Mockito · Vue.js 3 · JSF · Maven · Git/GitLab
 
 ### 02.3 LinkPizza — Full-Stack Java Developer (id `linkpizza`)
 FEB 2021 — OCT 2023 · LINKPIZZA · AMSTERDAM
-Context: `Influencer-marketing platform, team of 3–4 developers. A JSF monolith on WildFly, being migrated to Quarkus microservices on Kubernetes.`
-- Built the Media Kit — a public influencer profile page designed to turn visitors into sign-ups, and the pilot for moving from JSF to Angular. Developed the Angular frontend and much of the backend. When the company stayed on JSF, rebuilt the frontend in JSF/PrimeFaces; it is still in use. Also shaped its concept and design.
+Context: `Influencer-marketing platform, team of 3–4 developers. A JSF monolith on WildFly being migrated to Quarkus microservices on Kubernetes; every change went from Bitbucket through Jenkins pipelines to WildFly test and production servers.`
+- Built the Media Kit — a public influencer profile page designed to turn visitors into sign-ups, and the pilot for moving from JSF to Angular. Developed the Angular frontend and much of the backend: business logic, data access and REST endpoints (JAX-RS). When the company stayed on JSF, rebuilt the frontend in JSF/PrimeFaces; it is still in use. Also shaped its concept and design.
 - Backend development in Jakarta EE: business logic in services; data access with JPA/Hibernate and hand-written JDBC, DTOs per use case.
 - Full-stack features and bug fixes end to end, from JSF/PrimeFaces UI and backing beans to services and persistence.
-Stack: Java 11 & 17 · Jakarta EE · WildFly · JAX-RS · JSF/PrimeFaces · Ajax · Angular 14 · PostgreSQL · JPA/Hibernate · JDBC · Maven · Git/Bitbucket
+Stack: Java 11 & 17 · Jakarta EE · WildFly · JAX-RS · JSF/PrimeFaces · Ajax · Angular 14 · PostgreSQL · JPA/Hibernate · JDBC · Maven · Git/Bitbucket · Jenkins
 
 Employer description line (under the Conspect dimension, small): `Conspect — IT consultancy in agile software development and data analytics.`
 

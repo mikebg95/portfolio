@@ -139,11 +139,11 @@ test('detail blocks run newest first, the sabbatical between 02.1 and 02.2', asy
   }
 
   await expect(page.locator('#dji .revision-note')).toHaveText(
-    'REV. NOTE △ From an empty repository to a handed-over production app — as the only developer on it.',
+    'REV. NOTE △ The only developer on a new application inside a running system — from first design to knowledge sessions and a thorough handover.',
   );
   await expect(page.locator('.revision-note')).toHaveCount(1);
   await expect(page.locator('#optiecon .experience-detail__stack')).toHaveText(
-    'Java 21 · Spring Boot 3.5 · Spring Security · Entra ID · Angular 20 · PostgreSQL · Docker',
+    'Java 21 · Spring Boot 3.5 · Spring Security · Microsoft Entra ID · Angular 20 · PostgreSQL · Docker',
   );
   await expect(page.locator('#dji li')).toHaveCount(3);
 

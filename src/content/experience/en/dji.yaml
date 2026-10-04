@@ -22,6 +22,6 @@ stack:
   - JSF
   - Maven
   - Git/GitLab
-note: REV. NOTE △ From an empty repository to a handed-over production app — as the only developer on it.
+note: REV. NOTE △ The only developer on a new application inside a running system — from first design to knowledge sessions and a thorough handover.
 lang: en
 translated: true
