@@ -16,6 +16,9 @@ const { as: Tag = 'p', class: className, ...rest } = Astro.props;
 
 <style>
   .sheet-label {
+    /* §M3: a section label's reveal wipe is 400 ms, not a heading's 800. */
+    --reveal-duration: 400ms;
+
     margin: 0;
     color: var(--color-line);
     font-family: var(--font-mono);

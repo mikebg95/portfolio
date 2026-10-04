@@ -88,17 +88,22 @@ const pending = data.status === 'in-progress' ? text.status['in-progress'] : und
     <Figure
       label={text.figure.replace('{n}', '1').replace('{title}', data.figures[0].title)}
       data-figure="1"
+      data-reveal="figure"
     >
       <DetailFigure slug={data.slug} n={1} labels={data.figures[0].labels} />
     </Figure>
   </section>
   <section class="sheet-panel detail-body">
     <div class="detail-body__spec">
-      <SheetLabel id="specification-label">{text.specification}</SheetLabel>
+      <SheetLabel id="specification-label" data-reveal="wipe">
+        {text.specification}
+      </SheetLabel>
       {data.spec.length > 0 && (
         <SpecTable aria-labelledby="specification-label">
-          {data.spec.map((row) => (
-            <SpecRow label={row.label}>{row.text}</SpecRow>
+          {data.spec.map((row, i) => (
+            <SpecRow label={row.label} data-reveal="row" data-reveal-delay={i * 80}>
+              {row.text}
+            </SpecRow>
           ))}
         </SpecTable>
       )}
@@ -108,6 +113,7 @@ const pending = data.status === 'in-progress' ? text.status['in-progress'] : und
         bare
         label={text.figure.replace('{n}', '2').replace('{title}', data.figures[1].title)}
         data-figure="2"
+        data-reveal="figure"
       >
         <DetailFigure
           slug={data.slug}
@@ -116,7 +122,7 @@ const pending = data.status === 'in-progress' ? text.status['in-progress'] : und
           caption={data.figures[1].caption}
         />
       </Figure>
-      <RevisionNote text={data.note} />
+      <RevisionNote text={data.note} data-reveal="stamp" />
     </div>
   </section>
   <section class="sheet-panel detail-pager">

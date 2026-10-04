@@ -16,11 +16,13 @@ const { labels, current } = (await getLocalized('profile', 'profile', lang)).dat
 
 <section class="sheet-panel in-progress">
   <h2 class="in-progress__label">
-    <SheetLabel as="span">{labels.current}</SheetLabel>
+    <SheetLabel as="span" data-reveal="wipe">
+      {labels.current}
+    </SheetLabel>
   </h2>
   <ul class="in-progress__list">
-    {current.map((item) => (
-      <li class="in-progress__row">
+    {current.map((item, i) => (
+      <li class="in-progress__row" data-reveal="row" data-reveal-delay={i * 80}>
         <span class="in-progress__marker" aria-hidden="true">
           ◐
         </span>

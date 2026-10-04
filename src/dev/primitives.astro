@@ -1,7 +1,12 @@
 ---
+import Arrow from '../components/drawing/Arrow.astro';
+import Box from '../components/drawing/Box.astro';
 import DisplayHeading from '../components/drawing/DisplayHeading.astro';
+import Figure from '../components/drawing/Figure.astro';
 import RevisionNote from '../components/drawing/RevisionNote.astro';
 import SheetLabel from '../components/drawing/SheetLabel.astro';
+import SpecRow from '../components/drawing/SpecRow.astro';
+import SpecTable from '../components/drawing/SpecTable.astro';
 import { DEFAULT_LANG } from '../i18n/paths';
 import SheetLayout from '../layouts/SheetLayout.astro';
 import { THEMES } from '../theme';
@@ -29,9 +34,7 @@ import Specimens from './Specimens.astro';
     </div>
   </section>
   <section class="sheet-panel motion-specimens" data-motion-specimens>
-    <SheetLabel data-reveal="wipe" style="--reveal-duration: 400ms">
-      MOTION — SCROLL REVEALS
-    </SheetLabel>
+    <SheetLabel data-reveal="wipe">MOTION — SCROLL REVEALS</SheetLabel>
     <DisplayHeading size="m" as="h2" data-reveal="wipe">
       Inking in
     </DisplayHeading>
@@ -42,7 +45,26 @@ import Specimens from './Specimens.astro';
         </p>
       ))}
     </div>
+    <SpecTable>
+      {[0, 1, 2].map((i) => (
+        <SpecRow label={`ROW ${i + 1}`} data-reveal="row" data-reveal-delay={String(i * 80)}>
+          Inks in, then its rule draws
+        </SpecRow>
+      ))}
+    </SpecTable>
     <p data-reveal="rise">A paragraph rises in.</p>
+    <Figure label="FIG. 0 — DATA FLOW" data-reveal="figure">
+      <div class="motion-specimens__flow">
+        <Box title="Source">fades in</Box>
+        <Arrow label="first" />
+        <Box title="Service">fades in</Box>
+        <Arrow direction="down" label="second" />
+        <Box title="Store">fades in</Box>
+      </div>
+    </Figure>
+    <p class="motion-specimens__count" data-count>
+      Counted up: 251 TESTS
+    </p>
     <div class="motion-specimens__line" data-reveal="draw"></div>
     <svg class="motion-specimens__svg" viewBox="0 0 200 20" aria-hidden="true">
       <line x1="0" y1="10" x2="200" y2="10" pathLength="1" data-reveal="draw"></line>
@@ -107,6 +129,17 @@ import Specimens from './Specimens.astro';
     margin: 0;
     padding: var(--space-3) 0;
     border-bottom: var(--border-thin);
+  }
+
+  .motion-specimens__flow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .motion-specimens__count {
+    margin: 0;
   }
 
   .motion-specimens__line {

@@ -32,14 +32,33 @@ never a second system.
 - **Scroll reveals (§M3):** put `data-reveal="<kind>"` on an element; `reveal()` (src/motion.ts,
   run by SheetLayout on every page) adds `is-revealed` once 20 % of it is visible, or once its top
   passes 80 % of the viewport (tall elements, jumps). Kinds:
-  - `ink` — fade + rise 8 px, 500 ms (rows; the row-rule draw is added per component).
+  - `ink` — fade + rise 8 px, 500 ms (list items, table rows, meta lines).
+  - `row` — `ink`, then the row's bottom rule draws (600 ms after a 250 ms hold) — only for rows
+    ruled by a 1 px `--color-rule` bottom border with a bare last row (SpecRow, IN PROGRESS): the
+    border turns transparent and an `::after` draws in its place. Table rows (`border-collapse`)
+    use `ink`.
   - `rise` — fade + rise 14 px, 700 ms (§M1 role line, intro).
-  - `wipe` — plotter wipe left→right, 800 ms (headings); section labels set `--reveal-duration: 400ms`.
+  - `wipe` — plotter wipe left→right, 800 ms (headings); SheetLabel sets its own
+    `--reveal-duration: 400ms` (§M3 section labels). `--reveal-clip` changes the start inset.
   - `stamp` — from scale 1.25, −6°, fading in, 380 ms with overshoot (revision notes).
   - `draw` — `scaleX(0)` from the left, 600 ms; `--reveal-from: scaleY(0)` and `--reveal-origin`
     change axis/origin. On an SVG `path`/`line`/… it draws the stroke instead — give it
     `pathLength="1"`.
   - `cards` — on the container; each child rises 16 px, staggered 70 ms by column (from layout).
+  - `figure` — on a Figure: the drawing fades in (400 ms), then every `[data-flow]` inside (Arrow
+    renders it) wipes in along its direction, 120 ms apart in DOM order — so a figure's markup must
+    list its arrows in data-flow order. A down/up/left arrow sets `--reveal-clip`.
+- **A `span` with `data-reveal`** is made `inline-block` (under `.js` + no-preference): an inline box
+  has no transform and clips oddly.
+- **Count-up (§M6):** `data-count` on an element whose text holds the number(s); when it enters,
+  every whole number in its text counts from 0 (600 ms, ease-out) and the text is restored exactly.
+  Never under reduced motion. Marked: series and title-block test counts, a card's TESTS fact, the
+  test pyramid. PR-43's timeline durations can reuse it (`countFrame` handles "2 Y 8 M").
+- **First view:** `reveal()` holds every reveal until 800 ms after navigation start
+  (`FIRST_VIEW_REVEAL_MS`), so what is in view at load joins the plotting instead of racing it.
+- **Where reveals go:** below each sheet's hero — labels `wipe`, below-fold headings `wipe`, rows
+  `row`/`ink` staggered `i * 80`, notes `stamp`, figures `figure`, card grids `cards`. Never on a
+  `data-plot` element or inside Sheet 01's `.hero` (both are the first-load plotting).
 - **Stagger:** `data-reveal-delay="<ms>"` (e.g. `i * 80` for rows). `--reveal-delay` and
   `--reveal-duration` are not inherited (`@property`), so set them on the element itself.
 - A new reveal kind = a keyframe + a `[data-reveal='x']` rule in motion.css, a specimen on

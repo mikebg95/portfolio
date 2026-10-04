@@ -35,7 +35,7 @@
       var(--sheet-grid-major) var(--sheet-grid-major),
       var(--sheet-grid-minor) var(--sheet-grid-minor),
       var(--sheet-grid-minor) var(--sheet-grid-minor);
-    animation: plot-fade 900ms ease 150ms backwards;
+    animation: reveal-fade 900ms ease 150ms backwards;
   }
 
   .js.first-view .sheet__plot-edge {
@@ -166,12 +166,6 @@
 
   .js.first-view [data-plot='note'] {
     animation: reveal-stamp 380ms cubic-bezier(0.2, 0.9, 0.25, 1.15) 800ms backwards;
-  }
-}
-
-@keyframes plot-fade {
-  from {
-    opacity: 0;
   }
 }
 

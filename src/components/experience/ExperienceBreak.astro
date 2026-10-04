@@ -15,14 +15,18 @@ const { entry, dates } = Astro.props;
 ---
 
 <article class="experience-break" id={entry.id}>
-  <div class="experience-break__meta">
+  <div class="experience-break__meta" data-reveal="ink">
     <span class="experience-break__swatch" aria-hidden="true"></span>
     <span>{formatSpan(entry, dates, ' — ')}</span>
     <span class="experience-break__caps">{entry.place}</span>
   </div>
   <div class="experience-break__body">
-    <h2 class="experience-break__title">{entry.role}</h2>
-    <p class="experience-break__context">{entry.context}</p>
+    <h2 class="experience-break__title" data-reveal="wipe">
+      {entry.role}
+    </h2>
+    <p class="experience-break__context" data-reveal="ink">
+      {entry.context}
+    </p>
   </div>
 </article>
 

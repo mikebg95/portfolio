@@ -347,3 +347,15 @@ staggered lines would end at 1.35), the rest of the hero (intro, summary, back l
 404 sheet list) rise 0.60–1.20, the 404 note stamps 0.80–1.18. Marked by `data-plot` on the
 elements rather than per-page selectors, so one rule set covers six templates. Below-hero content
 (timeline, cards, FIG. 1, assembly) is not plotted; §M3 reveals cover it.
+
+## 2026-10-04 — Scroll reveals: table rows ink without a rule draw; first views hold reveals to 0.8 s
+Who: agent (PR-42b). §M3 asks spec and table rows to ink in "then the row's bottom rule draws". The
+spec rows (and the IN PROGRESS rows) do: their rule is redrawn by an `::after` while the border is
+transparent, identical once drawn. The education parts list is a `border-collapse` table whose
+rules are cell/row borders; a pseudo-element on a `<tr>` is not reliably positioned, so its rows
+ink in (staggered 80 ms) without a separate rule draw. On a session's first view every reveal
+waits until 0.8 s after navigation start: §M1 says "≥ 1.40 below the fold: §M3 takes over", and
+content in view at load (FIG. 1, the register cards, the timeline's neighbours) would otherwise
+animate at 0 s under a frame that is still drawing; 0.8 s keeps it readable by 1.3 s. Count-ups:
+the test counts (series line, title block CHECKED, a card's TESTS fact, the test pyramid); the
+only durations are the timeline's, which PR-43 counts with its bars.

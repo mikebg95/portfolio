@@ -39,7 +39,7 @@ const certs = (await getAllLocalized('certifications', lang)).sort((a, b) =>
         {ui.certifications.intro}
       </p>
     </div>
-    <div class="record__cards">
+    <div class="record__cards" data-reveal="cards">
       {certs.map((entry) => (
         <CertCard
           id={sharedId(entry)}

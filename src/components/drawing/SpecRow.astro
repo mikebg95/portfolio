@@ -1,15 +1,17 @@
 ---
 // components.md SpecRow: [code ·] label · value, a `rule` line under each. Goes inside SpecTable
 // (`coded` there when rows have a code); the value is the slot.
-interface Props {
+import type { HTMLAttributes } from 'astro/types';
+
+type Props = HTMLAttributes<'div'> & {
   code?: string;
   label: string;
-}
+};
 
-const { code, label } = Astro.props;
+const { code, label, class: className, ...rest } = Astro.props;
 ---
 
-<div class="spec-row">
+<div class:list={['spec-row', className]} {...rest}>
   <dt>
     {code && <span class="spec-row__code">{code}</span>}
     <span class="spec-row__label">{label}</span>

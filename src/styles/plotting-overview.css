@@ -55,7 +55,7 @@
   }
 
   .js.first-view .portrait__dim .dimension__label {
-    animation: plot-fade 300ms ease 1950ms backwards;
+    animation: reveal-fade 300ms ease 1950ms backwards;
   }
 
   /* 1.75–2.35 each callout, 100 ms after the one above: the leader draws (300 ms), the balloon

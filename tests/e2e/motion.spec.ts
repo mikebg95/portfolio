@@ -1,7 +1,14 @@
 import { expect, test, type Page } from '@playwright/test';
 
 import { PRIMITIVES_PATH } from '../../src/config';
-import { CARD_STAGGER_MS, FIRST_VIEW_CLASS, JS_CLASS, REVEALED_CLASS } from '../../src/motion';
+import {
+  CARD_STAGGER_MS,
+  FIGURE_FADE_MS,
+  FIRST_VIEW_CLASS,
+  FLOW_STAGGER_MS,
+  JS_CLASS,
+  REVEALED_CLASS,
+} from '../../src/motion';
 import { notInFinalState } from './helpers/motion';
 import { ROUTES } from './helpers/routes';
 
@@ -14,6 +21,32 @@ const EVERY_PAGE = [
   PRIMITIVES_PATH,
 ];
 const SPECIMENS = '[data-motion-specimens]';
+
+/** The text of every `[data-count]` element as the server sent it: what a count-up must end on. */
+async function servedCounts(page: Page, path: string) {
+  const html = await (await page.request.get(path)).text();
+  return page.evaluate(
+    (html) =>
+      [...new DOMParser().parseFromString(html, 'text/html').querySelectorAll('[data-count]')].map(
+        (element) => element.textContent,
+      ),
+    html,
+  );
+}
+
+/** Records every text a `[data-count]` element shows from now on. */
+async function recordCounts(page: Page) {
+  await page.evaluate(() => {
+    const seen: string[] = [];
+    Object.assign(window, { seenCounts: seen });
+    new MutationObserver((records) => {
+      for (const record of records) {
+        const count = record.target.parentElement?.closest('[data-count]');
+        if (count) seen.push(count.textContent ?? '');
+      }
+    }).observe(document.body, { subtree: true, characterData: true });
+  });
+}
 
 /** Scrolls to the bottom half a viewport at a time, two frames per step, so the observer sees each. */
 async function scrollThrough(page: Page) {
@@ -59,7 +92,7 @@ test.describe('scroll reveals', () => {
   }) => {
     await page.goto(PRIMITIVES_PATH);
     const reveals = page.locator(`${SPECIMENS} [data-reveal]`);
-    await expect(reveals).toHaveCount(10);
+    await expect(reveals).toHaveCount(14);
     for (const element of await reveals.all()) {
       await expect(element).not.toHaveClass(new RegExp(REVEALED_CLASS));
     }
@@ -80,6 +113,8 @@ test.describe('scroll reveals', () => {
   });
 
   test('stagger rows by data-reveal-delay and cards by column', async ({ page }) => {
+    // A later view: a first view holds every reveal until the sheet is plotted.
+    await page.goto(PRIMITIVES_PATH);
     await page.goto(PRIMITIVES_PATH);
     await scrollThrough(page);
     const rows = await page
@@ -99,6 +134,85 @@ test.describe('scroll reveals', () => {
     expect(cards.map(({ delay }) => delay)).toEqual(
       cards.map(({ left }) => `${lefts.indexOf(left) * CARD_STAGGER_MS}ms`),
     );
+  });
+});
+
+test.describe('every page, scrolled to the bottom', () => {
+  test.use({ reducedMotion: 'no-preference' });
+
+  for (const path of EVERY_PAGE) {
+    test(`${path} ends in its final state, counts on their numbers`, async ({ page }) => {
+      await page.goto(path);
+      await scrollThrough(page);
+      for (const element of await page.locator('[data-reveal]').all()) {
+        await expect(element).toHaveClass(new RegExp(REVEALED_CLASS));
+      }
+      expect(await notInFinalState(page)).toEqual([]);
+      const served = await servedCounts(page, path);
+      await expect.poll(() => page.locator('[data-count]').allTextContents()).toEqual(served);
+    });
+  }
+});
+
+test.describe('figures and counts', () => {
+  test.use({ reducedMotion: 'no-preference' });
+
+  test('a figure fades in, then draws its arrows in data-flow order', async ({ page }) => {
+    await page.goto('/projects/recipe-book');
+    await page.goto('/projects/recipe-book');
+    await scrollThrough(page);
+    for (const figure of await page.locator('[data-reveal="figure"]').all()) {
+      await expect(figure).toHaveCSS('animation-name', 'reveal-fade');
+      const delays = await figure
+        .locator('[data-flow]')
+        .evaluateAll((all) =>
+          all.map((arrow) => (arrow as HTMLElement).style.getPropertyValue('--reveal-delay')),
+        );
+      expect(delays).toEqual(delays.map((_, i) => `${FIGURE_FADE_MS + i * FLOW_STAGGER_MS}ms`));
+    }
+    await expect(page.locator('[data-figure="1"] [data-flow]').first()).toHaveCSS(
+      'animation-name',
+      'reveal-wipe',
+    );
+  });
+
+  test('a spec row inks in and then draws its rule', async ({ page }) => {
+    await page.goto('/projects/jamigos');
+    const row = page.locator('[data-reveal="row"]').first();
+    await row.scrollIntoViewIfNeeded();
+    await expect(row).toHaveClass(new RegExp(REVEALED_CLASS));
+    await expect(row).toHaveCSS('border-bottom-color', 'rgba(0, 0, 0, 0)');
+    expect(
+      await row.evaluate((element) => {
+        const rule = getComputedStyle(element, '::after');
+        return `${rule.animationName} ${rule.height} ${rule.bottom}`;
+      }),
+    ).toBe('reveal-rule 1px -1px');
+  });
+
+  test('numbers count up once, from 0, to the served text', async ({ page }) => {
+    await page.goto('/projects');
+    const served = await servedCounts(page, '/projects');
+    await recordCounts(page);
+    await scrollThrough(page);
+    await expect.poll(() => page.locator('[data-count]').allTextContents()).toEqual(served);
+    const seen = await page.evaluate(
+      () => (window as unknown as { seenCounts: string[] }).seenCounts,
+    );
+    expect(seen).toContain(served.find((text) => text?.includes('TESTS'))?.replace(/\d+/, '0'));
+  });
+
+  test.describe('reduced motion', () => {
+    test.use({ reducedMotion: 'reduce' });
+
+    test('numbers never count', async ({ page }) => {
+      await page.goto('/projects');
+      await recordCounts(page);
+      await scrollThrough(page);
+      expect(
+        await page.evaluate(() => (window as unknown as { seenCounts: string[] }).seenCounts),
+      ).toEqual([]);
+    });
   });
 });
 

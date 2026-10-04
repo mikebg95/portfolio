@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { columnIndices, parseDelay } from './motion';
+import { columnIndices, countFrame, parseDelay } from './motion';
 
 describe('parseDelay', () => {
   it('reads milliseconds', () => {
@@ -26,5 +26,14 @@ describe('columnIndices', () => {
 
   it('is empty for no items', () => {
     expect(columnIndices([])).toEqual([]);
+  });
+});
+
+describe('countFrame', () => {
+  it('scales every whole number and keeps the words', () => {
+    expect(countFrame('251 TESTS', 0)).toBe('0 TESTS');
+    expect(countFrame('251 TESTS', 0.5)).toBe('126 TESTS');
+    expect(countFrame('2 Y 8 M', 0.5)).toBe('1 Y 4 M');
+    expect(countFrame('63', 1)).toBe('63');
   });
 });

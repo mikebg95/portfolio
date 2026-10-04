@@ -27,11 +27,38 @@
     animation-fill-mode: backwards;
   }
 
+  /* A span is inline: give it a box, or a transform or clip-path has nothing to act on. */
+  .js span[data-reveal] {
+    display: inline-block;
+  }
+
   /* §M3 rows: text fades and rises 8 px. */
-  .js [data-reveal='ink'].is-revealed {
+  .js :is([data-reveal='ink'], [data-reveal='row']).is-revealed {
     animation-name: reveal-ink;
     animation-duration: var(--reveal-duration, 500ms);
     animation-timing-function: var(--motion-ease-out);
+  }
+
+  /* §M3 spec and table rows: after the text, the row's bottom rule draws left → right (600 ms).
+     For rows ruled by a 1 px --color-rule bottom border, the last one bare: the border turns
+     transparent and an ::after in its place draws, so the drawn row looks as it did. `html` outranks
+     the row component's own scoped border rule. */
+  html.js [data-reveal='row']:not(:last-child) {
+    position: relative;
+    border-bottom-color: transparent;
+  }
+
+  html.js [data-reveal='row']:not(:last-child)::after {
+    position: absolute;
+    inset: auto 0 -1px;
+    height: 1px;
+    background: var(--color-rule);
+    content: '';
+  }
+
+  .js [data-reveal='row'].is-revealed::after {
+    animation: reveal-rule 850ms linear backwards;
+    animation-delay: inherit;
   }
 
   /* §M1 .rise: fade + 14 px. */
@@ -68,11 +95,30 @@
     animation-name: reveal-stroke;
   }
 
+  /* §M3 figures: the drawing fades in (400 ms), then each arrow — `[data-flow]`, staggered 120 ms
+     in data-flow order by src/motion.ts — draws along its direction (300 ms). A down arrow sets
+     --reveal-clip: inset(0 0 100% 0). */
+  .js [data-reveal='figure'].is-revealed {
+    animation-name: reveal-fade;
+    animation-duration: var(--reveal-duration, 400ms);
+    animation-timing-function: var(--motion-ease-out);
+  }
+
+  .js [data-reveal='figure'].is-revealed [data-flow] {
+    animation: reveal-wipe 300ms var(--motion-ease-plot) var(--reveal-delay, 0ms) backwards;
+  }
+
   /* §M3 cards: each child rises 16 px; src/motion.ts staggers them 70 ms by column. */
   .js [data-reveal='cards'].is-revealed > * {
     animation-name: reveal-card;
     animation-duration: var(--reveal-duration, 700ms);
     animation-timing-function: var(--motion-ease-out);
+  }
+}
+
+@keyframes reveal-fade {
+  from {
+    opacity: 0;
   }
 }
 
@@ -99,7 +145,7 @@
 
 @keyframes reveal-wipe {
   from {
-    clip-path: inset(0 100% 0 0);
+    clip-path: var(--reveal-clip, inset(0 100% 0 0));
   }
 
   to {
@@ -122,6 +168,20 @@
 
   to {
     transform-origin: var(--reveal-origin, left center);
+  }
+}
+
+/* A row rule: held undrawn while the row's text inks in (250 ms), then drawn (600 ms). */
+@keyframes reveal-rule {
+  0%,
+  29% {
+    transform: scaleX(0);
+    transform-origin: left center;
+    animation-timing-function: var(--motion-ease-plot);
+  }
+
+  to {
+    transform-origin: left center;
   }
 }
 

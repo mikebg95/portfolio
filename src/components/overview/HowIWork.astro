@@ -16,9 +16,11 @@ const { labels, howIWork, aiNote } = (await getLocalized('profile', 'profile', l
 
 <section class="sheet-panel how-i-work" aria-labelledby="how-i-work-label">
   <h2 class="how-i-work__label" id="how-i-work-label">
-    <SheetLabel as="span">{labels.howIWork}</SheetLabel>
+    <SheetLabel as="span" data-reveal="wipe">
+      {labels.howIWork}
+    </SheetLabel>
   </h2>
-  <ol class="how-i-work__grid">
+  <ol class="how-i-work__grid" data-reveal="cards">
     {howIWork.map((principle, i) => (
       <li class="how-i-work__cell">
         <span class="how-i-work__number" aria-hidden="true">
@@ -31,7 +33,9 @@ const { labels, howIWork, aiNote } = (await getLocalized('profile', 'profile', l
       </li>
     ))}
   </ol>
-  <p class="how-i-work__ai">{aiNote}</p>
+  <p class="how-i-work__ai" data-reveal="rise">
+    {aiNote}
+  </p>
 </section>
 
 <style>

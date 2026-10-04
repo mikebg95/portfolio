@@ -4,7 +4,8 @@ import type { HTMLAttributes } from 'astro/types';
 // components.md Arrow: the flow between two Boxes, a mono arrow with an optional label above
 // ("JWT"). The arrow itself is decoration; a label is read. `mini` is the register card's: a short
 // arrow at text size, and a vertical one leads its label ("↓ generates"). `turns` is a right arrow
-// that points down below 768 px, where a figure's row becomes a column.
+// that points down below 768 px, where a figure's row becomes a column. `data-flow` marks it for a
+// figure's reveal, which draws the arrows in DOM (= data-flow) order (docs/conventions/motion.md).
 type Props = HTMLAttributes<'span'> & {
   direction?: 'right' | 'down' | 'left' | 'up';
   label?: string;
@@ -28,6 +29,7 @@ const glyphs = mini ? MINI_GLYPHS : GLYPHS;
 
 <span
   class:list={['arrow', `arrow--${turns ? 'turns' : direction}`, mini && 'arrow--mini', className]}
+  data-flow
   {...rest}
 >
   {label && <span class="arrow__label">{label}</span>}
@@ -67,10 +69,24 @@ const glyphs = mini ? MINI_GLYPHS : GLYPHS;
     display: none;
   }
 
+  /* A figure's reveal wipes each arrow in along its direction (src/styles/motion.css). */
+  .arrow--down {
+    --reveal-clip: inset(0 0 100% 0);
+  }
+
+  .arrow--up {
+    --reveal-clip: inset(100% 0 0 0);
+  }
+
+  .arrow--left {
+    --reveal-clip: inset(0 0 0 100%);
+  }
+
   @media (max-width: 767px) {
     .arrow--turns {
       flex-direction: row;
       gap: var(--space-2);
+      --reveal-clip: inset(0 0 100% 0);
     }
 
     .arrow__glyph--wide {

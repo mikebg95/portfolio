@@ -18,11 +18,13 @@ const { labels, specs, generalNotes } = (await getLocalized('profile', 'profile'
 <section class="sheet-panel spec-notes">
   <div class="spec-notes__part spec-notes__spec">
     <h2 class="spec-notes__label">
-      <SheetLabel as="span">{labels.specification}</SheetLabel>
+      <SheetLabel as="span" data-reveal="wipe">
+        {labels.specification}
+      </SheetLabel>
     </h2>
     <SpecTable coded>
-      {specs.map((spec) => (
-        <SpecRow code={spec.code} label={spec.label}>
+      {specs.map((spec, i) => (
+        <SpecRow code={spec.code} label={spec.label} data-reveal="row" data-reveal-delay={i * 80}>
           {spec.items.join(' · ')}
           {spec.pending && (
             <>
@@ -36,11 +38,15 @@ const { labels, specs, generalNotes } = (await getLocalized('profile', 'profile'
   </div>
   <div class="spec-notes__part spec-notes__notes">
     <h2 class="spec-notes__label">
-      <SheetLabel as="span">{labels.generalNotes}</SheetLabel>
+      <SheetLabel as="span" data-reveal="wipe">
+        {labels.generalNotes}
+      </SheetLabel>
     </h2>
     <ol class="spec-notes__list">
-      {generalNotes.map((note) => (
-        <li>{note}</li>
+      {generalNotes.map((note, i) => (
+        <li data-reveal="ink" data-reveal-delay={i * 80}>
+          {note}
+        </li>
       ))}
     </ol>
   </div>

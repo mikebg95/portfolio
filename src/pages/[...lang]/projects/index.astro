@@ -44,20 +44,22 @@ const href = (slug: string) => localize(lang, projectPath(slug));
         {ui.projects.intro}
       </p>
     </div>
-    <div class="register__cards">
+    <div class="register__cards" data-reveal="cards">
       {standalone.map((project) => (
         <ProjectCard project={project} href={href(project.slug)} />
       ))}
     </div>
     <section class="register__series" aria-labelledby="series-label">
       <h2 class="register__series-line" id="series-label">
-        <SheetLabel as="span">{ui.projects.series.label}</SheetLabel>{' '}
-        <span class="register__rule" aria-hidden="true"></span>
-        <span class="register__tests">
+        <SheetLabel as="span" data-reveal="wipe">
+          {ui.projects.series.label}
+        </SheetLabel>{' '}
+        <span class="register__rule" aria-hidden="true" data-reveal="draw"></span>
+        <span class="register__tests" data-reveal="ink" data-count>
           {ui.projects.series.tests.replace('{count}', String(seriesTests))}
         </span>
       </h2>
-      <div class="register__cards">
+      <div class="register__cards" data-reveal="cards">
         {series.map((project) => (
           <ProjectCard project={project} href={href(project.slug)} headingLevel="h3" />
         ))}

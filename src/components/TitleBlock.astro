@@ -22,7 +22,7 @@ const cells = [
   { caption: tb.scale, value: tb.scaleValue },
   { caption: tb.sheet, value: formatSheet(number, SHEETS.length) },
   { caption: tb.drawn, value: tb.drawnValue },
-  { caption: tb.checked, value: tb.checkedValue },
+  { caption: tb.checked, value: tb.checkedValue, count: true },
   { caption: tb.rev, value: formatRev(new Date()) },
 ];
 const links = [
@@ -38,10 +38,10 @@ const links = [
       <dt>{tb.project}</dt>
       <dd class="title-block__project">{tb.projectValue}</dd>
     </div>
-    {cells.map(({ caption, value }) => (
+    {cells.map(({ caption, value, count }) => (
       <div class="title-block__cell">
         <dt>{caption}</dt>
-        <dd>{value}</dd>
+        <dd data-count={count}>{value}</dd>
       </div>
     ))}
     <div class="title-block__cell">

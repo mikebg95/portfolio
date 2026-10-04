@@ -14,8 +14,26 @@ export const REVEALED_CLASS = 'is-revealed';
 export const REVEAL_THRESHOLD = 0.2;
 /** §M3 cards: each column of a `data-reveal="cards"` container starts this much later. */
 export const CARD_STAGGER_MS = 70;
+/** §M3 figures: the drawing fades in this long before its first arrow draws… */
+export const FIGURE_FADE_MS = 400;
+/** …then each arrow (`[data-flow]`, in DOM = data-flow order) this much after the one before. */
+export const FLOW_STAGGER_MS = 120;
+/** §M6: a `[data-count]` element's numbers count up from 0 this long when it enters. */
+export const COUNT_MS = 600;
+/** §M1 "≥ 1.40 §M3 takes over": on a first view nothing reveals before the sheet is mostly plotted
+ * (frame drawn, heading mid-wipe), so what is in view at load still reads by 1.3 s. */
+export const FIRST_VIEW_REVEAL_MS = 800;
 
-export const REVEAL_KINDS = ['ink', 'rise', 'wipe', 'stamp', 'draw', 'cards'] as const;
+export const REVEAL_KINDS = [
+  'ink',
+  'row',
+  'rise',
+  'wipe',
+  'stamp',
+  'draw',
+  'cards',
+  'figure',
+] as const;
 export type RevealKind = (typeof REVEAL_KINDS)[number];
 
 /** `data-reveal-delay` in milliseconds; anything but a non-negative number is no delay. */
@@ -30,13 +48,44 @@ export function columnIndices(lefts: readonly number[]): number[] {
   return lefts.map((left) => edges.indexOf(Math.round(left)));
 }
 
+/** `text` with each whole number scaled by `progress` (0–1) and rounded: one frame of a count-up. */
+export function countFrame(text: string, progress: number): string {
+  return text.replace(/\d+/g, (digits) => String(Math.round(Number(digits) * progress)));
+}
+
 export const isFirstView = () => document.documentElement.classList.contains(FIRST_VIEW_CLASS);
 
 export const prefersReducedMotion = () =>
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+/** Counts every number in `element`'s text up from 0 (ease-out), then restores the text exactly. */
+function countUp(element: HTMLElement, delay: number) {
+  const texts: [Text, string][] = [];
+  const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+  for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+    if (node instanceof Text) texts.push([node, node.data]);
+  }
+  // A non-inline box keeps its final width, so fewer digits never shift what follows.
+  element.style.minWidth = `${element.getBoundingClientRect().width}px`;
+  const render = (progress: number) => {
+    for (const [node, text] of texts) node.data = progress < 1 ? countFrame(text, progress) : text;
+  };
+  render(0);
+  let start = 0;
+  const frame = (now: number) => {
+    start ||= now + delay;
+    const t = Math.min(1, Math.max(0, (now - start) / COUNT_MS));
+    render(1 - (1 - t) ** 3);
+    if (t < 1) requestAnimationFrame(frame);
+    else element.style.minWidth = '';
+  };
+  requestAnimationFrame(frame);
+}
+
 function show(element: HTMLElement) {
-  const delay = parseDelay(element.dataset.revealDelay);
+  const motion = !prefersReducedMotion();
+  const wait = motion && isFirstView() ? Math.max(0, FIRST_VIEW_REVEAL_MS - performance.now()) : 0;
+  const delay = parseDelay(element.dataset.revealDelay) + Math.round(wait);
   if (element.dataset.reveal === 'cards') {
     const cards = [...element.children].filter((c): c is HTMLElement => c instanceof HTMLElement);
     const columns = columnIndices(cards.map((card) => card.getBoundingClientRect().left));
@@ -46,16 +95,28 @@ function show(element: HTMLElement) {
   } else if (delay) {
     element.style.setProperty('--reveal-delay', `${delay}ms`);
   }
+  if (element.dataset.reveal === 'figure') {
+    element
+      .querySelectorAll<HTMLElement>('[data-flow]')
+      .forEach((arrow, i) =>
+        arrow.style.setProperty(
+          '--reveal-delay',
+          `${delay + FIGURE_FADE_MS + i * FLOW_STAGGER_MS}ms`,
+        ),
+      );
+  }
+  if (element.dataset.count !== undefined && motion) countUp(element, delay);
   element.classList.add(REVEALED_CLASS);
 }
 
 /**
- * Reveals every `[data-reveal]` element under `root` once, as it scrolls into view (§M3). Under
- * reduced motion or without IntersectionObserver everything is revealed at once.
+ * Reveals every `[data-reveal]` element under `root` once, as it scrolls into view (§M3), and counts
+ * up every `[data-count]` one (§M6). Under reduced motion or without IntersectionObserver everything
+ * is revealed at once and nothing counts.
  */
 export function reveal(root: ParentNode = document): void {
   const pending = new Set(
-    root.querySelectorAll<HTMLElement>(`[data-reveal]:not(.${REVEALED_CLASS})`),
+    root.querySelectorAll<HTMLElement>(`:is([data-reveal], [data-count]):not(.${REVEALED_CLASS})`),
   );
   if (pending.size === 0) return;
   if (prefersReducedMotion() || !('IntersectionObserver' in window)) {

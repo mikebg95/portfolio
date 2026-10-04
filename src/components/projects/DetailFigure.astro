@@ -100,7 +100,9 @@ const layout = `${slug}-${n}`;
   <ol class="test-pyramid">
     {labels.map((label, i) => (
       <li class="test-pyramid__level" style={`--level: ${i}`}>
-        <strong class="test-pyramid__count">{box(label).lines[0]}</strong>
+        <strong class="test-pyramid__count" data-count>
+          {box(label).lines[0]}
+        </strong>
         {box(label).title}
       </li>
     ))}

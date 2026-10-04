@@ -19,7 +19,7 @@ const { entry, number, dates } = Astro.props;
 ---
 
 <article class="experience-detail" id={entry.id}>
-  <div class="experience-detail__meta">
+  <div class="experience-detail__meta" data-reveal="ink">
     <span class="experience-detail__number">{number}</span>
     <span>{formatSpan(entry, dates, ' — ')}</span>
     <span class="experience-detail__caps">
@@ -27,20 +27,24 @@ const { entry, number, dates } = Astro.props;
     </span>
   </div>
   <div class="experience-detail__body">
-    <DisplayHeading as="h2" size="m" class="experience-detail__title">
+    <DisplayHeading as="h2" size="m" class="experience-detail__title" data-reveal="wipe">
       {entry.client ?? entry.employer} — {entry.role}
     </DisplayHeading>
-    <p class="experience-detail__context">{entry.context}</p>
+    <p class="experience-detail__context" data-reveal="ink">
+      {entry.context}
+    </p>
     {entry.bullets.length > 0 && (
       <ul class="experience-detail__bullets">
-        {entry.bullets.map((bullet) => (
-          <li>{bullet}</li>
+        {entry.bullets.map((bullet, i) => (
+          <li data-reveal="ink" data-reveal-delay={i * 80}>
+            {bullet}
+          </li>
         ))}
       </ul>
     )}
-    {entry.note && <RevisionNote text={entry.note} />}
+    {entry.note && <RevisionNote text={entry.note} data-reveal="stamp" />}
     {entry.stack.length > 0 && (
-      <p class="experience-detail__stack">
+      <p class="experience-detail__stack" data-reveal="ink">
         {entry.stack.map((item, i) => (
           <>
             {i > 0 && ' · '}

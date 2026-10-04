@@ -49,7 +49,7 @@ const inProgress = project.status === 'in-progress';
     {project.facts.map((fact) => (
       <div>
         <dt>{fact.label}</dt>
-        <dd>{fact.value}</dd>
+        <dd data-count={fact.value === String(project.tests) || undefined}>{fact.value}</dd>
       </div>
     ))}
   </dl>
