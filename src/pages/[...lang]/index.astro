@@ -8,6 +8,8 @@ import InProgress from '../../components/overview/InProgress.astro';
 import SpecNotes from '../../components/overview/SpecNotes.astro';
 import SheetLayout from '../../layouts/SheetLayout.astro';
 import { jsonLdText, personJsonLd } from '../../seo';
+// motion.md §M1: Sheet 01's first-load plotting; only this page plays it.
+import '../../styles/plotting.css';
 
 export function getStaticPaths() {
   return langPaths();

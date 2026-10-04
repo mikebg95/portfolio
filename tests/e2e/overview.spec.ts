@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { expect, test } from '@playwright/test';
 
 import { expectNoAxeViolations } from './helpers/axe';
+import { settleAnimations } from './helpers/motion';
 
 // Sheet 01 hero and portrait (SPEC §4.1; copy.md Sheet 01; design/README.md "Responsive").
 
@@ -88,6 +89,7 @@ test('balloons 1–3 are numbered callouts; balloon 1 links to the certification
 test('desktop: callouts sit right of the portrait on leaders', async ({ page }) => {
   test.skip((page.viewportSize()?.width ?? 0) < 1024, 'desktop layout');
   await page.goto('/');
+  await settleAnimations(page); // the first view plots the callouts in (motion.md §M1)
   const frame = await page.locator('pre.portrait__ascii').boundingBox();
   const leaders = page.locator('.portrait__leader');
   await expect(leaders).toHaveCount(3);
@@ -102,6 +104,7 @@ test('desktop: callouts sit right of the portrait on leaders', async ({ page }) 
 test('phone: callouts become a numbered list under a full-width portrait', async ({ page }) => {
   test.skip((page.viewportSize()?.width ?? 0) >= 768, 'phone layout');
   await page.goto('/');
+  await settleAnimations(page); // the first view plots the callouts in (motion.md §M1)
   const frame = await page.locator('pre.portrait__ascii').boundingBox();
   const figure = await page.locator('.hero__figure').boundingBox();
   expect(frame && figure && frame.width).toBeGreaterThan((figure?.width ?? 0) - 40);

@@ -328,3 +328,13 @@ handlers still run. Transitions are left out of that clamp: components already s
 reduced-motion transitions (often 0 s), and clamping lifted them to 1 ms (education.spec failed). `reveal()` also reveals pending
 elements once their top passes 80 % of the viewport: IntersectionObserver at 0.2 never fires for an
 element taller than five viewports, nor for one jumped past by a hash link.
+
+## 2026-10-04 — Sheet 01 plotting: "readable within 1.3 s" means the reading text, not the annotations
+Who: agent (PR-41). The §M1 timeline is ported with the preview's exact numbers, so the dimension
+labels (1.95 s), callout texts (2.05–2.25 s) and the revision note (2.30 s) appear after 1.3 s; the
+task binds both. Read as: principle 1 covers the header cells and the hero copy (label, name, role,
+intro, buttons) — the e2e seeks every animation to 1.3 s and requires each at ≥ 50 % opacity and
+≤ 50 % clipped; the annotations are the drawing being plotted, as the spec's own table times them.
+The hero buttons are not in the preview: they rise with the intro (1.2 s) instead of standing alone
+on an empty sheet for a second. Scope: plotting.css is imported by the Overview page only, so a
+session that starts on another sheet gets no plotting until PR-42 adds the short variant.

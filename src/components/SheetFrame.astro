@@ -4,10 +4,19 @@ import Crosshair from './Crosshair.astro';
 // The drawing sheet (SPEC §3.1, components.md SheetFrame): desk → paper with the 16/80 px grid,
 // 2 px outer frame, 10 px gap, 1 px inner frame, zone strip 1–8 on desktop, then the slots.
 const ZONES = [1, 2, 3, 4, 5, 6, 7, 8];
+const EDGES = ['top', 'right', 'bottom', 'left'];
 ---
 
 <div class="desk">
   <div class="sheet">
+    <!-- The first-load plotting's grid and frame edges (motion.md §M1, src/styles/plotting.css);
+         not rendered anywhere else. -->
+    <div class="sheet__plot" aria-hidden="true">
+      <span class="sheet__plot-grid"></span>
+      {EDGES.map((edge) => (
+        <span class:list={['sheet__plot-edge', `sheet__plot-edge--${edge}`]} />
+      ))}
+    </div>
     <Crosshair />
     <div class="sheet__inner">
       <div class="sheet__zones" aria-hidden="true">
@@ -44,6 +53,10 @@ const ZONES = [1, 2, 3, 4, 5, 6, 7, 8];
       var(--sheet-grid-major) var(--sheet-grid-major),
       var(--sheet-grid-minor) var(--sheet-grid-minor),
       var(--sheet-grid-minor) var(--sheet-grid-minor);
+  }
+
+  .sheet__plot {
+    display: none;
   }
 
   .sheet__inner {

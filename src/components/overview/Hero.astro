@@ -28,7 +28,7 @@ const { hero } = (await getLocalized('profile', 'profile', lang)).data;
     </DisplayHeading>
     <p class="hero__role">
       <span class="hero__rule" aria-hidden="true"></span>
-      <span>{hero.role}</span>
+      <span class="hero__role-text">{hero.role}</span>
     </p>
     <p class="hero__intro">{hero.intro}</p>
     <RevisionNote text={hero.revisionNote} />

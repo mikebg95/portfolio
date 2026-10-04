@@ -1,0 +1,258 @@
+/* design/motion.md §M1: on the session's first page view Sheet 01 plots itself — frame, grid,
+   header, then the hero and the portrait. Imported by the Overview page only, so no other sheet
+   plays it (their short variant is PR-42's). Durations, delays and easings are the reference
+   preview's (design/screens/html/motion-preview.dc.html); `t` in the comments is seconds from first
+   paint. Like the reveals (src/styles/motion.css, docs/conventions/motion.md) the keyframes give only
+   the start and `animation-fill-mode: backwards` holds it through the delay, so every element ends
+   in its own styles; without `.js.first-view` or under reduced motion none of this applies. */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* 0.00–0.70 the outer frame: four edges drawn over the sheet's border, which stays transparent;
+     0.15–1.05 the grid fades in on its own layer. */
+  .js.first-view .sheet {
+    border-color: transparent;
+    background-image: none;
+  }
+
+  .js.first-view .sheet__plot {
+    position: absolute;
+    inset: calc(-1 * var(--sheet-frame-outer));
+    display: block;
+    pointer-events: none;
+  }
+
+  .js.first-view .sheet__plot-grid {
+    position: absolute;
+    inset: var(--sheet-frame-outer);
+    background-image:
+      linear-gradient(var(--color-grid-major) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-grid-major) 1px, transparent 1px),
+      linear-gradient(var(--color-grid-minor) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-grid-minor) 1px, transparent 1px);
+    background-size:
+      var(--sheet-grid-major) var(--sheet-grid-major),
+      var(--sheet-grid-major) var(--sheet-grid-major),
+      var(--sheet-grid-minor) var(--sheet-grid-minor),
+      var(--sheet-grid-minor) var(--sheet-grid-minor);
+    animation: plot-fade 900ms ease 150ms backwards;
+  }
+
+  .js.first-view .sheet__plot-edge {
+    position: absolute;
+    background: var(--color-ink);
+    animation-name: reveal-draw;
+    animation-timing-function: var(--motion-ease-plot);
+    animation-fill-mode: backwards;
+  }
+
+  .js.first-view .sheet__plot-edge--top {
+    inset: 0 0 auto;
+    height: var(--sheet-frame-outer);
+    animation-duration: 700ms;
+  }
+
+  .js.first-view .sheet__plot-edge--bottom {
+    inset: auto 0 0;
+    height: var(--sheet-frame-outer);
+    animation-duration: 700ms;
+    animation-delay: 200ms;
+    --reveal-origin: right center;
+  }
+
+  .js.first-view .sheet__plot-edge--right {
+    inset: 0 0 0 auto;
+    width: var(--sheet-frame-outer);
+    animation-duration: 500ms;
+    animation-delay: 550ms;
+    --reveal-from: scaleY(0);
+    --reveal-origin: center top;
+  }
+
+  .js.first-view .sheet__plot-edge--left {
+    inset: 0 auto 0 0;
+    width: var(--sheet-frame-outer);
+    animation-duration: 500ms;
+    animation-delay: 750ms;
+    --reveal-from: scaleY(0);
+    --reveal-origin: center bottom;
+  }
+
+  /* 0.50–0.80 header cells drop in, 60 ms apart: monogram, the five tabs, then the utilities;
+     on a phone the monogram, current sheet and SHEETS button. Only the cells shown at the width
+     are animated (a hidden cell would keep its start state in its computed style). */
+  .js.first-view .sheet-header__mark {
+    animation: plot-drop 450ms var(--motion-ease-out) calc(500ms + var(--plot-cell, 0) * 60ms)
+      backwards;
+  }
+
+  @media (min-width: 768px) {
+    .js.first-view :is(.sheet-tab, .sheet-header__utils) {
+      animation: plot-drop 450ms var(--motion-ease-out) calc(500ms + var(--plot-cell, 0) * 60ms)
+        backwards;
+    }
+
+    .js.first-view .sheet-tab:nth-child(1) {
+      --plot-cell: 1;
+    }
+
+    .js.first-view .sheet-tab:nth-child(2) {
+      --plot-cell: 2;
+    }
+
+    .js.first-view .sheet-tab:nth-child(3) {
+      --plot-cell: 3;
+    }
+
+    .js.first-view .sheet-tab:nth-child(4) {
+      --plot-cell: 4;
+    }
+
+    .js.first-view .sheet-tab:nth-child(5) {
+      --plot-cell: 5;
+    }
+
+    .js.first-view .sheet-header__utils {
+      --plot-cell: 6;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .js.first-view :is(.sheet-header__current, .sheet-index) {
+      animation: plot-drop 450ms var(--motion-ease-out) calc(500ms + var(--plot-cell, 0) * 60ms)
+        backwards;
+    }
+
+    .js.first-view .sheet-header__current {
+      --plot-cell: 1;
+    }
+
+    .js.first-view .sheet-index {
+      --plot-cell: 2;
+    }
+  }
+
+  /* 0.90–1.40 the active tab's ink fill wipes in left → right, under its text. `html` outranks
+     SheetHeader's scoped fill rule, which ties with it otherwise and loads later. */
+  html.js.first-view .sheet-header .sheet-tab[aria-current='page'] {
+    position: relative;
+    isolation: isolate;
+    background: none;
+  }
+
+  .js.first-view .sheet-tab[aria-current='page']::before {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--color-ink);
+    content: '';
+    animation: reveal-draw 500ms var(--motion-ease-plot) 900ms backwards;
+  }
+
+  /* 0.60 the sheet label rises; 0.70 / 0.85 the name's two lines wipe in like a plotter pen. */
+  .js.first-view .hero .sheet-label {
+    animation: reveal-rise 700ms var(--motion-ease-out) 600ms backwards;
+  }
+
+  .js.first-view .hero__name-line {
+    animation: reveal-wipe var(--motion-wipe) var(--motion-ease-plot) 700ms backwards;
+  }
+
+  .js.first-view .hero__name-line + .hero__name-line {
+    animation-delay: 850ms;
+  }
+
+  /* 1.05 the role line's rule extends; 1.10 the role, 1.20 the intro rise; 2.30 the revision note
+     stamps down (380 ms, slight overshoot — as the `stamp` reveal). */
+  .js.first-view .hero__rule {
+    animation: reveal-draw 500ms var(--motion-ease-plot) 1050ms backwards;
+  }
+
+  .js.first-view .hero__role-text {
+    animation: reveal-rise 700ms var(--motion-ease-out) 1100ms backwards;
+  }
+
+  /* The buttons are not in the preview; they rise with the intro rather than stand alone on an
+     empty sheet (docs/RECORD.md 2026-10-04). */
+  .js.first-view :is(.hero__intro, .hero__actions) {
+    animation: reveal-rise 700ms var(--motion-ease-out) 1200ms backwards;
+  }
+
+  .js.first-view .hero .revision-note {
+    animation: reveal-stamp 380ms cubic-bezier(0.2, 0.9, 0.25, 1.15) 2300ms backwards;
+  }
+
+  /* 0.55–1.50 the portrait scans in top → bottom: each line wipes in 260 ms, 22 ms apart. */
+  .js.first-view .portrait__line {
+    animation: reveal-wipe 260ms linear calc(550ms + var(--line, 0) * 22ms) backwards;
+  }
+
+  /* 1.50–2.10 the dimension lines extend from their centre, arrowheads on their ends; labels fade
+     in at 1.95. */
+  .js.first-view .portrait__dim {
+    animation: reveal-draw var(--motion-draw) var(--motion-ease-plot) 1500ms backwards;
+    --reveal-origin: center;
+  }
+
+  .js.first-view .portrait__dim--v {
+    animation-delay: 1600ms;
+    --reveal-from: scaleY(0);
+  }
+
+  .js.first-view .portrait__dim .dimension__label {
+    animation: plot-fade 300ms ease 1950ms backwards;
+  }
+
+  /* 1.75–2.35 each callout, 100 ms after the one above: the leader draws (300 ms), the balloon
+     pops 200 ms later, the text slides in 100 ms after that. */
+  .js.first-view .portrait__callout {
+    --plot-callout: 0;
+  }
+
+  .js.first-view .portrait__callout:nth-child(2) {
+    --plot-callout: 1;
+  }
+
+  .js.first-view .portrait__callout:nth-child(3) {
+    --plot-callout: 2;
+  }
+
+  .js.first-view .portrait__leader {
+    animation: reveal-draw 300ms var(--motion-ease-plot) calc(1750ms + var(--plot-callout) * 100ms)
+      backwards;
+  }
+
+  .js.first-view .portrait__callout .balloon {
+    animation: plot-pop 450ms var(--motion-ease-pop) calc(1950ms + var(--plot-callout) * 100ms)
+      backwards;
+  }
+
+  .js.first-view .portrait__callout-text {
+    animation: plot-slide 350ms ease calc(2050ms + var(--plot-callout) * 100ms) backwards;
+  }
+}
+
+@keyframes plot-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes plot-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes plot-pop {
+  from {
+    transform: scale(0);
+  }
+}
+
+@keyframes plot-slide {
+  from {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+}

@@ -22,6 +22,8 @@ interface Props {
 const { lang, dimensions, balloons, alt } = Astro.props;
 // The file's blank lead lines would only pad the frame (and a <pre> drops the first newline).
 const ascii = PORTRAIT.replace(/^(?:[ \t]*\n)+/, '').trimEnd();
+// One span per line, so §M1 can scan the portrait in line by line; the newlines stay between them.
+const lines = ascii.split('\n');
 ---
 
 <figure class="portrait">
@@ -33,7 +35,8 @@ const ascii = PORTRAIT.replace(/^(?:[ \t]*\n)+/, '').trimEnd();
       label={dimensions.vertical}
     />
     <div class="portrait__frame">
-      <pre class="portrait__ascii" aria-hidden="true">{ascii}</pre>
+      <!-- prettier-ignore -->
+      <pre class="portrait__ascii" aria-hidden="true">{lines.map((line, i) => <Fragment>{i ? '\n' : ''}<span class="portrait__line" style={`--line: ${i}`}>{line}</span></Fragment>)}</pre>
       <figcaption class="sr-only">{alt}</figcaption>
     </div>
   </div>
@@ -111,6 +114,11 @@ const ascii = PORTRAIT.replace(/^(?:[ \t]*\n)+/, '').trimEnd();
     font-family: var(--font-mono);
     font-size: 6.4px;
     line-height: 1.02;
+  }
+
+  /* Inline-block so a line can be clipped (the §M1 scan) without changing the text or its rows. */
+  .portrait__line {
+    display: inline-block;
   }
 
   .portrait__callouts {

@@ -20,6 +20,12 @@ never a second system.
 - **First view:** the head script sets sessionStorage `plotted` and adds `first-view` to `<html>` on
   the session's first page view; §M1's full plotting is styled under `.js.first-view`. Storage
   blocked → never `first-view` (docs/RECORD.md 2026-10-04). In scripts: `isFirstView()`.
+- **First-load plotting (§M1):** `src/styles/plotting.css`, imported by the Overview page only (a
+  page-level import is the scope; PR-42 lifts frame/grid/header to every sheet). Rules sit under
+  `.js.first-view` in a no-preference block, reuse the `reveal-*` keyframes (start-only, `backwards`
+  fill, delay written on the element). Frame and grid draw on SheetFrame's `.sheet__plot` layer
+  (`display: none` elsewhere); the portrait is one inline-block `.portrait__line` per row with
+  `--line: <i>`. Only animate a header cell at the widths where it shows.
 - **Scroll reveals (§M3):** put `data-reveal="<kind>"` on an element; `reveal()` (src/motion.ts,
   run by SheetLayout on every page) adds `is-revealed` once 20 % of it is visible, or once its top
   passes 80 % of the viewport (tall elements, jumps). Kinds:
