@@ -312,3 +312,25 @@ History, not a queue.
   - Done when: `education` EN entries for parts 1–5 with every field and detail panel text from copy.md; Vitest asserts ordering and that part 3 has three sub-rows totalling 30 EC.
   - Spec: design/copy.md Sheet 05
   - Out of scope: NL.
+
+
+## Pruned from the queue
+
+3 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### Sheet 05 — Education
+
+- [x] **PR-33 Exploded assembly (static)**
+  - Done when: `/education` renders label, heading, intro and the isometric exploded assembly as drawn (5 plates, CS50 smaller, CKAD dashed redline, centre axis, balloons + leaders), with vertical spacing so plates don't overlap beyond their thickness; scales to width on phone; plates/balloons are buttons with accessible names; e2e asserts five parts.
+  - Spec: SPEC §4.6; design/screens/html/education-default-light-1440.html; design/components.md ExplodedAssembly
+  - Out of scope: selection (PR-35), scroll motion (PR-44).
+
+- [x] **PR-34 Parts list and detail panel**
+  - Done when: DetailPanel (default part 3) and PartsList table exactly as drawn, rows as buttons (`aria-pressed`), pending row in redline; panel stacks below assembly on phone/tablet; e2e asserts default detail and table rows.
+  - Spec: SPEC §4.6; design/components.md PartsList, DetailPanel
+  - Out of scope: interaction (PR-35).
+
+- [x] **PR-35 Part selection**
+  - Done when: clicking/Enter/Space on a plate, balloon or row selects that part: plate lifts 12 px and fills, others dim to 60%, row highlights, panel content swaps (clip-path wipe 250 ms; instant under reduced motion), URL hash `#part-n` updates and is honoured on load; without JS all five details render stacked (progressive enhancement); hover on a row previews the lift; e2e covers mouse, keyboard and hash.
+  - Spec: SPEC §4.6; design/motion.md §M5
+  - Out of scope: scroll-scrubbed explode (PR-44).
