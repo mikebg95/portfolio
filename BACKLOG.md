@@ -52,7 +52,7 @@ queue.
 
 ### Foundation
 
-- [ ] **PR-3 Content collections and schemas**
+- [x] **PR-3 Content collections and schemas**
   - Done when: `src/content/config.ts` defines `experience`, `projects`, `certifications`, `education`, `profile` exactly per SPEC §5 with zod, each entry carrying `lang: 'en' | 'nl'`; a build-time check (Vitest test over the collections) fails when any entry exists in one language but not the other, or a field is missing; placeholder minimal EN+NL entries exist so the build passes; every schema has `translated: boolean` (default true) — until PR-48–50, each EN content task also creates the NL twin with the English text and `translated: false`; tests cover the pairing check.
   - Spec: SPEC §3.6, §5
   - Out of scope: real copy (content tasks below).
