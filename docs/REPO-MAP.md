@@ -110,12 +110,13 @@ line.
 
 - `src/pages/[...lang]/index.astro` — composes the Overview panels; each panel is a component in `src/components/overview/`.
 - `src/components/overview/Hero.astro` — label, name, role, intro, note, buttons; reads `profile.hero`; links via `sheetPath(key)` (src/i18n/routes.ts) + `localize`.
-- `src/components/overview/Portrait.astro` — two `<pre aria-hidden>` portraits (one per theme, stacked in a grid cell, the other `visibility: hidden` — so a test must pick `pre.portrait__ascii:visible`) + sr-only figcaption, dimension lines, callouts (absolute on desktop, a list < 768 px; the phone font size fills the width via `cqi`).
-- `src/components/overview/HowIWork.astro` — four principles + AI note; panel labels come from `profile.labels` (docs/RECORD.md 2026-10-04).
+- `src/components/overview/Portrait.astro` — two `<pre aria-hidden>` portraits (one per theme, stacked in a grid cell, the other `visibility: hidden` — so a test must pick `pre.portrait__ascii:visible`) + sr-only figcaption, dimension lines, callouts (absolute on desktop; < 768 px a FIG. 0 card — `.portrait__strip` title, `.portrait__edge` balloons on the right rule, callouts a 3-cell caption strip numbered by a CSS counter; no dimension lines; the font fills the card via `cqi`). Hero's `.hero__text` is `display: contents` on phone so the card sits between role and intro (`order`).
+- `src/components/overview/HowIWork.astro` — four principles + AI note; panel labels come from `profile.labels` (docs/RECORD.md 2026-10-04). < 768 px a snap-scroll rail (`[data-rail]`) + `[data-rail-index]` bars, wired by `src/rail.ts` (tab stop only while it scrolls; indicator shows only under `.js`).
 - `src/components/overview/SpecNotes.astro` — SPECIFICATION table + GENERAL NOTES; side by side (notes column 380 px) at ≥ 1024, stacked below; S-06's `pending` in redline.
 - `src/components/overview/InProgress.astro` — the IN PROGRESS rows, hrefs from `profile.current` through `localize`; `#optiecon` is the experience detail block; `#ckad` a placeholder `<div id>` in the certifications stub until PR-31 moves it onto the real card (never two).
 - TRAP: Astro compresses the whitespace between two elements on separate lines; text that needs a space between spans needs `{' '}`. Symptom: h1 accessible name "MICHAELGOLDMAN".
-- `tests/e2e/overview.spec.ts` — hero text, links (EN + NL), portrait text vs. its source file, callouts per viewport, 320 px.
+- `tests/e2e/overview.spec.ts` — hero text, links (EN + NL), portrait text vs. its source file, callouts per viewport, 320 px. `tests/e2e/overview-phone.spec.ts` — the phone card, caption strip, buttons, rail (scroll, keyboard, no-JS), spec rows; skipped ≥ 768.
+- TRAP: a content schema/YAML change is not picked up by a running `astro dev` — the page streams up to the component and then shows "TypeError An error occurred"; restart the dev server.
 
 ## Sheet 02 — Experience
 

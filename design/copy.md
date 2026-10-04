@@ -36,6 +36,7 @@ itself, in the same voice: first person, short sentences, concrete nouns, no hyp
 - Buttons: `VIEW PROJECTS →` · `DOWNLOAD CV (PDF)`
 - Dimensions: `5+ YRS JAVA · FULL-STACK` · `SPRING · JAKARTA EE`
 - Balloons: 1 `Spring certified` (→ /certifications) · 2 `Dutch & English native` · 3 `Trains Muay Thai`
+- Phone portrait card title strip (overview-default-light-390): `FIG. 0 — PORTRAIT` · `SCALE 1:1`
 
 ### How I work (label `HOW I WORK`)
 1. **Design before build** — Requirements, a C4 model, a database schema and an API contract come first, with the trade-offs written down as decision records. Then the code follows the drawing — in every project of my Spring series, and for the authentication and frontend I designed at DJI.

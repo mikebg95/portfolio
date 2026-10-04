@@ -13,6 +13,7 @@ hero:
     - { text: Dutch & English native }
     - { text: Trains Muay Thai }
   portraitAlt: Portrait of Michael Goldman, drawn in ASCII characters.
+  figure: { label: FIG. 0 — PORTRAIT, scale: SCALE 1:1 }
 labels:
   howIWork: HOW I WORK
   specification: SPECIFICATION

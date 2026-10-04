@@ -5,7 +5,8 @@ import DisplayHeading from '../drawing/DisplayHeading.astro';
 import SheetLabel from '../drawing/SheetLabel.astro';
 
 // SPEC §4.1 "How I work": the four numbered principles as a ruled drawing grid (4 columns, 2 on
-// tablet, 1 on phone), then the mono AI note. Not drawn; built from design/README.md.
+// tablet), then the mono AI note; desktop not drawn, built from design/README.md. Phone
+// (overview-default-light-390): a snap-scrolling card rail with a position indicator (src/rail.ts).
 interface Props {
   lang: Lang;
 }
@@ -20,7 +21,7 @@ const { labels, howIWork, aiNote } = (await getLocalized('profile', 'profile', l
       {labels.howIWork}
     </SheetLabel>
   </h2>
-  <ol class="how-i-work__grid" data-reveal="cards">
+  <ol class="how-i-work__grid" data-reveal="cards" data-rail aria-labelledby="how-i-work-label">
     {howIWork.map((principle, i) => (
       <li class="how-i-work__cell">
         <span class="how-i-work__number" aria-hidden="true">
@@ -33,10 +34,21 @@ const { labels, howIWork, aiNote } = (await getLocalized('profile', 'profile', l
       </li>
     ))}
   </ol>
+  <div class="how-i-work__index" data-rail-index aria-hidden="true">
+    {howIWork.map(() => (
+      <span class="how-i-work__bar" />
+    ))}
+  </div>
   <p class="how-i-work__ai" data-reveal="rise">
     {aiNote}
   </p>
 </section>
+
+<script>
+  import { rails } from '../../rail';
+
+  rails();
+</script>
 
 <style>
   .how-i-work {
@@ -99,13 +111,66 @@ const { labels, howIWork, aiNote } = (await getLocalized('profile', 'profile', l
     }
   }
 
+  .how-i-work__index {
+    display: none;
+  }
+
+  /* Phone: the cards become a rail running out to the sheet's edge, one card and the next one's
+     edge in view, snapping card by card. Without JS it is a plain overflow scroller. */
   @media (max-width: 767px) {
     .how-i-work__grid {
-      grid-template-columns: minmax(0, 1fr);
+      --rail-inset: var(--sheet-content-padding-phone);
+
+      display: flex;
+      gap: 10px;
+      margin-inline: calc(-1 * var(--rail-inset));
+      padding: 0 var(--rail-inset) var(--space-1);
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      border: none;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: var(--rail-inset);
+    }
+
+    /* With JS the indicator shows the position; without it the scrollbar stays. */
+    :global(.js) .how-i-work__grid {
+      scrollbar-width: none;
     }
 
     .how-i-work__cell {
+      flex: 0 0 min(284px, 84%);
       padding: var(--space-4);
+      border: var(--border-normal);
+      background: var(--color-paper-raised);
+      scroll-snap-align: start;
+    }
+
+    .how-i-work__number {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0;
+    }
+
+    .how-i-work__body {
+      font-size: 13.5px;
+      line-height: 1.5;
+    }
+
+    /* The position indicator, drawn by src/rail.ts — so only with JS. */
+    :global(.js) .how-i-work__index {
+      display: flex;
+      gap: 6px;
+    }
+
+    .how-i-work__bar {
+      width: 8px;
+      height: 3px;
+      background: var(--color-rule);
+    }
+
+    .how-i-work__bar[data-current] {
+      width: 18px;
+      background: var(--color-ink);
     }
   }
 </style>

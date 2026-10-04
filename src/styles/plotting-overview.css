@@ -43,19 +43,21 @@
   }
 
   /* 1.50–2.10 the dimension lines extend from their centre, arrowheads on their ends; labels fade
-     in at 1.95. */
-  .js.first-view .portrait__dim {
-    animation: reveal-draw var(--motion-draw) var(--motion-ease-plot) 1500ms backwards;
-    --reveal-origin: center;
-  }
+     in at 1.95. Only where they are drawn: the phone card has none. */
+  @media (min-width: 768px) {
+    .js.first-view .portrait__dim {
+      animation: reveal-draw var(--motion-draw) var(--motion-ease-plot) 1500ms backwards;
+      --reveal-origin: center;
+    }
 
-  .js.first-view .portrait__dim--v {
-    animation-delay: 1600ms;
-    --reveal-from: scaleY(0);
-  }
+    .js.first-view .portrait__dim--v {
+      animation-delay: 1600ms;
+      --reveal-from: scaleY(0);
+    }
 
-  .js.first-view .portrait__dim .dimension__label {
-    animation: reveal-fade 300ms ease 1950ms backwards;
+    .js.first-view .portrait__dim .dimension__label {
+      animation: reveal-fade 300ms ease 1950ms backwards;
+    }
   }
 
   /* 1.75–2.35 each callout, 100 ms after the one above: the leader draws (300 ms), the balloon
@@ -80,6 +82,24 @@
   .js.first-view .portrait__callout .balloon {
     animation: plot-pop 450ms var(--motion-ease-pop) calc(1950ms + var(--plot-callout) * 100ms)
       backwards;
+  }
+
+  /* Phone card (overview-default-light-390): the title strip fades in as the scan starts; the
+     balloons on the card's edge pop with their callouts. */
+  .js.first-view .portrait__strip {
+    animation: reveal-fade 300ms ease 550ms backwards;
+  }
+
+  .js.first-view .portrait__edge .balloon {
+    animation: plot-pop 450ms var(--motion-ease-pop) 1950ms backwards;
+  }
+
+  .js.first-view .portrait__edge .balloon:nth-child(2) {
+    animation-delay: 2050ms;
+  }
+
+  .js.first-view .portrait__edge .balloon:nth-child(3) {
+    animation-delay: 2150ms;
   }
 
   .js.first-view .portrait__callout-text {

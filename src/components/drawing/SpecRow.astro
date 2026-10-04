@@ -30,7 +30,8 @@ const { code, label, class: className, ...rest } = Astro.props;
     border-bottom: 1px solid var(--color-rule);
   }
 
-  /* The code and label sit in the row's own columns; on phone the value drops below them. */
+  /* The code and label sit in the row's own columns; on phone the value drops below the label
+     (beside the code in a coded table — overview-default-light-390). */
   dt {
     display: contents;
   }
@@ -58,10 +59,6 @@ const { code, label, class: className, ...rest } = Astro.props;
   @media (max-width: 767px) {
     .spec-row {
       row-gap: var(--space-1);
-    }
-
-    dd {
-      grid-column: 1 / -1;
     }
   }
 </style>

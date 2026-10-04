@@ -60,7 +60,8 @@ it is a `<button>` or `<a>` with an accessible name ("Part 3: Minor Programming"
 
 ## SpecTable / SpecRow
 Rows: grid 64 px code (mono 12 muted) · 150 px label (mono 12 600 .06em) · value (body 15). Bottom
-rule `rule` colour; last row none. Motion: ink-in.
+rule `rule` colour; last row none. Motion: ink-in. Phone: label over value — beside a 44 px code
+column when coded (overview-default-light-390), full width when not.
 
 ## GeneralNotes
 Ordered list, body 14.5 px, muted-dark text, 12 px gap, heading label "GENERAL NOTES".

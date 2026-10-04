@@ -593,3 +593,19 @@ fill slides between cells under the text on a sheet change, as the desktop tab f
 360 px the header's utility cells are 48 px (still ≥ 44) so NL "Certificeringen" fits uncut. CV
 joins the title block's CONTACT cell on every width. Instead of: an icon-only bar (the drawing has
 numbers and names); keeping the panel as a "more" menu (nothing left to put in it).
+
+## 2026-10-04 — Phone Overview per the drawing (PR-62b)
+Who: agent (PR-62b, the choices). The card's title strip text is content (`profile.hero.figure`,
+EN `FIG. 0 — PORTRAIT` · `SCALE 1:1`, NL `FIG. 0 — PORTRET` · `SCHAAL 1:1`; copy.md) — an additive
+schema field like PR-62a's `ui.tabBar`, because text never lives in components. Copy wins on the
+buttons: `VIEW PROJECTS →` / `DOWNLOAD CV (PDF)`, not the drawing's shorter `PROJECTS →` /
+`CV · PDF ↓`. The card is drawn without the dimension lines (the drawing has none; the intro states
+the five years). The portrait moves between role and intro with CSS `order` (`.hero__text` is
+`display: contents` on phone) rather than a new hero DOM: the desktop flex/wrap layout stays
+untouched, at the cost of balloon 1's caption link coming after the buttons in Tab order on
+phone. Caption numbers are a CSS counter (`::before`), so the text and accessible names stay
+"Spring certified". The rail's indicator is JS-drawn (`src/rail.ts`), hidden without JS, where the
+scrollbar is kept instead; the rail is a tab stop only while it overflows. Coded spec rows put the
+value under the label, beside a 44 px code column, on every phone table (SpecRow/SpecTable).
+The facts allowlist gained `1:1` and PR-62a's tab-bar `Certs`, which was failing it.
+Instead of: a grid hero rebuilt for DOM order; abbreviating the button copy.

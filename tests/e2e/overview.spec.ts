@@ -92,7 +92,9 @@ test('the portrait is real text, hidden from assistive tech, with a text alterna
   );
   const dims = page.locator('figure.portrait .dimension');
   await expect(dims).toHaveText(['5+ YRS JAVA · FULL-STACK', 'SPRING · JAKARTA EE']);
-  for (const dim of await dims.all()) await expect(dim).toBeVisible();
+  // The phone card is drawn without them (overview-default-light-390).
+  const phone = (page.viewportSize()?.width ?? 0) < 768;
+  for (const dim of await dims.all()) await expect(dim).toBeVisible({ visible: !phone });
 });
 
 // Dense glyphs are dark areas, so light text on the navy needs the inverted file (PR-59).
@@ -163,22 +165,6 @@ test('desktop: callouts sit right of the portrait on leaders', async ({ page }) 
   }
 });
 
-test('phone: callouts become a numbered list under a full-width portrait', async ({ page }) => {
-  test.skip((page.viewportSize()?.width ?? 0) >= 768, 'phone layout');
-  await page.goto('/');
-  await settleAnimations(page); // the first view plots the callouts in (motion.md §M1)
-  const frame = await page.locator('pre.portrait__ascii:visible').boundingBox();
-  const figure = await page.locator('.hero__figure').boundingBox();
-  expect(frame && figure && frame.width).toBeGreaterThan((figure?.width ?? 0) - 40);
-  await expect(page.locator('.portrait__leader').first()).toBeHidden();
-  let previous = (frame?.y ?? 0) + (frame?.height ?? 0);
-  for (const callout of await page.locator('.portrait__callout').all()) {
-    const box = await callout.boundingBox();
-    expect(box?.y).toBeGreaterThanOrEqual(previous);
-    previous = (box?.y ?? 0) + (box?.height ?? 0);
-  }
-});
-
 test('no horizontal scroll at 320 px and the name never breaks inside a word', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 800 });
   await page.goto('/');
@@ -196,7 +182,7 @@ test('no horizontal scroll at 320 px and the name never breaks inside a word', a
   await expectNoAxeViolations(page);
 });
 
-test('how I work: four numbered principles in a 4 / 2 / 1 column grid, then the AI note', async ({
+test('how I work: four numbered principles in a 4 / 2 column grid, a rail on phone, then the AI note', async ({
   page,
 }) => {
   await page.goto('/');
@@ -213,10 +199,11 @@ test('how I work: four numbered principles in a 4 / 2 / 1 column grid, then the 
     /^ON AI — I build with AI coding agents/,
   );
 
+  // On phone all four sit in one row too — the rail (tests/e2e/overview-phone.spec.ts).
   for (const [width, columns] of [
     [1440, 4],
     [900, 2],
-    [390, 1],
+    [390, 4],
   ] as const) {
     await page.setViewportSize({ width, height: 900 });
     const tops = await panel

@@ -56,8 +56,14 @@ test('the first view plays the timeline with the preview timings', async ({ page
   expect(await timing('.hero__rule')).toBe('reveal-draw 0.5s 1.05s');
   expect(await timing('.hero__intro')).toBe('reveal-rise 0.7s 1.2s');
   expect(await timing('.portrait__line:nth-child(11)')).toBe('reveal-wipe 0.26s 0.77s');
-  expect(await timing('.portrait__dim--v')).toBe('reveal-draw 0.6s 1.6s');
-  expect(await timing('.portrait__callout:nth-child(3) .balloon')).toBe('plot-pop 0.45s 2.15s');
+  if ((page.viewportSize()?.width ?? 0) >= 768) {
+    expect(await timing('.portrait__dim--v')).toBe('reveal-draw 0.6s 1.6s');
+    expect(await timing('.portrait__callout:nth-child(3) .balloon')).toBe('plot-pop 0.45s 2.15s');
+  } else {
+    // The phone card: no dimension lines; its strip fades in, the balloons pop on its edge.
+    expect(await timing('.portrait__strip')).toBe('reveal-fade 0.3s 0.55s');
+    expect(await timing('.portrait__edge .balloon:nth-child(3)')).toBe('plot-pop 0.45s 2.15s');
+  }
   expect(await timing('.hero .revision-note')).toBe('reveal-stamp 0.38s 2.3s');
 });
 

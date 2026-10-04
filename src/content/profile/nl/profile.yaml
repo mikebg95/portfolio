@@ -12,6 +12,7 @@ hero:
     - { text: Moedertaal Nederlands & Engels }
     - { text: Traint Muay Thai }
   portraitAlt: Portret van Michael Goldman, getekend in ASCII-tekens.
+  figure: { label: FIG. 0 — PORTRET, scale: SCHAAL 1:1 }
 labels:
   howIWork: ZO WERK IK
   specification: SPECIFICATIE

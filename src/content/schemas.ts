@@ -187,6 +187,8 @@ export const profileSchema = z.strictObject({
       z.strictObject({ text, href: text.optional() }),
     ]),
     portraitAlt: text,
+    /** The phone portrait card's title strip (overview-default-light-390): figure name, scale. */
+    figure: z.strictObject({ label: text, scale: text }),
   }),
   /** The labels of the panels below the hero (copy.md `### … (label `…`)`). */
   labels: z.strictObject({

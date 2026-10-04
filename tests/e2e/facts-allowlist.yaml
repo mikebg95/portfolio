@@ -10,7 +10,7 @@
 # it from the page. An entry the pages no longer need, or the sources now state, fails the test.
 
 numbers:
-  'Sheet chrome: item numbers on the register, parts list, skill rows, detail views (02.1 … 03.5, S-06, S-07, 3.2, 3.3), the drawing scale 2:1 and the title-block revision REV 2026.10':
+  'Sheet chrome: item numbers on the register, parts list, skill rows, detail views (02.1 … 03.5, S-06, S-07, 3.2, 3.3), the drawing scales 2:1 and 1:1 (the phone portrait card) and the title-block revision REV 2026.10':
     [
       '02.1',
       '02.2',
@@ -24,6 +24,7 @@ numbers:
       '3.2',
       '3.3',
       '2:1',
+      '1:1',
       '2026.10',
     ]
   'Experience timeline: the axis tick between 2021 and 2023, and the 0 in "2 Y 0 M" (Jan 2024 – Jan 2026, cv.md)':
@@ -51,7 +52,7 @@ urls:
     - 'https://github.com/mikebg95/journal/blob/main/docs/architecture/adr/0007-optimistic-locking.md'
 
 names:
-  'Sheet chrome: drawing titles, title block, register, parts list, inspection record, figure and note labels, the MG monogram, the theme and language switches':
+  "Sheet chrome: drawing titles, title block, register, parts list, inspection record, figure and note labels, the MG monogram, the theme and language switches, the phone tab bar's short sheet names":
     - ARRANGEMENT
     - ASSEMBLED
     - ASSEMBLY
@@ -60,6 +61,7 @@ names:
     - C-02
     - C-03
     - C-04
+    - Certs
     - CHECKED
     - DOWNLOAD
     - DRAWING

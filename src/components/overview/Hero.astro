@@ -10,7 +10,8 @@ import SheetLabel from '../drawing/SheetLabel.astro';
 import Portrait from './Portrait.astro';
 
 // SPEC §4.1 hero: label, name, rule + role, intro, revision note, the two buttons — and the
-// portrait block beside it (below it from tablet down). Drawing: overview-default-light-1440.
+// portrait block beside it (below it from tablet down). Drawing: overview-default-light-1440; on
+// phone overview-default-light-390 puts the portrait card between the role and the intro.
 interface Props {
   lang: Lang;
 }
@@ -45,6 +46,7 @@ const { hero } = (await getLocalized('profile', 'profile', lang)).data;
       dimensions={hero.dimensions}
       balloons={hero.balloons}
       alt={hero.portraitAlt}
+      figure={hero.figure}
     />
   </div>
 </section>
@@ -111,18 +113,54 @@ const { hero } = (await getLocalized('profile', 'profile', lang)).data;
     min-width: 0;
   }
 
+  /* Phone: one column — label, name, role, the portrait card, then intro, note and buttons. The
+     text column dissolves so the card can sit inside it; it is the hero's only reordered block. */
   @media (max-width: 767px) {
     .hero {
-      gap: var(--space-7);
+      flex-direction: column;
+      flex-wrap: nowrap;
+      gap: var(--space-5);
     }
 
     .hero__text {
-      gap: var(--space-5);
+      display: contents;
+    }
+
+    .hero__figure {
+      order: 1;
+      margin-block: var(--space-1);
+    }
+
+    .hero__intro,
+    .hero__text > :global(.revision-note),
+    .hero__actions {
+      order: 2;
+    }
+
+    .hero__intro {
+      font-size: 15.5px;
+      line-height: 1.6;
+    }
+
+    /* Two equal 48 px buttons in one row, as drawn. */
+    .hero__actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-2);
+      padding-top: 0;
+    }
+
+    .hero__actions > :global(.button) {
+      justify-content: center;
+      min-height: 48px;
+      padding-inline: var(--space-2);
+      font-size: 12px;
+      text-align: center;
     }
 
     .hero__role {
       gap: var(--space-3);
-      font-size: 20px;
+      font-size: 18px;
     }
 
     .hero__rule {

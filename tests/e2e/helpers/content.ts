@@ -20,7 +20,11 @@ interface Ui {
 }
 
 interface Profile {
-  hero: { buttons: { projects: string }; balloons: { text: string }[] };
+  hero: {
+    buttons: { projects: string };
+    balloons: { text: string }[];
+    figure: { label: string; scale: string };
+  };
   current: { text: string; href: string }[];
 }
 
