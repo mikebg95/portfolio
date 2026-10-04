@@ -72,12 +72,6 @@ queue.
 
 ### Hardening
 
-- [x] **PR-63a Preloading and offline** (split from PR-63)
-  - Michael, 2026-10-04: *"when my internet is slow that means it will take really long … without internet it will just crash?!"*
-  - Done when: (2) prefetch: all sheet links prefetched on viewport (`prefetch: { prefetchAll: true, defaultStrategy: 'viewport' }`), project detail pages on hover/tap; (3) **offline**: a small hand-written service worker (no Workbox) precaches every built HTML page, CSS, JS, font, icon and the CV PDF at install (manifest generated at build from `dist/` with content hashes; total size logged and asserted < 3 MB), cache-first for hashed assets, stale-while-revalidate for HTML, old caches cleaned on activate, a drawn "SHEET OFFLINE" page for anything uncached; registered only in production; tests: offline after the first load, every sheet and project page still opens.
-  - Spec: SPEC §7
-  - Out of scope: push notifications, install prompts; the ClientRouter (PR-63b).
-
 - [ ] **PR-63b App-like navigation: ClientRouter**
   - Michael, 2026-10-04: *"when i click to other parts of the app it seems to do a refresh"*. Split from PR-63: PR-63a shipped prefetch (astro.config.ts `prefetch`) and the offline service worker (src/precache.ts, src/service-worker.js, tests/e2e/offline.spec.ts) — keep both working.
   - Done when: Astro's `<ClientRouter />` (view transitions router) on every page so sheet changes swap content without a full reload, keeping the header/tab bar/title block persistent (`transition:persist`), the motion system's per-page init re-runs on `astro:page-load` (no double-binding; the first-load plotting still runs once per session), scroll restores correctly, focus moves to the new `<main>` h1 and the route change is announced; Playwright navigates between sheets and asserts no full document reload (a window marker survives); offline navigation (offline.spec.ts) still passes through the router; reduced motion and no-JS still work; Lighthouse budgets still pass (`npm run lhci`).
