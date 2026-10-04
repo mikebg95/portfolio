@@ -812,3 +812,15 @@ History, not a queue.
   - Seen by PR-63b's agent, 2026-10-04, and the same on 43466df: `npm run build && npm run lhci` fails the `categories.best-practices` minScore 1 assertion on /education (mobile preset). The `font-size` audit flags 11 px callouts and parts list, plus the 9–11 px title block. Everything else passes.
   - Done when: `npm run lhci` passes on every URL without changing `lighthouserc.json`, and the drawing's look at desktop widths is unchanged.
   - Spec: design/tokens.json type sizes; design/screens education-*-390
+
+
+## Pruned from the queue
+
+1 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### Hardening
+
+- [x] **QA-66 English parts list scrolls inside its frame at 320–340 px**
+  - Seen by QA-65's agent, 2026-10-04, also before its change: at 320 px wide (Chromium, `/education`, reduced motion off, after the explosion settles) `.parts-list-frame` is 228 px wide and its table 251 px (`scrollWidth` 251 > `clientWidth` 228); at 340 px 251 vs 248. NL fits. PartsList.astro's comment promises the table fits a 320 px sheet without scrolling its frame.
+  - Done when: at 320 px in EN and NL the parts list fits its frame (`scrollWidth <= clientWidth`), asserted in `tests/e2e/education.spec.ts`'s 320 px fit test, with 12 px type kept from 360 px up (QA-65).
+  - Spec: design/components.md parts list; docs/RECORD.md 2026-10-04 responsive pass
