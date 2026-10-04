@@ -75,7 +75,7 @@ queue.
   - Spec: SPEC §3.6
   - Out of scope: —
 
-- [ ] **PR-50 Dutch translation — projects and education**
+- [x] **PR-50 Dutch translation — projects and education**
   - Done when: NL entries for all five projects (register + detail fields) and five education parts; `/nl/projects/*` and `/nl/education` fully Dutch; pairing test passes; a test greps the built `dist/nl/**` for a list of English UI words from copy.md Global (e.g. "Skip to sheet content", "Overview") and finds none; a test asserts no content entry has `translated: false`.
   - Spec: SPEC §3.6
   - Out of scope: —
