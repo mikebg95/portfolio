@@ -53,10 +53,12 @@ line.
 
 - `src/layouts/SheetLayout.astro` — the page shell: `<html lang>`, theme-init inline script, skip link, `SheetFrame` with `SheetHeader`, `<main id="main" tabindex="-1">` and `TitleBlock`; props `lang`, `title`, `sheet`.
 - `src/components/SheetFrame.astro` — desk, paper + grid, double frame, zone strip 1–8 (desktop only, `aria-hidden`).
-- `src/theme.ts` — `THEMES`, `THEME_STORAGE_KEY`; the head script and the theme switch both read them.
-- `src/components/SheetHeader.astro` — monogram, tabs (`aria-current="page"` from SheetLayout's `sheet` prop; project details pass `projects`, 404 none), utilities, and the phone sheet index (`[data-sheet-index]`: `<details>` without JS, its `<script>` swaps in the button + `#sheet-index-panel`); TWO theme buttons render (header + panel), both `[data-theme-switch]` — PR-10 must wire every one.
+- `src/theme.ts` — `THEMES`, `THEME_STORAGE_KEY`, `effectiveTheme`, `otherTheme`; the head script and the theme switch both read them.
+- `src/components/SheetHeader.astro` — monogram, tabs (`aria-current="page"` from SheetLayout's `sheet` prop; project details pass `projects`, 404 none), utilities, and the phone sheet index (`[data-sheet-index]`: `<details>` without JS, its `<script>` swaps in the button + `#sheet-index-panel`); TWO theme buttons render (header + panel), both `[data-theme-switch]`, wired by one script; their label/name is switched by CSS, not JS (docs/RECORD.md 2026-10-04).
 - `src/config.ts` `CV_PATH` — `public/michael-goldman-cv.pdf`, a committed copy of `docs/source/cv.pdf`; `tests/unit/cv.test.ts` fails when they differ (re-copy, never edit).
 - `tests/e2e/header.spec.ts` — tabs per language, language switch, CV, tablet one-row; skipped below 768 px.
 - `tests/e2e/sheet-index.spec.ts` — phone panel: open, navigate, Escape, focus trap (Chromium only), outside tap, no-JS `<details>`; skipped at ≥ 768 px.
 - `src/components/TitleBlock.astro` — the footer (rendered by SheetLayout, sheet number from its `sheet` prop); captions from `ui.titleBlock`, contact from `profile.contact`, REV/SHEET formatters in `src/title-block.ts`; cells draw only left+top rules so 2 and 4 columns both stay ruled.
 - `tests/e2e/sheet.spec.ts` — skip link, frame widths/grid, zone strip per viewport, stored theme applied.
+- `tests/e2e/theme.spec.ts` — toggle + reload, dark system, storage blocked, every sheet × both themes with axe.
+- TRAP: Playwright `toHaveText(…, { useInnerText: true })` still includes `.sr-only` text (clip is not "not rendered"); assert the visible label `.sheet-header__theme-label:visible` instead.

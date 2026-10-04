@@ -88,7 +88,7 @@ test('the CV link opens the PDF in a new tab, and the theme button is there', as
   expect(pdf.headers()['content-type']).toContain('application/pdf');
 
   const theme = page.getByRole('button', { name: 'Switch to blueprint theme' });
-  await expect(theme).toHaveText('PAPER');
+  await expect(theme.locator('.sheet-header__theme-label:visible')).toHaveText('PAPER');
   await expectNoAxeViolations(page);
 });
 

@@ -77,15 +77,22 @@ const PANEL_ID = 'sheet-index-panel';
         </a>
       ))}
     </span>
-    <!-- Behaviour (toggle, persistence, labels following the theme) arrives with PR-10. -->
-    <button
-      class="sheet-header__util sheet-header__theme"
-      type="button"
-      data-theme-switch
-      aria-label={ui.theme.toBlueprint}
-    >
+    <!-- Label and name follow the theme on screen through CSS (no wrong label before the script
+         runs, live when the system changes); the script only toggles and remembers. -->
+    <button class="sheet-header__util sheet-header__theme" type="button" data-theme-switch>
       <span class="sheet-header__swatch" aria-hidden="true"></span>
-      {ui.theme.paper}
+      <span class="sheet-header__theme-state" data-when="paper">
+        <span class="sheet-header__theme-label" aria-hidden="true">
+          {ui.theme.paper}
+        </span>
+        <span class="sr-only">{ui.theme.toBlueprint}</span>
+      </span>
+      <span class="sheet-header__theme-state" data-when="blueprint">
+        <span class="sheet-header__theme-label" aria-hidden="true">
+          {ui.theme.blueprint}
+        </span>
+        <span class="sr-only">{ui.theme.toPaper}</span>
+      </span>
     </button>
     <a class="sheet-header__util" href={CV_PATH} target="_blank" rel="noopener">
       {ui.cv}
@@ -135,14 +142,20 @@ const PANEL_ID = 'sheet-index-panel';
             ))}
           </span>
           <span class="sheet-index__cell">
-            <button
-              class="sheet-header__util sheet-header__theme"
-              type="button"
-              data-theme-switch
-              aria-label={ui.theme.toBlueprint}
-            >
+            <button class="sheet-header__util sheet-header__theme" type="button" data-theme-switch>
               <span class="sheet-header__swatch" aria-hidden="true"></span>
-              {ui.theme.paper}
+              <span class="sheet-header__theme-state" data-when="paper">
+                <span class="sheet-header__theme-label" aria-hidden="true">
+                  {ui.theme.paper}
+                </span>
+                <span class="sr-only">{ui.theme.toBlueprint}</span>
+              </span>
+              <span class="sheet-header__theme-state" data-when="blueprint">
+                <span class="sheet-header__theme-label" aria-hidden="true">
+                  {ui.theme.blueprint}
+                </span>
+                <span class="sr-only">{ui.theme.toPaper}</span>
+              </span>
             </button>
           </span>
           <span class="sheet-index__cell">
@@ -231,6 +244,26 @@ const PANEL_ID = 'sheet-index-panel';
     button.addEventListener('click', () => (isOpen() ? close() : open()));
     panel.addEventListener('click', (event) => {
       if ((event.target as Element).closest('a')) close(false);
+    });
+  }
+</script>
+
+<script>
+  import { effectiveTheme, otherTheme, THEME_STORAGE_KEY } from '../theme';
+
+  // SPEC §3.3: every theme button (header and phone panel) flips paper ↔ blueprint and remembers
+  // the choice; until then the theme follows the system (tokens.css), as the head script left it.
+  const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
+  for (const button of document.querySelectorAll('[data-theme-switch]')) {
+    button.addEventListener('click', () => {
+      const root = document.documentElement;
+      const next = otherTheme(effectiveTheme(root.dataset.theme, systemDark.matches));
+      root.dataset.theme = next;
+      try {
+        localStorage.setItem(THEME_STORAGE_KEY, next);
+      } catch {
+        // Storage blocked: the choice holds for this page only.
+      }
     });
   }
 </script>
@@ -387,6 +420,27 @@ const PANEL_ID = 'sheet-index-panel';
     height: 10px;
     border: var(--border-thin);
     background: var(--color-paper);
+  }
+
+  /* The label names the theme on screen, the accessible name the switch (copy.md Global); the
+     same rule as tokens.css decides which: a choice on <html>, else the system preference. */
+  .sheet-header__theme-state[data-when='blueprint'],
+  :global([data-theme='blueprint']) .sheet-header__theme-state[data-when='paper'] {
+    display: none;
+  }
+
+  :global([data-theme='blueprint']) .sheet-header__theme-state[data-when='blueprint'] {
+    display: inline;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='paper'])) .sheet-header__theme-state[data-when='paper'] {
+      display: none;
+    }
+
+    :global(:root:not([data-theme='paper'])) .sheet-header__theme-state[data-when='blueprint'] {
+      display: inline;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {

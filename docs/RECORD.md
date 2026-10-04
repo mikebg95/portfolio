@@ -74,3 +74,14 @@ on any machine. The 404 sheet has no number; its SHEET cell reads `?? / 05`, mat
 rather than a second copy in `src/config.ts`. Email ↗ is drawn as copy.md has it, but only the
 external LinkedIn/GitHub links open a new tab (components.md Link). Instead of: a hidden SHEET
 cell on 404; contact constants in config.
+
+## 2026-10-04 — Theme switch: label and name chosen by CSS, script only toggles
+Who: agent (PR-10). Each theme button holds both states (visible label `PAPER`/`BLUEPRINT`
+aria-hidden + sr-only action "Switch to blueprint/paper theme", copy.md Global); CSS in
+`SheetHeader.astro` shows one with the same selectors tokens.css uses (`data-theme`, else
+`prefers-color-scheme`). So the label is right before any script runs, without JS, and live when
+the system flips while nothing is chosen. The click script (`effectiveTheme`/`otherTheme` in
+`src/theme.ts`) sets `data-theme` and stores it (try/catch). Without JS the button stays visible
+but inert (theme follows the system) — hiding it would shift the header once JS unhides it.
+Instead of: a script rewriting text + `aria-label` (wrong label until it runs, needs a
+`matchMedia` listener).
