@@ -209,3 +209,15 @@ as drawn ("image → GHCR" one station), not copy.md's five-arrow shorthand. New
 `PipelineRoute` (an `<ol>`, components.md); Box `main` at full size is 2.5 px with more air and
 regular weight as drawn (600 weight stays on the mini variant); Arrow `turns` points down below
 768 px, where the container view stacks. Instead of: words hard-coded in the figure component.
+
+## 2026-10-04 — Subscription Tracker sheet: spec rows, pyramid levels, a stepped pyramid
+Who: agent (PR-26). copy.md 03.2 gives no spec rows, so six were written from research-repos.md P-02
+and the repo's READMEs (LAYERS, DATA ACCESS, MIGRATIONS, API, ERRORS, TESTING). The pyramid's
+per-level counts were read from the repo's test classes at 733a693 (@Test + @ParameterizedTest, as
+research-repos.md counts): unit = SubscriptionServiceTest 14; web slice = SubscriptionControllerTest
+24 + GlobalExceptionHandlerTest 1 (both @WebMvcTest); DAO integration = SubscriptionDaoIT 22;
+end-to-end = SubscriptionApiIT 1 + the application's contextLoads IT 1 (a full @SpringBootTest on
+Testcontainers, so the top level rather than DAO integration). Sum 63. A level's label is
+"name\ncount". The pyramid is drawn as stepped bands widening downwards (shape, not proportional to
+the counts — 25 web slice tests outnumber 14 unit ones); FIG. 1 is a row of boxes with labelled
+arrows (DTOs, entity, SQL), the DAO the `main` box because hand-written SQL is the project's point.

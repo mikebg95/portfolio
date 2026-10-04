@@ -139,8 +139,8 @@ describe('detail sheets (EN) against design/copy.md', () => {
     ]);
   });
 
-  // PR-26…29 add their titles here as they write their sheets.
-  it.each(['Jamigos'])('holds %s verbatim', (title) => {
+  // PR-27…29 add their titles here as they write their sheets.
+  it.each(['Jamigos', 'Subscription Tracker'])('holds %s verbatim', (title) => {
     const line = detailLine(title);
     const entry = entries.find((e) => e.title === title);
 
@@ -159,5 +159,16 @@ describe('detail sheets (EN) against design/copy.md', () => {
       }));
       expect(entry?.spec).toEqual(rows);
     }
+  });
+
+  // The pyramid's per-level counts were read from the repo's test sources (@Test and
+  // @ParameterizedTest per class); they must add up to the project's total and the figure title's.
+  it('draws a Subscription Tracker test pyramid that adds up', () => {
+    const entry = entries.find((e) => e.slug === 'subscription-tracker');
+    const [, pyramid] = entry?.figures ?? [];
+    const counts = pyramid?.labels.map((l) => Number(l.split('\n')[1])) ?? [];
+    expect(counts).toEqual([2, 22, 25, 14]);
+    expect(counts.reduce((a, b) => a + b, 0)).toBe(entry?.tests);
+    expect(pyramid?.title).toBe(`TEST PYRAMID — ${entry?.tests} TESTS`);
   });
 });

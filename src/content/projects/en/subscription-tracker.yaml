@@ -1,5 +1,5 @@
-# Register fields from design/copy.md Sheet 03 (PR-21); summary, figures and note are the detail
-# sheet's — PR-26 replaces those placeholders.
+# design/copy.md Sheet 03: the register row (PR-21) and detail sheet 03.2 (PR-26). Spec rows and
+# figure words from github.com/mikebg95/subscription-tracker; test counts per level read from it.
 slug: subscription-tracker
 code: P-02
 kind: 'LAYERED · JDBC'
@@ -8,7 +8,7 @@ title: Subscription Tracker
 diagram: ['CONTROLLER', 'SERVICE', 'DAO · SQL']
 series: true
 cardSummary: 'Hand-written SQL, clean error responses, C4 model and schema designed up front.'
-summary: 'Placeholder (PR-26)'
+summary: 'Track recurring subscriptions and see your monthly total. Part 1 of the series: a classic layered backend with hand-written SQL.'
 period: 'JUN 2026'
 status: done
 repo: https://github.com/mikebg95/subscription-tracker
@@ -17,9 +17,35 @@ facts:
   - { label: TESTS, value: '63' }
   - { label: API, value: 'Code-first' }
   - { label: STATUS, value: 'Backend done' }
+spec:
+  - label: LAYERS
+    text: 'Controller → service → DAO, each talking only to the one beneath. DTOs at the edge; the entity never leaves the service.'
+  - label: DATA ACCESS
+    text: 'Spring JDBC: JdbcTemplate with hand-written, parameterized SQL and RowMappers — no JPA, no Spring Data.'
+  - label: MIGRATIONS
+    text: 'Flyway on PostgreSQL 16. V2 replaces a plain unique constraint with a case-insensitive unique index on LOWER(name).'
+  - label: API
+    text: 'Code-first OpenAPI with springdoc and Swagger UI; versioned under /api/v1, Bean Validation at the edge.'
+  - label: ERRORS
+    text: 'RFC 9457 problem details (400, 404, 409) from one exception handler; unexpected errors get a generic message, never the exception text.'
+  - label: TESTING
+    text: '63 tests, written test-first: unit, web slice, DAO integration and end-to-end against a real PostgreSQL on Testcontainers; JaCoCo coverage.'
 figures:
-  - { title: 'Placeholder (PR-26)' }
-  - { title: 'Placeholder (PR-26)' }
-note: 'Placeholder (PR-26)'
+  - title: LAYERS
+    labels:
+      - "Controller\nREST · validation"
+      - DTOs
+      - "Service\ntransactions · mapping"
+      - entity
+      - "DAO · JdbcTemplate\nhand-written SQL"
+      - SQL
+      - "PostgreSQL 16\nFlyway migrations"
+  - title: TEST PYRAMID — 63 TESTS
+    labels:
+      - "end-to-end on Testcontainers\n2"
+      - "DAO integration\n22"
+      - "web slice\n25"
+      - "unit\n14"
+note: 'REV. NOTE △ Names are unique regardless of case — enforced by a case-insensitive unique index, not just in code.'
 lang: en
 translated: true

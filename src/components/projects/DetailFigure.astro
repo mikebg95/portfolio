@@ -5,8 +5,8 @@ import PipelineRoute from '../drawing/PipelineRoute.astro';
 
 // The drawing inside a detail sheet's FIG. 1 or FIG. 2 (SPEC §4.4), one layout per project and
 // figure. Words come from the entry's `figures[n - 1].labels`, in drawing order; LABELS says how
-// many each layout reads. A box label's first line is its title. A project without a layout here
-// draws nothing yet (PR-26…29 add theirs).
+// many each layout reads. A box label's first line is its title; a test pyramid level's is its name,
+// the second its test count. A project without a layout here draws nothing yet (PR-27…29 add theirs).
 interface Props {
   slug: string;
   n: 1 | 2;
@@ -15,6 +15,7 @@ interface Props {
 
 const LABELS: Record<string, readonly [number, number]> = {
   jamigos: [6, 4],
+  'subscription-tracker': [7, 4],
 };
 
 const { slug, n, labels } = Astro.props;
@@ -60,6 +61,31 @@ const layout = `${slug}-${n}`;
   </div>
 )}
 {layout === 'jamigos-2' && <PipelineRoute stations={labels} />}
+{layout === 'subscription-tracker-1' && (
+  <div class="detail-figure">
+    <div class="detail-figure__row">
+      {labels.map((label, i) =>
+        i % 2 === 1 ? (
+          <Arrow label={label} turns />
+        ) : (
+          <Box title={box(label).title} main={i === 4}>
+            {box(label).lines[0]}
+          </Box>
+        ),
+      )}
+    </div>
+  </div>
+)}
+{layout === 'subscription-tracker-2' && (
+  <ol class="test-pyramid">
+    {labels.map((label, i) => (
+      <li class="test-pyramid__level" style={`--level: ${i}`}>
+        <strong class="test-pyramid__count">{box(label).lines[0]}</strong>
+        {box(label).title}
+      </li>
+    ))}
+  </ol>
+)}
 
 <style>
   .detail-figure {
@@ -81,6 +107,36 @@ const layout = `${slug}-${n}`;
     display: flex;
     flex-direction: column;
     gap: 10px;
+  }
+
+  /* Top to bottom, each level wider than the one above: the pyramid's shape, not its counts. */
+  .test-pyramid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .test-pyramid__level {
+    width: calc(55% + 15% * var(--level));
+    padding: 8px 12px;
+    border: var(--border-box);
+    background: var(--color-paper);
+    color: var(--color-line);
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    line-height: 1.45;
+    text-align: center;
+    text-wrap: balance;
+  }
+
+  .test-pyramid__count {
+    margin-right: var(--space-2);
+    color: var(--color-ink);
+    font-weight: 600;
   }
 
   /* Phone: the row becomes a column; its arrows turn down (Arrow `turns`). */

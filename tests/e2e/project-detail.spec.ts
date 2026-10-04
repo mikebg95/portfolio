@@ -153,3 +153,49 @@ test('Jamigos: container view, pipeline route and no live link (copy.md 03.1)', 
   const row = await fig1.locator('.detail-figure__row').boundingBox();
   expect(row!.x + row!.width).toBeLessThanOrEqual(box!.x + box!.width + 1);
 });
+
+test('Subscription Tracker: layers and a test pyramid of 63 (copy.md 03.2)', async ({ page }) => {
+  await page.goto('/projects/subscription-tracker');
+  const fig1 = page.locator('[data-figure="1"]');
+  await expect(fig1.locator('figcaption')).toHaveText('FIG. 1 — LAYERS');
+  await expect(fig1.locator('.box__title')).toHaveText([
+    'Controller',
+    'Service',
+    'DAO · JdbcTemplate',
+    'PostgreSQL 16',
+  ]);
+  await expect(fig1.locator('.box--main')).toContainText('hand-written SQL');
+  await expect(fig1.locator('.arrow__label')).toHaveText(['DTOs', 'entity', 'SQL']);
+
+  const fig2 = page.locator('[data-figure="2"]');
+  await expect(fig2.locator('figcaption')).toHaveText('FIG. 2 — TEST PYRAMID — 63 TESTS');
+  const levels = fig2.locator('.test-pyramid > li');
+  await expect(levels).toHaveText([
+    /^2\s*end-to-end on Testcontainers$/,
+    /^22\s*DAO integration$/,
+    /^25\s*web slice$/,
+    /^14\s*unit$/,
+  ]);
+  const counts = await fig2.locator('.test-pyramid__count').allTextContents();
+  expect(counts.map(Number).reduce((a, b) => a + b, 0)).toBe(63);
+  // Each level is wider than the one above it.
+  const widths = await levels.evaluateAll((ls) => ls.map((l) => l.getBoundingClientRect().width));
+  widths.slice(1).forEach((w, i) => expect(w).toBeGreaterThan(widths[i]!));
+
+  await expect(page.locator('.detail-body .spec-row dt')).toHaveText([
+    'LAYERS',
+    'DATA ACCESS',
+    'MIGRATIONS',
+    'API',
+    'ERRORS',
+    'TESTING',
+  ]);
+  await expect(page.locator('.detail-body .revision-note')).toContainText(
+    'case-insensitive unique index',
+  );
+
+  // Phone: the layers row stacks, so nothing overflows the figure.
+  const box = await fig1.boundingBox();
+  const row = await fig1.locator('.detail-figure__row').boundingBox();
+  expect(row!.x + row!.width).toBeLessThanOrEqual(box!.x + box!.width + 1);
+});
