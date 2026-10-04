@@ -21,3 +21,11 @@
   padding 56 px / 24 px on phone, and a full-width 1 px ink rule between consecutive panels — the
   sheet is divided into panels, never by empty space alone. Override the padding per page when a
   drawing differs; keep the class.
+- A section can carry its own `data-theme` (paper or blueprint): tokens.css re-declares the colours
+  and the colour-built tokens (`--border-*`, `--shadow-*`) on every `[data-theme]`. Set
+  `background`/`color` on that element yourself — `<body>` already computed them in the page theme.
+- Drawing parts come from `src/components/drawing/` (SheetLabel, DisplayHeading, Button, Link,
+  DimensionLine, Balloon, RevisionNote, SpecTable/SpecRow, Figure/Box/Arrow, Stamp, Chip/ChipList);
+  pages compose them and never restyle their insides. They take text as props/slots (from content)
+  and pass `class` and other attributes through to their root (Balloon: to the circle). A new
+  variant goes into the component and onto the `/_primitives` page (src/dev/Specimens.astro).

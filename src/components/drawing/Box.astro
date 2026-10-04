@@ -1,0 +1,40 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+// components.md Box: a system in a figure or mini diagram — 1.5 px line border, mono, the title on
+// its own line in ink, details in the slot. `external` (dashed) is a system outside the project.
+type Props = HTMLAttributes<'div'> & {
+  title?: string;
+  external?: boolean;
+};
+
+const { title, external = false, class: className, ...rest } = Astro.props;
+---
+
+<div class:list={['box', external && 'box--external', className]} {...rest}>
+  {title && <strong class="box__title">{title}</strong>}
+  <slot />
+</div>
+
+<style>
+  .box {
+    padding: 10px 12px;
+    border: var(--border-box);
+    background: var(--color-paper);
+    color: var(--color-line);
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    line-height: 1.45;
+    text-align: center;
+  }
+
+  .box--external {
+    border-style: dashed;
+  }
+
+  .box__title {
+    display: block;
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+</style>

@@ -1,0 +1,53 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+// components.md Stamp: a 96 px rubber stamp rotated −12°, three mono lines (VERIFIED / 2025 /
+// BROADCOM), the middle one bold. Verified has an inner ring; pending is dashed redline without it.
+type Props = HTMLAttributes<'p'> & {
+  lines: readonly [string, string, string];
+  state?: 'verified' | 'pending';
+};
+
+const { lines, state = 'verified', class: className, ...rest } = Astro.props;
+const [top, middle, bottom] = lines;
+---
+
+<p class:list={['stamp', `stamp--${state}`, className]} {...rest}>
+  <span>{top}</span>
+  <strong>{middle}</strong>
+  <span>{bottom}</span>
+</p>
+
+<style>
+  .stamp {
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    width: 96px;
+    height: 96px;
+    margin: 0;
+    border: 2.5px solid var(--color-line);
+    border-radius: 50%;
+    color: var(--color-line);
+    font-family: var(--font-mono);
+    font-size: var(--size-micro);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: var(--size-micro-letter-spacing);
+    text-align: center;
+    transform: rotate(-12deg);
+    box-shadow:
+      inset 0 0 0 4px var(--color-paper),
+      inset 0 0 0 5.5px var(--color-line);
+  }
+
+  .stamp--pending {
+    border-style: dashed;
+    border-color: var(--color-redline);
+    color: var(--color-redline);
+    box-shadow: none;
+  }
+</style>

@@ -1,0 +1,126 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+// components.md Balloon (+ Leader): a numbered circle on a 1 px ink leader. A link when it has an
+// href, a <button> when `as="button"` (pass aria-pressed and data attributes through), otherwise a
+// decorative span (aria-hidden). Links and buttons need `label`, their accessible name
+// ("Part 3: Minor Programming"); their hit area is 44 × 44 around the circle.
+type Props = Omit<HTMLAttributes<'button'> & HTMLAttributes<'a'>, 'type'> & {
+  number: number | string;
+  state?: 'default' | 'active' | 'pending';
+  href?: string;
+  as?: 'span' | 'button';
+  label?: string;
+  /** Which side the leader leaves from; omitted = no leader. */
+  leader?: 'left' | 'right' | 'up' | 'down';
+};
+
+const {
+  number,
+  state = 'default',
+  href,
+  as = 'span',
+  label,
+  leader,
+  class: className,
+  ...rest
+} = Astro.props;
+const Tag = href ? 'a' : as;
+const interactive = Tag !== 'span';
+if (interactive && !label) throw new Error(`Balloon ${number}: a link or button needs a label`);
+---
+
+<span
+  class:list={['balloon', leader && `balloon--leader-${leader}`, className]}
+  aria-hidden={interactive ? undefined : 'true'}
+>
+  {leader && <span class="balloon__leader" aria-hidden="true" />}
+  <Tag
+    class:list={['balloon__mark', `balloon__mark--${state}`]}
+    href={href}
+    type={Tag === 'button' ? 'button' : undefined}
+    aria-label={interactive ? label : undefined}
+    {...rest}
+  >
+    {number}
+  </Tag>
+</span>
+
+<style>
+  .balloon {
+    --balloon-size: 24px;
+    --leader-length: 34px;
+
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: 0;
+  }
+
+  .balloon--leader-right {
+    flex-direction: row-reverse;
+  }
+
+  .balloon--leader-up {
+    flex-direction: column;
+  }
+
+  .balloon--leader-down {
+    flex-direction: column-reverse;
+  }
+
+  .balloon__leader {
+    width: var(--leader-length);
+    height: 1px;
+    background: var(--color-ink);
+  }
+
+  .balloon--leader-up .balloon__leader,
+  .balloon--leader-down .balloon__leader {
+    width: 1px;
+    height: var(--leader-length);
+  }
+
+  .balloon__mark {
+    position: relative;
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: var(--balloon-size);
+    height: var(--balloon-size);
+    padding: 0;
+    border: var(--border-normal);
+    border-radius: 50%;
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: none;
+  }
+
+  .balloon__mark--active {
+    background: var(--color-ink);
+    color: var(--color-ink-on-fill);
+  }
+
+  .balloon__mark--pending {
+    border: var(--border-dashed-note);
+    color: var(--color-redline);
+  }
+
+  /* 44 × 44 hit area around the 24 px circle. */
+  a.balloon__mark::before,
+  button.balloon__mark::before {
+    content: '';
+    position: absolute;
+    inset: -10px;
+  }
+
+  a.balloon__mark,
+  button.balloon__mark {
+    cursor: pointer;
+  }
+</style>

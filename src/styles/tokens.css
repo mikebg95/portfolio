@@ -17,7 +17,7 @@
   --color-fill-1: #e4e9f3;
   --color-fill-2: #c9d5ec;
   --color-fill-3: #dce4f2;
-  --color-redline: #c8402a;
+  --color-redline: #b63a26;
   --color-redline-tint: rgba(200, 64, 42, 0.04);
   --color-focus: #18233a;
   --font-display: Archivo, 'Arial Narrow', sans-serif;
@@ -101,6 +101,37 @@
   --color-redline: #ff8a6b;
   --color-redline-tint: rgba(255, 138, 107, 0.08);
   --color-focus: #e6eefa;
+}
+
+[data-theme='paper'] {
+  color-scheme: light;
+  --color-desk: #e9e5da;
+  --color-paper: #f4f1e8;
+  --color-paper-raised: rgba(244, 241, 232, 0.92);
+  --color-ink: #18233a;
+  --color-ink-on-fill: #f4f1e8;
+  --color-text-2: #3a4458;
+  --color-muted: #5b6372;
+  --color-line: #1f3f86;
+  --color-rule: rgba(24, 35, 58, 0.25);
+  --color-grid-major: rgba(31, 63, 134, 0.06);
+  --color-grid-minor: rgba(31, 63, 134, 0.035);
+  --color-fill-1: #e4e9f3;
+  --color-fill-2: #c9d5ec;
+  --color-fill-3: #dce4f2;
+  --color-redline: #b63a26;
+  --color-redline-tint: rgba(200, 64, 42, 0.04);
+  --color-focus: #18233a;
+}
+
+[data-theme] {
+  --border-strong: 2px solid var(--color-ink);
+  --border-normal: 1.5px solid var(--color-ink);
+  --border-thin: 1px solid var(--color-ink);
+  --border-dashed-note: 1.5px dashed var(--color-redline);
+  --border-box: 1.5px solid var(--color-line);
+  --shadow-lift: 6px 6px 0 var(--color-ink);
+  --shadow-plate: 7px 7px 0 var(--color-ink);
 }
 
 @media (prefers-color-scheme: dark) {

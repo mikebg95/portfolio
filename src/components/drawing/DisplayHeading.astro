@@ -1,0 +1,47 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+// components.md DisplayHeading: Archivo 850 at 118 % width, uppercase. xl is the Sheet 01 name,
+// l every other sheet's, m and s section and detail titles.
+type Props = HTMLAttributes<'h1'> & {
+  size: 'xl' | 'l' | 'm' | 's';
+  as?: 'h1' | 'h2' | 'h3';
+};
+
+const { size, as: Tag = 'h2', class: className, ...rest } = Astro.props;
+---
+
+<Tag class:list={['display-heading', `display-heading--${size}`, className]} {...rest}>
+  <slot />
+</Tag>
+
+<style>
+  .display-heading {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: var(--font-display-weight);
+    font-stretch: var(--font-display-stretch);
+    letter-spacing: var(--font-display-letter-spacing);
+    text-transform: var(--font-display-transform);
+    line-height: 0.92;
+    overflow-wrap: break-word;
+  }
+
+  .display-heading--xl {
+    font-size: var(--size-display-xl);
+    line-height: 0.88;
+  }
+
+  .display-heading--l {
+    font-size: var(--size-display-l);
+    line-height: 0.9;
+  }
+
+  .display-heading--m {
+    font-size: var(--size-display-m);
+  }
+
+  .display-heading--s {
+    font-size: var(--size-display-s);
+  }
+</style>

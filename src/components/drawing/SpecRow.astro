@@ -1,0 +1,65 @@
+---
+// components.md SpecRow: [code ·] label · value, a `rule` line under each. Goes inside SpecTable
+// (`coded` there when rows have a code); the value is the slot.
+interface Props {
+  code?: string;
+  label: string;
+}
+
+const { code, label } = Astro.props;
+---
+
+<div class="spec-row">
+  <dt>
+    {code && <span class="spec-row__code">{code}</span>}
+    <span class="spec-row__label">{label}</span>
+  </dt>
+  <dd>
+    <slot />
+  </dd>
+</div>
+
+<style>
+  .spec-row {
+    display: grid;
+    grid-template-columns: var(--spec-columns);
+    gap: var(--space-4);
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  /* The code and label sit in the row's own columns; on phone the value drops below them. */
+  dt {
+    display: contents;
+  }
+
+  dd {
+    grid-column: -2 / -1;
+    margin: 0;
+  }
+
+  .spec-row__code {
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: var(--size-code);
+    padding-top: 2px;
+  }
+
+  .spec-row__label {
+    font-family: var(--font-mono);
+    font-size: var(--size-code);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    padding-top: 2px;
+  }
+
+  @media (max-width: 767px) {
+    .spec-row {
+      row-gap: var(--space-1);
+    }
+
+    dd {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

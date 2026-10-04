@@ -1,0 +1,43 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+// components.md Figure: a 1.5 px ink frame on raised paper, captioned "FIG. n — NAME" above the
+// drawing (Boxes and Arrows, or anything else, in the slot).
+type Props = HTMLAttributes<'figure'> & {
+  label: string;
+};
+
+const { label, class: className, ...rest } = Astro.props;
+---
+
+<figure class:list={['figure', className]} {...rest}>
+  <figcaption class="figure__label">{label}</figcaption>
+  <slot />
+</figure>
+
+<style>
+  .figure {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    min-width: 0;
+    margin: 0;
+    padding: 28px;
+    border: var(--border-normal);
+    background: var(--color-paper-raised);
+  }
+
+  .figure__label {
+    color: var(--color-line);
+    font-family: var(--font-mono);
+    font-size: var(--size-label);
+    letter-spacing: var(--size-label-letter-spacing);
+    text-transform: var(--size-label-transform);
+  }
+
+  @media (max-width: 767px) {
+    .figure {
+      padding: var(--space-4);
+    }
+  }
+</style>

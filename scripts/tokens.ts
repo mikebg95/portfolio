@@ -7,6 +7,9 @@
  * Naming: `--<group>-<key>[-<qualifier>]`, e.g. `--color-ink`, `--size-body-line-height`,
  * `--sheet-content-padding-phone`. Colours carry the paper (light) value in `:root` and the
  * blueprint (dark) value under `[data-theme='blueprint']` and the system dark preference.
+ * `[data-theme='paper']` repeats the paper colours, and every `[data-theme]` re-declares the tokens
+ * built from a colour (borders, shadows), so a section nested in the other theme draws in its own
+ * colours — a custom property's `var()` resolves where it is declared, not where it is used.
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -193,6 +196,13 @@ export function generateTokensCss(tokens: Json): string {
     block(':root', [scheme('light'), ...light, ...shared]),
     '',
     block("[data-theme='blueprint']", [scheme('dark'), ...dark]),
+    '',
+    block("[data-theme='paper']", [scheme('light'), ...light]),
+    '',
+    block(
+      '[data-theme]',
+      shared.filter(({ value }) => value.includes('var(--color-')),
+    ),
     '',
     '@media (prefers-color-scheme: dark) {',
     block(":root:not([data-theme='paper'])", [scheme('dark'), ...dark], '  '),

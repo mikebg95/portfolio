@@ -40,6 +40,8 @@ function declarations(selectorPattern: RegExp): Map<string, string> {
 
 const root = declarations(/^:root \{([^}]*)\}/m);
 const blueprint = declarations(/^\[data-theme='blueprint'\] \{([^}]*)\}/m);
+const paper = declarations(/^\[data-theme='paper'\] \{([^}]*)\}/m);
+const anyTheme = declarations(/^\[data-theme\] \{([^}]*)\}/m);
 const systemDark = declarations(
   /@media \(prefers-color-scheme: dark\) \{\s*:root:not\(\[data-theme='paper'\]\) \{([^}]*)\}/,
 );
@@ -57,6 +59,16 @@ describe('design tokens → src/styles/tokens.css', () => {
       expect(systemDark.get(`--color-${key}`), key).toBe(norm(dark));
     }
     expect(blueprint.size).toBe(Object.keys(colours).length);
+  });
+
+  it('lets a nested [data-theme] section draw in its own colours', () => {
+    const colours = tokens.color as Record<string, { light: string }>;
+    for (const [key, { light }] of Object.entries(colours)) {
+      expect(paper.get(`--color-${key}`), key).toBe(norm(light));
+    }
+    const fromColour = [...root].filter(([, value]) => value.includes('var(--color-'));
+    expect(fromColour.map(([name]) => name)).toContain('--border-normal');
+    expect([...anyTheme]).toEqual(fromColour);
   });
 
   it('has a custom property for every other token', () => {

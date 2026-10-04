@@ -1,0 +1,23 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+// A wrapping row of Chips.
+type Props = HTMLAttributes<'ul'>;
+
+const { class: className, ...rest } = Astro.props;
+---
+
+<ul class:list={['chip-list', className]} {...rest}>
+  <slot />
+</ul>
+
+<style>
+  .chip-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+</style>

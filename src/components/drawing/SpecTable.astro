@@ -1,0 +1,44 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+// components.md SpecTable: a description list of SpecRows; the last row draws no rule.
+type Props = HTMLAttributes<'dl'> & {
+  /** Rows carry a code column ("S-01") before the label. */
+  coded?: boolean;
+};
+
+const { coded = false, class: className, ...rest } = Astro.props;
+---
+
+<dl class:list={['spec-table', coded && 'spec-table--coded', className]} {...rest}>
+  <slot />
+</dl>
+
+<style>
+  .spec-table {
+    --spec-columns: 150px minmax(0, 1fr);
+
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    font-size: 15px;
+  }
+
+  .spec-table--coded {
+    --spec-columns: 64px 150px minmax(0, 1fr);
+  }
+
+  .spec-table > :global(:last-child) {
+    border-bottom: none;
+  }
+
+  @media (max-width: 767px) {
+    .spec-table {
+      --spec-columns: minmax(0, 1fr);
+    }
+
+    .spec-table--coded {
+      --spec-columns: 64px minmax(0, 1fr);
+    }
+  }
+</style>

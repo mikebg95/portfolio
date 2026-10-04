@@ -85,3 +85,18 @@ the system flips while nothing is chosen. The click script (`effectiveTheme`/`ot
 but inert (theme follows the system) — hiding it would shift the header once JS unhides it.
 Instead of: a script rewriting text + `aria-label` (wrong label until it runs, needs a
 `matchMedia` listener).
+
+## 2026-10-04 — Paper redline darkened to #B63A26 (was #C8402A)
+Who: agent (PR-11). Why: SPEC §7 requires AA contrast in both themes; #C8402A on paper #F4F1E8 is
+4.40:1 (axe failed the revision note and pending stamp on `/_primitives`). #B63A26 keeps the hue and
+gives 5.13:1 on paper, 4.76:1 on fill-1, 4.53:1 on fill-3 (pending rows may sit on a fill). The
+blueprint redline already passes. `redline-tint` left as drawn (4 % alpha, no text on it).
+Instead of: the drawn value, or leaving it to PR-51.
+
+## 2026-10-04 — `/_primitives` is dev-only, built for e2e by an env flag
+Who: agent (PR-11). Why: the task wants it excluded from the build, but Playwright tests the built
+site. An integration in astro.config.ts injects the route in `astro dev` or when
+`BUILD_PRIMITIVES=1` (playwright.config.ts webServer `env`). Astro ignores `_`-prefixed files in
+`src/pages/`, so the page lives in `src/dev/`. Both themes show side by side via nested
+`[data-theme]`, which needed tokens.css to re-declare colour-built tokens per theme scope.
+Instead of: a page in every build (it would ship), or screenshots per theme of a one-theme page.

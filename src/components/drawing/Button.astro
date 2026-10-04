@@ -1,0 +1,115 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+// components.md Button: a link when it has an href, a <button> otherwise. Primary is an ink fill,
+// secondary a 1.5 px ink outline; on hover the opposite fill wipes in from the left (motion.md §M6,
+// 200 ms), pressed shifts 1 px. `external` opens in a new tab and ends with " ↗".
+type Props = Omit<HTMLAttributes<'a'> & HTMLAttributes<'button'>, 'type'> & {
+  variant?: 'primary' | 'secondary';
+  href?: string;
+  external?: boolean;
+  type?: 'button' | 'submit';
+};
+
+const {
+  variant = 'primary',
+  href,
+  external = false,
+  type = 'button',
+  class: className,
+  ...rest
+} = Astro.props;
+const classes = ['button', `button--${variant}`, className];
+---
+
+{href ? (
+  <a
+    class:list={classes}
+    href={href}
+    target={external ? '_blank' : undefined}
+    rel={external ? 'noopener' : undefined}
+    {...rest}
+  >
+    <span class="button__text">
+      <slot />
+      {external && <span aria-hidden="true">↗</span>}
+    </span>
+  </a>
+) : (
+  <button class:list={classes} type={type} {...rest}>
+    <span class="button__text">
+      <slot />
+    </span>
+  </button>
+)}
+
+<style>
+  .button {
+    --button-fill: var(--color-ink);
+    --button-text: var(--color-ink-on-fill);
+    --button-wipe: var(--color-paper);
+    --button-wipe-text: var(--color-ink);
+
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 14px 22px;
+    border: var(--border-normal);
+    border-radius: var(--radius-all);
+    background: var(--button-fill);
+    color: var(--button-text);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.2;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    cursor: pointer;
+    isolation: isolate;
+  }
+
+  .button--secondary {
+    --button-fill: transparent;
+    --button-text: var(--color-ink);
+    --button-wipe: var(--color-ink);
+    --button-wipe-text: var(--color-ink-on-fill);
+  }
+
+  /* The wipe: the opposite fill grows from the left edge under the text. */
+  .button::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--button-wipe);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 200ms var(--motion-ease-plot);
+  }
+
+  .button__text {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: color 200ms var(--motion-ease-plot);
+  }
+
+  .button:hover::before {
+    transform: scaleX(1);
+  }
+
+  .button:hover .button__text {
+    color: var(--button-wipe-text);
+  }
+
+  .button:active {
+    transform: translate(1px, 1px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .button::before,
+    .button__text {
+      transition: none;
+    }
+  }
+</style>

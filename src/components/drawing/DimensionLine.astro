@@ -1,0 +1,92 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+// components.md DimensionLine: arrowhead – line – mono label – line – arrowhead, all line colour.
+// Always aria-hidden: the fact in its label is also written as real text elsewhere.
+type Props = HTMLAttributes<'span'> & {
+  orientation?: 'h' | 'v';
+  label: string;
+};
+
+const { orientation = 'h', label, class: className, ...rest } = Astro.props;
+---
+
+<span
+  class:list={['dimension', `dimension--${orientation}`, className]}
+  aria-hidden="true"
+  {...rest}
+>
+  <span class="dimension__head dimension__head--start"></span>
+  <span class="dimension__line"></span>
+  <span class="dimension__label">{label}</span>
+  <span class="dimension__line"></span>
+  <span class="dimension__head dimension__head--end"></span>
+</span>
+
+<style>
+  .dimension {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--color-line);
+    font-family: var(--font-mono);
+    font-size: var(--size-micro);
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+
+  .dimension--v {
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .dimension__line {
+    flex: 1;
+    min-width: var(--space-2);
+    height: 1px;
+    background: currentColor;
+  }
+
+  .dimension--v .dimension__line {
+    min-width: 0;
+    min-height: var(--space-2);
+    width: 1px;
+    height: auto;
+  }
+
+  .dimension--v .dimension__label {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+
+  /* CSS triangles, 8 × 4, pointing outwards. */
+  .dimension__head {
+    width: 0;
+    height: 0;
+    border: 4px solid transparent;
+  }
+
+  .dimension--h .dimension__head {
+    border-inline-width: 0;
+  }
+
+  .dimension--h .dimension__head--start {
+    border-right: 8px solid currentColor;
+  }
+
+  .dimension--h .dimension__head--end {
+    border-left: 8px solid currentColor;
+  }
+
+  .dimension--v .dimension__head {
+    border-block-width: 0;
+  }
+
+  .dimension--v .dimension__head--start {
+    border-bottom: 8px solid currentColor;
+  }
+
+  .dimension--v .dimension__head--end {
+    border-top: 8px solid currentColor;
+  }
+</style>

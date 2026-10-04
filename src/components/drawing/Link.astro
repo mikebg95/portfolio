@@ -1,0 +1,41 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+// components.md Link: line colour, no underline, hover → redline. `external` opens in a new tab
+// with rel="noopener" and ends with " ↗".
+type Props = HTMLAttributes<'a'> & {
+  href: string;
+  external?: boolean;
+};
+
+const { href, external = false, class: className, ...rest } = Astro.props;
+---
+
+<a
+  class:list={['link', className]}
+  href={href}
+  target={external ? '_blank' : undefined}
+  rel={external ? 'noopener' : undefined}
+  {...rest}
+>
+  <slot />
+  {external && <span aria-hidden="true"> ↗</span>}
+</a>
+
+<style>
+  .link {
+    color: var(--color-line);
+    text-decoration: none;
+    transition: color var(--motion-fast) var(--motion-ease-out);
+  }
+
+  .link:hover {
+    color: var(--color-redline);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .link {
+      transition: none;
+    }
+  }
+</style>

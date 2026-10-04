@@ -1,0 +1,70 @@
+---
+import DisplayHeading from '../components/drawing/DisplayHeading.astro';
+import SheetLabel from '../components/drawing/SheetLabel.astro';
+import { DEFAULT_LANG } from '../i18n/paths';
+import SheetLayout from '../layouts/SheetLayout.astro';
+import { THEMES } from '../theme';
+import Specimens from './Specimens.astro';
+
+// The drawing primitives specimen page (PR-11): injected by astro.config.ts in dev and in the e2e
+// build only. Each theme's column sets its own [data-theme], so both render side by side.
+---
+
+<SheetLayout lang={DEFAULT_LANG} title="Drawing primitives">
+  <section class="sheet-panel primitives">
+    <SheetLabel>DEV — DRAWING PRIMITIVES · NOT IN THE SET</SheetLabel>
+    <DisplayHeading size="l" as="h1">
+      Primitives
+    </DisplayHeading>
+    <div class="primitives__themes">
+      {THEMES.map((theme) => (
+        <div class="primitives__theme" data-theme={theme} data-primitives-theme={theme}>
+          <h2>
+            <SheetLabel as="span">{theme}</SheetLabel>
+          </h2>
+          <Specimens />
+        </div>
+      ))}
+    </div>
+  </section>
+</SheetLayout>
+
+<style>
+  .primitives {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .primitives__themes {
+    display: grid;
+    border: var(--border-normal);
+  }
+
+  /* Colours and type are inherited from <body>, which took the page's theme; reset them here. */
+  .primitives__theme {
+    min-width: 0;
+    padding: var(--space-5);
+    background: var(--color-paper);
+    color: var(--color-ink);
+  }
+
+  .primitives__theme + .primitives__theme {
+    border-top: var(--border-normal);
+  }
+
+  @media (min-width: 1024px) {
+    .primitives__themes {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .primitives__theme + .primitives__theme {
+      border-top: none;
+      border-left: var(--border-normal);
+    }
+  }
+
+  h2 {
+    margin: 0 0 var(--space-4);
+  }
+</style>

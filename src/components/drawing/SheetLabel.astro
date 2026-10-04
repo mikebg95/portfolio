@@ -1,0 +1,26 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+// components.md SheetLabel: "SHEET 0n — NAME · VIEW TYPE", also section and figure labels.
+type Props = HTMLAttributes<'p'> & {
+  /** `span` inside a heading or caption; `p` on its own. */
+  as?: 'p' | 'span';
+};
+
+const { as: Tag = 'p', class: className, ...rest } = Astro.props;
+---
+
+<Tag class:list={['sheet-label', className]} {...rest}>
+  <slot />
+</Tag>
+
+<style>
+  .sheet-label {
+    margin: 0;
+    color: var(--color-line);
+    font-family: var(--font-mono);
+    font-size: var(--size-label);
+    letter-spacing: var(--size-label-letter-spacing);
+    text-transform: var(--size-label-transform);
+  }
+</style>

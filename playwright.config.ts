@@ -1,5 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
+import { PRIMITIVES_ENV } from './src/config';
+
 const PORT = 4321;
 
 export default defineConfig({
@@ -29,5 +31,7 @@ export default defineConfig({
     // Never reuse: another project's server on this port would be tested instead.
     reuseExistingServer: false,
     timeout: 120_000,
+    // The build tested includes the dev-only primitives page (src/dev/primitives.astro).
+    env: { [PRIMITIVES_ENV]: '1' },
   },
 });

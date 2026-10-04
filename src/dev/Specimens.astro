@@ -1,0 +1,231 @@
+---
+import Arrow from '../components/drawing/Arrow.astro';
+import Balloon from '../components/drawing/Balloon.astro';
+import Box from '../components/drawing/Box.astro';
+import Button from '../components/drawing/Button.astro';
+import Chip from '../components/drawing/Chip.astro';
+import ChipList from '../components/drawing/ChipList.astro';
+import DimensionLine from '../components/drawing/DimensionLine.astro';
+import DisplayHeading from '../components/drawing/DisplayHeading.astro';
+import Figure from '../components/drawing/Figure.astro';
+import Link from '../components/drawing/Link.astro';
+import RevisionNote from '../components/drawing/RevisionNote.astro';
+import SheetLabel from '../components/drawing/SheetLabel.astro';
+import SpecRow from '../components/drawing/SpecRow.astro';
+import SpecTable from '../components/drawing/SpecTable.astro';
+import Stamp from '../components/drawing/Stamp.astro';
+import { getLocalized } from '../i18n/content';
+import { DEFAULT_LANG } from '../i18n/paths';
+import { SHEETS } from '../i18n/routes';
+
+// Every primitive in every variant, once per theme on the dev-only primitives page. Sample text is
+// copied from design/copy.md; this page is a fixture, never built for production.
+const { contact } = (await getLocalized('profile', 'profile', DEFAULT_LANG)).data;
+const path = (key: string) => SHEETS.find((sheet) => sheet.key === key)?.path ?? '/';
+---
+
+<div class="specimens">
+  <section class="specimen" data-specimen="sheet-label">
+    <h3>
+      <SheetLabel as="span">SheetLabel</SheetLabel>
+    </h3>
+    <SheetLabel>SHEET 04 — CERTIFICATIONS · INSPECTION RECORD</SheetLabel>
+  </section>
+
+  <section class="specimen" data-specimen="display-heading">
+    <h3>
+      <SheetLabel as="span">DisplayHeading xl / l / m / s</SheetLabel>
+    </h3>
+    <DisplayHeading size="xl" as="h3">
+      Michael
+      <br />
+      Goldman
+    </DisplayHeading>
+    <DisplayHeading size="l" as="h3">
+      Experience
+    </DisplayHeading>
+    <DisplayHeading size="m" as="h3">
+      OptieCon
+    </DisplayHeading>
+    <DisplayHeading size="s" as="h3">
+      Recipe Book
+    </DisplayHeading>
+  </section>
+
+  <section class="specimen" data-specimen="button">
+    <h3>
+      <SheetLabel as="span">Button primary / secondary</SheetLabel>
+    </h3>
+    <div class="specimen__row">
+      <Button href={path('projects')}>VIEW PROJECTS →</Button>
+      <Button variant="secondary" href={contact.github} external>
+        REPOSITORY ON GITHUB
+      </Button>
+      <Button variant="secondary">CLOSE</Button>
+    </div>
+  </section>
+
+  <section class="specimen" data-specimen="link">
+    <h3>
+      <SheetLabel as="span">Link / external</SheetLabel>
+    </h3>
+    <div class="specimen__row">
+      <Link href={path('certifications')}>Certifications</Link>
+      <Link href={contact.linkedin} external>
+        LinkedIn
+      </Link>
+    </div>
+  </section>
+
+  <section class="specimen" data-specimen="dimension-line">
+    <h3>
+      <SheetLabel as="span">DimensionLine h / v</SheetLabel>
+    </h3>
+    <div class="specimen__dimensions">
+      <DimensionLine label="5+ YRS FULL-STACK" />
+      <div class="specimen__vertical">
+        <DimensionLine orientation="v" label="JAVA · SPRING" />
+      </div>
+    </div>
+  </section>
+
+  <section class="specimen" data-specimen="balloon">
+    <h3>
+      <SheetLabel as="span">Balloon default / active / pending · link / button / span</SheetLabel>
+    </h3>
+    <div class="specimen__row">
+      <Balloon number={1} leader="left" href={path('certifications')} label="1: Spring certified" />
+      <Balloon number={2} leader="right" state="active" />
+      <Balloon number={5} leader="up" state="pending" />
+      <Balloon
+        number={3}
+        as="button"
+        state="active"
+        label="Part 3: Minor Programming"
+        aria-pressed="true"
+      />
+      <Balloon number={4} leader="down" />
+    </div>
+  </section>
+
+  <section class="specimen" data-specimen="revision-note">
+    <h3>
+      <SheetLabel as="span">RevisionNote</SheetLabel>
+    </h3>
+    <RevisionNote text="REV. NOTE △ Every project on these sheets started as a drawing: a C4 model, a database schema and an API contract. Then the tests. Then the code." />
+    <RevisionNote text="NOTE: The jamigos.app domain is retired." />
+  </section>
+
+  <section class="specimen" data-specimen="spec-row">
+    <h3>
+      <SheetLabel as="span">SpecTable / SpecRow coded / plain</SheetLabel>
+    </h3>
+    <SpecTable coded>
+      <SpecRow code="S-01" label="BACKEND">
+        Java 21 · Spring Boot 3 · Jakarta EE · REST · OpenAPI
+      </SpecRow>
+      <SpecRow code="S-02" label="SECURITY">
+        Spring Security · OAuth2 / OIDC · Keycloak · Microsoft Entra ID
+      </SpecRow>
+    </SpecTable>
+    <SpecTable>
+      <SpecRow label="DATA">
+        PostgreSQL for users (JPA), MongoDB for items and the audit log.
+      </SpecRow>
+      <SpecRow label="TESTING">
+        Unit, slice, security and integration tests on Testcontainers.
+      </SpecRow>
+    </SpecTable>
+  </section>
+
+  <section class="specimen" data-specimen="figure">
+    <h3>
+      <SheetLabel as="span">Figure / Box / Arrow</SheetLabel>
+    </h3>
+    <Figure label="FIG. 1 — CONTAINER VIEW">
+      <div class="specimen__flow">
+        <Box title="Browser · Vue 3">Pinia · keycloak-js</Box>
+        <Arrow label="JWT" />
+        <Box title="Spring Boot API">3 security filter chains</Box>
+        <Arrow />
+        <Box title="PostgreSQL">users · JPA</Box>
+      </div>
+      <div class="specimen__flow specimen__flow--column">
+        <Arrow direction="down" label="generates" />
+        <Box title="Keycloak" external>
+          OAuth2 / OIDC · PKCE
+        </Box>
+      </div>
+    </Figure>
+  </section>
+
+  <section class="specimen" data-specimen="stamp">
+    <h3>
+      <SheetLabel as="span">Stamp verified / pending</SheetLabel>
+    </h3>
+    <div class="specimen__row">
+      <Stamp lines={['VERIFIED', '2025', 'BROADCOM']} />
+      <Stamp lines={['PENDING', 'CKAD', 'IN PROGRESS']} state="pending" />
+    </div>
+  </section>
+
+  <section class="specimen" data-specimen="chip">
+    <h3>
+      <SheetLabel as="span">Chip</SheetLabel>
+    </h3>
+    <ChipList>
+      <Chip>Spring Boot</Chip>
+      <Chip>Spring Security</Chip>
+      <Chip>Data &amp; transactions</Chip>
+    </ChipList>
+  </section>
+</div>
+
+<style>
+  .specimens {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .specimen {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding: var(--space-5) 0;
+    border-top: 1px solid var(--color-rule);
+  }
+
+  h3 {
+    margin: 0;
+  }
+
+  .specimen__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-5);
+  }
+
+  .specimen__dimensions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .specimen__vertical {
+    height: 160px;
+  }
+
+  .specimen__flow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+  }
+
+  .specimen__flow--column {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+</style>

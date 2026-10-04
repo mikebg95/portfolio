@@ -1,0 +1,46 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+import { splitNote } from '../../revision-note';
+
+// components.md RevisionNote: a dashed redline note, slightly rotated. `text` is the note as
+// content holds it; its lead ("REV. NOTE △", "NOTE:") is set in 600 weight.
+type Props = HTMLAttributes<'p'> & {
+  text: string;
+};
+
+const { text, class: className, ...rest } = Astro.props;
+const { lead, body } = splitNote(text);
+const triangle = lead.endsWith('△');
+---
+
+<p class:list={['revision-note', className]} {...rest}>
+  {lead && (
+    <span class="revision-note__lead">
+      {triangle ? lead.slice(0, -1) : lead}
+      {triangle && <span aria-hidden="true">△</span>}
+    </span>
+  )}
+  {lead && ' '}
+  {body}
+</p>
+
+<style>
+  .revision-note {
+    align-self: flex-start;
+    max-width: 470px;
+    margin: 0;
+    padding: 14px 18px;
+    border: var(--border-dashed-note);
+    background: var(--color-paper-raised);
+    color: var(--color-redline);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.6;
+    transform: rotate(-1deg);
+  }
+
+  .revision-note__lead {
+    font-weight: 600;
+  }
+</style>
