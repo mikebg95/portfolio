@@ -982,3 +982,22 @@ History, not a queue.
     - `✘  1112 [webkit-iphone] › tests/e2e/display-headings.spec.ts:45:3 › /nl/projects/ (nl): no display heading breaks a word, 280–1440 px (2ms)`
     - `✘  1113 [webkit-iphone] › tests/e2e/display-headings.spec.ts:45:3 › /projects/jamigos/ (en): no display heading breaks a word, 280–1440 px (1ms)`
   - Done when: the cause is fixed (never weaken, skip or delete a test) and the named tests and the task check are green.
+
+
+## Pruned from the queue
+
+2 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### Design check of 81b3f38, 2026-10-05
+
+- [x] **DESIGN-FIX-1 / — default (Specification panel has no top rule)**
+  - Drawing: design/screens/overview-default-light-1440.png and design/screens/overview-default-light-390.png (both draw a full-width ink rule above SPECIFICATION; design/README.md Layout: "Sections are separated by full-width 1 px ink rules … never by empty space alone").
+  - Screen: src/pages/[...lang]/index.astro, src/components/overview/HowIWork.astro, src/components/overview/SpecNotes.astro, src/styles/base.css (`.sheet-panel + .sheet-panel`).
+  - Differs: the drawing shows a full-width rule above the SPECIFICATION / GENERAL NOTES panel. The app has none at 1280 and 390, in both schemes: `section.spec-notes` has `border-top: 0` (measured), so the "ON AI" line runs straight into SPECIFICATION with only empty space between them, and on desktop the vertical rule between Specification and General notes starts in mid-air. Cause: HowIWork's `<script type="module">` is rendered between `section.how-i-work` and `section.spec-notes`, so the adjacent-sibling selector never matches (the IN PROGRESS panel still gets its rule). Screenshots: .e2e/design-check/overview-1280-light.png, overview-1280-dark.png, overview-390-light-b.png.
+  - Done when the view matches the drawing at 1280 and 390, both schemes (a 1 px ink rule spans the sheet above SPECIFICATION, and the Spec/Notes vertical rule meets it), and the task check is green. Prefer a fix that no stray `<script>` can break again on any sheet (e.g. `~` / `:not(script)` siblings, or the script moved out of the panel flow).
+
+- [x] **DESIGN-FIX-2 /experience — default (no dashed rule between 02.1a OptieCon and 02.1b Sabbatical)**
+  - Drawing: design/screens/experience-default-light-1440.png (detail blocks divided by rules); design/components.md ExperienceDetail: the employer's assignments have "dashed rules between them".
+  - Screen: src/components/experience/ExperienceDetail.astro (`.experience-detail__assignments > :global(article + article)`), src/components/experience/ExperienceBreak.astro.
+  - Differs: at 1280, in both schemes, a dashed rule separates 02.1b Sabbatical from 02.1c DJI but there is none between 02.1a OptieCon and 02.1b Sabbatical (`#sabbatical` measured `border-top: 0`), so the sabbatical reads as part of the OptieCon block. Cause: a `<script>` is rendered between `#optiecon` and `#sabbatical` inside `.experience-detail__assignments`, so `article + article` does not match. Screenshot: .e2e/design-check/experience-1280-light.png, experience-1280-dark.png.
+  - Done when the view matches the drawing at 1280, both schemes (one dashed rule between each pair of assignments: 02.1a | 02.1b | 02.1c), the phone cards are unchanged, and the task check is green.
