@@ -11,10 +11,10 @@ test.beforeEach(({ page }) => {
 
 const KEYS = ['overview', 'experience', 'projects', 'certifications', 'education'] as const;
 const SHEETS = [
-  { lang: 'en', paths: ['/', '/experience', '/projects', '/certifications', '/education'] },
+  { lang: 'en', paths: ['/', '/experience/', '/projects/', '/certifications/', '/education/'] },
   {
     lang: 'nl',
-    paths: ['/nl/', '/nl/experience', '/nl/projects', '/nl/certifications', '/nl/education'],
+    paths: ['/nl/', '/nl/experience/', '/nl/projects/', '/nl/certifications/', '/nl/education/'],
   },
 ] as const;
 
@@ -24,7 +24,7 @@ const bar = (page: Page, lang: 'en' | 'nl' = 'en') =>
 test('the header is one 56 px row: monogram, sheet number and name, language, theme', async ({
   page,
 }) => {
-  await page.goto('/projects/jamigos');
+  await page.goto('/projects/jamigos/');
   const header = page.locator('.sheet-header');
   expect((await header.boundingBox())?.height).toBeCloseTo(56, 0);
   await expect(page.locator('.sheet-header__monogram')).toBeVisible();
@@ -67,7 +67,7 @@ for (const { lang, paths } of SHEETS) {
 }
 
 test('the bar holds to the screen bottom while the page scrolls clear of it', async ({ page }) => {
-  await page.goto('/experience');
+  await page.goto('/experience/');
   const viewport = page.viewportSize()!;
   const nav = bar(page);
   for (const scroll of [0, 2000, 1e6]) {
@@ -130,7 +130,7 @@ test.describe('without JS', () => {
   test.use({ javaScriptEnabled: false });
 
   test('the cells are plain links', async ({ page }) => {
-    await page.goto('/nl/certifications');
+    await page.goto('/nl/certifications/');
     await bar(page, 'nl')
       .getByRole('link', { name: `05 ${ui('nl').tabBar.sheets.education}` })
       .click();

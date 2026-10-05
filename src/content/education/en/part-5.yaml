@@ -9,6 +9,6 @@ detail:
   title: CKAD (to be fitted)
   meta: The Linux Foundation · in progress
   body: 'The next part going on: Kubernetes, for building and running applications the way the teams I want to join do.'
-  link: { label: SEE SHEET 04 →, href: /certifications#ckad }
+  link: { label: SEE SHEET 04 →, href: /certifications/#ckad }
 lang: en
 translated: true

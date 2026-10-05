@@ -45,10 +45,10 @@ describe('profile (EN) against design/copy.md', () => {
     expect([hero.portraitAlt]).toEqual(ticks(section('Global'), 'Portrait sr-only text'));
   });
 
-  it('holds balloons 1–3, with balloon 1 linking to /certifications', () => {
+  it('holds balloons 1–3, with balloon 1 linking to /certifications/', () => {
     expect(profile.hero.balloons.map((b) => b.text)).toEqual(ticks(sheet01, 'Balloons'));
     expect(profile.hero.balloons.map((b) => b.href)).toEqual([
-      '/certifications',
+      '/certifications/',
       undefined,
       undefined,
     ]);

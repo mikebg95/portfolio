@@ -15,11 +15,11 @@ const ORIGIN = 'https://example.test';
 describe('neutralPath', () => {
   it.each([
     ['/', 'en', '/'],
-    ['/experience/', 'en', '/experience'],
-    ['/projects/jamigos', 'en', '/projects/jamigos'],
+    ['/experience/', 'en', '/experience/'],
+    ['/projects/jamigos', 'en', '/projects/jamigos/'],
     ['/nl/', 'nl', '/'],
     ['/nl', 'nl', '/'],
-    ['/nl/projects/jamigos/', 'nl', '/projects/jamigos'],
+    ['/nl/projects/jamigos/', 'nl', '/projects/jamigos/'],
   ])('%s → %s %s', (pathname, lang, path) => {
     expect(neutralPath(pathname)).toEqual({ lang, path });
   });
@@ -27,10 +27,10 @@ describe('neutralPath', () => {
 
 describe('alternates', () => {
   it('lists every language, then x-default as the English URL', () => {
-    expect(alternates(ORIGIN, '/education')).toEqual([
-      { hreflang: 'en', href: `${ORIGIN}/education` },
-      { hreflang: 'nl', href: `${ORIGIN}/nl/education` },
-      { hreflang: 'x-default', href: `${ORIGIN}/education` },
+    expect(alternates(ORIGIN, '/education/')).toEqual([
+      { hreflang: 'en', href: `${ORIGIN}/education/` },
+      { hreflang: 'nl', href: `${ORIGIN}/nl/education/` },
+      { hreflang: 'x-default', href: `${ORIGIN}/education/` },
     ]);
     expect(absoluteUrl(ORIGIN, 'nl', '/')).toBe(`${ORIGIN}/nl/`);
   });
@@ -38,12 +38,12 @@ describe('alternates', () => {
 
 describe('sitemap', () => {
   it('has one url per page and language, each with its alternates', () => {
-    const xml = sitemap(ORIGIN, ['/', '/projects']);
+    const xml = sitemap(ORIGIN, ['/', '/projects/']);
     expect([...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1])).toEqual([
       `${ORIGIN}/`,
       `${ORIGIN}/nl/`,
-      `${ORIGIN}/projects`,
-      `${ORIGIN}/nl/projects`,
+      `${ORIGIN}/projects/`,
+      `${ORIGIN}/nl/projects/`,
     ]);
     expect(xml.match(/<xhtml:link /g)).toHaveLength(12);
     expect(xml.startsWith('<?xml')).toBe(true);

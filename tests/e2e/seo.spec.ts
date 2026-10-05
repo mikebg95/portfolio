@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 
 import { expect, test } from '@playwright/test';
 import { load } from 'js-yaml';
@@ -42,6 +42,9 @@ const copyTable = new Map(
     }),
 );
 
+/** copy.md names the pages without the trailing slash their URLs carry: `/experience/` → `/experience`. */
+const copyFor = (path: string) => copyTable.get(path.length > 1 ? path.replace(/\/$/, '') : path);
+
 const projects = (lang: string): Project[] =>
   readdirSync(new URL(`../../src/content/projects/${lang}/`, import.meta.url))
     .filter((f) => f.endsWith('.yaml'))
@@ -49,10 +52,10 @@ const projects = (lang: string): Project[] =>
 
 const SHEETS = {
   overview: '/',
-  experience: '/experience',
-  projects: '/projects',
-  certifications: '/certifications',
-  education: '/education',
+  experience: '/experience/',
+  projects: '/projects/',
+  certifications: '/certifications/',
+  education: '/education/',
 } as const;
 
 interface Page {
@@ -65,10 +68,10 @@ interface Page {
 
 const enProject = copyTable.get('/projects/<slug>')!;
 const EN: Page[] = [
-  ...Object.values(SHEETS).map((path) => ({ lang: 'en' as const, path, ...copyTable.get(path)! })),
+  ...Object.values(SHEETS).map((path) => ({ lang: 'en' as const, path, ...copyFor(path)! })),
   ...projects('en').map((p) => ({
     lang: 'en' as const,
-    path: `/projects/${p.slug}`,
+    path: `/projects/${p.slug}/`,
     title: enProject.title.replace('<Title>', p.title),
     description: enProject.description.replace('<project summary>', p.summary),
   })),
@@ -83,7 +86,7 @@ const NL: Page[] = [
   })),
   ...projects('nl').map((p) => ({
     lang: 'nl' as const,
-    path: `/projects/${p.slug}`,
+    path: `/projects/${p.slug}/`,
     title: nlSeo.project!.title.replace('{title}', p.title),
     description: p.summary,
   })),
@@ -93,7 +96,7 @@ const url = (lang: string, path: string) =>
   new URL(lang === 'en' ? path : path === '/' ? '/nl/' : `/nl${path}`, SITE_URL).href;
 
 test('copy.md SEO table covers every sheet', () => {
-  for (const path of Object.values(SHEETS)) expect(copyTable.get(path)?.description).toBeTruthy();
+  for (const path of Object.values(SHEETS)) expect(copyFor(path)?.description).toBeTruthy();
   expect(EN.length).toBe(10);
   expect(NL.length).toBe(10);
 });
@@ -200,6 +203,51 @@ const builtPages = (dir = new URL('../../dist/', import.meta.url).pathname): str
     .filter((f) => f.endsWith('.html'))
     .map((f) => `/${f.replace(/(^|\/)index\.html$/, '').replace(/\.html$/, '')}`)
     .filter((p) => !p.startsWith(PRIMITIVES_PATH));
+
+// QA-71: GitHub Pages answers a directory URL without its slash (`/experience`) with a 301, so every
+// URL the site publishes — sitemap, canonical, hreflang, og:url — and every internal link must be the
+// form it serves as is. Read from dist/, since `astro preview` serves both forms with 200.
+const DIST = new URL('../../dist/', import.meta.url).pathname;
+
+/** Whether GitHub Pages serves `path` without a redirect: `/x/` with `x/index.html`, or a file. */
+function servedAsIs(path: string): boolean {
+  const file = `${DIST}${decodeURIComponent(path).slice(1)}`;
+  if (path.endsWith('/')) return existsSync(`${file}index.html`);
+  return (existsSync(file) && statSync(file).isFile()) || existsSync(`${file}.html`);
+}
+
+test('every published URL and internal link is served by GitHub Pages without a redirect', () => {
+  // Not the 404 sheets: they answer any unknown URL, and their language switch names the other
+  // language's 404 sheet as a directory (`/404/`), which the host answers with that sheet anyway.
+  const files = readdirSync(DIST, { recursive: true, encoding: 'utf8' }).filter(
+    (f) => f.endsWith('.html') && !`/${f}`.startsWith(PRIMITIVES_PATH) && !/(^|\/)404\b/.test(f),
+  );
+  // 20 sheets and project details, plus the two offline sheets.
+  expect(files.length).toBe(EN.length + NL.length + 2);
+  const urls: [string, string][] = [
+    ...read('dist/sitemap.xml').matchAll(/<loc>([^<]+)<\/loc>/g),
+  ].map((m) => ['sitemap.xml', m[1]!]);
+  expect(urls.length).toBe(EN.length + NL.length);
+  for (const file of files) {
+    const html = read(`dist/${file}`);
+    const base = new URL(`/${file.replace(/(^|\/)index\.html$/, '$1')}`, SITE_URL);
+    const tags = html.match(/<(a|link|meta)\b[^>]*>/g) ?? [];
+    let links = 0;
+    for (const tag of tags) {
+      if (tag.startsWith('<link') && !/\srel="(canonical|alternate)"/.test(tag)) continue;
+      if (tag.startsWith('<meta') && !tag.includes('property="og:url"')) continue;
+      const href = /\s(?:href|content)="([^"]*)"/.exec(tag)?.[1];
+      if (!href || href.startsWith('#')) continue;
+      const target = new URL(href, base);
+      if (target.origin !== SITE_URL) continue;
+      urls.push([file, target.href]);
+      if (tag.startsWith('<a')) links++;
+    }
+    expect(links, `${file} has internal links`).toBeGreaterThan(0);
+  }
+  const redirecting = urls.filter(([, href]) => !servedAsIs(new URL(href).pathname));
+  expect(redirecting).toEqual([]);
+});
 
 test('every built page has an Open Graph image: an existing 1200×630 PNG', async ({ request }) => {
   const pages = builtPages();

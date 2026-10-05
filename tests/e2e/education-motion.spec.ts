@@ -34,7 +34,7 @@ const plateTop = (page: Page, item: number) =>
 /** The drawing as reduced motion shows it (its final state), after `prepare`. */
 async function drawn(page: Page, prepare: (page: Page) => Promise<void> = async () => {}) {
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.goto('/education');
+  await page.goto('/education/');
   await expect(page.locator(ASSEMBLY)).toHaveAttribute(SCRUB_ATTR, 'done');
   await prepare(page);
   const final = await boxes(page);
@@ -93,14 +93,14 @@ async function expectAssembled(page: Page) {
 
 test('GSAP is fetched on the education sheet, and never under reduced motion', async ({ page }) => {
   const gsap = countGsap(page);
-  await page.goto('/education');
+  await page.goto('/education/');
   await expect(page.locator(ASSEMBLY)).toHaveAttribute(SCRUB_ATTR, /playing|done/);
   await page.waitForLoadState('networkidle');
   expect(gsap.count).toBeGreaterThan(0);
 
   await page.emulateMedia({ reducedMotion: 'reduce' });
   const before = gsap.count;
-  await page.goto('/nl/education');
+  await page.goto('/nl/education/');
   await expect(page.locator(ASSEMBLY)).toHaveAttribute(SCRUB_ATTR, 'done');
   await page.waitForLoadState('networkidle');
   expect(gsap.count).toBe(before);
@@ -115,7 +115,7 @@ test('in view at load, the drawing explodes on its own in 1.2 s and ends as draw
 }) => {
   const final = await drawn(page);
   await recordPlay(page);
-  await page.goto('/education');
+  await page.goto('/education/');
   await settleAnimations(page);
   await expect(page.locator(ASSEMBLY)).toHaveAttribute(SCRUB_ATTR, 'done');
 
@@ -135,7 +135,7 @@ test('on a phone the drawing waits below the fold, then plays once without scrub
   test.skip(testInfo.project.name !== 'chromium-phone', 'a short phone window');
   await page.setViewportSize({ width: 390, height: 480 });
   const final = await drawn(page);
-  await page.goto('/education');
+  await page.goto('/education/');
   const assembly = page.locator(ASSEMBLY);
   await expect(assembly).toHaveAttribute(SCRUB_ATTR, 'waiting');
   await expectAssembled(page);
@@ -156,7 +156,7 @@ test('in a short desktop window the explosion is scrubbed by the scroll, selecti
   test.skip(testInfo.project.name !== 'chromium-desktop', 'a short desktop window');
   await page.setViewportSize({ width: 1440, height: 480 });
   const final = await drawn(page, (page) => selectWithoutScrolling(page, 2));
-  await page.goto('/education');
+  await page.goto('/education/');
   const assembly = page.locator(ASSEMBLY);
   await expect(assembly).toHaveAttribute(SCRUB_ATTR, 'waiting');
   await expectAssembled(page);

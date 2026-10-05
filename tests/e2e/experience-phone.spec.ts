@@ -29,7 +29,7 @@ const toggle = (page: Page, id: string) =>
 test('years run down a ruler to scale, the cards beside it; the bars give way', async ({
   page,
 }) => {
-  await page.goto('/experience');
+  await page.goto('/experience/');
   await settleAnimations(page);
   await expect(page.locator('.timeline')).toBeHidden();
 
@@ -66,7 +66,7 @@ test('years run down a ruler to scale, the cards beside it; the bars give way', 
 test('the Conspect bracket spans the employer card and its assignments, named along it', async ({
   page,
 }) => {
-  await page.goto('/experience');
+  await page.goto('/experience/');
   await settleAnimations(page);
   const conspect = await box(page.locator('#conspect'));
   const bracket = await box(page.locator('#conspect .experience-detail__bracket'));
@@ -89,7 +89,7 @@ test('the Conspect bracket spans the employer card and its assignments, named al
 
 test('tapping a card opens its detail in place, and again closes it', async ({ page }) => {
   const { more, less } = ui('en').experience.toggle;
-  await page.goto('/experience');
+  await page.goto('/experience/');
   await settleAnimations(page);
   const button = toggle(page, 'dji');
   const bullets = page.locator('#dji .experience-detail__bullets');
@@ -134,7 +134,7 @@ test('tapping a card opens its detail in place, and again closes it', async ({ p
 });
 
 test('a link to a card arrives with it open', async ({ page }) => {
-  await page.goto('/experience#optiecon');
+  await page.goto('/experience/#optiecon');
   await expect(toggle(page, 'optiecon')).toHaveAttribute('aria-expanded', 'true');
   await expect(page.locator('#optiecon .experience-detail__bullets')).toBeVisible();
   await expect(page.locator('#dji .experience-detail__bullets')).toBeHidden();
@@ -142,7 +142,7 @@ test('a link to a card arrives with it open', async ({ page }) => {
 
 test('the Dutch cards read their own toggle and ruler', async ({ page }) => {
   const { dates, experience } = ui('nl');
-  await page.goto('/nl/experience');
+  await page.goto('/nl/experience/');
   await expect(page.locator('.experience-ruler li').first()).toHaveText(dates.now);
   await expect(toggle(page, 'linkpizza')).toContainText(experience.toggle.more);
   await toggle(page, 'linkpizza').tap();
@@ -158,7 +158,7 @@ test('no horizontal scroll at 320 px, open or folded; both themes drawn', async 
       ([key, value]) => localStorage.setItem(key!, value!),
       [THEME_STORAGE_KEY, theme],
     );
-    await page.goto('/experience');
+    await page.goto('/experience/');
     await settleAnimations(page);
     for (const id of ['optiecon', 'dji', 'linkpizza']) await toggle(page, id).tap();
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
@@ -167,7 +167,7 @@ test('no horizontal scroll at 320 px, open or folded; both themes drawn', async 
     // Reduced motion: the full-page capture shows every card, not the ones a scroll has revealed.
     await page.setViewportSize({ width: 390, height: 844 });
     await page.emulateMedia({ reducedMotion: 'reduce' });
-    await page.goto('/experience');
+    await page.goto('/experience/');
     await settleAnimations(page);
     await page.screenshot({
       path: `${SHOTS}/experience-${theme}-390-${testInfo.project.name}.png`,
@@ -181,7 +181,7 @@ test.describe('under reduced motion', () => {
   test.use({ reducedMotion: 'reduce' });
 
   test('an opened card shows its detail at once', async ({ page }) => {
-    await page.goto('/experience');
+    await page.goto('/experience/');
     await toggle(page, 'optiecon').tap();
     await expect(page.locator('#optiecon .experience-detail__bullets li').first()).toHaveCSS(
       'opacity',
@@ -194,7 +194,7 @@ test.describe('without JS', () => {
   test.use({ javaScriptEnabled: false });
 
   test('every card shows its full detail and no toggle', async ({ page }) => {
-    await page.goto('/experience');
+    await page.goto('/experience/');
     await expect(page.locator('.experience-detail__toggle')).toHaveCount(3);
     await expect(page.locator('.experience-detail__toggle').first()).toBeHidden();
     await expect(page.locator('#dji .experience-detail__bullets')).toBeVisible();

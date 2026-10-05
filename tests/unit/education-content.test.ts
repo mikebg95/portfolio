@@ -109,7 +109,7 @@ describe('education (EN) against design/copy.md', () => {
   });
 
   it('points CKAD at its certification card on Sheet 04', () => {
-    expect(entries.find((e) => e.item === 5)?.detail.link?.href).toBe('/certifications#ckad');
+    expect(entries.find((e) => e.item === 5)?.detail.link?.href).toBe('/certifications/#ckad');
   });
 
   it('holds the sheet label, heading and intro in ui', () => {

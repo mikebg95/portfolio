@@ -77,7 +77,7 @@ for (const { path } of ROUTES) {
 }
 
 test('project cards open on a ruled title strip', async ({ page }) => {
-  await page.goto('/projects');
+  await page.goto('/projects/');
   for (const card of await page.locator('.project-card').all()) {
     const head = card.locator('.project-card__head');
     await expect(head).toHaveCSS('border-bottom-width', '1px');
@@ -90,7 +90,7 @@ test('project cards open on a ruled title strip', async ({ page }) => {
 test('certification cards: a strip over the full-width name, the stamp in a ruled foot', async ({
   page,
 }) => {
-  await page.goto('/certifications');
+  await page.goto('/certifications/');
   await settleAnimations(page);
   for (const id of ['spring', 'psm', 'oca', 'ckad']) {
     const card = page.locator(`#${id}`);
@@ -124,7 +124,7 @@ test('certification cards: a strip over the full-width name, the stamp in a rule
 test('a project detail: FIG. 1 captioned on a strip, the pager two full-width cards', async ({
   page,
 }) => {
-  await page.goto('/projects/jamigos');
+  await page.goto('/projects/jamigos/');
   const figure = page.locator('[data-figure="1"]');
   const caption = figure.locator('.figure__label');
   await expect(caption).toHaveCSS('border-bottom-width', '1px');

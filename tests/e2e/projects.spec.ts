@@ -12,15 +12,15 @@ for (const prefix of ['', '/nl']) {
     const cards = page.locator('.project-card');
     await expect(cards).toHaveCount(5);
     expect(await cards.evaluateAll((as) => as.map((a) => a.getAttribute('href')))).toEqual(
-      ORDER.map((slug) => `${prefix}/projects/${slug}`),
+      ORDER.map((slug) => `${prefix}/projects/${slug}/`),
     );
     await cards.nth(1).click();
-    await expect(page).toHaveURL(`${prefix}/projects/scentify`);
+    await expect(page).toHaveURL(`${prefix}/projects/scentify/`);
   });
 }
 
 test('the sheet shows its label, heading, intro and the series line', async ({ page }) => {
-  await page.goto('/projects');
+  await page.goto('/projects/');
   await expect(page.locator('.register__head .sheet-label')).toHaveText(
     'SHEET 03 — PROJECTS · DRAWING REGISTER',
   );
@@ -42,7 +42,7 @@ test('the sheet shows its label, heading, intro and the series line', async ({ p
 });
 
 test('cards lay out in 3 columns on desktop, 2 on tablet and 1 on phone', async ({ page }) => {
-  await page.goto('/projects');
+  await page.goto('/projects/');
   const width = page.viewportSize()?.width ?? 0;
   const columns = width >= 1024 ? 3 : width >= 768 ? 2 : 1;
   const xs = async () =>

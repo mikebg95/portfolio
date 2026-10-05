@@ -158,8 +158,8 @@ test.describe('figures and counts', () => {
   test.use({ reducedMotion: 'no-preference' });
 
   test('a figure fades in, then draws its arrows in data-flow order', async ({ page }) => {
-    await page.goto('/projects/recipe-book');
-    await page.goto('/projects/recipe-book');
+    await page.goto('/projects/recipe-book/');
+    await page.goto('/projects/recipe-book/');
     await scrollThrough(page);
     for (const figure of await page.locator('[data-reveal="figure"]').all()) {
       await expect(figure).toHaveCSS('animation-name', 'reveal-fade');
@@ -177,7 +177,7 @@ test.describe('figures and counts', () => {
   });
 
   test('a spec row inks in and then draws its rule', async ({ page }) => {
-    await page.goto('/projects/jamigos');
+    await page.goto('/projects/jamigos/');
     const row = page.locator('[data-reveal="row"]').first();
     await row.scrollIntoViewIfNeeded();
     await expect(row).toHaveClass(new RegExp(REVEALED_CLASS));
@@ -191,8 +191,8 @@ test.describe('figures and counts', () => {
   });
 
   test('numbers count up once, from 0, to the served text', async ({ page }) => {
-    await page.goto('/projects');
-    const served = await servedCounts(page, '/projects');
+    await page.goto('/projects/');
+    const served = await servedCounts(page, '/projects/');
     await recordCounts(page);
     await scrollThrough(page);
     await expect.poll(() => page.locator('[data-count]').allTextContents()).toEqual(served);
@@ -206,7 +206,7 @@ test.describe('figures and counts', () => {
     test.use({ reducedMotion: 'reduce' });
 
     test('numbers never count', async ({ page }) => {
-      await page.goto('/projects');
+      await page.goto('/projects/');
       await recordCounts(page);
       await scrollThrough(page);
       expect(
@@ -220,7 +220,7 @@ test.describe('first page view', () => {
   test('is flagged once per session', async ({ page }) => {
     await page.goto('/');
     await expect(page.locator('html')).toHaveClass(new RegExp(`\\b${FIRST_VIEW_CLASS}\\b`));
-    await page.goto('/projects');
+    await page.goto('/projects/');
     await expect(page.locator('html')).not.toHaveClass(new RegExp(`\\b${FIRST_VIEW_CLASS}\\b`));
   });
 
@@ -245,8 +245,8 @@ test.describe('certification stamps (§M6)', () => {
   /** A later view of Sheet 04 once its first stamp is revealed: the first stamp's animations as
    * `name@delay`, every stamp's reveal delay, and the CKAD ring's iteration counts. */
   async function stamps(page: Page) {
-    await page.goto('/certifications');
-    await page.goto('/certifications');
+    await page.goto('/certifications/');
+    await page.goto('/certifications/');
     // Stamps slam "on enter" (§M6): on an iPhone 14 the first one starts below the fold. Scrolled
     // in the page, not with scrollIntoViewIfNeeded, which waits for the slam to end.
     const stamp = page.locator('.stamp').first();

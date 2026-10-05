@@ -139,10 +139,10 @@ test('moving between sheets keeps the chrome, slides the tab fill and swaps the 
   await record(page);
   const steps = [
     ['/', 'Experience'],
-    ['/experience', 'Projects'],
-    ['/projects', 'Certifications'],
-    ['/certifications', 'Education'],
-    ['/education', 'Overview'],
+    ['/experience/', 'Projects'],
+    ['/projects/', 'Certifications'],
+    ['/certifications/', 'Education'],
+    ['/education/', 'Overview'],
   ] as const;
 
   for (const [from, name] of steps) {
@@ -178,10 +178,10 @@ test('moving between sheets keeps the chrome, slides the tab fill and swaps the 
 test('a project card morphs into its detail sheet and back', async ({ page }) => {
   const errors = collectErrors(page);
   await record(page);
-  let r = await navigate(page, '/projects', (page) =>
+  let r = await navigate(page, '/projects/', (page) =>
     page.locator('[data-project="journal"]').click(),
   );
-  await expect(page).toHaveURL(/\/projects\/journal$/);
+  await expect(page).toHaveURL(/\/projects\/journal\/$/);
   expect(r.transition).toBe(true);
   for (const part of ['title', 'figure']) {
     // Both pages carry the name, so the group morphs; neither picture leaves or enters alone.
@@ -197,10 +197,10 @@ test('a project card morphs into its detail sheet and back', async ({ page }) =>
     'sheet-content-leave',
   );
 
-  r = await navigate(page, '/projects/journal', (page) =>
+  r = await navigate(page, '/projects/journal/', (page) =>
     page.locator('.detail-head__back').click(),
   );
-  await expect(page).toHaveURL(/\/projects$/);
+  await expect(page).toHaveURL(/\/projects\/$/);
   expect(r.transition).toBe(true);
   expect(animation(r, '::view-transition-group(project-title-journal)')?.name).toMatch(
     /group-anim/,
@@ -215,7 +215,7 @@ test('leaving a scrolled page fades it as a whole instead of flying the chrome i
   page,
 }) => {
   await record(page);
-  const r = await navigate(page, '/projects/jamigos', async (page) => {
+  const r = await navigate(page, '/projects/jamigos/', async (page) => {
     const next = page.locator('[data-pager="next"]');
     await next.scrollIntoViewIfNeeded();
     expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(0);
@@ -236,7 +236,7 @@ test.describe('reduced motion', () => {
     const errors = collectErrors(page);
     await record(page);
     const r = await navigate(page, '/', tab('Experience'));
-    await expect(page).toHaveURL(/\/experience$/);
+    await expect(page).toHaveURL(/\/experience\/$/);
     expect(r.transition).toBe(false);
     expect(errors).toEqual([]);
   });

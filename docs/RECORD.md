@@ -291,6 +291,7 @@ written with `history.replaceState`, so selecting parts does not stack history e
 stacking uses `@media (scripting: enabled)` rather than a `js` class, which PR-39 has not added yet.
 
 ## 2026-10-04 — SEO head: canonicals without a trailing slash; 404 noindex; JSON-LD on both overviews
+(The trailing-slash part is superseded by 2026-10-05 QA-71: every URL now ends with `/`.)
 Who: agent (PR-37). Why: canonical, hreflang (en, nl, x-default → en) and the sitemap use the
 slash-less URLs the site links to (`/experience`, homes `/` and `/nl/`), not Astro's `/experience/`.
 The 404 sheets have no description (copy.md "—"), `noindex`, and no canonical/alternates, since they
@@ -785,3 +786,20 @@ there is no static way on GitHub Pages. Refused: `location.replace('/nl/404/')` 
 typed address lost); `document.open()/write()` (same window, so the page's module scripts never
 re-run and the header and router stay unwired); rendering both languages into `404.html` (two h1s,
 duplicate ids, twice the markup). `tests/e2e/not-found.spec.ts` covers it, Back and no-JS included.
+
+## 2026-10-05 — Page URLs end with a slash: `/experience/`, `/nl/projects/jamigos/` (QA-71)
+Who: agent (QA-71). Supersedes the slash-less part of 2026-10-04 (PR-37). The live GitHub Pages
+deploy answers every slash-less sheet URL with `301 → /experience/` (checked with curl over the live
+sitemap), so canonicals, hreflang, the sitemap and every internal link pointed at a redirect.
+Chosen: keep Astro's directory build and give every page path its slash at the source — `SHEETS`
+and `projectPath` in `src/i18n/routes.ts`, content `href`s (`/certifications/#ckad`), and
+`neutralPath` in `src/seo.ts` now adds the slash instead of stripping it. Homes stay `/` and `/nl/`.
+Refused: `build.format: 'file'` / `'preserve'` to keep slash-less URLs — the Dutch home or the
+projects hub would need a file and a same-named directory side by side (`projects.html` next to
+`projects/`), whose handling on GitHub Pages cannot be checked from here (agents may not push), while
+`x/index.html` at `/x/` is served as is by GitHub Pages, nginx and `astro preview` alike.
+`trailingSlash` stays Astro's default (`ignore`), so dev and preview still answer `/experience`.
+Not changed: the 404 sheets' language switch (`/404/`, answered with the 404 sheet anyway) and the
+QA-70 fetch of `/nl/404` (followed through the redirect; not a published link). Guard:
+`tests/e2e/seo.spec.ts` "every published URL and internal link is served by GitHub Pages without a
+redirect" (reads `dist/`). The service worker already keys `/x`, `/x/` and `/x/index.html` alike.

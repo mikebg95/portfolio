@@ -8,12 +8,14 @@ export interface Sheet {
   path: string;
 }
 
+// QA-71: every page path ends with `/` — the directory build's `x/index.html` is what GitHub Pages
+// serves without a redirect (`/experience` answers 301 → `/experience/`).
 const PATHS: Record<SheetKey, string> = {
   overview: '/',
-  experience: '/experience',
-  projects: '/projects',
-  certifications: '/certifications',
-  education: '/education',
+  experience: '/experience/',
+  projects: '/projects/',
+  certifications: '/certifications/',
+  education: '/education/',
 };
 
 export const SHEETS: readonly Sheet[] = SHEET_KEYS.map((key, i) => ({
@@ -26,4 +28,4 @@ export const SHEETS: readonly Sheet[] = SHEET_KEYS.map((key, i) => ({
 export const sheetPath = (key: SheetKey) => PATHS[key];
 
 /** A project detail sheet is part of sheet 03. */
-export const projectPath = (slug: string) => `${PATHS.projects}/${slug}`;
+export const projectPath = (slug: string) => `${PATHS.projects}${slug}/`;

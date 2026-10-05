@@ -35,7 +35,7 @@ itself, in the same voice: first person, short sentences, concrete nouns, no hyp
 - Revision note: `REV. NOTE △` `Every project in my Spring series started as a drawing: requirements, a C4 model, a database schema and an API contract. Then the tests. Then the code.`
 - Buttons: `VIEW PROJECTS →` · `DOWNLOAD CV (PDF)`
 - Dimensions: `5+ YRS JAVA · FULL-STACK` · `SPRING · JAKARTA EE`
-- Balloons: 1 `Spring certified` (→ /certifications) · 2 `Dutch & English native` · 3 `Trains Muay Thai`
+- Balloons: 1 `Spring certified` (→ /certifications/) · 2 `Dutch & English native` · 3 `Trains Muay Thai`
 - Phone portrait card title strip (overview-default-light-390): `FIG. 0 — PORTRAIT` · `SCALE 1:1`
 
 ### How I work (label `HOW I WORK`)
@@ -63,9 +63,9 @@ itself, in the same voice: first person, short sentences, concrete nouns, no hyp
 6. All dimensions in years unless stated otherwise.
 
 ### Current work (label `IN PROGRESS`)
-- `OptieCon — security and sign-in, at Conspect` → /experience#optiecon
-- `CKAD — Certified Kubernetes Application Developer` → /certifications#ckad
-- `Journal — hexagonal architecture, part 3 of the series` → /projects/journal
+- `OptieCon — security and sign-in, at Conspect` → /experience/#optiecon
+- `CKAD — Certified Kubernetes Application Developer` → /certifications/#ckad
+- `Journal — hexagonal architecture, part 3 of the series` → /projects/journal/
 
 ## Sheet 02 — Experience
 - Label `SHEET 02 — EXPERIENCE · ELEVATION` · Heading `FIVE YEARS, DRAWN TO SCALE`

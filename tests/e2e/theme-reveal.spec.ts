@@ -77,7 +77,7 @@ test.describe('no-preference', () => {
     // A later view: on the first the header cells are still dropping in at the second click. Not a
     // reload of the same URL, which Chromium logs as an aborted transition.
     await page.goto('/');
-    await page.goto('/projects');
+    await page.goto('/projects/');
     const html = page.locator('html');
 
     for (const [i, theme] of [[0, 'blueprint'] as const, [1, 'paper'] as const]) {

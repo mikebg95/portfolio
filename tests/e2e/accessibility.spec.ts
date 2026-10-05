@@ -109,7 +109,7 @@ test.describe('keyboard', () => {
     page,
   }) => {
     test.skip((page.viewportSize()?.width ?? 0) >= 768, 'desktop and tablet show the tab row');
-    await page.goto('/nl/projects');
+    await page.goto('/nl/projects/');
     const cells = page.getByRole('navigation', { name: 'Bladen' }).getByRole('link');
     await expect(cells).toHaveCount(5);
 

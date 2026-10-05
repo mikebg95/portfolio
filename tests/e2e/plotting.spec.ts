@@ -117,11 +117,11 @@ test('a later page view of the session shows the sheet at once', async ({ page }
 
 test.describe('the other sheets', () => {
   const SHEETS = [
-    '/experience',
-    '/projects',
-    '/projects/jamigos',
-    '/certifications',
-    '/nl/education',
+    '/experience/',
+    '/projects/',
+    '/projects/jamigos/',
+    '/certifications/',
+    '/nl/education/',
     '/no-such-sheet',
   ];
 
@@ -152,11 +152,11 @@ test.describe('the other sheets', () => {
   }
 
   test('end in their final state; a later view shows the sheet at once', async ({ page }) => {
-    await page.goto('/projects/jamigos');
+    await page.goto('/projects/jamigos/');
     for (const scope of ['.sheet__plot', '.sheet-header', '[data-plot]']) {
       expect(await notInFinalState(page, scope)).toEqual([]);
     }
-    await page.goto('/certifications');
+    await page.goto('/certifications/');
     await expect(page.locator('.sheet__plot')).toBeHidden();
     await expect(page.locator('h1')).toHaveCSS('animation-name', 'none');
   });

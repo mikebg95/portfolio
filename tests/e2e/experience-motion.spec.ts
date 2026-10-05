@@ -38,17 +38,17 @@ test('GSAP is fetched on the experience sheet only, and never under reduced moti
 }) => {
   const gsap = countGsap(page);
   await page.goto('/');
-  await page.goto('/projects');
+  await page.goto('/projects/');
   await page.waitForLoadState('networkidle');
   expect(gsap.count).toBe(0);
-  await page.goto('/experience');
+  await page.goto('/experience/');
   await expect(page.locator(TIMELINE)).toHaveAttribute(SCRUB_ATTR, /playing|done/);
   await page.waitForLoadState('networkidle');
   expect(gsap.count).toBeGreaterThan(0);
 
   await page.emulateMedia({ reducedMotion: 'reduce' });
   const before = gsap.count;
-  await page.goto('/nl/experience');
+  await page.goto('/nl/experience/');
   await expect(page.locator(TIMELINE)).toHaveAttribute(SCRUB_ATTR, 'done');
   await page.waitForLoadState('networkidle');
   expect(gsap.count).toBe(before);
@@ -73,7 +73,7 @@ test('in view at load, the bars extrude on their own and end drawn to scale', as
     };
     requestAnimationFrame(sample);
   });
-  await page.goto('/experience');
+  await page.goto('/experience/');
   await settleAnimations(page);
   await expect(page.locator(TIMELINE)).toHaveAttribute(SCRUB_ATTR, 'done');
   // OptieCon's arrow pulses after the sweep, then stands still.
@@ -99,7 +99,7 @@ test('below the 80 % line at load, the bars are scrubbed by the scroll and stay 
 }, testInfo) => {
   test.skip(testInfo.project.name !== 'chromium-desktop', 'a short desktop window');
   await page.setViewportSize({ width: 1440, height: 480 });
-  await page.goto('/experience');
+  await page.goto('/experience/');
   const timeline = page.locator(TIMELINE);
   await expect(timeline).toHaveAttribute(SCRUB_ATTR, 'waiting');
   expect(await firstBarScale(page)).toBe(0);
@@ -133,7 +133,7 @@ test('desktop pins the timeline over the details, its cursor on the role being r
   page,
 }) => {
   test.skip((page.viewportSize()?.width ?? 0) < 1024, 'desktop only');
-  await page.goto('/experience');
+  await page.goto('/experience/');
   await settleAnimations(page);
   const timeline = page.locator(TIMELINE);
   const cursor = page.locator('.timeline__cursor');
@@ -167,7 +167,7 @@ test('on a tablet the timeline never sticks', async ({ page }) => {
   // No tablet project: the desktop one, narrowed (a phone draws cards, not bars).
   test.skip((page.viewportSize()?.width ?? 0) < 1024, 'desktop project, narrowed');
   await page.setViewportSize({ width: 800, height: 900 });
-  await page.goto('/experience');
+  await page.goto('/experience/');
   await settleAnimations(page);
   await page.locator('.timeline__bar[href="#dji"]').click();
   await expect(page.locator('#dji')).toBeInViewport();

@@ -12,7 +12,7 @@ const phone = (page: Page) => (page.viewportSize()?.width ?? 0) < 768;
 
 test('the sheet shows its label, heading and the drawn timeline', async ({ page }) => {
   test.skip(phone(page), PHONE);
-  await page.goto('/experience');
+  await page.goto('/experience/');
   await expect(page.locator('.sheet-label').first()).toHaveText(
     'SHEET 02 — EXPERIENCE · ELEVATION',
   );
@@ -63,7 +63,7 @@ test('the sheet shows its label, heading and the drawn timeline', async ({ page 
 
 test('bars are drawn to scale along the ruler', async ({ page }) => {
   test.skip(phone(page), PHONE);
-  await page.goto('/experience');
+  await page.goto('/experience/');
   await settleAnimations(page);
   const width = page.viewportSize()?.width ?? 0;
   const horizontal = width >= 1024;
@@ -89,11 +89,11 @@ test('bars are drawn to scale along the ruler', async ({ page }) => {
 
 test('a bar leads to its detail block', async ({ page }) => {
   test.skip(phone(page), PHONE);
-  await page.goto('/experience');
+  await page.goto('/experience/');
   await page
     .getByRole('link', { name: 'DJI · Full-Stack Java Engineer · JAN 2024 – JAN 2026' })
     .click();
-  await expect(page).toHaveURL(/\/experience#dji$/);
+  await expect(page).toHaveURL(/\/experience\/#dji$/);
   await expect(page.locator('#dji')).toBeInViewport();
   await expect(page.locator('#dji h3')).toHaveText('DJI — Full-Stack Java Engineer');
 });
@@ -101,7 +101,7 @@ test('a bar leads to its detail block', async ({ page }) => {
 test('the Dutch sheet draws the same timeline', async ({ page }) => {
   test.skip(phone(page), PHONE);
   const { dates } = ui('nl');
-  await page.goto('/nl/experience');
+  await page.goto('/nl/experience/');
   await expect(page.locator('.timeline__bar')).toHaveCount(4);
   await expect(page.locator('.timeline__bar').first()).toHaveAttribute('href', '#linkpizza');
   await expect(
@@ -135,7 +135,7 @@ const BLOCKS = [
 test('Conspect is the employer; its assignments nest in its block, newest first', async ({
   page,
 }) => {
-  await page.goto('/experience');
+  await page.goto('/experience/');
   const top = page.locator('.experience-details > article');
   expect(await top.evaluateAll((as) => as.map((a) => a.id))).toEqual(['conspect', 'linkpizza']);
 
@@ -196,7 +196,7 @@ test('Conspect is the employer; its assignments nest in its block, newest first'
 });
 
 test('the Dutch sheet names Conspect as employer and DJI a secondment', async ({ page }) => {
-  await page.goto('/nl/experience');
+  await page.goto('/nl/experience/');
   await expect(page.locator('#conspect h2')).toHaveText('Java Consultant — Conspect');
   await expect(page.locator('#dji .experience-detail__engagement')).toHaveText(
     'Klantopdracht (gedetacheerd bij DJI)',
@@ -207,7 +207,7 @@ test('the Dutch sheet names Conspect as employer and DJI a secondment', async ({
 });
 
 test('a detail block is two columns on desktop and one on phone', async ({ page }) => {
-  await page.goto('/experience');
+  await page.goto('/experience/');
   const meta = await page.locator('#dji .experience-detail__meta').boundingBox();
   const body = await page.locator('#dji .experience-detail__body').boundingBox();
   if (!meta || !body) throw new Error('detail block not rendered');
@@ -244,7 +244,7 @@ test.describe('an arrival with a hash, motion on', () => {
     );
   });
 
-  for (const path of ['/experience#optiecon', '/experience#dji', '/nl/experience#optiecon']) {
+  for (const path of ['/experience/#optiecon', '/experience/#dji', '/nl/experience/#optiecon']) {
     test(`typed ${path}`, async ({ page }) => {
       await page.goto(path);
       await expectLandedClear(page, path.split('#')[1] ?? '');
@@ -253,8 +253,8 @@ test.describe('an arrival with a hash, motion on', () => {
 
   test('the Overview "In progress" link', async ({ page }) => {
     await page.goto('/');
-    await page.locator('a[href="/experience#optiecon"]').first().click();
-    await expect(page).toHaveURL(/\/experience#optiecon$/);
+    await page.locator('a[href="/experience/#optiecon"]').first().click();
+    await expect(page).toHaveURL(/\/experience\/#optiecon$/);
     await expectLandedClear(page, 'optiecon');
   });
 });

@@ -39,7 +39,7 @@ test('the buttons go to the projects sheet and the CV', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('link', { name: 'VIEW PROJECTS →' })).toHaveAttribute(
     'href',
-    '/projects',
+    '/projects/',
   );
   const cv = page.getByRole('link', { name: 'DOWNLOAD CV (PDF)' });
   await expect(cv).toHaveAttribute('href', '/michael-goldman-cv.pdf');
@@ -55,11 +55,11 @@ test('the Dutch sheet links stay in Dutch', async ({ page }) => {
   await page.goto('/nl/');
   await expect(page.getByRole('link', { name: hero.buttons.projects })).toHaveAttribute(
     'href',
-    '/nl/projects',
+    '/nl/projects/',
   );
   await expect(page.getByRole('link', { name: hero.balloons[0]!.text })).toHaveAttribute(
     'href',
-    '/nl/certifications',
+    '/nl/certifications/',
   );
 });
 
@@ -291,9 +291,9 @@ test('in progress: three redline rows above the title block, each link lands on 
   const items = (lang: string) =>
     profile(lang).current.map(({ text, href }, i) => [text, href, targets[i]!] as const);
   expect(items('en').map(([text, href]) => [text, href])).toEqual([
-    ['OptieCon — security and sign-in, at Conspect', '/experience#optiecon'],
-    ['CKAD — Certified Kubernetes Application Developer', '/certifications#ckad'],
-    ['Journal — hexagonal architecture, part 3 of the series', '/projects/journal'],
+    ['OptieCon — security and sign-in, at Conspect', '/experience/#optiecon'],
+    ['CKAD — Certified Kubernetes Application Developer', '/certifications/#ckad'],
+    ['Journal — hexagonal architecture, part 3 of the series', '/projects/journal/'],
   ]);
   await page.goto('/');
   const panel = page.locator('section.in-progress');

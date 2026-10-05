@@ -57,7 +57,7 @@ test.describe('desktop', () => {
     await expect(page.locator(CROSSHAIR)).toBeVisible();
     await page.mouse.down();
     await page.mouse.up();
-    await expect(page).toHaveURL(/\/experience$/);
+    await expect(page).toHaveURL(/\/experience\/$/);
   });
 
   test('hides when the pointer leaves the sheet', async ({ page }) => {

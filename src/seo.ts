@@ -4,15 +4,16 @@ import { DEFAULT_LANG, delocalize, LANGS, localize, type Lang } from './i18n/pat
 // origin and the strings are passed in, so every function is unit-testable.
 
 /**
- * The language-neutral path of a page URL, without the trailing slash Astro's directory build
- * adds (`/nl/experience/` → nl, `/experience`), so canonicals match the site's own links.
+ * The language-neutral path of a page URL, with the trailing slash of Astro's directory build
+ * (`/nl/experience` → nl, `/experience/`), so canonicals match the site's own links and the URL
+ * GitHub Pages serves without a redirect (QA-71).
  */
 export function neutralPath(pathname: string): { lang: Lang; path: string } {
   const { lang, path } = delocalize(pathname);
-  return { lang, path: path.length > 1 ? path.replace(/\/+$/, '') : path };
+  return { lang, path: path.endsWith('/') ? path : `${path}/` };
 }
 
-/** The absolute URL of a language-neutral path in `lang`: `('nl', '/experience')` → `…/nl/experience`. */
+/** The absolute URL of a language-neutral path in `lang`: `('nl', '/experience/')` → `…/nl/experience/`. */
 export const absoluteUrl = (origin: string, lang: Lang, path: string) =>
   new URL(localize(lang, path), origin).href;
 

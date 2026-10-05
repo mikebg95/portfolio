@@ -8,7 +8,7 @@ import { ui } from './helpers/content';
 // static host does (docs/REPO-MAP.md "Routes and languages"). English is copy.md verbatim; Dutch is
 // its translation in the NL content. GitHub Pages serves the root `404.html` for every unknown URL,
 // `/nl/…` included, so under `/nl/` that page swaps itself for the Dutch sheet (QA-70).
-const PATHS = ['/', '/experience', '/projects', '/certifications', '/education'];
+const PATHS = ['/', '/experience/', '/projects/', '/certifications/', '/education/'];
 const nl = ui('nl');
 
 const dutch = {
@@ -65,7 +65,7 @@ test('Back to an unknown Dutch URL shows the Dutch not-found sheet again', async
   await page.goto('/nl/no-such-sheet');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(dutch.heading);
   await page.locator('[data-sheet-list] a').nth(1).click();
-  await expect(page).toHaveURL(/\/nl\/experience$/);
+  await expect(page).toHaveURL(/\/nl\/experience\/$/);
   await page.goBack();
   await expect(page).toHaveURL(/\/nl\/no-such-sheet$/);
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(dutch.heading);
@@ -88,7 +88,7 @@ test.describe('without JavaScript', () => {
 test('a sheet link on the not-found sheet leads to that sheet', async ({ page }) => {
   await page.goto('/no-such-sheet');
   await page.locator('[data-sheet-list] a', { hasText: 'Experience' }).click();
-  await expect(page).toHaveURL(/\/experience$/);
+  await expect(page).toHaveURL(/\/experience\/$/);
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 });
 

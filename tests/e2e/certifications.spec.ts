@@ -23,7 +23,7 @@ const STAMPS = [
 ];
 
 test('the sheet shows its label, heading and intro', async ({ page }) => {
-  await page.goto('/certifications');
+  await page.goto('/certifications/');
   await expect(page.locator('.record__head .sheet-label')).toHaveText(
     'SHEET 04 — CERTIFICATIONS · INSPECTION RECORD',
   );
@@ -66,7 +66,7 @@ for (const [prefix, lang] of [
 }
 
 test('each card shows code, name, issuer · date, text and chips', async ({ page }) => {
-  await page.goto('/certifications');
+  await page.goto('/certifications/');
   const spring = page.locator('#spring');
   await expect(spring.locator('.cert-card__code')).toHaveText('C-01');
   await expect(spring.getByRole('heading', { level: 2 })).toHaveText(
@@ -126,7 +126,7 @@ for (const prefix of ['', '/nl']) {
 }
 
 test('cards lay out 2 × 2 from tablet up and in 1 column on phone', async ({ page }) => {
-  await page.goto('/certifications');
+  await page.goto('/certifications/');
   const width = page.viewportSize()?.width ?? 0;
   const columns = async () =>
     new Set(

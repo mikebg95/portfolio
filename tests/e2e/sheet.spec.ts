@@ -23,8 +23,8 @@ test('the skip link is the first stop and moves focus to the sheet content', asy
 
 test('the sheet has the double frame, and zone numbers 1–8 on desktop only', async ({ page }) => {
   // A later view: on a session's first view the frame and grid are being plotted on their own layer.
-  await page.goto('/experience');
-  await page.goto('/experience');
+  await page.goto('/experience/');
+  await page.goto('/experience/');
   const frame = await page.locator('.sheet').evaluate((sheet) => {
     const outer = getComputedStyle(sheet);
     const inner = getComputedStyle(sheet.querySelector('.sheet__inner') as Element);

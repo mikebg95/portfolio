@@ -8,7 +8,7 @@ hero:
   buttons: { projects: BEKIJK PROJECTEN →, cv: DOWNLOAD CV (PDF) }
   dimensions: { horizontal: 5+ JR JAVA · FULL-STACK, vertical: SPRING · JAKARTA EE }
   balloons:
-    - { text: Spring-gecertificeerd, href: /certifications }
+    - { text: Spring-gecertificeerd, href: /certifications/ }
     - { text: Moedertaal Nederlands & Engels }
     - { text: Traint Muay Thai }
   portraitAlt: Portret van Michael Goldman, getekend in ASCII-tekens.
@@ -72,9 +72,9 @@ generalNotes:
   - Bracht de eerste maanden van 2026 door in een Muay Thai-kamp, met backpacken en surfen in Zuidoost-Azië.
   - Alle maten in jaren, tenzij anders vermeld.
 current:
-  - { text: 'OptieCon — security en inloggen, bij Conspect', href: /experience#optiecon }
-  - { text: CKAD — Certified Kubernetes Application Developer, href: /certifications#ckad }
-  - { text: 'Journal — hexagonale architectuur, deel 3 van de serie', href: /projects/journal }
+  - { text: 'OptieCon — security en inloggen, bij Conspect', href: /experience/#optiecon }
+  - { text: CKAD — Certified Kubernetes Application Developer, href: /certifications/#ckad }
+  - { text: 'Journal — hexagonale architectuur, deel 3 van de serie', href: /projects/journal/ }
 contact:
   email: mikebgoldman95@gmail.com
   linkedin: https://linkedin.com/in/mikebg95

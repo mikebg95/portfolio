@@ -21,7 +21,7 @@ mkdirSync(SHOTS, { recursive: true });
 const { sheet: strings } = ui('en').education;
 const sheet = (page: Page) => page.locator('dialog.part-sheet');
 
-async function open(page: Page, url = '/education') {
+async function open(page: Page, url = '/education/') {
   await page.goto(url);
   await settleAnimations(page);
 }
@@ -204,7 +204,7 @@ test('Tab and Shift+Tab stay inside the open sheet', async ({ page, browserName 
 });
 
 test('a #part-n link opens that part in the sheet', async ({ page }) => {
-  await open(page, '/nl/education#part-2');
+  await open(page, '/nl/education/#part-2');
   const { sheet: nl } = ui('nl').education;
   const dialog = page.getByRole('dialog', { name: 'Onderdeel 2: BSc Politicologie' });
   await expect(dialog).toBeVisible();
@@ -228,7 +228,7 @@ test.describe('without JavaScript', () => {
   test.use({ javaScriptEnabled: false });
 
   test('no sheet: every detail is inline below the assembly', async ({ page }) => {
-    await page.goto('/education');
+    await page.goto('/education/');
     await expect(sheet(page)).toBeHidden();
     await expect(page.locator('.education__details .detail-panel:visible')).toHaveCount(5);
   });

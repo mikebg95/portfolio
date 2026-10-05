@@ -6,9 +6,9 @@
       "startServerReadyTimeout": 60000,
       "url": [
         "http://localhost:4321/",
-        "http://localhost:4321/experience",
-        "http://localhost:4321/projects/jamigos",
-        "http://localhost:4321/education",
+        "http://localhost:4321/experience/",
+        "http://localhost:4321/projects/jamigos/",
+        "http://localhost:4321/education/",
         "http://localhost:4321/nl/"
       ],
       "numberOfRuns": 3,

@@ -95,12 +95,12 @@ line.
 - `src/i18n/content.ts` — `t(lang)`, `getLocalized`, `getAllLocalized`, `sharedId`.
 - `tests/e2e/helpers/content.ts` — `ui`, `profile`, `certification` read straight from the YAML, so e2e that walks `/nl/` expects each language's own words; `tests/e2e/dutch.spec.ts` greps built `dist/nl/` for English UI words.
 - TRAP: long Dutch compounds (Politicologie, LEVERANCIER) overflow fixed phone columns at 320 px; the education label column and parts list rely on `hyphens: auto` (the page's `lang` picks the dictionary).
-- `src/seo.ts` — canonical/hreflang URLs (`neutralPath` strips Astro's trailing slash), `sitemap`, `robots`, `personJsonLd`; `SheetLayout` renders the head from its `description`/`noindex` props, pages add more via `slot="head"`.
+- `src/seo.ts` — canonical/hreflang URLs (`neutralPath` adds the trailing slash a dev URL may lack), `sitemap`, `robots`, `personJsonLd`; `SheetLayout` renders the head from its `description`/`noindex` props, pages add more via `slot="head"`.
 - `src/pages/sitemap.xml.ts`, `src/pages/robots.txt.ts` — endpoints; the sitemap is built from `SHEETS` + project slugs, so a new route is listed only if added there. `tests/e2e/seo.spec.ts` (chromium-desktop only).
 - `src/og.ts` — Open Graph cards: `ogImagePath(lang, path)` (SheetLayout's og:image), the SVG layout, `renderOgPng`; `src/pages/og/[...card].png.ts` lists the cards from content (label + heading as the page draws them). `tests/unit/og.test.ts`; `tests/e2e/seo.spec.ts` checks every built page's image is a 1200×630 PNG.
 - TRAP: fontkit's `getVariation` on a WOFF2 font throws "Cannot read properties of undefined (reading 'tables')"; `src/og.ts` decompresses with `wawoff2` first. A heading character missing from the latin subset fails the build ("has no glyph") instead of drawing a box.
 - TRAP: under Vitest a `?raw` import of a `.css` file is an empty string; `src/og.ts` reads tokens.css and the fonts from disk relative to `process.cwd()` (build and Vitest both run at the root).
-- TRAP: `Astro.url.pathname` in the build is `/experience/` (directory format) while links are `/experience`; canonicals and the sitemap use the slash-less form, so the static host must serve `/experience` without a redirect (nginx `try_files $uri $uri/index.html`).
+- TRAP: GitHub Pages answers `/experience` with 301 → `/experience/`, while `astro preview` serves both with 200 — every page path (`SHEETS`, `projectPath`, content `href`s) ends with `/`; `tests/e2e/seo.spec.ts` "served … without a redirect" checks every published URL and link against `dist/`.
 
 ## Sheet chrome
 

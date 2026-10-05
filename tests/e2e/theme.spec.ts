@@ -49,7 +49,7 @@ async function expectTheme(page: Page, theme: Theme) {
 const stored = (page: Page) => page.evaluate((key) => localStorage.getItem(key), THEME_STORAGE_KEY);
 
 test('the button toggles paper ↔ blueprint and the choice survives a reload', async ({ page }) => {
-  await page.goto('/experience');
+  await page.goto('/experience/');
   await expect(page.locator('html')).not.toHaveAttribute('data-theme', /.*/);
   let button = await themeButton(page);
   await expect(button).toHaveAccessibleName('Switch to blueprint theme');
@@ -81,7 +81,7 @@ test('the button toggles paper ↔ blueprint and the choice survives a reload', 
 
 test('a dark system shows blueprint until the visitor picks paper', async ({ page }) => {
   await page.emulateMedia({ colorScheme: 'dark' });
-  await page.goto('/certifications');
+  await page.goto('/certifications/');
   await expect(page.locator('html')).not.toHaveAttribute('data-theme', /.*/);
   await expectTheme(page, 'blueprint');
   const button = await themeButton(page);
@@ -118,7 +118,7 @@ test('the switch still works when storage is blocked', async ({ page }) => {
       },
     });
   });
-  await page.goto('/projects');
+  await page.goto('/projects/');
   await (await themeButton(page)).click();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'blueprint');
   await expectTheme(page, 'blueprint');

@@ -28,7 +28,7 @@ PROJECTS.forEach((project, i) => {
     const main = page.locator('main');
 
     const back = main.getByRole('link', { name: 'SHEET 03 · DRAWING REGISTER' });
-    await expect(back).toHaveAttribute('href', '/projects');
+    await expect(back).toHaveAttribute('href', '/projects/');
     await expect(main.locator('.sheet-label').first()).toHaveText(
       `DETAIL SHEET 03.${i + 1} — ${project.code}`,
     );
@@ -50,11 +50,11 @@ PROJECTS.forEach((project, i) => {
     await expect(main.locator('.detail-body .revision-note')).toBeVisible();
 
     const prev = main.locator('[data-pager="previous"]');
-    await expect(prev).toHaveAttribute('href', `/projects/${previous.slug}`);
+    await expect(prev).toHaveAttribute('href', `/projects/${previous.slug}/`);
     await expect(prev).toContainText('PREVIOUS SHEET');
     await expect(prev).toContainText(`${previous.code} · ${previous.title}`);
     const nxt = main.locator('[data-pager="next"]');
-    await expect(nxt).toHaveAttribute('href', `/projects/${next.slug}`);
+    await expect(nxt).toHaveAttribute('href', `/projects/${next.slug}/`);
     await expect(nxt).toContainText('NEXT SHEET');
     await expect(nxt).toContainText(`${next.code} · ${next.title}`);
 
@@ -73,22 +73,22 @@ PROJECTS.forEach((project, i) => {
 });
 
 test('next and back links navigate, in Dutch too', async ({ page }) => {
-  await page.goto('/nl/projects/scentify');
+  await page.goto('/nl/projects/scentify/');
   await expect(page.locator('html')).toHaveAttribute('lang', 'nl');
   await page.locator('[data-pager="next"]').click();
-  await expect(page).toHaveURL('/nl/projects/jamigos');
+  await expect(page).toHaveURL('/nl/projects/jamigos/');
   await expect(page.locator('[data-pager="previous"]')).toHaveAttribute(
     'href',
-    '/nl/projects/scentify',
+    '/nl/projects/scentify/',
   );
   await page.locator('.detail-head__back').click();
-  await expect(page).toHaveURL('/nl/projects');
+  await expect(page).toHaveURL('/nl/projects/');
 });
 
 test('the specification sits beside FIG. 2 on desktop and above it below 1024 px', async ({
   page,
 }) => {
-  await page.goto('/projects/jamigos');
+  await page.goto('/projects/jamigos/');
   const spec = await page.locator('.detail-body__spec').boundingBox();
   const aside = await page.locator('.detail-body__aside').boundingBox();
   expect(spec && aside).toBeTruthy();
@@ -103,7 +103,7 @@ test('the specification sits beside FIG. 2 on desktop and above it below 1024 px
 test('Jamigos: container view, pipeline route and no live link (copy.md 03.1)', async ({
   page,
 }) => {
-  await page.goto('/projects/jamigos');
+  await page.goto('/projects/jamigos/');
   const fig1 = page.locator('[data-figure="1"]');
   await expect(fig1.locator('figcaption')).toHaveText('FIG. 1 — CONTAINER VIEW');
   await expect(fig1.locator('.box__title')).toHaveText([
@@ -156,7 +156,7 @@ test('Jamigos: container view, pipeline route and no live link (copy.md 03.1)', 
 });
 
 test('Subscription Tracker: layers and a test pyramid of 63 (copy.md 03.2)', async ({ page }) => {
-  await page.goto('/projects/subscription-tracker');
+  await page.goto('/projects/subscription-tracker/');
   const fig1 = page.locator('[data-figure="1"]');
   await expect(fig1.locator('figcaption')).toHaveText('FIG. 1 — LAYERS');
   await expect(fig1.locator('.box__title')).toHaveText([
@@ -204,7 +204,7 @@ test('Subscription Tracker: layers and a test pyramid of 63 (copy.md 03.2)', asy
 test('Recipe Book: design-first flow, the aggregate and 109 tests (copy.md 03.3)', async ({
   page,
 }) => {
-  await page.goto('/projects/recipe-book');
+  await page.goto('/projects/recipe-book/');
   const fig1 = page.locator('[data-figure="1"]');
   await expect(fig1.locator('figcaption')).toHaveText('FIG. 1 — DESIGN-FIRST FLOW');
   await expect(fig1.locator('.box__title')).toHaveText([
@@ -253,7 +253,7 @@ test('Recipe Book: design-first flow, the aggregate and 109 tests (copy.md 03.3)
 test('Journal: ports & adapters, 7 ADR links and the status in redline (copy.md 03.4)', async ({
   page,
 }) => {
-  await page.goto('/projects/journal');
+  await page.goto('/projects/journal/');
   const meta = page.locator('.detail-head__meta');
   const status = meta.locator('.detail-head__status');
   await expect(status).toHaveText('IN PROGRESS');
@@ -318,7 +318,7 @@ test('Journal: ports & adapters, 7 ADR links and the status in redline (copy.md 
 test('Scentify: question flow and the demo, still under reduced motion (copy.md 03.5)', async ({
   page,
 }) => {
-  await page.goto('/projects/scentify');
+  await page.goto('/projects/scentify/');
   const fig1 = page.locator('[data-figure="1"]');
   await expect(fig1.locator('figcaption')).toHaveText('FIG. 1 — QUESTION FLOW');
   await expect(fig1.locator('.box__title')).toHaveText([

@@ -108,7 +108,7 @@ test('shows the five project cards, each one link with its mini diagram', async 
     await expect(cards).toHaveCount(5);
     for (const [slug, boxes] of Object.entries(DIAGRAMS)) {
       const card = cards.and(page.locator(`[data-project="${slug}"]`));
-      await expect(card).toHaveAttribute('href', `/projects/${slug}`);
+      await expect(card).toHaveAttribute('href', `/projects/${slug}/`);
       await expect(card.locator('.project-card__strip > div')).toHaveCount(3);
       const diagram = card.locator('.mini-diagram');
       await expect(diagram).toHaveAttribute('aria-hidden', 'true');

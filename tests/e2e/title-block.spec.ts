@@ -8,11 +8,11 @@ import { ui } from './helpers/content';
 
 const SHEETS = [
   { path: '/', sheet: '01 / 05' },
-  { path: '/experience', sheet: '02 / 05' },
-  { path: '/projects', sheet: '03 / 05' },
-  { path: '/projects/jamigos', sheet: '03 / 05' },
-  { path: '/certifications', sheet: '04 / 05' },
-  { path: '/nl/education', sheet: '05 / 05' },
+  { path: '/experience/', sheet: '02 / 05' },
+  { path: '/projects/', sheet: '03 / 05' },
+  { path: '/projects/jamigos/', sheet: '03 / 05' },
+  { path: '/certifications/', sheet: '04 / 05' },
+  { path: '/nl/education/', sheet: '05 / 05' },
   { path: '/no-such-sheet', sheet: '?? / 05' },
 ];
 
@@ -57,7 +57,7 @@ test('the contact cell links email, LinkedIn, GitHub and the CV', async ({ page 
 });
 
 test('4 columns from tablet up, 2 on phone, right-aligned at most 761 px', async ({ page }) => {
-  await page.goto('/experience');
+  await page.goto('/experience/');
   const grid = page.locator('.title-block__grid');
   const layout = await grid.evaluate((el) => ({
     columns: getComputedStyle(el).gridTemplateColumns.split(' ').length,

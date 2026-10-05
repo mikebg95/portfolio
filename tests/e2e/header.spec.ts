@@ -6,7 +6,7 @@ import { ui } from './helpers/content';
 
 // SheetHeader (SPEC §3.2, §3.5; components.md SheetHeader/SheetTab) on desktop and tablet.
 // Phone gets the one-row header and the bottom tab bar instead (tests/e2e/tab-bar.spec.ts).
-const SHEET_PATHS = ['/', '/experience', '/projects', '/certifications', '/education'];
+const SHEET_PATHS = ['/', '/experience/', '/projects/', '/certifications/', '/education/'];
 const LANGS = [
   { lang: 'en', prefix: '' },
   { lang: 'nl', prefix: '/nl' },
@@ -31,7 +31,7 @@ test.beforeEach(({ page }) => {
 
 for (const { lang, prefix } of LANGS) {
   test(`every tab navigates to its sheet and becomes current (${lang})`, async ({ page }) => {
-    await page.goto(url(prefix, '/education'));
+    await page.goto(url(prefix, '/education/'));
     for (const [i, path] of SHEET_PATHS.entries()) {
       await tabs(page).nth(i).click();
       await expect(page).toHaveURL(new RegExp(`${url(prefix, path)}/?$`));
@@ -44,7 +44,7 @@ for (const { lang, prefix } of LANGS) {
   });
 
   test(`a project detail sheet marks tab 03 (${lang})`, async ({ page }) => {
-    await page.goto(url(prefix, '/projects/jamigos'));
+    await page.goto(url(prefix, '/projects/jamigos/'));
     await expectCurrentTab(page, 2);
   });
 }
@@ -55,7 +55,7 @@ test('the not-found sheet marks no tab', async ({ page }) => {
 });
 
 test('the monogram links to the overview in the page language', async ({ page }) => {
-  await page.goto('/nl/experience');
+  await page.goto('/nl/experience/');
   const mark = page.locator('.sheet-header__mark');
   await expect(mark).toContainText('MG');
   await expect(mark).toContainText(ui('nl').monogram.set);
@@ -65,7 +65,7 @@ test('the monogram links to the overview in the page language', async ({ page })
 });
 
 test('the language switch goes to the same sheet in the other language', async ({ page }) => {
-  await page.goto('/projects/recipe-book');
+  await page.goto('/projects/recipe-book/');
   const en = page.getByRole('link', { name: 'EN', exact: true });
   await expect(en).toHaveAttribute('aria-current', 'true');
   await page.getByRole('link', { name: 'NL', exact: true }).click();
@@ -96,7 +96,7 @@ test('the CV link opens the PDF in a new tab, and the theme button is there', as
 test('on a tablet the five tabs stay in one row, without horizontal scroll', async ({ page }) => {
   for (const width of [768, 1023, 1024, 1279, 1280]) {
     await page.setViewportSize({ width, height: 900 });
-    await page.goto('/certifications');
+    await page.goto('/certifications/');
     const tops = await tabs(page).evaluateAll((els) =>
       els.map((el) => Math.round(el.getBoundingClientRect().top)),
     );

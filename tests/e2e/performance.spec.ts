@@ -118,7 +118,7 @@ test.describe('font preloads', () => {
     test.describe(javaScriptEnabled ? 'with JS' : 'without JS', () => {
       test.use({ javaScriptEnabled });
 
-      for (const path of ['/', '/experience']) {
+      for (const path of ['/', '/experience/']) {
         test(`${path} fetches each preloaded font once and uses the preload`, async ({ page }) => {
           const fetched: string[] = [];
           const warnings: string[] = [];

@@ -19,12 +19,12 @@ const prefetched = (page: Page) =>
 test('the sheet tabs on screen are prefetched; project pages wait for a hover', async ({
   page,
 }) => {
-  await page.goto('/projects');
-  const sheets = ['/', '/experience', '/certifications', '/education'];
+  await page.goto('/projects/');
+  const sheets = ['/', '/experience/', '/certifications/', '/education/'];
   await expect.poll(() => prefetched(page)).toEqual(expect.arrayContaining(sheets));
-  expect(await prefetched(page)).not.toContain('/projects/jamigos');
+  expect(await prefetched(page)).not.toContain('/projects/jamigos/');
 
   await page.locator('a[data-project="jamigos"]').hover();
-  await expect.poll(() => prefetched(page)).toContain('/projects/jamigos');
+  await expect.poll(() => prefetched(page)).toContain('/projects/jamigos/');
   expect(await prefetched(page)).not.toContain(CV_PATH);
 });
