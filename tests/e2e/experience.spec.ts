@@ -206,6 +206,21 @@ test('the Dutch sheet names Conspect as employer and DJI a secondment', async ({
   );
 });
 
+test('a dashed rule parts each pair of Conspect assignments, past the component script', async ({
+  page,
+}) => {
+  test.skip(phone(page), PHONE);
+  await page.goto('/experience/');
+  const rules = await page
+    .locator('.experience-detail__assignments > article')
+    .evaluateAll((as) => as.map((a) => [a.id, getComputedStyle(a).borderTopStyle]));
+  expect(rules).toEqual([
+    ['optiecon', 'none'],
+    ['sabbatical', 'dashed'],
+    ['dji', 'dashed'],
+  ]);
+});
+
 test('a detail block is two columns on desktop and one on phone', async ({ page }) => {
   await page.goto('/experience/');
   const meta = await page.locator('#dji .experience-detail__meta').boundingBox();

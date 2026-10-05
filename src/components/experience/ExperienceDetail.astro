@@ -244,7 +244,9 @@ const folds = [
     padding-left: 0;
   }
 
-  .experience-detail__assignments > :global(article + article) {
+  /* `~`, not `+`: this component's <script> is rendered after its first use, between 02.1a and
+     02.1b. */
+  .experience-detail__assignments > :global(article ~ article) {
     border-top: 1px dashed var(--color-rule);
   }
 
@@ -364,11 +366,11 @@ const folds = [
       padding: 14px 14px 12px;
     }
 
-    .experience-detail__assignments > :global(article + article) {
+    .experience-detail__assignments > :global(article ~ article) {
       border-top: 1.5px solid var(--color-ink);
     }
 
-    .experience-detail__assignments > :global(article + article.experience-break) {
+    .experience-detail__assignments > :global(article ~ article.experience-break) {
       border-top-style: dashed;
     }
 
