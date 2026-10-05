@@ -823,3 +823,18 @@ other `visibility: hidden`), so it is the width of the longer one in either them
 drops its gaps and narrows its inset from 16 to 8 px (the 44 px cells carry their own air): 251 px
 in every theme and language, tabs 142–152 px at 1280. Instead of: shrinking the drawn monogram
 cell, or moving the one-row breakpoint above 1280 (PR-7 agreed one row from 1280).
+
+## 2026-10-05 — Phone sheet is the screen: one frame, 20 px padding (DESIGN-FIX-5)
+Who: agent (DESIGN-FIX-5). design/tokens.json gave phone values (`outer-padding` 12px 8px,
+`content-padding` 24px, the full double frame) that every 390 px drawing contradicts: the drawn
+`.paper` is the whole screen with one 2 px ink border and sections padded 20 px. The drawing
+outranks tokens on layout (CLAUDE.md), and no record made the token the later decision, so the
+tokens now say what the drawings show — `outer-padding` 0 on phone, `content-padding` 20px phone,
+`frame` noted "phone: the 2px outer only" — and SheetFrame drops the 10 px gap and the 1 px inner
+frame below 768 px. Measured at 390 in both schemes on every sheet: header from x=2, text at x=22,
+`CV · PDF ↓` one 48 px line, the How-I-work rail to the screen edge; 320 px scrolls nothing
+sideways. The desk had been hiding two things: Sheet 01's revision note stamps in at 1.25× and
+reached 22 px past a 320 px screen on a first view, so the phone desk clips sideways overflow
+(`overflow-x: clip`, no scroll container); and the body's bottom padding left out the tab bar's
+2 px rule, now added. Instead of: keeping the tokens and closing as agreed (it would leave the
+drawn phone type sizes and the one-line CV button unreachable).

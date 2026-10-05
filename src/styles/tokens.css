@@ -53,12 +53,12 @@
   --space-10: 72px;
   --sheet-max-width: 1320px;
   --sheet-outer-padding: 32px 24px;
-  --sheet-outer-padding-phone: 12px 8px;
+  --sheet-outer-padding-phone: 0;
   --sheet-frame-outer: 2px;
   --sheet-frame-gap: 10px;
   --sheet-frame-inner: 1px;
   --sheet-content-padding: 56px;
-  --sheet-content-padding-phone: 24px;
+  --sheet-content-padding-phone: 20px;
   --sheet-grid-minor: 16px;
   --sheet-grid-major: 80px;
   --sheet-tab-bar-height: 62px;

@@ -82,8 +82,10 @@ test('the bar holds to the screen bottom while the page scrolls clear of it', as
     expect(box.height).toBeCloseTo(62, 0);
     expect(box.width).toBeGreaterThanOrEqual(44);
   }
-  // Scrolled to the end, the footer's last line ends above the bar.
-  const footer = (await page.locator('.sheet').boundingBox())!;
+  // Scrolled to the end, the footer's last line ends above the bar. The footer, not the sheet: a
+  // page's height is fractional, the scroll range whole pixels, so the sheet's bottom frame (no
+  // desk under it on a phone) may end a fraction of a pixel into the bar's rule.
+  const footer = (await page.locator('.title-block').boundingBox())!;
   const top = (await nav.boundingBox())!.y;
   expect(footer.y + footer.height).toBeLessThanOrEqual(top);
 });

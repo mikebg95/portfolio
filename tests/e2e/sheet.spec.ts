@@ -21,7 +21,9 @@ test('the skip link is the first stop and moves focus to the sheet content', asy
   await expect(page.locator('main#main')).toBeFocused();
 });
 
-test('the sheet has the double frame, and zone numbers 1–8 on desktop only', async ({ page }) => {
+test('the sheet has the double frame (one frame, edge to edge on a phone), and zone numbers 1–8 on desktop only', async ({
+  page,
+}) => {
   // A later view: on a session's first view the frame and grid are being plotted on their own layer.
   await page.goto('/experience/');
   await page.goto('/experience/');
@@ -29,22 +31,29 @@ test('the sheet has the double frame, and zone numbers 1–8 on desktop only', a
     const outer = getComputedStyle(sheet);
     const inner = getComputedStyle(sheet.querySelector('.sheet__inner') as Element);
     return {
+      left: sheet.getBoundingClientRect().left,
       outer: outer.borderTopWidth,
       gap: outer.paddingTop,
       inner: inner.borderTopWidth,
       grid: outer.backgroundSize,
     };
   });
-  expect(frame).toEqual({
+  const width = page.viewportSize()?.width ?? 0;
+  // The phone drawings (390 px): no desk, the sheet is the screen with its 2 px outer frame only.
+  const phone = width < 768;
+  const { left, ...widths } = frame;
+  if (phone) expect(left).toBe(0);
+  else expect(left).toBeGreaterThanOrEqual(24);
+  expect(widths).toEqual({
     outer: '2px',
-    gap: '10px',
-    inner: '1px',
+    gap: phone ? '0px' : '10px',
+    inner: phone ? '0px' : '1px',
     grid: '80px 80px, 80px 80px, 16px 16px, 16px 16px',
   });
 
   const zones = page.locator('.sheet__zones');
   await expect(zones).toHaveAttribute('aria-hidden', 'true');
-  const desktop = (page.viewportSize()?.width ?? 0) >= 1024;
+  const desktop = width >= 1024;
   if (desktop)
     await expect(zones.locator('span')).toHaveText(['1', '2', '3', '4', '5', '6', '7', '8']);
   else await expect(zones).toBeHidden();

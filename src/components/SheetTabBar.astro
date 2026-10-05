@@ -40,9 +40,10 @@ const pad = (n: number) => String(n).padStart(2, '0');
   }
 
   @media (max-width: 767px) {
-    /* The page scrolls clear of the bar: nothing ends up under it. */
+    /* The page scrolls clear of the bar and its 2 px rule: nothing ends up under it (on a phone
+       there is no desk below the sheet to make up the rule). */
     :global(body) {
-      padding-bottom: calc(var(--sheet-tab-bar-height) + env(safe-area-inset-bottom, 0px));
+      padding-bottom: calc(var(--sheet-tab-bar-height) + 2px + env(safe-area-inset-bottom, 0px));
     }
 
     .tab-bar {

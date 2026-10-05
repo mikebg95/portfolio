@@ -2,7 +2,8 @@
 import Crosshair from './Crosshair.astro';
 
 // The drawing sheet (SPEC §3.1, components.md SheetFrame): desk → paper with the 16/80 px grid,
-// 2 px outer frame, 10 px gap, 1 px inner frame, zone strip 1–8 on desktop, then the slots.
+// 2 px outer frame, 10 px gap, 1 px inner frame (phone: the outer frame only), zone strip 1–8 on
+// desktop, then the slots.
 const ZONES = [1, 2, 3, 4, 5, 6, 7, 8];
 const EDGES = ['top', 'right', 'bottom', 'left'];
 ---
@@ -75,9 +76,21 @@ const EDGES = ['top', 'right', 'bottom', 'left'];
     line-height: normal;
   }
 
+  /* Phone (the 390 px drawings): no desk, the sheet is the screen with only its 2 px outer frame.
+     With no desk to land on, what draws past the screen edge (Sheet 01's revision note stamps in at
+     1.25×) is clipped there rather than letting the page pan sideways. */
   @media (max-width: 767px) {
     .desk {
       padding: var(--sheet-outer-padding-phone);
+      overflow-x: clip;
+    }
+
+    .sheet {
+      padding: 0;
+    }
+
+    .sheet__inner {
+      border: none;
     }
   }
 

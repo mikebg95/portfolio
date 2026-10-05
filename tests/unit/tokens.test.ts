@@ -101,8 +101,8 @@ describe('design tokens → src/styles/tokens.css', () => {
 
   it('reads the described tokens as drawn', () => {
     expect(root.get('--sheet-content-padding')).toBe('56px');
-    expect(root.get('--sheet-content-padding-phone')).toBe('24px');
-    expect(root.get('--sheet-outer-padding-phone')).toBe('12px8px');
+    expect(root.get('--sheet-content-padding-phone')).toBe('20px');
+    expect(root.get('--sheet-outer-padding-phone')).toBe('0');
     expect(root.get('--sheet-frame-gap')).toBe('10px');
     expect(root.get('--sheet-grid-major')).toBe('80px');
     expect(root.get('--border-dashed-note')).toBe('1.5pxdashedvar(--color-redline)');
