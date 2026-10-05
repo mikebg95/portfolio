@@ -54,6 +54,25 @@ test('the sheet has the double frame, and zone numbers 1–8 on desktop only', a
   await expectNoAxeViolations(page);
 });
 
+test('every panel after the first is ruled off, even past a component script', async ({ page }) => {
+  // Sheet 01 renders HowIWork's <script> between it and the Specification panel.
+  await page.goto('/');
+  const rules = await page
+    .locator('main .sheet-panel')
+    .evaluateAll((panels) =>
+      panels.map((panel) => [
+        panel.className.split(' ')[1],
+        getComputedStyle(panel).borderTopWidth,
+      ]),
+    );
+  expect(rules).toEqual([
+    ['hero', '0px'],
+    ['how-i-work', '1px'],
+    ['spec-notes', '1px'],
+    ['in-progress', '1px'],
+  ]);
+});
+
 test('the head script puts a remembered theme on <html>', async ({ page }) => {
   await page.addInitScript((key) => localStorage.setItem(key, 'blueprint'), THEME_STORAGE_KEY);
   await page.goto('/nl/');

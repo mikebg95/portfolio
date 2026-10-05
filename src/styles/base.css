@@ -45,12 +45,13 @@ body {
 }
 
 /* A panel of the sheet (design/README.md Layout): content padding, a full-width 1 px ink rule
-   between consecutive panels. Pages compose `<main>` from these. */
+   between consecutive panels. Pages compose `<main>` from these. `~`, not `+`: Astro renders a
+   component's `<script>` where the component is first used, between two panels. */
 .sheet-panel {
   padding: var(--sheet-content-padding);
 }
 
-.sheet-panel + .sheet-panel {
+.sheet-panel ~ .sheet-panel {
   border-top: var(--border-thin);
 }
 
