@@ -1001,3 +1001,16 @@ History, not a queue.
   - Screen: src/components/experience/ExperienceDetail.astro (`.experience-detail__assignments > :global(article + article)`), src/components/experience/ExperienceBreak.astro.
   - Differs: at 1280, in both schemes, a dashed rule separates 02.1b Sabbatical from 02.1c DJI but there is none between 02.1a OptieCon and 02.1b Sabbatical (`#sabbatical` measured `border-top: 0`), so the sabbatical reads as part of the OptieCon block. Cause: a `<script>` is rendered between `#optiecon` and `#sabbatical` inside `.experience-detail__assignments`, so `article + article` does not match. Screenshot: .e2e/design-check/experience-1280-light.png, experience-1280-dark.png.
   - Done when the view matches the drawing at 1280, both schemes (one dashed rule between each pair of assignments: 02.1a | 02.1b | 02.1c), the phone cards are unchanged, and the task check is green.
+
+
+## Pruned from the queue
+
+1 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### Design check of 81b3f38, 2026-10-05
+
+- [x] **DESIGN-FIX-3 /certifications — default (stamp middle line and card title setting)**
+  - Drawing: design/screens/certifications-default-light-1440.png (its HTML: `.stamp b{font-size:13px}`; card `h2` 28 px, weight 800, `font-stretch: 112%`, default line-height).
+  - Screen: src/components/drawing/Stamp.astro, src/components/certifications/CertCard.astro.
+  - Differs: (1) the stamp's middle line (the year `2025`/`2024`, and `CKAD` on the pending stamp) is drawn larger than its two neighbours — 13 px vs 10 px; the app sets it at the same 10 px as `VERIFIED`/issuer (only heavier), so the stamp loses its centre. Seen at 1280 and 390, both schemes. (2) Card titles: the drawing sets them at weight 800, stretch 112 % with open leading (≈ 31 px line step at 28 px); the app uses the generic DisplayHeading setting — weight 850, stretch 118 %, line-height 0.92 (23.5 px step at 25.6 px) — so two- and three-line names (ORACLE CERTIFIED / ASSOCIATE, JAVA SE 8 / PROGRAMMER; CERTIFIED KUBERNETES …) sit cramped where the drawing has air between lines. Point (2) conflicts with components.md DisplayHeading (line-height .88–.92); the drawing outranks components.md, but I was unsure — the agent may record why it keeps the generic setting instead. Screenshots: .e2e/design-check/certifications-1280-light.png, certifications-1280-dark.png, certifications-390-light.png.
+  - Done when the view matches the drawing at 1280, both schemes (stamp middle line 13 px; card titles as the drawing sets them, still fitting at 320 px per PR-61), and the task check is green.
