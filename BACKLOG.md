@@ -80,7 +80,7 @@ queue.
 
 ### QA walk, 2026-10-05
 
-- [ ] **QA-71 every sheet but the homes — canonical, hreflang, sitemap and nav links all 301 on GitHub Pages**
+- [x] **QA-71 every sheet but the homes — canonical, hreflang, sitemap and nav links all 301 on GitHub Pages**
   - Route: `/experience`, `/projects`, `/projects/<slug>`, `/certifications`, `/education` and their `/nl/` twins (18 of the 20 sitemap URLs).
   - Did: `curl -s https://michaelgoldman.dev/sitemap.xml`, then `curl -s -o /dev/null -w '%{http_code} %{redirect_url}'` on every `<loc>` (2026-10-05, live GitHub Pages; the same URLs are in the local build's `dist/sitemap.xml` and `<link rel="canonical">`, e.g. `dist/experience/index.html` → `https://michaelgoldman.dev/experience`).
   - Happened: every `<loc>` except `/` and `/nl/` answers `301` → the same path with a trailing slash (`/experience` → `/experience/`). So each page's canonical and hreflang alternates point at a redirect, the sitemap lists only redirecting URLs (Search Console reports these as "Page with redirect", not indexed as given), and every header tab, tab-bar cell, project card and prev/next link (`href="/experience"` etc.) costs a 301 round trip before the page. `astro preview` serves `/experience` with 200, so local tests never see it; docs/RECORD.md 2026-10-04 (PR-37) chose slash-less URLs, which the GitHub Pages deploy (`.github/workflows/pages.yml`) does not serve directly.
