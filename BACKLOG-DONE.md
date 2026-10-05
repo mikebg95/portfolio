@@ -1027,3 +1027,16 @@ History, not a queue.
   - Screen: src/components/SheetHeader.astro.
   - Differs: at 1280×800 in the blueprint scheme (system dark, no override) the header breaks into neither agreed shape: row 1 is monogram + five tabs stretched to 970 px, and the utilities (EN · NL · BLUEPRINT · CV) drop to a 60 px row 2 starting under the monogram (measured `.sheet-header__utils` x=37 y=135 w=283). In paper at 1280 everything fits one row (utils 252 px); the longer `BLUEPRINT` label (283 px) tips it over. Also at 1440 dark the tabs shrink to 155 px each but stay in one row. Screenshots: .e2e/design-check/overview-1280-dark.png, projects-1280-dark.png, education-1280-dark.png (same on every sheet) vs overview-1280-light.png.
   - Done when every sheet at 1280, both schemes, shows the header as one row (monogram, five tabs ≥ 140 px, utilities) — or, if it cannot fit, the PR-7 two-row shape — with no layout difference between paper and blueprint, and the task check is green.
+
+
+## Pruned from the queue
+
+1 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### Design check of 81b3f38, 2026-10-05
+
+- [x] **DESIGN-FIX-5 every sheet, phone — default (sheet frame and content padding)**
+  - Drawing: design/screens/overview-default-light-390.png, experience-default-light-390.png, education-part3-sheet-light-390.png (HTML: the `.paper` is the full 390 px screen with a single 2 px ink border; header cells run edge to edge; sections padded 20 px).
+  - Screen: src/components/SheetFrame.astro, src/styles/base.css (`--sheet-content-padding-phone`), tokens (`sheet.outer-padding`, `sheet.frame`, `sheet.content-padding`).
+  - Differs: at 390, both schemes, the app keeps the desktop sheet: 8/12 px of desk around it, a 2 px outer border, a 10 px gap and a 1 px inner border, then 24 px content padding — the header starts at x=21 and the text column is ~300 px wide (text at x=45). The drawings have no desk and no double frame: header from x=2, text at x=22, a ~350 px column. Visible effects: the hero name and headings set smaller than drawn, Sheet 01's `DOWNLOAD CV (PDF)` button wraps to two lines (drawn one line, 48 px tall), the How-I-work rail does not run off the screen edge as drawn (`margin-right: -20px`). Screenshots: .e2e/design-check/overview-390-light-viewport.png, overview-390-light-a.png, experience-390-light-a.png, education-part3-sheet-390-light.png. Unsure: design/tokens.json gives the phone values the app uses (`outer-padding … 12px 8px on phone`, `content-padding … 24px phone`), which contradicts the phone drawings; the drawing outranks tokens for layout per CLAUDE.md, but if the token is the later decision, record it in docs/RECORD.md and close this as agreed.
+  - Done when the drawn phone views (Sheet 01, Sheet 02, Sheet 05 with the part sheet open) match their drawings at 390, both schemes — sheet edge to edge with one 2 px frame, 20 px content padding — the undrawn phone sheets follow, nothing scrolls sideways at 320 px, and the task check is green.
