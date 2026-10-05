@@ -1014,3 +1014,16 @@ History, not a queue.
   - Screen: src/components/drawing/Stamp.astro, src/components/certifications/CertCard.astro.
   - Differs: (1) the stamp's middle line (the year `2025`/`2024`, and `CKAD` on the pending stamp) is drawn larger than its two neighbours — 13 px vs 10 px; the app sets it at the same 10 px as `VERIFIED`/issuer (only heavier), so the stamp loses its centre. Seen at 1280 and 390, both schemes. (2) Card titles: the drawing sets them at weight 800, stretch 112 % with open leading (≈ 31 px line step at 28 px); the app uses the generic DisplayHeading setting — weight 850, stretch 118 %, line-height 0.92 (23.5 px step at 25.6 px) — so two- and three-line names (ORACLE CERTIFIED / ASSOCIATE, JAVA SE 8 / PROGRAMMER; CERTIFIED KUBERNETES …) sit cramped where the drawing has air between lines. Point (2) conflicts with components.md DisplayHeading (line-height .88–.92); the drawing outranks components.md, but I was unsure — the agent may record why it keeps the generic setting instead. Screenshots: .e2e/design-check/certifications-1280-light.png, certifications-1280-dark.png, certifications-390-light.png.
   - Done when the view matches the drawing at 1280, both schemes (stamp middle line 13 px; card titles as the drawing sets them, still fitting at 320 px per PR-61), and the task check is green.
+
+
+## Pruned from the queue
+
+1 finished task(s), moved verbatim by `prune-backlog.py` so the live queue holds only live work.
+
+### Design check of 81b3f38, 2026-10-05
+
+- [x] **DESIGN-FIX-4 every sheet — default, blueprint at 1280 (header utilities wrap under the monogram)**
+  - Drawing: design/screens/overview-default-light-1440.png (and every 1440 drawing: one header row, monogram cell + five tab cells); docs/RECORD.md 2026-10-04 PR-7: at ≥ 1280 px monogram, tabs and utilities share one row; below that monogram + utilities form row 1 and the tabs row 2.
+  - Screen: src/components/SheetHeader.astro.
+  - Differs: at 1280×800 in the blueprint scheme (system dark, no override) the header breaks into neither agreed shape: row 1 is monogram + five tabs stretched to 970 px, and the utilities (EN · NL · BLUEPRINT · CV) drop to a 60 px row 2 starting under the monogram (measured `.sheet-header__utils` x=37 y=135 w=283). In paper at 1280 everything fits one row (utils 252 px); the longer `BLUEPRINT` label (283 px) tips it over. Also at 1440 dark the tabs shrink to 155 px each but stay in one row. Screenshots: .e2e/design-check/overview-1280-dark.png, projects-1280-dark.png, education-1280-dark.png (same on every sheet) vs overview-1280-light.png.
+  - Done when every sheet at 1280, both schemes, shows the header as one row (monogram, five tabs ≥ 140 px, utilities) — or, if it cannot fit, the PR-7 two-row shape — with no layout difference between paper and blueprint, and the task check is green.
