@@ -803,3 +803,13 @@ Not changed: the 404 sheets' language switch (`/404/`, answered with the 404 she
 QA-70 fetch of `/nl/404` (followed through the redirect; not a published link). Guard:
 `tests/e2e/seo.spec.ts` "every published URL and internal link is served by GitHub Pages without a
 redirect" (reads `dist/`). The service worker already keys `/x`, `/x/` and `/x/index.html` alike.
+
+## 2026-10-05 — Certification names and the stamp centre follow the drawing (DESIGN-FIX-3)
+Who: agent (DESIGN-FIX-3), from the design check of 81b3f38. The stamp's middle line (year, or
+CKAD) is 13 px between the two 10 px lines, as `.stamp b` in the certifications drawing. Card names
+keep DisplayHeading (size `s`, the PR-61 fit) but take the drawing's own setting: weight 800, stretch
+112 %, line-height 1.1 (the drawing's default leading measures ≈ 31 px at 28 px; this font's
+`normal` gives only 1.05). This departs from components.md DisplayHeading (850 / 118 % / .88–.92)
+for this one place: the drawing outranks components.md (CLAUDE.md), and three-line names were
+cramped at .92. The fit stays measured at the token setting, which is wider, so it errs safe.
+Measured at 1280, 390 and 320 in both schemes: no word breaks, no sideways scroll.

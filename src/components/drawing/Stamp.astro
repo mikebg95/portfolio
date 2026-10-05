@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from 'astro/types';
 
 // components.md Stamp: a 96 px rubber stamp rotated −12°, three mono lines (VERIFIED / 2025 /
-// BROADCOM), the middle one bold. Verified has an inner ring; pending is a dashed redline ring
+// BROADCOM), the middle one bold and larger. Verified has an inner ring; pending is a dashed redline ring
 // without it, drawn as an SVG stroke so its dash can rotate (§M6, the only infinite animation).
 // With `data-reveal="stamp"` it slams down (§M1 stamp) and then the ink bleeds (§M6).
 type Props = HTMLAttributes<'p'> & {
@@ -49,6 +49,11 @@ const [top, middle, bottom] = lines;
     box-shadow:
       inset 0 0 0 4px var(--color-paper),
       inset 0 0 0 5.5px var(--color-line);
+  }
+
+  /* The middle line is the stamp's centre: 13 px between two 10 px lines, as drawn. */
+  .stamp > strong {
+    font-size: 13px;
   }
 
   .stamp--pending {

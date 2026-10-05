@@ -115,6 +115,15 @@ const nameId = `${id}-name`;
     font-size: min(var(--size-display-s), 10cqi);
   }
 
+  /* The drawing sets card names lighter and narrower than other display headings, with open
+     leading (its 31 px step at 28 px), so a two- or three-line name reads as a title, not a block.
+     The build-time fit is measured at the wider token setting, so it stays on the safe side. */
+  .cert-card__head :global(h2) {
+    font-weight: 800;
+    font-stretch: 112%;
+    line-height: 1.1;
+  }
+
   .cert-card__issuer {
     margin: 0;
     color: var(--color-muted);
