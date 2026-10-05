@@ -813,3 +813,13 @@ keep DisplayHeading (size `s`, the PR-61 fit) but take the drawing's own setting
 for this one place: the drawing outranks components.md (CLAUDE.md), and three-line names were
 cramped at .92. The fit stays measured at the token setting, which is wider, so it errs safe.
 Measured at 1280, 390 and 320 in both schemes: no word breaks, no sideways scroll.
+
+## 2026-10-05 — Header utilities fit one row at 1280 in both themes (DESIGN-FIX-4)
+Who: agent (DESIGN-FIX-4). At 1280 px the header has 1206 px; the drawn monogram cell takes 236 and
+five tabs need 700 (NL 712, "Certificeringen" is 152), leaving ≤ 258 for the utilities, which were
+252 in paper but 283 in blueprint (the label `BLUEPRINT` sized the button), so blueprint alone
+wrapped them under the monogram. Now the theme button holds both labels in one grid cell (the
+other `visibility: hidden`), so it is the width of the longer one in either theme, and the cluster
+drops its gaps and narrows its inset from 16 to 8 px (the 44 px cells carry their own air): 251 px
+in every theme and language, tabs 142–152 px at 1280. Instead of: shrinking the drawn monogram
+cell, or moving the one-row breakpoint above 1280 (PR-7 agreed one row from 1280).

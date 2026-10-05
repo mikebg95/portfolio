@@ -101,17 +101,19 @@ const otherLang = LANGS.find((code) => code !== lang) ?? lang;
          runs, live when the system changes); the script only toggles and remembers. -->
     <button class="sheet-header__util sheet-header__theme" type="button" data-theme-switch>
       <span class="sheet-header__swatch" aria-hidden="true"></span>
-      <span class="sheet-header__theme-state" data-when="paper">
-        <span class="sheet-header__theme-label" aria-hidden="true">
-          {ui.theme.paper}
+      <span class="sheet-header__theme-states">
+        <span class="sheet-header__theme-state" data-when="paper">
+          <span class="sheet-header__theme-label" aria-hidden="true">
+            {ui.theme.paper}
+          </span>
+          <span class="sr-only">{ui.theme.toBlueprint}</span>
         </span>
-        <span class="sr-only">{ui.theme.toBlueprint}</span>
-      </span>
-      <span class="sheet-header__theme-state" data-when="blueprint">
-        <span class="sheet-header__theme-label" aria-hidden="true">
-          {ui.theme.blueprint}
+        <span class="sheet-header__theme-state" data-when="blueprint">
+          <span class="sheet-header__theme-label" aria-hidden="true">
+            {ui.theme.blueprint}
+          </span>
+          <span class="sr-only">{ui.theme.toPaper}</span>
         </span>
-        <span class="sr-only">{ui.theme.toPaper}</span>
       </span>
     </button>
     <a
@@ -278,15 +280,17 @@ const otherLang = LANGS.find((code) => code !== lang) ?? lang;
     display: none;
   }
 
-  /* Utility cluster: EN/NL (current one underlined), theme switch with swatch, CV. */
+  /* Utility cluster: EN/NL (current one underlined), theme switch with swatch, CV. The 44 px
+     cells carry their own air, so the cluster adds no gaps and a narrow inset: at 1280 px it then
+     fits one row beside the drawn monogram cell and five tabs of at least 140 px (NL too). */
   .sheet-header__utils {
     display: flex;
     flex: none;
     flex-wrap: wrap;
     align-items: center;
     justify-content: flex-end;
-    gap: var(--space-1) var(--space-2);
-    padding: var(--space-2) var(--space-4);
+    gap: var(--space-1) 0;
+    padding: var(--space-2);
     font-size: var(--size-label);
     letter-spacing: 0.04em;
   }
@@ -329,23 +333,34 @@ const otherLang = LANGS.find((code) => code !== lang) ?? lang;
   }
 
   /* The label names the theme on screen, the accessible name the switch (copy.md Global); the
-     same rule as tokens.css decides which: a choice on <html>, else the system preference. */
+     same rule as tokens.css decides which: a choice on <html>, else the system preference. Both
+     states share one grid cell and the other is only hidden, so the button keeps the width of the
+     longer label in either theme and the header lays out the same in paper and blueprint. */
+  .sheet-header__theme-states {
+    display: inline-grid;
+    text-align: start;
+  }
+
+  .sheet-header__theme-state {
+    grid-area: 1 / 1;
+  }
+
   .sheet-header__theme-state[data-when='blueprint'],
   :global([data-theme='blueprint']) .sheet-header__theme-state[data-when='paper'] {
-    display: none;
+    visibility: hidden;
   }
 
   :global([data-theme='blueprint']) .sheet-header__theme-state[data-when='blueprint'] {
-    display: inline;
+    visibility: visible;
   }
 
   @media (prefers-color-scheme: dark) {
     :global(:root:not([data-theme='paper'])) .sheet-header__theme-state[data-when='paper'] {
-      display: none;
+      visibility: hidden;
     }
 
     :global(:root:not([data-theme='paper'])) .sheet-header__theme-state[data-when='blueprint'] {
-      display: inline;
+      visibility: visible;
     }
   }
 

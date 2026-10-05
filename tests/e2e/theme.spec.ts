@@ -21,7 +21,8 @@ function rgb(token: string, theme: Theme): string {
 const themeButton = async (page: Page) => page.locator('[data-theme-switch]:visible');
 
 /** The label naming the theme on screen (the accessible name is the action, copy.md Global). A
- * phone shows only the swatch: there the label of the shown state is in the page but not drawn. */
+ * phone shows only the swatch: there the label of the shown state is in the page but not drawn.
+ * Both states stay laid out (one grid cell, so the button keeps its width); the other is hidden. */
 async function expectLabel(button: Locator, text: string) {
   if ((button.page().viewportSize()?.width ?? 0) >= 768) {
     await expect(button.locator('.sheet-header__theme-label:visible')).toHaveText(text);
@@ -31,7 +32,7 @@ async function expectLabel(button: Locator, text: string) {
     .poll(() =>
       button.evaluate((el) =>
         [...el.querySelectorAll('.sheet-header__theme-state')]
-          .filter((state) => getComputedStyle(state).display !== 'none')
+          .filter((state) => getComputedStyle(state).visibility === 'visible')
           .map((state) => state.querySelector('.sheet-header__theme-label')?.textContent?.trim()),
       ),
     )

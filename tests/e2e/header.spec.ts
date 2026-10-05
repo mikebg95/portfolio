@@ -106,6 +106,38 @@ test('on a tablet the five tabs stay in one row, without horizontal scroll', asy
   }
 });
 
+// DESIGN-FIX-4: from 1280 px monogram, five tabs (≥ 140 px) and utilities share one row, laid out
+// the same in paper and blueprint (the longer BLUEPRINT label once pushed the utilities down).
+for (const { lang, prefix } of LANGS) {
+  test(`from 1280 px the header is one row in both themes (${lang})`, async ({ page }) => {
+    const layouts: Record<string, string> = {};
+    for (const width of [1280, 1440]) {
+      for (const colorScheme of ['light', 'dark'] as const) {
+        await page.emulateMedia({ colorScheme });
+        await page.setViewportSize({ width, height: 900 });
+        await page.goto(url(prefix, '/projects/'));
+        const cells = await page
+          .locator('.sheet-header__mark, header nav .sheet-tab, .sheet-header__utils')
+          // Layout offsets, not client rects: the first-view plotting moves the boxes meanwhile.
+          .evaluateAll((els) =>
+            (els as HTMLElement[]).map(({ offsetTop: top, offsetWidth: width }) => ({
+              top,
+              width,
+            })),
+          );
+        const where = `${width}px ${colorScheme}`;
+        expect(new Set(cells.map(({ top }) => top)).size, `one row at ${where}`).toBe(1);
+        for (const { width: tab } of cells.slice(1, 6))
+          expect(tab, `tab width at ${where}`).toBeGreaterThanOrEqual(140);
+        layouts[width] ??= JSON.stringify(cells);
+        expect(JSON.stringify(cells), `paper and blueprint alike at ${width}px`).toBe(
+          layouts[width],
+        );
+      }
+    }
+  });
+}
+
 // PR-67: a tab name never breaks inside a word and never spills out of its cell, at any desktop
 // or tablet width (the same per-word check as display-headings.spec.ts).
 const TAB_WIDTHS = [768, ...Array.from({ length: (1440 - 770) / 10 + 1 }, (_, i) => 770 + i * 10)];
