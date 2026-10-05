@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 import { expectNoAxeViolations } from './helpers/axe';
+import { settleAnimations } from './helpers/motion';
 
 // Sheet 03 drawing register (SPEC §4.3; copy.md Sheet 03; drawing projects-default-light-1440):
 // row 1 Jamigos (wide) + Scentify, then the series line and P-02, P-03, P-04.
@@ -43,6 +44,9 @@ test('the sheet shows its label, heading, intro and the series line', async ({ p
 
 test('cards lay out in 3 columns on desktop, 2 on tablet and 1 on phone', async ({ page }) => {
   await page.goto('/projects/');
+  // The cards rise 16 px on entry, each column 70 ms after the last (§M3, src/motion.ts): measure
+  // the layout once they rest, or two cards of one row read at different heights mid-rise.
+  await settleAnimations(page);
   const width = page.viewportSize()?.width ?? 0;
   const columns = width >= 1024 ? 3 : width >= 768 ? 2 : 1;
   const xs = async () =>
@@ -63,6 +67,7 @@ test('cards lay out in 3 columns on desktop, 2 on tablet and 1 on phone', async 
 
   await page.setViewportSize({ width: 1440, height: 1000 });
   expect(await xs()).toBe(3);
+  await settleAnimations(page);
   const [wide, origin] = await Promise.all(
     ['jamigos', 'scentify'].map((slug) => page.locator(`[data-project="${slug}"]`).boundingBox()),
   );

@@ -11,6 +11,7 @@ line.
 - `.orchestrator/config.sh` — every loop setting; run.sh holds none.
 - `.orchestrator/progress.md` — plain-English log for a human; untracked.
 - `.orchestrator/logs/latest/` — this run's transcripts, one per agent.
+- TRAP: a full check run overnight can lose the Mac's window server; every later WebKit test then fails in 0–10 ms with `browserType.launch: Timeout` or "HIToolbox: received notification of WindowServer event port death" in the browser log. That is the machine, not the code: rerun those specs (`.orchestrator/verify.sh e2e <spec>`) before fixing anything.
 
 ## Tooling
 
