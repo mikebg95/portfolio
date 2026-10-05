@@ -85,7 +85,7 @@ queue.
 ## TODO-MANUAL
 
 
-- [ ] **REGRESS-20261005-070238 Fix what the pre-deploy full check failed**
+- [x] **REGRESS-20261005-070238 Fix what the pre-deploy full check failed**
   - The full check ran before the deploy and failed, so nothing shipped. Log: `.orchestrator/logs/run-20261004-190147/release-verify-024010.log` (repair 1 of 2).
   - What failed:
     - `✘   399 [chromium-desktop] › tests/e2e/projects.spec.ts:44:1 › cards lay out in 3 columns on desktop, 2 on tablet and 1 on phone (1.7s)`
