@@ -82,7 +82,7 @@ queue.
 
 ### Design check of 81b3f38, 2026-10-05
 
-- [ ] **DESIGN-FIX-5 every sheet, phone — default (sheet frame and content padding)**
+- [x] **DESIGN-FIX-5 every sheet, phone — default (sheet frame and content padding)**
   - Drawing: design/screens/overview-default-light-390.png, experience-default-light-390.png, education-part3-sheet-light-390.png (HTML: the `.paper` is the full 390 px screen with a single 2 px ink border; header cells run edge to edge; sections padded 20 px).
   - Screen: src/components/SheetFrame.astro, src/styles/base.css (`--sheet-content-padding-phone`), tokens (`sheet.outer-padding`, `sheet.frame`, `sheet.content-padding`).
   - Differs: at 390, both schemes, the app keeps the desktop sheet: 8/12 px of desk around it, a 2 px outer border, a 10 px gap and a 1 px inner border, then 24 px content padding — the header starts at x=21 and the text column is ~300 px wide (text at x=45). The drawings have no desk and no double frame: header from x=2, text at x=22, a ~350 px column. Visible effects: the hero name and headings set smaller than drawn, Sheet 01's `DOWNLOAD CV (PDF)` button wraps to two lines (drawn one line, 48 px tall), the How-I-work rail does not run off the screen edge as drawn (`margin-right: -20px`). Screenshots: .e2e/design-check/overview-390-light-viewport.png, overview-390-light-a.png, experience-390-light-a.png, education-part3-sheet-390-light.png. Unsure: design/tokens.json gives the phone values the app uses (`outer-padding … 12px 8px on phone`, `content-padding … 24px phone`), which contradicts the phone drawings; the drawing outranks tokens for layout per CLAUDE.md, but if the token is the later decision, record it in docs/RECORD.md and close this as agreed.
