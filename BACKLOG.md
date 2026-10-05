@@ -82,7 +82,7 @@ queue.
 
 ### Design check of 81b3f38, 2026-10-05
 
-- [ ] **DESIGN-FIX-1 / — default (Specification panel has no top rule)**
+- [x] **DESIGN-FIX-1 / — default (Specification panel has no top rule)**
   - Drawing: design/screens/overview-default-light-1440.png and design/screens/overview-default-light-390.png (both draw a full-width ink rule above SPECIFICATION; design/README.md Layout: "Sections are separated by full-width 1 px ink rules … never by empty space alone").
   - Screen: src/pages/[...lang]/index.astro, src/components/overview/HowIWork.astro, src/components/overview/SpecNotes.astro, src/styles/base.css (`.sheet-panel + .sheet-panel`).
   - Differs: the drawing shows a full-width rule above the SPECIFICATION / GENERAL NOTES panel. The app has none at 1280 and 390, in both schemes: `section.spec-notes` has `border-top: 0` (measured), so the "ON AI" line runs straight into SPECIFICATION with only empty space between them, and on desktop the vertical rule between Specification and General notes starts in mid-air. Cause: HowIWork's `<script type="module">` is rendered between `section.how-i-work` and `section.spec-notes`, so the adjacent-sibling selector never matches (the IN PROGRESS panel still gets its rule). Screenshots: .e2e/design-check/overview-1280-light.png, overview-1280-dark.png, overview-390-light-b.png.
