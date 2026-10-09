@@ -186,8 +186,19 @@ test('every interactive primitive has a 44 px hit area', async ({ page }) => {
 
 test('screenshot of the page for review', async ({ page }, testInfo) => {
   await page.evaluate(() => document.fonts.ready);
+  // Browsers refuse screenshots over 32767 device pixels; on a 3x phone the
+  // full page passes that, so cap the height and keep the top of the page.
+  const { width, height, dpr } = await page.evaluate(() => ({
+    width: document.documentElement.scrollWidth,
+    height: document.documentElement.scrollHeight,
+    dpr: window.devicePixelRatio,
+  }));
+  const maxHeight = Math.floor(32767 / dpr);
   await testInfo.attach('primitives', {
-    body: await page.screenshot({ fullPage: true }),
+    body: await page.screenshot({
+      fullPage: true,
+      clip: { x: 0, y: 0, width, height: Math.min(height, maxHeight) },
+    }),
     contentType: 'image/png',
   });
 });
